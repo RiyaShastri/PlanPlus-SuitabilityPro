@@ -1,0 +1,202 @@
+<div class="panel pb-0 mt-0">
+    <div class="d-flex align-items-center flex-wrap panel-header mb-4">
+        <h4>
+            {{
+                (searchSpouse) ?
+                ('ADVISOR.DASHBOARD.CLIENTS_TILE.SPOUSE' | translate) :
+                ('ADVISOR.DASHBOARD.CLIENTS_TILE.TITLE' | translate)
+            }}
+        </h4>
+        <i *ngIf="!clientLoaded" aria-hidden="true" class="fa fa-spinner fa-pulse loader-icon"></i>
+        <div *ngIf="!isSidePanel && accessRights['CLI18']['accessLevel'] === 3 && !searchSpouse" class="ml-auto d-flex">
+            <a (click)="addClient()" class="btn-add">
+                <i class="ion-md-add-circle"></i>
+                <span> {{'ADVISOR.DASHBOARD.CLIENTS_TILE.ADD_CLIENT' | translate }} </span>
+            </a>
+        </div>
+    </div>
+
+    <div class="panel-body">
+        <form name="form">
+            <div class="form-group">
+                <label class="custom-form-label" [translate]="'ADVISOR.DASHBOARD.CLIENTS_TILE.SEARCH_LABEL'"></label>
+                <div class="right-icon">
+                    <input type="text" class="form-control ion-md-search" (input)="searchByString()" name="searchString"
+                        [(ngModel)]="selectedFilter.searchString"
+                        placeholder="{{'ADVISOR.DASHBOARD.CLIENTS_TILE.SEARCH_PLACEHOLDER' | translate }}">
+                    <i class="ion-ios-search"></i>
+                </div>
+                <a *ngIf="accessToSearch && accessRights['FIL03']['accessLevel'] === 3" href="javascript:void(0)"
+                    (click)="advancedSearchNav(); isCollapsed = !isCollapsed;" [attr.aria-expanded]="!isCollapsed"
+                    aria-controls="collapseExample" class="advanced-search-button">
+                    <span [translate]="'ADVISOR.DASHBOARD.CLIENTS_TILE.ADVANCED_SEARCH'"></span>
+                </a>
+            </div>
+            <div *ngIf="(isSidePanel && !isCollapsed)">
+                <div class="form-group">
+                    <label class="custom-form-label" [translate]="'ADVISOR.DASHBOARD.CLIENTS_TILE.CLIENT_TYPE'"></label>
+                    <p-dropdown (onChange)="getAdvanceFilteredClients()" name="clientType" [options]="clientTypes"
+                        [(ngModel)]="selectedFilter.clientType">
+                    </p-dropdown>
+                </div>
+                <div class="form-group">
+                    <label class="custom-form-label"
+                        [translate]="'ADVISOR.DASHBOARD.CLIENTS_TILE.PRIVACY_STATUS'"></label>
+                    <p-dropdown (onChange)="getAdvanceFilteredClients()" name="privacyStatus" [options]="privacyStatus"
+                        [(ngModel)]="selectedFilter.privacyStatus">
+                    </p-dropdown>
+                </div>
+                <div class="form-group">
+                    <label class="custom-form-label"
+                        [translate]="'ADVISOR.DASHBOARD.CLIENTS_TILE.ADVISOR_ROLE'"></label>
+                    <p-dropdown (onChange)="getAdvanceFilteredClients()" name="advisorRole" [options]="advisorRoles"
+                        [(ngModel)]="selectedFilter.advisorRole">
+                    </p-dropdown>
+                </div>
+                <div class="form-group" *ngIf="accessToWorkgroups">
+                    <label class="custom-form-label" [translate]="'ADVISOR.DASHBOARD.CLIENTS_TILE.WORKGROUPS'"></label>
+                    <p-dropdown (onChange)="getAdvanceFilteredClients()" name="workgroup" [options]="workgroups"
+                        [(ngModel)]="selectedFilter.workgroup">
+                    </p-dropdown>
+                </div>
+            </div>
+            <table *ngIf="clientList" class="table clients-list-table">
+                <thead>
+                    <tr>
+                        <th width="65%" colspan="2">
+                            <app-common-drop-down [itemList]="itemList" [defaultSelected]="selectedViewBy"
+                                dropDownLabel="{{ 'PORTFOLIOS.VIEW_DROPDOWN' | translate }}"
+                                (OnSelect)="getFilterClient($event)"></app-common-drop-down>
+                        </th>
+                        <th width="30%" *ngIf="selectedViewBy['id'] === 0" class="text-right"
+                            [translate]="'ADVISOR.DASHBOARD.CLIENTS_TILE.UPDATED'"></th>
+                        <th width="20%" *ngIf="selectedViewBy['id'] === 1" class="text-right"
+                            [translate]="'ADVISOR.DASHBOARD.CLIENTS_TILE.ADDRESS'"></th>
+                        <th width="10%" *ngIf="selectedViewBy['id'] === 1" class="text-right"
+                            [translate]="'ADVISOR.DASHBOARD.CLIENTS_TILE.CITY'"></th>
+                        <th width="5%">
+                            <span class="w-50px d-inline-block"></span>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <ng-container *ngIf="clientList.length > 0">
+                        <!-- for normal search -->
+                        <ng-container *ngIf="!searchSpouse">
+                            <tr *ngFor="let item of clientList;">
+                                <td width="65%" class="client-name fw-500 cursor-p" colspan="2"
+                                    (click)="clientOverview(item.id)">
+                                    <div class="d-flex">
+                                        <div class="client-avatars hidden-xs-down">
+                                            <div class="client-img client-icon" *ngIf="clientList && item.clientAvatar">
+                                                <img [src]="item.clientAvatar" class=""
+                                                    (error)="item.clientAvatar = null" />
+                                            </div>
+                                            <span *ngIf="clientList && !item.clientAvatar" alt=""
+                                                class="client-icon client ion-ios-person"></span>
+                                            <div class="client-img client-icon"
+                                                *ngIf="item.client2FirstName && item.client2LastName && item.spouseAvatar">
+                                                <img [src]="item.spouseAvatar" class=""
+                                                    (error)="item.spouseAvatar = null" />
+                                            </div>
+                                            <span
+                                                *ngIf="item.client2FirstName && item.client2LastName && !item.spouseAvatar"
+                                                alt="" class="client-icon spouse ion-ios-person"></span>
+                                        </div>
+                                        <span class="align-self-center">
+                                            {{item.clientFileName}}
+                                            <!-- <ng-container *ngIf="item.client2FirstName && item.client2LastName && item.client2FirstName!='' && item.client2LastName!=''; else singleClient">
+                                            <ng-container *ngIf="item.client1LastName == item.client2LastName; else diffLastName">
+                                                {{item.client1FirstName + ' & ' + item.client2FirstName + ' ' +
+                                                item.client2LastName}}
+                                            </ng-container>
+                                        </ng-container>
+                                        <ng-template #diffLastName>
+                                            {{item.client1FirstName + ' ' + item.client1LastName + ', ' +
+                                            item.client2FirstName + ' ' + item.client2LastName}}
+                                        </ng-template>
+                                        <ng-template #singleClient>
+                                            {{item.client1FirstName + ' ' + item.client1LastName}}
+                                        </ng-template> -->
+                                        </span>
+                                    </div>
+                                </td>
+                                <td width="30%" *ngIf="selectedViewBy['id'] === 0" class="text-right fw-500">{{item.lastUpdated
+                                | date : 'yyyy.MM.dd'}}</td>
+                                <td width="20%" *ngIf="selectedViewBy['id'] === 1" class="text-right fw-500">
+                                    <span *ngIf="item.displayAddress.length>0">
+                                        {{item.displayAddress[0].line1}}</span>
+                                </td>
+                                <td width="10%" *ngIf="selectedViewBy['id'] === 1" class="text-right fw-500">
+                                    <span *ngIf="item.displayAddress.length>0">
+                                        {{item.displayAddress[0].city}}</span>
+                                </td>
+                                <td width="5%" class="cursor-p">
+                                    <a (click)="deleteClient(item)"
+                                        class="text-right delete-link w-50px d-inline-block">
+                                        <i class="ion-md-close-circle delete-portfolio pull-right"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        </ng-container>
+                        <!-- for Spouse search -->
+                        <ng-container *ngIf="searchSpouse">
+                            <tr *ngFor="let item of clientList;">
+                                <td width="65%" class="client-name fw-500 cursor-p" colspan="2"
+                                    (click)="addSpouse(item.id)">
+                                    <div class="d-flex">
+                                        <div class="client-avatars hidden-xs-down">
+                                            <div class="client-img client-icon" *ngIf="clientList && item.clientAvatar">
+                                                <img [src]="item.clientAvatar" class=""
+                                                    (error)="item.clientAvatar = null" />
+                                            </div>
+                                            <span *ngIf="clientList && !item.clientAvatar" alt=""
+                                                class="client-icon client ion-ios-person"></span>
+                                            <div class="client-img client-icon"
+                                                *ngIf="item.client2FirstName && item.client2LastName && item.spouseAvatar">
+                                                <img [src]="item.spouseAvatar" class=""
+                                                    (error)="item.spouseAvatar = null" />
+                                            </div>
+                                            <span
+                                                *ngIf="item.client2FirstName && item.client2LastName && !item.spouseAvatar"
+                                                alt="" class="client-icon spouse ion-ios-person"></span>
+                                        </div>
+                                        <span class="align-self-center">
+                                            {{item.clientFileName}}
+                                        </span>
+                                    </div>
+                                </td>
+                                <td width="30%" *ngIf="selectedViewBy['id'] === 0" class="text-right fw-500">{{item.lastUpdated
+                                | date : 'yyyy.MM.dd'}}</td>
+                                <td width="20%" *ngIf="selectedViewBy['id'] === 1" class="text-right fw-500">
+                                    <span *ngIf="item.displayAddress.length>0">
+                                        {{item.displayAddress[0].line1}}</span>
+                                </td>
+                                <td width="10%" *ngIf="selectedViewBy['id'] === 1" class="text-right fw-500">
+                                    <span *ngIf="item.displayAddress.length>0">
+                                        {{item.displayAddress[0].city}}</span>
+                                </td>
+                                <td width="5%" class="cursor-p">
+                                    <a (click)="addSpouse(item.id)" class="text-right w-50px d-inline-block btn-add">
+                                        <i class="ion-md-add-circle pull-right"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        </ng-container>
+                    </ng-container>
+                    <ng-container *ngIf="clientLoaded && clientList.length === 0">
+                        <tr>
+                            <td colspan="5" class="no-record text-center">
+                                <i class="ion-ios-alert mr-2"></i>{{'NO_RESULTS' | translate}}
+                            </td>
+                        </tr>
+                    </ng-container>
+                </tbody>
+            </table>
+        </form>
+    </div>
+    <div class="panel-footer" style="z-index:8" *ngIf="TotalClients && clientList">
+        <app-pagination [pageChangingNum]="changePage" [PageSize]="selectedFilter['pageSize']"
+            [TotalItem]="TotalClients" (OnPageChange)="getPageFilterClient($event)"></app-pagination>
+    </div>
+</div>

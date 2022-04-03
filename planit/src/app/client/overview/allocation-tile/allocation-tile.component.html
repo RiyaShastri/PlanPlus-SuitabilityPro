@@ -1,0 +1,75 @@
+<div class="panel pb-0">
+    <div class="d-flex flex-wrap panel-header border-bottom pb-3 mb-4">
+        <h4 [translate]="'CLIENT_OVERVIEW.ASSET_ALLOCATION'"></h4>
+    </div>
+
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-12 col-lg-6 mb-md-3" *ngIf="accessRights['CURRSCENARIO']['accessLevel'] > 0">
+                <h5 class="allc-current-title current-title mb-3" [translate]="'CUSTOM.CURRENT'"></h5>
+                <div class="current-table d-flex" *ngIf="currentTotal">
+                    <div class="asset-list mt-3">
+                        <ul>
+                            <li *ngFor="let currData of graphData.currentData; index as currIndex">
+                                <span class="square mr-2" [ngStyle]="{'background': graphColors[currIndex]}"></span>
+                                <span>{{currData.category}}</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="percurr-list mt-3">
+                        <ul>
+                            <li *ngFor="let currData of graphData.currentData">
+                                <span class="per-text">{{currData.percent | number : '1.1-2'}}%</span>
+                                <span class="currency-text">{{currData.amount | currency : clientData['currencyCode'] :
+                                    'symbol-narrow':'1.0-0'}}</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="chartContainer text-center">
+                        <div id="chartdiv1" style="height:177px; width: 155px; display: inline-block;"></div>
+                    </div>
+                </div>
+                <div class="current-table text-center" *ngIf="!currentTotal">
+                    <div class="no-record text-center position-relative" style="height:175px; width: 175px; display: inline-block;">
+                        <p class="no_data_graph"><i class="ion-ios-alert mr-2"></i>{{'NO_RESULTS' | translate}}</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-lg-6">
+                <h5 class="text-left current-title mb-3" [translate]="'CUSTOM.TARGET'"></h5>
+                <div class="current-table last d-flex" *ngIf="targetTotal">
+                    <div class="asset-list mt-3" [ngClass]="{'hidden-lg-up': accessRights['CURRSCENARIO']['accessLevel'] > 0}">
+                        <ul>
+                            <li *ngFor="let tarData of graphData.targetData; index as tarIndex">
+                                <span class="square mr-2" [ngStyle]="{'background': graphColors[tarIndex]}"></span>
+                                <span>{{tarData.category}}</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="percurr-list mt-3">
+                        <ul>
+                            <li *ngFor="let tarData of graphData.targetData">
+                                <span class="per-text">{{tarData.percent | number : '1.1-2'}}%</span>
+                                <span class="currency-text">{{tarData.amount | currency : clientData['currencyCode'] :
+                                    'symbol-narrow':'1.0-0'}}</span>
+                            </li>
+                        </ul>
+
+                    </div>
+                    <div class="chartContainer text-center">
+                        <div id="chartdiv2" style="height:177px; width: 155px; display: inline-block;"></div>
+                    </div>
+                </div>
+                <div class="current-table text-center" *ngIf="!targetTotal">
+                    <div class="no-record text-center position-relative" style="height:175px; width: 175px; display: inline-block;">
+                        <p class="no_data_graph"><i class="ion-ios-alert mr-2"></i>{{'NO_RESULTS' | translate}}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

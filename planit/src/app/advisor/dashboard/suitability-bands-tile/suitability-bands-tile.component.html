@@ -1,0 +1,207 @@
+<div class="panel">
+    <div class="d-flex flex-wrap panel-header mb-3">
+        <h4 [translate]="'ADVISOR.DASHBOARD.SUITABILITY_BANDS_TILE.TITLE'"></h4>
+        <i *ngIf="!suitabilityLoaded" aria-hidden="true" class="fa fa-spinner fa-pulse loader-icon"></i>
+    </div>
+    <div class="panel-body">
+
+        <div *ngIf="suitabilityLoaded && suitabilities.length === 0">
+            <p class="no-record text-center m-0">
+                <i class="ion-ios-alert mr-2"></i>{{'NO_RESULTS' | translate}}
+            </p>
+        </div>
+        <div class="row hidden-lg-down" [hidden]="suitabilities.length === 0">
+            <div class="col-12 col-xl-11 offset-xl-1">
+                <div id="columnChartDiv" [style.width.%]="100" [style.height.px]="350"></div>
+                <div class="chartContainer text-center ml-5 row mr-3 pl-3">
+                    <div id="pieChartDiv1" class="col pie-chart p-0"></div>
+                    <div id="pieChartDiv2" class="col pie-chart p-0"></div>
+                    <div id="pieChartDiv3" class="col pie-chart p-0"></div>
+                    <div id="pieChartDiv4" class="col pie-chart p-0"></div>
+                    <div id="pieChartDiv5" class="col pie-chart p-0"></div>
+                    <div id="pieChartDiv6" class="col pie-chart p-0"></div>
+                    <div id="pieChartDiv7" class="col pie-chart p-0"></div>
+                </div>
+            </div>
+            <div class="col-12" *ngIf="suitabilities">
+                <table class="table account-table suitability-table">
+                    <thead>
+                        <tr>
+                            <th colspan="8" class="pt-1 pb-1" [translate]="'CUSTOM.CURRENT'">Current</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="fw-600" [style.width.%]="12">
+                                <span class="square mr-2" [style.background-color]="chartColours[0]"></span>
+                                <span [translate]="'CUSTOM.CASH'"></span>
+                            </td>
+                            <td class="text-center fw-400" width="12.5%" *ngFor="let suitability of suitabilities;">
+                                {{(suitability.allocation['CASH']) ? suitability.allocation['CASH'] + '%' : '0%' }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="fw-600" [style.width.%]="12">
+                                <span class="square mr-2" [style.background-color]="chartColours[1]"></span>
+                                <span [translate]="'CUSTOM.FIXED_INCOME'"></span>
+                            </td>
+                            <td class="text-center fw-400" width="12.5%" *ngFor="let suitability of suitabilities;">
+                                {{(suitability.allocation['FIXED_INCOME']) ? suitability.allocation['FIXED_INCOME'] + '%' : '0%' }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="fw-600" [style.width.%]="12">
+                                <span class="square mr-2" [style.background-color]="chartColours[2]"></span>
+                                <span [translate]="'CUSTOM.EQUITY'"></span>
+                            </td>
+                            <td class="text-center fw-400" width="12.5%" *ngFor="let suitability of suitabilities;">
+                                {{(suitability.allocation['EQUITY']) ? suitability.allocation['EQUITY'] + '%' : '0%' }}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="row hidden-xl-up hidden-sm-down" [hidden]="suitabilities.length === 0">
+            <div class="col-12 col-md-11 offset-md-1">
+                <div id="respColumnChartDiv1" [style.width.%]="100" [style.height.px]="250"></div>
+                <div class="chartContainer text-center ml-sm-5 row mr-sm-3 pl-sm-3">
+                    <div id="resPieChartDiv1" class="col-12 col-sm mb-3 mb-sm-0 pie-chart p-0"></div>
+                    <div id="resPieChartDiv2" class="col-12 col-sm mb-3 mb-sm-0 pie-chart p-0"></div>
+                    <div id="resPieChartDiv3" class="col-12 col-sm mb-3 mb-sm-0 pie-chart p-0"></div>
+                    <div id="resPieChartDiv4" class="col-12 col-sm mb-3 mb-sm-0 pie-chart p-0"></div>
+                </div>
+            </div>
+            <div class="col-12" *ngIf="suitabilities">
+                <table class="table suitability-top-table">
+                    <thead>
+                        <tr>
+                            <th colspan="8" class="pt-1 pb-1" [translate]="'CUSTOM.CURRENT'"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="fw-600" [style.width.%]="12">
+                                <span class="square bg-mauve mr-2"></span>
+                                <span [translate]="'CUSTOM.CASH'"></span>
+                            </td>
+                            <td class="text-center fw-400" width="12.5%" *ngFor="let suitability of suitabilities.slice(0,4);">
+                                {{ (suitability.allocation['CASH']) ? suitability.allocation['CASH'] + '%' : '0%' }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="fw-600" [style.width.%]="12">
+                                <span class="square bg-green mr-2"></span>
+                                <span [translate]="'CUSTOM.FIXED_INCOME'"></span>
+                            </td>
+                            <td class="text-center fw-400" width="12.5%" *ngFor="let suitability of suitabilities.slice(0,4);">
+                                {{(suitability.allocation['FIXED_INCOME']) ? suitability.allocation['FIXED_INCOME'] + '%' : '0%' }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="fw-600" [style.width.%]="12">
+                                <span class="square bg-cyan mr-2"></span>
+                                <span [translate]="'CUSTOM.EQUITY'"></span>
+                            </td>
+                            <td class="text-center fw-400" width="12.5%" *ngFor="let suitability of suitabilities.slice(0,4);">
+                                {{(suitability.allocation['EQUITY']) ? suitability.allocation['EQUITY'] + '%' : '0%' }}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-12 col-md-11 offset-md-1 mt-4">
+                <div id="respColumnChartDiv2" [style.width.%]="100" [style.height.px]="250"></div>
+                <div class="chartContainer text-center ml-sm-5 row mr-sm-3 pl-sm-3">
+                    <div id="resPieChartDiv5" class="col-12 col-sm mb-3 mb-sm-0 pie-chart"></div>
+                    <div id="resPieChartDiv6" class="col-12 col-sm mb-3 mb-sm-0 pie-chart"></div>
+                    <div id="resPieChartDiv7" class="col-12 col-sm mb-3 mb-sm-0 pie-chart"></div>
+                </div>
+            </div>
+            <div class="col-12" *ngIf="suitabilities">
+                <table class="table suitability-bottom-table">
+                    <thead>
+                        <tr>
+                            <th colspan="8" class="pt-1 pb-1" [translate]="'CUSTOM.CURRENT'">Current</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="fw-600" [style.width.%]="12">
+                                <span class="square bg-mauve mr-2"></span>
+                                <span [translate]="'CUSTOM.CASH'"></span>
+                            </td>
+                            <td class="text-center fw-400" width="12.5%" *ngFor="let suitability of suitabilities.slice(4,7);">
+                                {{(suitability.allocation['CASH']) ? suitability.allocation['CASH'] + '%' : '0%' }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="fw-600" [style.width.%]="12">
+                                <span class="square bg-green mr-2"></span>
+                                <span [translate]="'CUSTOM.FIXED_INCOME'"></span>
+                            </td>
+                            <td class="text-center fw-400" width="12.5%" *ngFor="let suitability of suitabilities.slice(4,7);">
+                                {{(suitability.allocation['FIXED_INCOME']) ? suitability.allocation['FIXED_INCOME'] + '%' : '0%' }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="fw-600" [style.width.%]="12">
+                                <span class="square bg-cyan mr-2"></span>
+                                <span [translate]="'CUSTOM.EQUITY'"></span>
+                            </td>
+                            <td class="text-center fw-400" width="12.5%" *ngFor="let suitability of suitabilities.slice(4,7);">
+                                {{(suitability.allocation['EQUITY']) ? suitability.allocation['EQUITY'] + '%' : '0%' }}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+      <div class="row hidden-md-up" [hidden]="suitabilities.length === 0">
+        <div class="col-12 col-sm-11 offset-sm-1" *ngFor="let suitability of suitabilities;let i = index">
+          <div id="resp2ColumnChartDiv{{i + 1}}" [style.width.%]="100" [style.height.px]="250"></div>
+          <div id="res2PieChartDiv{{i + 1}}" [style.width.%]="100" [style.height.px]="180" [style.margin-left.px]="25" ></div>
+        <div class="col-12" *ngIf="suitabilities">
+          <table class="table suitability-table">
+            <thead>
+            <tr>
+              <th colspan="8" class="pt-1 pb-1" [translate]="'CUSTOM.CURRENT'">Current</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+              <td class="fw-600" [style.width.%]="50">
+                <span class="square bg-mauve mr-2"></span>
+                <span [translate]="'CUSTOM.CASH'"></span>
+              </td>
+              <td class="text-center fw-400" width="50%" >
+                {{ (suitability.allocation['CASH']) ? suitability.allocation['CASH'] + '%' : '0%' }}
+              </td>
+            </tr>
+            <tr>
+              <td class="fw-600" [style.width.%]="50">
+                <span class="square bg-green mr-2"></span>
+                <span [translate]="'CUSTOM.FIXED_INCOME'"></span>
+              </td>
+              <td class="text-center fw-400" width="50%" >
+                {{(suitability.allocation['FIXED_INCOME']) ? suitability.allocation['FIXED_INCOME'] + '%' : '0%' }}
+              </td>
+            </tr>
+            <tr>
+              <td class="fw-600" [style.width.%]="50">
+                <span class="square bg-cyan mr-2"></span>
+                <span [translate]="'CUSTOM.EQUITY'"></span>
+              </td>
+              <td class="text-center fw-400" width="50%">
+                {{(suitability.allocation['EQUITY']) ? suitability.allocation['EQUITY'] + '%' : '0%' }}
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+
+        </div>
+      </div>
+    </div>
+</div>

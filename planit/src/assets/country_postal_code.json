@@ -1,0 +1,338 @@
+[
+  {
+    "countryCode": "AIA",
+    "country": "ANGUILLA",
+    "Regex": "^[Aa][I][-][2][6][4][0]$"
+  },
+  {
+    "countryCode": "ATG",
+    "country": "ANTIGUA AND BARBUDA",
+    "Regex": ""
+  },
+  {
+    "countryCode": "ARG",
+    "country": "ARGENTINA",
+    "Regex": "^\\d{4}|[A-Za-z]\\d{4}[a-zA-Z]{3}$"
+  },
+  {
+    "countryCode": "ABW",
+    "country": "ARUBA",
+    "Regex": ""
+  },
+  {
+    "countryCode": "AUS",
+    "country": "AUSTRALIA",
+    "Regex": "^\\d{4}$"
+  },
+  {
+    "countryCode": "BHS",
+    "country": "BAHAMAS",
+    "Regex": ""
+  },
+  {
+    "countryCode": "BHR",
+    "country": "BAHRAIN",
+    "Regex": "^\\d{3,4}$"
+  },
+  {
+    "countryCode": "BRB",
+    "country": "BARBADOS",
+    "Regex": "^[Aa][Zz]\\d{5}$"
+  },
+  {
+    "countryCode": "BMU",
+    "country": "BERMUDA",
+    "Regex": "^[A-Za-z]{2}\\s([A-Za-z]{2}|\\d{2})$"
+  },
+  {
+    "countryCode": "BOL",
+    "country": "BOLIVIA",
+    "Regex": "^\\d{4}$"
+  },
+  {
+    "countryCode": "BRA",
+    "country": "BRAZIL",
+    "Regex": "^\\d{5}-\\d{3}$"
+  },
+  {
+    "countryCode": "VGB",
+    "country": "BRITISH VIRGIN ISLANDS",
+    "Regex": "^[Vv][Gg]\\d{4}$"
+  },
+  {
+    "countryCode": "BGR",
+    "country": "BULGARIA",
+    "Regex": "^\\d{4}$"
+  },
+  {
+    "countryCode": "CAN",
+    "country": "CANADA",
+    "Regex": "^(?=[^DdFfIiOoQqUu\\d\\s])[A-Za-z]\\d(?=[^DdFfIiOoQqUu\\d\\s])[A-Za-z]\\s{0,1}\\d(?=[^DdFfIiOoQqUu\\d\\s])[A-Za-z]\\d$"
+  },
+  {
+    "countryCode": "CYM",
+    "country": "CAYMAN ISLANDS",
+    "Regex": "^[Kk][Yy]\\d[-\\s]{0,1}\\d{4}$"
+  },
+  {
+    "countryCode": "CHL",
+    "country": "CHILE",
+    "Regex": "^\\d{7}\\s\\(\\d{3}-\\d{4}\\)$"
+  },
+  {
+    "countryCode": "CHN",
+    "country": "CHINA, PEOPLES REPUBLIC",
+    "Regex": "^\\d{6}$"
+  },
+  {
+    "countryCode": "COL",
+    "country": "COLOMBIA",
+    "Regex": "^\\d{6}$"
+  },
+  {
+    "countryCode": "CUW",
+    "country": "CURACAO",
+    "Regex": ""
+  },
+  {
+    "countryCode": "DMA",
+    "country": "DOMINICA",
+    "Regex": ""
+  },
+  {
+    "countryCode": "FRA",
+    "country": "FRANCE",
+    "Regex": "^\\d{5}$"
+  },
+  {
+    "countryCode": "DEU",
+    "country": "GERMANY",
+    "Regex": "^\\d{5}$"
+
+  },
+  {
+    "countryCode": "GRC",
+    "country": "GREECE",
+    "Regex": "^\\d{3}\\s{0,1}\\d{2}$"
+  },
+  {
+    "countryCode": "GRD",
+    "country": "GRENADA",
+    "Regex": ""
+  },
+  {
+    "countryCode": "GGY",
+    "country": "GUERNSEY",
+    "Regex": "^[A-Za-z]{2}\\d\\s{0,1}\\d[A-Za-z]{2}$"
+  },
+  {
+    "countryCode": "HKG",
+    "country": "HONGKONG",
+    "Regex": ""
+  },
+  {
+    "countryCode": "HUN",
+    "country": "HUNGARY",
+    "Regex": "^\\d{4}$"
+  },
+  {
+    "countryCode": "IND",
+    "country": "INDIA",
+    "Regex": "^\\d{6}$"
+  },
+  {
+    "countryCode": "IDN",
+    "country": "INDONESIA",
+    "Regex": "^\\d{5}$"
+  },
+  {
+    "countryCode": "IRL",
+    "country": "IRELAND",
+    "Regex": ""
+  },
+  {
+    "countryCode": "ISR",
+    "country": "ISRAEL",
+    "Regex": "^\\b\\d{5}(\\d{2})?$"
+  },
+  {
+    "countryCode": "ITA",
+    "country": "ITALY",
+    "Regex": "^\\d{5}$"
+  },
+  {
+    "countryCode": "JAM",
+    "country": "JAMAICA",
+    "Regex": "^\\d{2}$"
+  },
+  {
+    "countryCode": "JPN",
+    "country": "JAPAN",
+    "Regex": "^\\d{7}\\s\\(\\d{3}-\\d{4}\\)$"
+  },
+  {
+    "countryCode": "JOR",
+    "country": "JORDAN",
+    "Regex": "^\\d{5}$"
+  },
+  {
+    "countryCode": "LBN",
+    "country": "LEBANON",
+    "Regex": "^\\d{4}\\s{0,1}\\d{4}$"
+  },
+  {
+    "countryCode": "MYS",
+    "country": "MALAYSIA",
+    "Regex": "^\\d{5}$"
+  },
+  {
+    "countryCode": "MEX",
+    "country": "MEXICO",
+    "Regex": "^\\d{5}$"
+  },
+  {
+    "countryCode": "MSR",
+    "country": "MONTSERRAT",
+    "Regex": "^[Mm][Ss][Rr]\\s{0,1}\\d{4}$"
+  },
+  {
+    "countryCode": "NLD",
+    "country": "NETHERLANDS",
+    "Regex": "^\\d{4}\\s{0,1}[A-Za-z]{2}$"
+  },
+  {
+    "countryCode": "ANT",
+    "country": "NETHERLANDS ANTILLES",
+    "Regex": "^\\d{4}\\s{0,1}[A-Za-z]{2}$"
+  },
+  {
+    "countryCode": "NZL",
+    "country": "NEW ZEALAND",
+    "Regex": "^\\d{4}$"
+  },
+  {
+    "countryCode": "OMN",
+    "country": "OMAN",
+    "Regex": "^\\d{3}$"
+  },
+  {
+    "countryCode": "PAK",
+    "country": "PAKISTAN",
+    "Regex": "^\\d{5}$"
+  },
+  {
+    "countryCode": "PER",
+    "country": "PERU",
+    "Regex": "^\\d{5}$"
+  },
+  {
+    "countryCode": "PHL",
+    "country": "PHILLIPINES",
+    "Regex": "^\\d{4}$"
+  },
+  {
+    "countryCode": "PRI",
+    "country": "PUERTO RICO",
+    "Regex": "^\\d{5}$"
+  },
+  {
+    "countryCode": "QAT",
+    "country": "QATAR",
+    "Regex": ""
+  },
+  {
+    "countryCode": "KOR",
+    "country": "REPUBLIC OF KOREA",
+    "Regex": "^\\d{6}\\s\\(\\d{3}-\\d{3}\\)$"
+  },
+  {
+    "countryCode": "RUS",
+    "country": "RUSSIAN FEDERATION",
+    "Regex": "^\\d{6}$"
+  },
+  {
+    "countryCode": "KNA",
+    "country": "SAINT KITTS AND NEVIS",
+    "Regex": ""
+  },
+  {
+    "countryCode": "LCA",
+    "country": "SAINT LUCIA",
+    "Regex": ""
+  },
+  {
+    "countryCode": "VCT",
+    "country": "SAINT VINCENT & GRENADINE",
+    "Regex": "^[Vv][Cc]\\d{4}$"
+  },
+  {
+    "countryCode": "SAU",
+    "country": "SAUDI ARABIA",
+    "Regex": "^\\d{5}(-{1}\\d{4})?$"
+  },
+  {
+    "countryCode": "SGP",
+    "country": "SINGAPORE",
+    "Regex": "^\\d{6}$"
+  },
+  {
+    "countryCode": "ZAF",
+    "country": "SOUTH AFRICA",
+    "Regex": "^\\d{4}$"
+  },
+  {
+    "countryCode": "ESP",
+    "country": "SPAIN",
+    "Regex": "^\\d{5}$"
+  },
+  {
+    "countryCode": "LKA",
+    "country": "SRI LANKA",
+    "Regex": "^\\d{5}$"
+  },
+  {
+    "countryCode": "CHE",
+    "country": "SWITZERLAND",
+    "Regex": "^\\d{4}$"
+  },
+  {
+    "countryCode": "TWN",
+    "country": "TAIWAN",
+    "Regex": "^\\d{5}$"
+  },
+  {
+    "countryCode": "THA",
+    "country": "THAILAND",
+    "Regex": "^\\d{5}$"
+  },
+  {
+    "countryCode": "TTO",
+    "country": "TRINIDAD AND TOBAGO",
+    "Regex": "^\\d{6}$"
+  },
+  {
+    "countryCode": "TCA",
+    "country": "TURKS & CAICOS ISLANDS",
+    "Regex": "^[Tt][Kk][Cc][Aa]\\s{0,1}[1][Zz]{2}$"
+  },
+  {
+    "countryCode": "ARE",
+    "country": "UNITED ARAB EMIRATES",
+    "Regex": ""
+  },
+  {
+    "countryCode": "GBR",
+    "country": "UNITED KINGDOM",
+    "Regex": "^([A-PR-UWYZ0-9][A-HK-Y0-9][AEHMNPRTVXY0-9]?[ABEHMNPRVWXY0-9]? {1,2}[0-9][ABD-HJLN-UW-Z]{2}|GIR 0AA)$"
+  },
+  {
+    "countryCode": "USA",
+    "country": "UNITED STATES",
+    "Regex": "^\\b\\d{5}\\b(?:[- ]{1}\\d{4})?$"
+  },
+  {
+    "countryCode": "VI ",
+    "country": "VIRGIN ISLANDS (U.S.)",
+    "Regex": "^\\d{5}$"
+  }
+]

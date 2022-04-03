@@ -1,0 +1,36 @@
+<div class="bg-white pt-4 pb-4 assets-summary-bg">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <app-goal-details-header [clientId]="clientId" currentPage="savings" [goalId]="goalId" (switchGoal)="changeGoal($event)"></app-goal-details-header>
+            </div>
+            <div class="col-12">
+            </div>
+            <div class="col-12 d-flex">
+                <div>
+                    <a [routerLink]="['add-savings']" class="btn-add" *ngIf="accessRights['SAV01']['accessLevel'] > 0">
+                        <i class="ion-md-add-circle"></i>
+                        <span [translate]="'ASSETS_SUMMARY.ACTION.ADD_SAVINGS'"></span>
+                    </a>
+                </div>
+                <div class="ml-auto hidden-xs-down">
+
+                    <div class="sort-dropdown ml-0">
+                        <app-common-drop-down [itemList]="viewBy" [defaultSelected]="selectedViewBy" dropDownLabel="{{'VIEW_BY_DROPDOWN' | translate}}"
+                            (OnSelect)="displayViewBy($event)"></app-common-drop-down>
+                    </div>
+                </div>
+                <span *ngIf="accessRights['SCENARIOACCESS']['accessLevel'] > 0" class="ml-auto disabled-drop-label">{{selectedScenario.name}}</span>
+            </div>
+            <div class="col-12">
+                <hr>
+            </div>
+            <div class="col-12" *ngIf="!noSavings">
+                <app-savings-list-html [clientId]="clientId" [goalId]="goalId" [i_id]="goalId" [type]="'goal'" [allSavings]="allSavings" [selectedViewBy]="selectedViewBy" [selectedGroupBy]="selectedGroupBy"></app-savings-list-html>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="view-side-form">
+    <router-outlet></router-outlet>
+</div>

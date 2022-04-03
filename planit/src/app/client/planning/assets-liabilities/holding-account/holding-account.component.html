@@ -1,0 +1,179 @@
+<div class="bg-white pt-4 pb-4 holding-account-bg">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <app-assets-header [clientId]="clientId" currentPage="holdings" [accountId]="accountId" (switchAccount)="changeAccount($event)"></app-assets-header>
+            </div>
+            <div class="col-12">
+                <div class="d-flex flex-wrap" *ngIf="accessRights['PMSE']['accessLevel'] > 0">
+                    <a [routerLink]="['product-search','']" class="btn-add" *ngIf="accessRights['BTN02']['accessLevel'] > 0">
+                        <i class="ion-md-add-circle"></i>
+                        <span>{{'ASSET_LIABILITY.HOLDING_ACCOUNT.ADD_HOLDING' | translate}}</span>
+                    </a>
+                    <div class="sort-box ml-3">
+                        <i class="ion-md-funnel"></i>
+                        <div class="dropdown-common mt-1 sort-dropdown">
+                            <app-common-drop-down [itemList]="itemList" (OnSelect)="sortHolding($event)" dropDownLabel="{{'ASSET_LIABILITY.HOLDING_ACCOUNT.SORT_BY' | translate}}"
+                                [defaultSelected]="defaultSelected"></app-common-drop-down>
+                        </div>
+                    </div>
+                    <span *ngIf="accountDetails['dispositionFlag'] === 1 && accessRights['SCENARIOACCESS']['accessLevel'] > 0" class="dropdown-common mt-1 sort-dropdown ml-auto">
+                        <app-common-drop-down class="dropdown-right" [itemList]="scenarioObject" [defaultSelected]="selectedScenario" dropDownLabel=""
+                            (OnSelect)="onSelectScenario($event)"></app-common-drop-down>
+                    </span>
+                </div>
+                <div class="d-flex flex-wrap" *ngIf="accessRights['PMSE']['accessLevel'] <= 0">
+                    <a (click)= "goToAddCustom()"class="btn-add" *ngIf="accessRights['BTN02']['accessLevel'] > 0">
+                        <i class="ion-md-add-circle"></i>
+                        <span>{{'ASSET_LIABILITY.HOLDING_ACCOUNT.ADD_HOLDING' | translate}}</span>
+                    </a>
+                    <div class="sort-box ml-3">
+                        <i class="ion-md-funnel"></i>
+                        <div class="dropdown-common mt-1 sort-dropdown">
+                            <app-common-drop-down [itemList]="itemList" (OnSelect)="sortHolding($event)" dropDownLabel="{{'ASSET_LIABILITY.HOLDING_ACCOUNT.SORT_BY' | translate}}"
+                                [defaultSelected]="defaultSelected"></app-common-drop-down>
+                        </div>
+                    </div>
+                    <span *ngIf="accountDetails['dispositionFlag'] === 1 && accessRights['SCENARIOACCESS']['accessLevel'] > 0" class="dropdown-common mt-1 sort-dropdown ml-auto">
+                        <app-common-drop-down class="dropdown-right" [itemList]="scenarioObject" [defaultSelected]="selectedScenario" dropDownLabel=""
+                            (OnSelect)="onSelectScenario($event)"></app-common-drop-down>
+                    </span>
+                </div>
+            </div>
+            <div class="col-12">
+                <hr>
+            </div>
+            <div class="col-12">
+                <table class="table">
+                    <thead *ngIf="fromPage == ''">
+                        <tr>
+                            <th width="{{accountDetails['loanFlag'] === 1 && accessRights['AL_LIABILITY']['accessLevel'] > 1}} ? 30% : 50%">{{'ASSET_LIABILITY.HOLDING_ACCOUNT.TABLE_HEADING.ASSET'
+                                | translate}}</th>
+                            <th width="20%" class="text-right hidden-xs-down">{{'ASSET_LIABILITY.HOLDING_ACCOUNT.TABLE_HEADING.UNITS'
+                                | translate}} </th>
+                            <th width="20%" class="text-right market-val">
+                                {{'ASSET_LIABILITY.HOLDING_ACCOUNT.TABLE_HEADING.MARKET_VALUE' | translate}} </th>
+                            <th width="20%" *ngIf="accountDetails['loanFlag'] === 1 && accessRights['AL_LIABILITY']['accessLevel'] > 1" class="text-right pr-5">
+                                {{'ASSET_LIABILITY.HOLDING_ACCOUNT.TABLE_HEADING.LIABILITIES' | translate}} </th>
+                            <th width="5%" class="text-center">{{'ASSET_LIABILITY.HOLDING_ACCOUNT.TABLE_HEADING.ACTION'
+                                | translate}} </th>
+                            <th width="5%">&nbsp;</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <ng-container *ngFor="let item of holdingAssetLiability; let i = index">
+                            <ng-container *ngIf="fromPage == '' || (fromPage != '' && item.isAdd)">
+                                <tr class="tdBottam-border">
+                                    <td width="{{accountDetails['loanFlag'] === 1 && accessRights['AL_LIABILITY']['accessLevel'] > 1}} ? 30% : 50%" >
+                                        <span class="
+                                        fw-700"> {{item.description}}
+                                        </span>
+                                    </td>
+                                    <td width="20%" class="text-right hidden-xs-down fw-400"> {{item.displayUnits | number
+                                        :"1.2-4"}} </td>
+                                    <td width="20%" class="text-right market-val">{{item.currencyCode}} {{item.fmv | currency:item.currencyCode:'symbol-narrow':'1.0-0'}}
+                                    </td>
+                                    <td width="20%" *ngIf="accountDetails['loanFlag'] === 1 && accessRights['AL_LIABILITY']['accessLevel'] > 1" class="text-right pr-5">
+                                        <span *ngIf="item.liability && item.liability.currentBalance >= 0">
+                                            {{item.currencyCode}} {{item.liability.currentBalance
+                                            |currency:item.currencyCode:'symbol-narrow':'1.0-0'}}</span>
+                                    </td>
+                                    <td class="text-center" width="5%">
+                                        <div class="dropdown-relative">
+                                            <button type="button" class="btn-floating" (click)="changeAssetAction(i)">
+                                                <span class="ion-md-more"></span>
+                                            </button>
+                                            <div [id]="'dropdownAssetsAction'+i" class="dropdown-portfolio-action dropdown-floating hide-ele">
+                                                <ul class="floating-dropdown">
+                                                <li (click)="changeAssetAction(i)" *ngIf="!item.isAdd  && accessRights['RELINK_HOLDING']['accessLevel'] > 0">
+                                                        <a class="action-list" [routerLink]="['product-search',item.assetKey]">
+                                                            <i class="ion-md-search action-list"></i>
+                                                            <span class="action-list"> {{'ASSET_LIABILITY.HOLDING_ACCOUNT.RELINK_HOLDING' |
+                                                                translate}}
+                                                            </span>
+                                                        </a>
+                                                    </li>
+                                                <li class="disable-link" *ngIf="item.isAdd && !accessRights['RELINK_HOLDING']['accessLevel'] > 0">
+                                                        <a class="action-list" [routerLink]="">
+                                                            <i class="ion-md-search action-list"></i>
+                                                            <span class="action-list"> {{'ASSET_LIABILITY.HOLDING_ACCOUNT.RELINK_HOLDING' |
+                                                                translate}}
+                                                            </span>
+                                                        </a>
+                                                    </li>
+                                                    <li *ngIf="item['lastUpWho'] === 'MSTAR' && accessRights['FFS01']['accessLevel'] > 0"
+                                                        (click)="changeAssetAction(i);getFactSheet(item)">
+                                                        <a class="action-list" [routerLink]="">
+                                                            <i class="ion-ios-information action-list ion-md-eye"></i>
+                                                            <span class="action-list">{{'ASSET_LIABILITY.HOLDING_ACCOUNT.PRODUCT_INFO' |
+                                                                translate}}</span>
+                                                        </a>
+                                                    </li>
+                                                    <li class="disable-link" *ngIf="item['lastUpWho'] !== 'MSTAR' && accessRights['FFS01']['accessLevel'] > 0">
+                                                        <a class="action-list" [routerLink]="">
+                                                            <i class="ion-ios-information action-list ion-md-eye"></i>
+                                                            <span class="action-list">{{'ASSET_LIABILITY.HOLDING_ACCOUNT.PRODUCT_INFO' |
+                                                                translate}}</span>
+                                                        </a>
+                                                    </li>
+                                                    <li (click)="changeAssetAction(i);deleteHolding(i,item.assetKey)" class="delete-btn"
+                                                        *ngIf="!item.isAdd">
+                                                        <a class="action-list" [routerLink]="">
+                                                            <i class="ion-md-close-circle action-list"></i>
+                                                            <span class="action-list">{{'ASSET_LIABILITY.HOLDING_ACCOUNT.DELETE_HOLDING' |
+                                                                translate}}</span>
+                                                        </a>
+                                                    </li>
+                                                    <li class="delete-btn disable-link" *ngIf="item.isAdd">
+                                                        <a class="action-list" [routerLink]="">
+                                                            <i class="ion-md-close-circle action-list"></i>
+                                                            <span class="action-list">{{'ASSET_LIABILITY.HOLDING_ACCOUNT.DELETE_HOLDING' |
+                                                                translate}}</span>
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="text-center pr-0" width="5%">
+                                        <i class="cursor-p" id="expand_{{item.assetKey}}" [ngClass]="item.isExpand?'ion-ios-arrow-up':'ion-ios-arrow-down'"
+                                            (click)="toggleAssetsList(item.assetKey);item.isExpand=!item.isExpand"></i>
+                                    </td>
+                                </tr>
+
+                                <tr style="display: none" id="assetList_{{item.assetKey}}">
+                                    <td colspan="6" class="pr-0">
+                                        <app-holding-detail *ngIf="utilityAssetLiabilityDetails.length > 0 && (accountDetails | json) !== '{}'"
+                                            #expand_{{item.assetKey}} (Change)="SavedDetail($event)" [assetLiabilityDetail]="item" [fromPage]="fromPage"
+                                            [accountDetails]="accountDetails" [utilityAssetLiabilityDetails]="utilityAssetLiabilityDetails"
+                                            [ownerList]="ownerList" [clientId]="clientId" [portfolioId]="portfolioId"></app-holding-detail>
+                                    </td>
+                                </tr>
+                            </ng-container>
+                        </ng-container>
+                        <tr *ngIf="fromPage == ''">
+                            <td class="fw-600 total-text" width="{{accessRights['AL_LIABILITY']['accessLevel'] > 1 && accountDetails['loanFlag'] === 1}} ? 30% : 50%">
+                                {{'ASSET_LIABILITY.HOLDING_ACCOUNT.TOTAL' | translate}}
+                            </td>
+                            <td class="hidden-xs-down" width="20%">
+
+                            </td>
+                            <td class="fw-600 text-right border-top-0 total-price" width="20%">
+                                <span class="fw-400">{{clientData['currencyCode']}} {{accountDetails['totalAssets'] | currency:clientData['currencyCode']:'symbol-narrow':'1.0-0' }}</span>
+                            </td>
+                            <td class="fw-600 border-top-0 text-right total-price pr-5" width="20%" *ngIf="accountDetails['loanFlag'] === 1 && accessRights['AL_LIABILITY']['accessLevel'] > 1">
+                                <span class="fw-400">{{clientData['currencyCode']}} {{accountDetails['liabilityAmount']  | currency:clientData['currencyCode']:'symbol-narrow':'1.0-0' }}</span>
+                            </td>
+                            <td class="border-top-0" width="5%">&nbsp;</td>
+                            <td class="border-top-0" width="5%">&nbsp;</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="view-side-form">
+    <router-outlet></router-outlet>
+</div>

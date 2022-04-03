@@ -1,0 +1,16 @@
+.investor-table>thead>tr>th {
+    font-size: 12px;
+    padding-bottom: 5px;
+    vertical-align: middle;
+}
+
+table td.invested-td-width {
+    width: 20%;
+    padding-right: 0;
+}
+
+.investor_name {
+    display: inline-block;
+    line-height: 22px;
+    vertical-align: top;
+}

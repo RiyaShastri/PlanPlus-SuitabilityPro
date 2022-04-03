@@ -1,0 +1,69 @@
+<div class="dashboard-main overview-main" *ngIf="accessRights">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg col-md-12 order-1 order-lg-0"
+                *ngIf="accessRights['RISKDISTTILE']['accessLevel'] >= 1|| accessRights['SCH01']['accessLevel'] >= 1">
+                <div class="row">
+                    <div class="col-12" *ngIf="accessRights['WORKFLOWTILE']['accessLevel'] > 0">
+                        <app-workflow-tile class="d-flex h-100 pb-3 strech-panel"></app-workflow-tile>
+                    </div>
+                    <div class="col-12" *ngIf="accessRights['RISKDISTTILE']['accessLevel'] >= 1">
+                        <app-risk-tolerance-distribution-tile class="d-flex h-100 strech-panel"></app-risk-tolerance-distribution-tile>
+                    </div>
+                    <div class="col-12" *ngIf="accessRights['SCH01']['accessLevel'] >= 1">
+                        <app-task-notification-tile class="d-flex h-100 strech-panel"></app-task-notification-tile>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg col-md-12 order-0 order-lg-1">
+                <app-clients-tile class="d-flex h-100 strech-panel" [isSidePanel]=false></app-clients-tile>
+            </div>
+
+        </div>
+        <div class="row" id="advisor_dashboard">
+            <div class=" col-md col-sm-12" *ngIf="accessRights['COLLAB']['accessLevel'] >= 1">
+                <app-collaboration-center-tile class="d-flex h-100 strech-panel"></app-collaboration-center-tile>
+            </div>
+        </div>
+        <div class="row">
+            <div class=" col-md col-sm-12" *ngIf="accessRights['NETWORTHTILE']['accessLevel'] >= 1">
+                <app-net-worth-tile class="d-flex h-100 strech-panel"></app-net-worth-tile>
+            </div>
+
+            <div class=" col-md col-sm-12" *ngIf="accessRights['INVESTTILE']['accessLevel'] >= 1">
+                <app-investments-tile class="d-flex h-100 strech-panel"></app-investments-tile>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class=" col-12" *ngIf="accessRights['SUITTILE']['accessLevel'] >= 1">
+                <app-suitability-bands-tile
+                    class="d-flex h-100 strech-panel"></app-suitability-bands-tile>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg col-md-12" *ngIf="accessRights['DEMOTILE']['accessLevel'] >= 1">
+                <app-demographics-tile class="d-flex h-100 strech-panel"></app-demographics-tile>
+            </div>
+
+            <div class="col-lg col-md-12"
+                *ngIf="accessRights['DOCTILE']['accessLevel'] >= 1 && accessRights['WEB07']['accessLevel'] >= 1">
+                <app-documents-center-tile class="d-flex h-100 strech-panel"></app-documents-center-tile>
+            </div>
+
+        </div>
+        <div class="row">
+            <ng-container *ngIf="accessRights['CLIVALUES']['accessLevel'] > 0">
+                <div class="col-md col-sm-12">
+                    <app-client-value-tile class="d-flex h-100 strech-panel"></app-client-value-tile>
+                </div>
+            </ng-container>
+        </div>
+    </div>
+</div>
+
+<div class="view-side-form">
+    <router-outlet></router-outlet>
+</div>

@@ -1,0 +1,66 @@
+:host {
+    background: #fff;
+    position: fixed;
+    left: auto;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 30%;
+    min-width: 250px;
+    z-index: 100;
+}
+
+.font {
+    font-family: 'Montserrat', sans-serif;
+}
+
+.label-size {
+    font-size: 15px;
+}
+
+#moreDetai .form-group input.form-control {
+    height: 33px !important;
+}
+
+.form-control.no-border{
+    width: 80px;
+    height: 33px !important;
+    display: inline-block;
+    line-height: 1.4;
+    font-weight: 400;
+    font-size: 14px;
+    border:  1px solid transparent;
+    padding: .375rem 0 .375rem .75rem;
+}
+#moreDetai .table > tbody > tr > td{
+    vertical-align: middle;
+}
+@media(max-width: 767px) {
+    .allocation-table tr>th:last-child,
+    .allocation-table tr>td:last-child {
+        padding-right: 0;
+    }
+    .allocation-table tr>td {
+        width: 30%;
+    }
+    .fix-div-width input {
+        max-width: 100% !important;
+    }
+    .interest-div>div {
+        padding-left: .5rem !important
+    }
+    .interest-div>div>span {
+        display: inline-block;
+        font-weight: 400;
+        font-size: 14px;
+        padding: .375rem 0 .375rem .75rem;
+        width: 80px;
+        border: 1px solid transparent;
+    }
+}
+
+@media(min-width: 768px) {
+    .fix-div-width {
+        min-width: 112px;
+    }
+}

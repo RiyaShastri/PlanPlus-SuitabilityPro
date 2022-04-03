@@ -1,0 +1,53 @@
+.disble-dropdown {
+    opacity: 0.5;
+    pointer-events: none;
+} 
+
+tbody tr>td.blue-bg {
+    background-color: #cbddee;
+}
+.bg-after{
+    position: relative;
+    padding-left: .5rem;
+}
+.bg-after:after{
+    content: " ";
+    height: calc(100% + 2px);
+    width: .5rem;
+    display: block;
+    position: absolute;
+    top: 0;
+    background-color: #fff;
+    left: 0;
+}
+
+.floating-dropdown li span {
+    padding: 0;
+    font-size: 11px;
+    color: #556677;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.dropdown-floating {
+    right: -9px;
+}
+
+
+.allocation-box{display: -webkit-box;display: -ms-flexbox;display: flex;-webkit-box-align: end;-ms-flex-align: end;align-items: flex-end;padding: 5px;-webkit-flex: 1 0 0px; min-height: 75px;}
+.allocation-box span{font-weight: 600;color: #333; font-size: 15px;}
+.allocation-box span i{background-color: #9b4;color: #fff;border-radius: 50%;height: 25px;width: 25px;display: inline-block;text-align: center;line-height: 1.5;font-size: 16px;font-weight: 700;}
+.income-distribution-header{padding: 12px 0;}
+
+.more-detail-table thead.inner-allocation-table-hide{visibility: hidden;}
+.more-detail-table thead.inner-allocation-table-hidetr>th{padding-bottom: 0;}
+.table.more-detail-table >tbody>tr>td:first-child {text-align: left;}
+.table.more-detail-table >tbody>tr>td {text-align: center;}
+.investment-policies-lbl{    font-size: 14px; color: #788588; font-weight: 600; padding: 15px 0;}
+.investment-policies-row > span,.investment-policies-row > div{flex: 1 0 0px; -webkit-flex: 1 0 0px; font-weight: 600;}
+.investment-policies-row {flex-grow: 1;overflow: auto;}
+.investment-policies-left-fixed{    flex: 0 0 205px;    max-width: 205px;}
+.investment-policies-left-fixed > div {  flex: 1 1 auto!important;    text-align: center;}
+.investment-policies-head{    border-bottom: 2px solid #dee2e6;}
+.investment-policies-body{border-bottom: 1px solid #dee2e6;}
+.investment-policies-body  .investment-policies-lbl{font-weight: 500;}

@@ -1,0 +1,206 @@
+<div class="bg-white pt-4 pb-4">
+    <div class="container">
+        <app-goals-header [currentPage]="'revenues'" *ngIf="!goalId" [clientId]="clientId"></app-goals-header>
+        <app-goal-details-header *ngIf="goalId" [clientId]="clientId" currentPage="revenues" [goalId]="goalId"
+            (switchGoal)="changeGoal($event)"></app-goal-details-header>
+        <div class="row">
+            <div class="d-flex col-12">
+                <a class="btn-add" routerLink="add-revenue">
+                    <i class="ion-md-add-circle"></i>
+                    <span [translate]="'REVENUES.ADD_A_REVENUE'"></span>
+                </a>
+                <span *ngIf="showDropdown && accessRights['SCENARIOACCESS']['accessLevel'] > 0" class="dropdown-common mt-1 sort-dropdown ml-auto">
+                    <app-common-drop-down class="dropdown-right" [itemList]="scenarioObject" [defaultSelected]="selectedScenario" dropDownLabel=""
+                        (OnSelect)="onSelectScenario($event)"></app-common-drop-down>
+                </span>
+                <span *ngIf="!showDropdown && accessRights['SCENARIOACCESS']['accessLevel'] > 0"class="ml-auto disabled-drop-label">{{revenueScenario}}</span>
+            </div>
+            <div class="sort-box col-12 col-sm-4">
+                <div class="dropdown-common mt-1 sort-dropdown">
+                    <app-common-drop-down [itemList]="viewBy" [defaultSelected]="selectedViewBy" dropDownLabel="{{ 'VIEW_BY_DROPDOWN' | translate}}"
+                        (OnSelect)="displayViewBy($event)"></app-common-drop-down>
+                </div>
+            </div>
+            <div class="sort-box col-6 col-sm-4 text-left text-sm-center" *ngIf="!goalId">
+                <div class="dropdown-common mt-1 sort-dropdown">
+                    <app-common-drop-down [itemList]="groupBy" [defaultSelected]="selectedGroupBy" dropDownLabel="{{ 'GROUP_BY_DROPDOWN' | translate}}"
+                        (OnSelect)="displayGroupBy($event)"></app-common-drop-down>
+                </div>
+            </div>
+            <div class="sort-box col-6 col-sm-4 text-right" *ngIf="!goalId">
+                <div class="sort-dropdown">
+                    <div class="sort-dropdown-w-ico">
+                        <i class="ion-md-funnel"></i>
+                        <app-common-drop-down class="dropdown-right" [itemList]="sortBy" [defaultSelected]="selectedSortBy"
+                            dropDownLabel="{{ 'SORT_BY_DROPDOWN' | translate }}" (OnSelect)="sorting($event)"></app-common-drop-down>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12">
+                <hr>
+                <ng-container *ngIf="allRevenueData.length == 0">
+                    <table class="table">
+                        <tr>
+                            <td colspan="7" class="no-record text-center border-top-0">
+                                <i class="ion-ios-alert mr-2"></i>{{'NO_RESULTS' | translate}}
+                            </td>
+                        </tr>
+                    </table>
+                </ng-container>
+                <!-- <h4 *ngIf="allRevenueData.length == 0" [translate]="'REVENUES.NO_REVENUES_TO_DISPLAY'"></h4> -->
+                <table class="table allRevenueData-table" *ngIf="allRevenueData.length > 0 && groupValue.length > 0 && groupData && familyData !== '{}'">
+                    <thead>
+                        <tr>
+                            <th [translate]="'REVENUES.DESCRIPTION'"></th>
+                            <th [translate]="'REVENUES.GOAL'" *ngIf="selectedGroupBy.id === 2" class="hidden-sm-down"></th>
+                            <th [translate]="'REVENUES.RECIPIENT'" class="hidden-sm-down"></th>
+                            <th [translate]="'REVENUES.AMOUNT'"></th>
+                            <th [translate]="'REVENUES.START'"></th>
+                            <th [translate]="'REVENUES.END'"></th>
+                            <th [translate]="'REVENUES.INDEX'" class="hidden-sm-down"></th>
+                            <th [translate]="'REVENUES.TAXABLE'" class="hidden-sm-down"></th>
+                            <th>&nbsp;</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <ng-container *ngFor="let value of groupValue; index as valueIndex;">
+                            <tr *ngIf="value != 'None' && groupData[value].allData.length > 0">
+                                <td colspan="7" class="cell-hide-mobile">
+                                    <h3>{{goals[value].name}}</h3>
+                                </td>
+                                <td colspan="5" class="cell-show-mobile">
+                                    <h3>{{goals[value].name}}</h3>
+                                </td>
+                                <td class="text-center">
+                                    <div *ngIf="goals[value]?.allowEdit" class="dropdown-relative">
+                                        <button type="button" class="btn-floating" (click)="toggleGoalActionMenu('dropdownGoalAction', valueIndex)">
+                                            <span class="ion-md-more"></span>
+                                        </button>
+                                        <div [id]="'dropdownGoalAction_'+ valueIndex" class="dropdown-portfolio-action dropdown-floating hide-ele">
+                                            <ul class="floating-dropdown">
+                                                <li (click)="toggleGoalActionMenu('dropdownGoalAction', valueIndex)">
+                                                    <a class="action-list" [routerLink]="['/client', clientId, 'planning','goals', value, 'edit-goal']">
+                                                        <i class="ion-md-create action-list"></i>
+                                                        <span class="action-list" [translate]="'GOALS.SUMMARY.EDIT_GOAL'"></span>
+                                                    </a>
+                                                </li>
+                                                <li (click)="toggleGoalActionMenu('dropdownGoalAction', valueIndex)"
+                                                    *ngIf="accessRights['SAV01']['accessLevel'] > 0" class="add-btn">
+                                                    <a class="action-list" *ngIf="!goalId" [routerLink]="['/client', clientId, 'planning','goals', 'revenues', value, 'add-savings']">
+                                                        <i class="ion-md-add-circle action-list"></i>
+                                                        <span class="action-list" [translate]="'ASSETS_SUMMARY.ACTION.ADD_SAVINGS'"></span>
+                                                    </a>
+                                                    <a class="action-list" *ngIf="goalId" routerLink="add-savings">
+                                                        <i class="ion-md-add-circle action-list"></i>
+                                                        <span class="action-list" [translate]="'ASSETS_SUMMARY.ACTION.ADD_SAVINGS'"></span>
+                                                    </a>
+                                                </li>
+                                                <li (click)="toggleGoalActionMenu('dropdownGoalAction', valueIndex)"
+                                                    class="add-btn">
+                                                    <a class="action-list" *ngIf="!goalId" [routerLink]="['/client', clientId, 'planning','goals', 'revenues', value, 'add-revenue']">
+                                                        <i class="ion-md-add-circle action-list"></i>
+                                                        <span class="action-list" [translate]="'REVENUES.ACTION.ADD_REVENUE'"></span>
+                                                    </a>
+                                                    <a class="action-list" *ngIf="goalId" routerLink="add-revenue">
+                                                        <i class="ion-md-add-circle action-list"></i>
+                                                        <span class="action-list" [translate]="'REVENUES.ACTION.ADD_REVENUE'"></span>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr *ngFor="let item of groupData[value].allData; let i = index;">
+                                <td>{{item.description}}</td>
+                                <td *ngIf="value === 'None'" class="hidden-sm-down">{{item.goalDescription}}</td>
+                                <td class="hidden-sm-down">
+                                    <ng-container *ngIf="familyData[item.clientId]">
+                                        <span class="initials" *ngIf="!familyData[item.clientId]['avatar']">{{item.firstName[0] + item.lastName[0]}}</span>
+                                        <img class="initials bg-transparent" height="50" *ngIf="familyData[item.clientId]['avatar']" [src]="familyData[item.clientId]['avatar']"
+                                           (error)="familyData[item.clientId]['avatar'] = null" />
+                                        {{item.firstName+ ' ' + item.lastName}}
+                                    </ng-container>
+                                </td>
+                              <td><ng-container *ngIf="!item.yearByYear">{{item.amount | currency:clientData['currencyCode']:'symbol-narrow':'1.0-0'}}</ng-container></td>
+                                <td>
+                                    <span *ngIf="selectedViewBy.id === 1 && !item.yearByYear">{{item.startYear}}</span>
+                                    <span *ngIf="selectedViewBy.id !== 1 && !item.yearByYear">{{item.startAge}}</span>
+                                </td>
+                                <td>
+                                    <span *ngIf="selectedViewBy.id === 1 && !item.yearByYear">{{item.endYear}}</span>
+                                    <span *ngIf="selectedViewBy.id !== 1 && !item.yearByYear">{{item.endAge}}</span>
+                                </td>
+                              <td class="hidden-sm-down"><ng-container *ngIf="!item.yearByYear">{{item.indexRatePr}}%</ng-container></td>
+                              <td class="hidden-sm-down"><ng-container *ngIf="!item.yearByYear">{{item.taxablePr}}%</ng-container></td>
+                                <td class="text-center">
+                                    <div *ngIf="item.allowEdit && !item.yearByYear " class="dropdown-relative">
+                                        <button type="button" class="btn-floating" (click)="toggleActionMenu('dropdownAssetsAction', valueIndex, i)">
+                                            <span class="ion-md-more"></span>
+                                        </button>
+                                        <div [id]="'dropdownAssetsAction_'+ valueIndex + i" class="dropdown-portfolio-action dropdown-floating hide-ele">
+                                            <ul class="floating-dropdown">
+                                                <li (click)="toggleActionMenu('dropdownAssetsAction', valueIndex, i)">
+                                                    <a class="action-list" [routerLink]="[item.id, 'edit-revenue']">
+                                                        <i class="ion-md-create action-list"></i>
+                                                        <span class="action-list" [translate]="'REVENUES.ACTION.EDIT_REVENUE'"></span>
+                                                    </a>
+                                                </li>
+                                                <li (click)="toggleActionMenu('dropdownAssetsAction', valueIndex, i)"
+                                                    class="delete-btn">
+                                                    <a class="action-list" (click)="deleteRevenue(item, i)">
+                                                        <i class="ion-md-close-circle action-list"></i>
+                                                        <span class="action-list" [translate]="'REVENUES.ACTION.DELETE_REVENUE'"></span>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                  <div *ngIf="item.yearByYear">
+                                    <a class="action-list" (click)="setYearByYear(item.entitynum); open(yearByYear)">
+                                      <i class="ion-md-eye action-list"></i>
+                                    </a>
+                                  </div>
+                                </td>
+                            </tr>
+                        </ng-container>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-12">
+                <app-timeline-chart *ngIf="allRevenueData.length > 0 && dataProviderList.length > 0" [clientData]="clientData" titleName="{{ 'GRAPH.REVENUE_MAP' | translate }}"
+                    [dataProviderList]="dataProviderList" [goalList]="goalList" [goalListAmount]="goalListAmount" (OnSelect)="revenueMapChange($event)" [selectedDropdownOption]="selectedDropdownOption"></app-timeline-chart>
+            </div>
+        </div>
+    </div>
+</div>
+<ng-template #yearByYear let-d="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title">&nbsp;</h4>
+    <a class="close ml-auto" aria-label="Close" (click)="d('Cross click')">
+      <i class="ion-md-close-circle action-list"></i>
+    </a>
+  </div>
+  <div class="modal-body table-responsive">
+    <div class="table">
+      <thead>
+    <tr>
+      <th scope="col" *ngFor="let item of entityYearByYearHeading">
+        {{item}}
+      </th>
+    </tr>
+      </thead>
+<tr  *ngFor="let item of entityYearByYearData;">
+    <td *ngFor="let column of item; let first = first">
+      <div  [ngClass]="{'text-right': !first}">
+      <span *ngIf="first">{{column}}</span>
+      <span *ngIf="!first">{{column | currency:clientData['currencyCode']:'symbol-narrow':'1.0-0'}}</span>
+      </div>
+    </td>
+</tr>
+  </div>
+  </div>
+</ng-template>
+<div class="view-side-form">
+    <router-outlet></router-outlet>
+</div>

@@ -1,0 +1,110 @@
+<div class="mt-3" *ngIf="linkedAccounts">
+    <h6 class="fw-700" [translate]="'PORTFOLIO.DETAIL.LINKED_ACCOUNTS'"></h6>
+    <hr />
+    <table class="table mt-3 table-ellipsis td-last-child-50">
+        <thead>
+            <tr>
+                <th [translate]="'PORTFOLIO.TABLE.ACCOUNTS'" class="portfolio-detail-account-width"></th>
+                <th [translate]="'PORTFOLIO.TABLE.ACCOUNT_TYPE'"></th>
+                <th class="text-right" [translate]="'PORTFOLIO.TABLE.ASSETS'"></th>
+                <th class="text-center" width="10%"></th>
+            </tr>
+        </thead>
+        <tbody>
+            <ng-container *ngIf="linkedAccounts.length > 0">
+                <tr *ngFor="let account of linkedAccounts; let i = index;">
+                    <td class="portfolio-detail-account-width">
+                        <div class="portfolio-detail-account-div">
+                            <ng-container *ngFor="let owner of account['ownership'] | slice:0:2; let j = index">
+                                <ng-container *ngIf="familyData[owner.externalKey]">
+                                    <span *ngIf="!familyData[owner.externalKey].avatar" class="initials client-icon"
+                                        [ngClass]="{'spouse': familyData[owner.externalKey].relation == PERSON_RELATION.CLIENT2, 'childs': familyData[owner.externalKey].relation == PERSON_RELATION.SON || familyData[owner.externalKey].relation == PERSON_RELATION.DAUGHTER}">
+                                        {{familyData[owner.externalKey].firstName[0] + familyData[owner.externalKey].lastName[0]}}
+                                    </span>
+                                    <img class="initials client-icon" *ngIf="familyData[owner.externalKey].avatar"
+                                        [src]="familyData[owner.externalKey].avatar"
+                                        (error)="familyData[owner.externalKey].avatar = null">
+                                </ng-container>
+                            </ng-container>
+                            <span *ngIf="account['ownership'].length > 2" (click)="changeOwnershipAction(i)"
+                                class="ion-md-more-horizontal action-ellipses-icon-color set-ellipses"></span>
+                            <div *ngIf="account['ownership'].length > 2" [id]="'dropdownOwnershipAction'+i"
+                                class="dropdown-portfolio-owned-action dropdown-floating hide-ele">
+                                <div class="floating-dropdown">
+                                    <ng-container *ngFor="let owner of account['ownership'] | slice:0:2; let j = index">
+                                        <ng-container *ngIf="familyData[owner.externalKey]">
+                                            <span class="initials client-icon"
+                                                [ngClass]="{'spouse': familyData[owner.externalKey].relation == PERSON_RELATION.CLIENT2, 'childs': familyData[owner.externalKey].relation == PERSON_RELATION.SON || familyData[owner.externalKey].relation == PERSON_RELATION.DAUGHTER}">
+                                                {{familyData[owner.externalKey].firstName[0] + familyData[owner.externalKey].lastName[0]}}
+                                            </span>
+                                            <img class="initials client-icon" *ngIf="familyData[owner.externalKey].avatar"
+                                                [src]="familyData[owner.externalKey].avatar"
+                                                (error)="familyData[owner.externalKey].avatar = null">
+                                        </ng-container>
+                                    </ng-container>
+                                </div>
+                            </div>
+                            <span class="ml-2 fw-400">
+                                {{account.description}}
+                            </span>
+                        </div>
+                    </td>
+                    <td class="text-left">
+                        <span class="d-il-block" [appNoOverflowTooltip]="account.accountType" triggers="manual"
+                            placement="bottom">{{account.accountType}}</span>
+                    </td>
+                    <td class="text-right">
+                        {{account.totalAssets | currency:clientData['currencyCode']:'symbol-narrow':'1.0-0'}}
+                    </td>
+                    <td class="text-center pr-0 dropdown-up">
+                        <div class="dropdown-relative">
+                            <button type="button" class="btn-floating" (click)="changeAccountAction(i)">
+                                <span class="ion-md-more"></span>
+                            </button>
+                            <div [id]="'dropdownAccountAction_'+i"
+                                class="dropdown-account-action dropdown-floating hide-ele">
+                                <ul class="floating-dropdown">
+                                    <li (click)="changeAccountAction(account.id)">
+                                        <a class="action-list"
+                                            [routerLink]="['/client', clientId, 'planning', 'assets-liabilities', account.id, 'edit-account']">
+                                            <i class="ion-md-create action-list"></i>
+                                            <span class="action-list" [translate]="'ASSETS_SUMMARY.ACTION.EDIT_ACCOUNT'"></span>
+                                        </a>
+                                    </li>
+                                    <li (click)="changeAccountAction(account.id)" class="add-btn" *ngIf="accessRights['BTN02']['accessLevel'] > 0">
+                                        <a class="action-list"
+                                            [routerLink]="['/client', clientId, 'planning', 'assets-liabilities', account.id, 'holding-account', 'product-search']">
+                                            <i class="ion-md-add-circle action-list"></i>
+                                            <span class="action-list" [translate]="'ASSETS_SUMMARY.ACTION.ADD_HOLDINGS'"></span>
+                                        </a>
+                                    </li>
+                                    <li (click)="changeAccountAction(account.id)" class="add-btn" *ngIf="accessRights['SAV01']['accessLevel'] > 0">
+                                        <a class="action-list"
+                                            [routerLink]="['/client', clientId, 'planning', 'assets-liabilities', account.id, 'add-savings']">
+                                            <i class="ion-md-add-circle action-list"></i>
+                                            <span class="action-list" [translate]="'ASSETS_SUMMARY.ACTION.ADD_SAVINGS'"></span>
+                                        </a>
+                                    </li>
+                                    <li (click)="changeAccountAction(account.id)" *ngIf="accessRights['SAV01']['accessLevel'] > 0">
+                                        <a class="action-list"
+                                            [routerLink]="['/client', clientId, 'planning', 'assets-liabilities', account.id, 'savings']">
+                                            <i class="ion-md-create action-list"></i>
+                                            <span class="action-list" [translate]="'ASSETS_SUMMARY.ACTION.EDIT_SAVINGS'"></span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </ng-container>
+            <ng-container *ngIf="linkedAccounts.length === 0">
+                <tr>
+                    <td colspan="4" class="no-record text-center">
+                        <i class="ion-ios-alert mr-2"></i>{{'NO_RESULTS' | translate}}
+                    </td>
+                </tr>
+            </ng-container>
+        </tbody>
+    </table>
+</div>

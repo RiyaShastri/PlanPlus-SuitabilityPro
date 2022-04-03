@@ -1,0 +1,298 @@
+<div class="bg-white pt-4 pb-4">
+    <div class="container">
+        <app-estate-header [clientId]="clientId" currentPage="information"></app-estate-header>
+        <form name="form" #f="ngForm" novalidate>
+            <div class="row" *ngIf="legalinformationData && legalinformationData['clinum'] && familyData && familyData[legalinformationData['clinum']]">
+                <div class="col-12 information-main-div">
+                    <div class="scroll-responsive-wrap">
+                        <div class="row">
+                            <div class="col-4 fw-600">
+                                <span>&nbsp;</span>
+                            </div>
+                            <div class="col-4">
+                                <div class="text-center">
+                                    <span *ngIf="!familyData[legalinformationData['clinum']].avatar" class="initials mr-2" [ngClass]="familyData[legalinformationData['clinum']].btnColor">
+                                        {{ familyData[legalinformationData['clinum']].firstName[0] + familyData[legalinformationData['clinum']].lastName[0]}}</span>
+                                    <img class="initials bg-transparent" height="50" *ngIf="familyData[legalinformationData['clinum']].avatar" [src]="familyData[legalinformationData['clinum']].avatar"
+                                        (error)="familyData[legalinformationData['clinum']].avatar = null" />
+                                    <span class="d-inline-block va-middle">{{familyData[legalinformationData['clinum']].firstName}}</span>
+                                </div>
+                            </div>
+                            <div class="col-4" *ngIf="legalinformationData &&  legalinformationData['spouseKey']">
+                                <div class="text-center">
+                                    <span *ngIf="!familyData[legalinformationData['spouseKey']].avatar" class="initials mr-2" [ngClass]="familyData[legalinformationData['spouseKey']].btnColor">
+                                        {{ familyData[legalinformationData['spouseKey']].firstName[0] + familyData[legalinformationData['spouseKey']].lastName[0]}}</span>
+                                    <img class="initials bg-transparent" height="50" *ngIf="familyData[legalinformationData['spouseKey']].avatar" [src]="familyData[legalinformationData['spouseKey']].avatar"
+                                        (error)="familyData[legalinformationData['spouseKey']].avatar = null" />
+                                    <span class="d-inline-block va-middle">{{familyData[legalinformationData['spouseKey']].firstName}}</span>
+                                </div>
+                            </div>
+
+                            <div class="col-12">
+                                <hr>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-4 fw-600 information-lable">
+                                {{ 'ESTATE_PLANING.LEGAL_INFORMATION.HAVE_A_WILL' | translate }}
+                            </div>
+                            <div class="col-4">
+                                <div class="text-center">
+                                    <div class="form-group">
+                                        <p-checkbox name="clientWill" [(ngModel)]="legalinformationData['clientWill']" #clientWill="ngModel" binary="true"></p-checkbox>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-4" *ngIf="legalinformationData &&  legalinformationData['spouseKey']">
+                                <div class="text-center">
+                                    <div class="form-group">
+                                        <p-checkbox name="spousetWill" [(ngModel)]="legalinformationData['spousetWill']" binary="true" #spousetWill="ngModel"></p-checkbox>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-4 fw-600 information-lable">
+                                {{ 'ESTATE_PLANING.LEGAL_INFORMATION.DATE_OF_LAST_UPDATE' | translate }}
+                            </div>
+                            <div class="col-4">
+                                <div class="form-group cal-fix" [ngClass]="{ 'has-error': invalidClientWillDate || (!clientWillDate.valid && f.submitted) }">
+                                    <p-calendar [showIcon]="true" name="clientWillDate" [monthNavigator]="true" [yearNavigator]="true" yearRange="2000:2030"
+                                        [(ngModel)]="legalinformationData['clientWillDate']" [maxDate]="todayDate" #clientWillDate="ngModel" (ngModelChange)="checkDate()"
+                                        dateFormat="yy-mm-dd"></p-calendar>
+                                </div>
+                            </div>
+                            <div class="col-4" *ngIf="legalinformationData &&  legalinformationData['spouseKey']">
+                                <div class="form-group" [ngClass]="{ 'has-error': invalidSpouseWillDate || !spouseWillDate.valid && f.submitted }">
+                                    <p-calendar [showIcon]="true" [monthNavigator]="true" [yearNavigator]="true" yearRange="2000:2030" name="spouseWillDate"
+                                        [(ngModel)]="legalinformationData['spouseWillDate']" [maxDate]="todayDate" #spouseWillDate="ngModel" (ngModelChange)="checkDate()"
+                                        dateFormat="yy-mm-dd"></p-calendar>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-4 fw-600 information-lable">
+                                {{ 'ESTATE_PLANING.LEGAL_INFORMATION.GUARDIANS' | translate }}
+                            </div>
+                            <div class="col-4">
+                                <div class="text-center">
+                                    <div class="form-group">
+                                        <textarea name="guardian" [rows]="3" [(ngModel)]="legalinformationData['guardian']" cols="30" #guardian="ngModel" class="form-control txt-implementation"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-4" *ngIf="legalinformationData &&  legalinformationData['spouseKey']">
+                                <div class="text-center">
+                                    <div class="form-group">
+                                        <textarea name="guardianSpouse" [rows]="3" cols="30" [(ngModel)]="legalinformationData['spouseGuardian']" #guardianSpouse="ngModel"
+                                            class="form-control txt-implementation"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-4 fw-600 information-lable">
+                                {{ 'ESTATE_PLANING.LEGAL_INFORMATION.EXECUTORS' | translate }}
+                            </div>
+                            <div class="col-4">
+                                <div class="text-center">
+                                    <div class="form-group">
+                                        <textarea name="executors" [rows]="3" cols="30" [(ngModel)]="legalinformationData['executors']" #executors="ngModel" class="form-control txt-implementation"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-4" *ngIf="legalinformationData &&  legalinformationData['spouseKey']">
+                                <div class="text-center">
+                                    <div class="form-group">
+                                        <textarea name="executorsSpouse" [rows]="3" cols="30" [(ngModel)]="legalinformationData['spouseExecutors']" #executorsSpouse="ngModel"
+                                            class="form-control txt-implementation"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-4 fw-600 information-lable">
+                                {{ 'ESTATE_PLANING.LEGAL_INFORMATION.TRUSTEES' | translate }}
+                            </div>
+                            <div class="col-4">
+                                <div class="text-center">
+                                    <div class="form-group">
+                                        <textarea name="trustees" [rows]="3" cols="30" [(ngModel)]="legalinformationData['trustees']" #trustees="ngModel" class="form-control txt-implementation"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-4" *ngIf="legalinformationData &&  legalinformationData['spouseKey']">
+                                <div class="text-center">
+                                    <div class="form-group">
+                                        <textarea name="trusteesSpouse" [rows]="3" cols="30" [(ngModel)]="legalinformationData['spouseTrustees']" #trusteesSpouse="ngModel"
+                                            class="form-control txt-implementation"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-4 fw-600 information-lable">
+                                {{ 'ESTATE_PLANING.LEGAL_INFORMATION.WILL_DETAILS' | translate }}
+                            </div>
+                            <div class="col-4">
+                                <div class="text-center">
+                                    <div class="form-group">
+                                        <textarea name="clientWillDetails" [rows]="3" cols="30" [(ngModel)]="legalinformationData['clientWillDetails']" #clientWillDetails="ngModel"
+                                            class="form-control txt-implementation"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-4" *ngIf="legalinformationData &&  legalinformationData['spouseKey']">
+                                <div class="text-center">
+                                    <div class="form-group">
+                                        <textarea name="spouseWillDetails" [rows]="3" cols="30" [(ngModel)]="legalinformationData['spouseWillDetails']" #spouseWillDetails="ngModel"
+                                            class="form-control txt-implementation"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-4 fw-600 information-lable">
+                                {{ 'ESTATE_PLANING.LEGAL_INFORMATION.HAVE_POWER_OF_ATTORNEY_FOR_PROPERTY' | translate }}
+                            </div>
+                            <div class="col-4">
+                                <div class="text-center">
+                                    <div class="form-group">
+                                        <p-checkbox name="clientPowerOfAttorney" [(ngModel)]="legalinformationData['clientPowerOfAttorney']" binary="true" #clientPowerOfAttorney="ngModel"></p-checkbox>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-4" *ngIf="legalinformationData &&  legalinformationData['spouseKey']">
+                                <div class="text-center">
+                                    <div class="form-group">
+                                        <p-checkbox name="spousePowerOfAttorney" [(ngModel)]="legalinformationData['spousePowerOfAttorney']" binary="true" #spousePowerOfAttorney="ngModel"></p-checkbox>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-4 fw-600 information-lable">
+                                {{ 'ESTATE_PLANING.LEGAL_INFORMATION.DATE_OF_LAST_UPDATE' | translate }}
+                            </div>
+                            <div class="col-4">
+                                <div class="form-group cal-fix" [ngClass]="{ 'has-error': invalidClientPowerOfAttorney || (!clientPowerOfAttorneyDate.valid && f.submitted) }">
+                                    <p-calendar [showIcon]="true" [monthNavigator]="true" [yearNavigator]="true" yearRange="2000:2030" name="clientPowerOfAttorneyDate"
+                                        [(ngModel)]="legalinformationData['clientPowerOfAttorneyDate']" [maxDate]="todayDate"
+                                        #clientPowerOfAttorneyDate="ngModel" (ngModelChange)="checkDate()" dateFormat="yy-mm-dd"></p-calendar>
+                                </div>
+                            </div>
+                            <div class="col-4" *ngIf="legalinformationData &&  legalinformationData['spouseKey']">
+                                <div class="form-group" [ngClass]="{ 'has-error': invalidSpousePowerOfAttorney || (!spousePowerOfAttorneyDate.valid && f.submitted) }">
+                                    <p-calendar [showIcon]="true" [monthNavigator]="true" [yearNavigator]="true" yearRange="2000:2030" name="spousePowerOfAttorneyDate"
+                                        [(ngModel)]="legalinformationData['spousePowerOfAttorneyDate']" [maxDate]="todayDate"
+                                        #spousePowerOfAttorneyDate="ngModel" (ngModelChange)="checkDate()" dateFormat="yy-mm-dd"></p-calendar>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-4 fw-600 information-lable">
+                                {{ 'ESTATE_PLANING.LEGAL_INFORMATION.HAVE_POWER_OF_ATTORNEY_FOR_PERSONAL_CARE' | translate }}
+                            </div>
+                            <div class="col-4">
+                                <div class="text-center">
+                                    <div class="form-group">
+                                        <p-checkbox name="clientPowerOfAttorneyPC" [(ngModel)]="legalinformationData['clientPowerOfAttorneyPC']" binary="true" #clientPowerOfAttorneyPC="ngModel"></p-checkbox>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-4" *ngIf="legalinformationData &&  legalinformationData['spouseKey']">
+                                <div class="text-center">
+                                    <div class="form-group">
+                                        <p-checkbox name="spousePowerOfAttorneyPC" [(ngModel)]="legalinformationData['spousePowerOfAttorneyPC']" binary="true" #spousePowerOfAttorneyPC="ngModel"></p-checkbox>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-4 fw-600 information-lable">
+                                {{ 'ESTATE_PLANING.LEGAL_INFORMATION.DATE_OF_LAST_UPDATE' | translate }}
+                            </div>
+                            <div class="col-4">
+                                <div class="form-group cal-fix responsive-datepicker" [ngClass]="{ 'has-error': invalidClientPowerOfAttorneyPC || (!clientPowerOfAttorneyPCDate.valid && f.submitted) }">
+                                    <p-calendar [showIcon]="true" [monthNavigator]="true" [yearNavigator]="true" yearRange="2000:2030" name="clientPowerOfAttorneyPCDate"
+                                        [(ngModel)]="legalinformationData['clientPowerOfAttorneyPCDate']" [maxDate]="todayDate"
+                                        #clientPowerOfAttorneyPCDate="ngModel" (ngModelChange)="checkDate()" dateFormat="yy-mm-dd"></p-calendar>
+                                </div>
+                            </div>
+                            <div class="col-4" *ngIf="legalinformationData &&  legalinformationData['spouseKey']">
+                                <div class="form-group responsive-datepicker" [ngClass]="{ 'has-error': invalidSpousePowerOfAttorneyPC || (!spousePowerOfAttorneyPCDate.valid && f.submitted) }">
+                                    <p-calendar [showIcon]="true" [monthNavigator]="true" [yearNavigator]="true" yearRange="2000:2030" name="spousePowerOfAttorneyPCDate"
+                                        [(ngModel)]="legalinformationData['spousePowerOfAttorneyPCDate']" [maxDate]="todayDate"
+                                        #spousePowerOfAttorneyPCDate="ngModel" (ngModelChange)="checkDate()" dateFormat="yy-mm-dd"></p-calendar>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" *ngIf="isCivilLaw && (clientData['maritalStatus'] === MARITAL_STATUS['MARRIED'] || 
+                        clientData['maritalStatus'] === MARITAL_STATUS['MARRIED_SINGLE'] || clientData['maritalStatus'] === MARITAL_STATUS['SEPARATED'])">
+                            <div class="col-4 fw-600 information-lable">
+                                {{ 'ESTATE_PLANING.LEGAL_INFORMATION.RENUNCIATION_OF_FAMILY_PATRIMONY_PARTITION' | translate }}
+                            </div>
+                            <div class="col-4">
+                                <div class="text-center">
+                                    <div class="form-group">
+                                        <p-checkbox name="clientRenunPatri" [(ngModel)]="legalinformationData['clientRenunPatri']" binary="true" #clientRenunPatri="ngModel"></p-checkbox>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-4" *ngIf="legalinformationData &&  legalinformationData['spouseKey']">
+                                <div class="text-center">
+                                    <div class="form-group">
+                                        <p-checkbox name="spouseRenunPatri" [(ngModel)]="legalinformationData['spouseRenunPatri']" binary="true" #spouseRenunPatri="ngModel"></p-checkbox>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row" *ngIf="isCivilLaw && (clientData['maritalStatus'] === MARITAL_STATUS['MARRIED'] || 
+                        clientData['maritalStatus'] === MARITAL_STATUS['MARRIED_SINGLE'] || clientData['maritalStatus'] === MARITAL_STATUS['SEPARATED'])">
+                            <div class="col-4 fw-600 information-lable">
+                                {{ 'ESTATE_PLANING.LEGAL_INFORMATION.DATE' | translate }}
+                            </div>
+                            <div class="col-4">
+                                <div class="form-group cal-fix responsive-datepicker" [ngClass]="{ 'has-error': invalidClientRenunPatriDate || (!clientRenunPatriDate.valid && f.submitted) }">
+                                    <p-calendar [showIcon]="true" [monthNavigator]="true" [yearNavigator]="true" yearRange="2000:2030" name="clientRenunPatriDate"
+                                        [(ngModel)]="legalinformationData['clientRenunPatriDate']" [maxDate]="todayDate"
+                                        #clientRenunPatriDate="ngModel" (ngModelChange)="checkDate()" dateFormat="yy-mm-dd"></p-calendar>
+                                </div>
+                            </div>
+                            <div class="col-4" *ngIf="legalinformationData &&  legalinformationData['spouseKey']">
+                                <div class="form-group responsive-datepicker" [ngClass]="{ 'has-error': invalidSpouseRenunPatriDate || (!spouseRenunPatriDate.valid && f.submitted) }">
+                                    <p-calendar [showIcon]="true" [monthNavigator]="true" [yearNavigator]="true" yearRange="2000:2030" name="spouseRenunPatriDate"
+                                        [(ngModel)]="legalinformationData['spouseRenunPatriDate']" [maxDate]="todayDate"
+                                        #spouseRenunPatriDate="ngModel" (ngModelChange)="checkDate()" dateFormat="yy-mm-dd"></p-calendar>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="box-footer">
+                                    <div class="form-group text-right">
+                                        <button [disabled]="invalidClientWillDate || invalidSpouseWillDate || invalidClientPowerOfAttorney ||invalidSpousePowerOfAttorney ||
+                                         invalidClientPowerOfAttorneyPC || invalidSpousePowerOfAttorneyPC || invalidClientRenunPatriDate || invalidSpouseRenunPatriDate"
+                                        type="submit" class="btn btn-small btn-success pl-4 pr-4" (click)="saveLegalInformation()" [translate]="'FORM.ACTION.SAVE_CHANGES'"></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,18 @@
+<div class="row pt-2">
+    <div class="col-12 col-md-6 text-center">
+        <div *ngIf="!noCurrentGraph" id="currentInvestmentDiv"
+            style="height:400px; width:100%; display: inline-block;margin-left: 0px;margin-right: 0px;"></div>
+        <div *ngIf="noCurrentGraph" class="no-record text-center position-relative"
+            style="height:400px; width:100%; display: inline-block;margin-left: 0px;margin-right: 0px;">
+            <p class="no_data_graph"><i class="ion-ios-alert mr-2"></i>{{'NO_RESULTS' | translate}}</p>
+        </div>
+    </div>
+    <div class="col-12 col-md-6 text-center">
+        <div *ngIf="!noStrategyGraph" id="alternateInvestmentDiv"
+            style="height:400px; width:100%; display: inline-block;margin-left: 0px;margin-right: 0px;"></div>
+        <div *ngIf="noStrategyGraph" class="no-record text-center position-relative"
+            style="height:400px; width:100%; display: inline-block;margin-left: 0px;margin-right: 0px;">
+            <p class="no_data_graph"><i class="ion-ios-alert mr-2"></i>{{'NO_RESULTS' | translate}}</p>
+        </div>
+    </div>
+</div>

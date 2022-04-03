@@ -1,0 +1,45 @@
+<div class="side-form">
+    <form name="form" (ngSubmit)="f.form.valid && submitForm()" #f="ngForm" novalidate>
+        <div class="box">
+            <div class="box-header">
+                <span class="sidebar_title" [translate]="'BRANDING.GRAPH_COLOUR_THEME'"></span>
+                <span (click)="back(); closeButtonDisable = true" class="sidebar_action_icon ion-md-close-circle float-right"></span>
+            </div>
+
+            <div class="box-body">
+                <ng-container *ngIf="themes && themes.length > 0">
+                    <div class="row form-group" *ngFor="let theme of themes; index as i">
+                        <div class="d-flex flex-column mb-3">
+                            <p-radioButton name="theme_{{i}}" value="{{theme.id}}" label="{{theme.name}}" [(ngModel)]="selectedTheme"
+                                #theme_{{i}}="ngModel" required></p-radioButton>
+                            <div class="d-flex">
+                                <span *ngFor="let key of getKeys(theme.colors); index as colIndex" class="colour-box"
+                                    [style.background-color]="'rgb(' + theme.colors[key][0] + ',' + theme.colors[key][1] + ',' + theme.colors[key][2] +')'"></span>
+                            </div>
+                        </div>
+                    </div>
+                </ng-container>
+                <ng-container *ngIf="!themes || themes.length == 0">
+                    <table>
+                        <tbody>
+                            <tr>
+                                <td colspan="7" class="no-record text-center">
+                                    <i class="ion-ios-alert mr-2"></i>{{'NO_RESULTS' | translate}}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </ng-container>
+            </div>
+
+            <div class="box-footer">
+                <div class="form-group text-right">
+                    <button type="button" (click)="back(); closeButtonDisable = true" value="cancel" class="btn btn-secondary btn-small mr-4 p-lr-25"
+                        [translate]="'FORM.ACTION.CANCEL'" [disabled]="closeButtonDisable"></button>
+                    <button type="submit" value="submit" [disabled]="f.form.invalid" class="btn btn-success btn-small p-lr-25"
+                        [translate]="'FORM.ACTION.SAVE'"></button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

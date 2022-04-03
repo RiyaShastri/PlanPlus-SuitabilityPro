@@ -1,0 +1,374 @@
+<div class="about-container">
+    <div class="main-container" *ngIf="accessRights['WEB10'] && accessRights['WEB10']['accessLevel'] > 0">
+        <form name="personal-info-form" (ngSubmit)="f.form.valid && saveAboutMeInfo(f)" #f="ngForm">
+            <div class="panel mt-0">
+                <div class="d-flex flex-wrap panel-header mb-xl-3 mb-3">
+                    <h4 [translate]="'ABOUT_ME.PERSONAL_INFO'"></h4>
+                </div>
+                <div class="panel-body info-box">
+                    <div class="row">
+                        <div class="col-12 col-lg-4 col-md-6">
+                            <div class="row">
+
+                                <div class="col-12">
+                                    <div class="form-group" [ngClass]="{ 'has-error': (f.submitted || firstName.dirty ) && !firstName.valid }">
+                                        <label class="custom-form-label" for="firstName">*
+                                            <span [translate]="'FORM.FIRST_NAME'"></span>
+                                        </label>
+                                        <input type="text" class="form-control" name="firstName" [(ngModel)]="advisorDetails['firstName']"
+                                            #firstName="ngModel" pattern="^[a-zA-Z][\w\d\s]*" required>
+                                    </div>
+                                </div>
+                                <!-- <div class="col-3 col-md-2 pl-0">
+                                    <div class="form-group" [ngClass]="{ 'has-error': (f.submitted || initials.dirty) && !initials.valid }">
+                                        <label class="custom-form-label" for="initials">
+                                            <span [translate]="'FORM.INITIALS'"></span>
+                                        </label>
+                                        <input type="text" class="form-control" name="initials" [(ngModel)]="advisorDetails['initials']"
+                                            #initials="ngModel">
+                                    </div>
+                                </div> -->
+                                <div class="col-12">
+                                    <div class="form-group" [ngClass]="{ 'has-error': (f.submitted || lastName.dirty) && !lastName.valid }">
+                                        <label class="custom-form-label" for="lastname">*
+                                            <span [translate]="'FORM.LAST_NAME'"></span>
+                                        </label>
+                                        <input type="text" class="form-control" name="lastName" [(ngModel)]="advisorDetails['surname']"
+                                            pattern="^[a-zA-Z][\w\d\s]*" #lastName="ngModel" required>
+                                    </div>
+                                </div>
+
+                                <div class="col-12" disabled="true">
+                                    <div class="form-group" [ngClass]="{ 'has-error': (f.submitted || language.dirty) && language.invalid }">
+                                        <label class="custom-form-label" for="language">*
+                                            <span [translate]="'PERSONAL_INFO.PREF_LANGUAGE'"></span>
+                                        </label>
+                                        <p-dropdown [disabled]="languages.length <= 1" [options]="languages" name="language"
+                                            [(ngModel)]="advisorDetails['language']" #language="ngModel" optionLabel="lang"
+                                            required placeholder="{{ 'FORM.PLACEHOLDER.SELECT_A_LANGUAGE' | translate }}"></p-dropdown>
+                                    </div>
+                                </div>
+
+                                <div class="col-12">
+                                    <div class="form-group" [ngClass]="{ 'has-error': (f.submitted || company.dirty ) && !company.valid }">
+                                        <label class="custom-form-label" for="company" [translate]="'FORM.COMPANY'">
+                                        </label>
+                                        <input type="text" class="form-control" name="company" [(ngModel)]="advisorDetails['companyName']"
+                                            #company="ngModel" pattern="^[a-zA-Z][a-zA-Z0-9\s.-]*$">
+                                    </div>
+                                </div>
+
+                                <div class="col-12">
+                                    <div class="form-group" [ngClass]="{ 'has-error': !email.valid && (f.submitted || email.dirty )}">
+                                        <label class="custom-form-label" for="email">*
+                                            <span [translate]="'FORM.EMAIL'"></span>
+                                        </label>
+                                        <input type="email" class="form-control" name="email" [(ngModel)]="advisorDetails['email']"
+                                            #email="ngModel" pattern="^([\w.]+)([+]?\w+)([-]?\w+)@([\w.]+)([-]?\w+)\.([a-zA-Z]{2,5})$"
+                                            required>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="col-12 col-lg-4 col-md-6">
+                            <div class="row">
+
+                                <div class="col-12">
+                                    <div class="form-group ui-fluid">
+                                        <label class="custom-form-label" for="officePhone" [translate]="'FORM.OFFICE_PHONE'">
+                                        </label>
+                                        <ng-container *ngIf="!phoneFormate">
+                                            <input type="tel" pattern="^[\d+ -]+$" class="form-control" name="officePhone"
+                                                [(ngModel)]="advisorDetails['officePhone']" #officePhone="ngModel">
+                                        </ng-container>
+                                        <ng-container *ngIf="phoneFormate">
+                                            <p-inputMask [style]="{'width': '100%'}" mask="{{phoneFormate}}" name="officePhone"
+                                                [(ngModel)]="advisorDetails['officePhone']" #officePhone="ngModel"></p-inputMask>
+                                        </ng-container>
+                                    </div>
+                                </div>
+
+
+                                <!-- Removed as per David's document (Query-64)
+                                <div class="col-12">
+                                    <div class="form-group ui-fluid">
+                                        <label class="custom-form-label" for="mobilePhone" [translate]="'FORM.CELL_PHONE'">
+                                        </label>
+                                        <ng-container *ngIf="!phoneFormate">
+                                            <input type="tel" pattern="^[\d+ -]+$" class="form-control" name="mobilePhone"
+                                                [(ngModel)]="advisorDetails['phoneNumber']" #mobilePhone="ngModel">
+                                        </ng-container>
+                                        <ng-container *ngIf="phoneFormate">
+                                            <p-inputMask [style]="{'width': '100%'}" mask="{{phoneFormate}}" name="mobilePhone"
+                                                [(ngModel)]="advisorDetails['phoneNumber']" #mobilePhone="ngModel"></p-inputMask>
+                                        </ng-container>
+                                    </div>
+                                </div> -->
+                                <div class="col-12" *ngIf="!phoneFormate">
+                                    <div class="form-group ui-fluid" [ngClass]="{ 'has-error': (f.submitted || officeFax.dirty ) && !officeFax.valid }">
+                                        <label class="custom-form-label" for="officeFax" [translate]="'FORM.OFFICE_FAX'">
+                                        </label>
+                                        <!-- <input type="tel" pattern="^(\+)?[0-9]{6,}$" class="form-control" name="officeFax"
+                                                [(ngModel)]="advisorDetails['officeFax']" #officeFax="ngModel"> -->
+                                        <input type="tel" pattern="^[\d+ -]+$" class="form-control" name="officeFax"
+                                            [(ngModel)]="advisorDetails['officeFax']" #officeFax="ngModel">
+                                    </div>
+                                </div>
+                                <div class="col-12" *ngIf="phoneFormate">
+                                    <div class="form-group ui-fluid" [ngClass]="{ 'has-error': (f.submitted || officeFax.dirty ) && !officeFax.valid }">
+                                        <label class="custom-form-label" for="officeFax" [translate]="'FORM.OFFICE_FAX'">
+                                        </label>
+                                        <p-inputMask [style]="{'width': '100%'}" mask="{{phoneFormate}}" name="officeFax"
+                                            [(ngModel)]="advisorDetails['officeFax']" #officeFax="ngModel"></p-inputMask>
+                                    </div>
+                                </div>
+                              <div class="col-12" *ngIf="!lowVersion">
+                                <div class="designation-box form-group">
+                                  <label class="custom-form-label" for="designation" [translate]="'PERSONAL_INFO.DESIGNATION'">
+                                  </label>
+                                  <div class="designation-chkbox d-flex  flex-wrap">
+                                    <ng-container *ngFor="let designation of designations; index as i;">
+                                      <p-checkbox name="designation_{{i}}" label="{{designation.description}}" value="{{designation.designationId}}"
+                                                  [(ngModel)]="advisorDetails['designations']" #selectedDesig="ngModel"></p-checkbox>
+                                    </ng-container>
+                                    <!-- <div class="other_wrapper d-flex">
+                                        <p-checkbox (onChange)="otherDesignation.desig = '';" name="otherDesignation"
+                                            [(ngModel)]="checked" binary="true">
+                                        </p-checkbox>
+                                        <input [disabled]="!checked" class="form-control d-inline-block text-left"
+                                            type="text" name="designation1" [(ngModel)]="otherDesignation.desig"
+                                            #otherDesignation="ngModel">
+                                    </div> -->
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-lg-4 col-md-6">
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="form-group" style="margin-bottom: 75px !important;">
+                                        <app-image-upload *ngIf="(advisorDetails | json) !== '{}'" maxFiles="1" maxSize="2" iconClass="ion-ios-person" [existingFile]="advisorDetails['avatar']"
+                                            (fileSelected)="uploadeImage($event)"></app-image-upload>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel">
+                <div class="d-flex flex-wrap panel-header mb-xl-3 mb-3">
+                    <h4 [translate]="'FORM.ADDRESS'"></h4>
+                </div>
+                <div class="panel-body address-box">
+
+                    <div class="row">
+                        <div class="col-12 col-lg-4 col-md-6">
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="form-group" [ngClass]="{ 'has-error': (f.submitted || address1.dirty ) && !address1.valid }">
+                                        <label class="custom-form-label" for="address1">
+                                            <span [translate]="'FORM.ADDRESS'"></span>1
+                                        </label>
+                                        <input type="text" class="form-control" name="address1" [(ngModel)]="advisorDetails['address1']"
+                                            #address1="ngModel">
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-group" [ngClass]="{ 'has-error': (f.submitted || address2.dirty ) && !address2.valid }">
+                                        <label class="custom-form-label" for="address2">
+                                            <span [translate]="'FORM.ADDRESS'"></span>2
+                                        </label>
+                                        <input type="text" class="form-control" name="address2" [(ngModel)]="advisorDetails['address2']"
+                                            #address2="ngModel">
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-group" [ngClass]="{ 'has-error': (f.submitted || city.dirty ) && !city.valid }">
+                                        <label class="custom-form-label" for="city" [translate]="'FORM.CITY'"></label>
+                                        <input type="text" class="form-control" name="city" [(ngModel)]="advisorDetails['city']"
+                                            #city="ngModel">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-lg-4 col-md-6">
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="form-group" [ngClass]="{ 'has-error': (f.submitted || country.dirty ) && !country.valid }">
+                                        <label class="custom-form-label" for="country">*
+                                            <span [translate]="'FORM.COUNTRY'"></span>
+                                        </label>
+                                        <p-dropdown (onChange)="selectProvince()" [options]="countries" name="country"
+                                            [(ngModel)]="advisorDetails['country']" #country="ngModel" optionLabel="country"
+                                            required placeholder="{{ 'FORM.PLACEHOLDER.SELECT_A_COUNTRY' | translate }}"></p-dropdown>
+                                    </div>
+                                </div>
+
+                                <div *ngIf="provinces && provinces.length > 0" class="col-sm-8 col-12">
+                                    <div class="form-group" [ngClass]="{ 'has-error': !province.valid && (province.dirty || province.touched || f.submitted)}">
+                                        <label class="custom-form-label" for="province" [translate]="'FORM.PROVINCE'">* 
+                                         </label>
+                                        <p-dropdown [options]="provinces" name="countryProvince" [(ngModel)]="advisorDetails['province']"
+                                            #province="ngModel" optionLabel="provinceState" required placeholder="{{ ('FORM.PLACEHOLDER.SELECT_A_PROVINCE'  | translate) }}">
+                                        </p-dropdown>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4 col-4" *ngIf="selectedPostalCode === ''">
+                                    <div class="form-group" [ngClass]="{ 'has-error': !postalCode.valid && (f.submitted || postalCode.dirty ||postalCode.touched ) }">
+                                        <label *ngIf="selectedCountry['countryCode'] !== 'USA'" class="custom-form-label"
+                                            for="postalCode" [translate]="'FORM.POSTAL_CODE'"></label>
+                                        <label *ngIf="selectedCountry['countryCode'] === 'USA'" class="custom-form-label"
+                                            for="postalCode" [translate]="'FORM.ZIP_CODE'">
+                                        </label>
+                                        <input type="text" class="form-control" name="postalCode" [(ngModel)]="advisorDetails['postalcode']"
+                                            #postalCode="ngModel" pattern="{{defaultPostalCode}}">
+                                    </div>
+                                </div>
+                                <div class="col-sm-4 col-4" *ngIf="selectedPostalCode !== ''">
+                                    <div class="form-group" [ngClass]="{ 'has-error': !postalCode.valid && (f.submitted || postalCode.dirty || postalCode.touched ) }">
+                                        <label *ngIf="selectedCountry['countryCode'] !== 'USA'" class="custom-form-label"
+                                            for="postalCode" [translate]="'FORM.POSTAL_CODE'"></label>
+                                        <label *ngIf="selectedCountry['countryCode'] === 'USA'" class="custom-form-label"
+                                            for="postalCode" [translate]="'FORM.ZIP_CODE'">
+                                        </label>
+                                        <p-inputMask mask="{{selectedPostalCode}}" name="postalCode" [(ngModel)]="advisorDetails['postalcode']"
+                                            #postalCode="ngModel"></p-inputMask>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Workgroup Tile -->
+            <div class="panel" *ngIf="accessRights['WRKGR']['accessLevel'] > 1 && showWorkgroups">
+                <div class="d-flex flex-wrap panel-header mb-xl-3 mb-3">
+                    <h4 [translate]="'ABOUT_ME.WORKGROUPS'"></h4>
+                    <p class="d-flex ml-4">
+                        <a class="btn-add mr-3" [routerLink]="['add-workgroup']">
+                            <i class="ion-md-add-circle"></i>
+                            <span [translate]="'ABOUT_ME.ADD_WORKGROUP'"></span>
+                        </a>
+                    </p>
+                </div>
+                <div class="panel-body workgroups-box">
+                    <app-workgroup-tile></app-workgroup-tile>
+                </div>
+            </div>
+
+            <div class="panel mb-15">
+                <div class="d-flex flex-wrap panel-header mb-xl-3 mb-3">
+                    <h4 [translate]="'ABOUT_ME.PREFERENCES'"></h4>
+                </div>
+                <div class="panel-body preference-box">
+                    <div class="row">
+                        <div class="col-12 col-lg-6 col-md-6">
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="form-group" [ngClass]="{ 'has-error': (f.submitted || timeZone.dirty ) && !timeZone.valid }">
+                                        <label class="custom-form-label" for="timeZone" [translate]="'PREFERENCES.TIME_ZONE'"></label>
+                                        <p-dropdown [options]="timeZones" name="timeZone" [(ngModel)]="advisorDetails['timeZone']"
+                                            #timeZone="ngModel" placeholder="Select time zone" optionLabel="time"></p-dropdown>
+                                    </div>
+                                </div>
+
+                                <!-- <div *ngxPermissionsOnly="['ADVISOR']" class="col-sm-6 col-12">
+                                    <div class="form-group" [ngClass]="{ 'has-error': (f.submitted || portfolioCreationType.dirty ) && !portfolioCreationType.valid }">
+                                        <label class="custom-form-label" for="portfolioCreationType" [translate]="'PREFERENCES.PORTFOLIO_CREATION_TYPE'"></label>
+                                        <p-dropdown [options]="portfolioCreationTypeOpts" name="portfolioCreationType"
+                                            [(ngModel)]="selectedCreationType" (ngModelChange)="onChangeCreationType(selectedCreationType)"
+                                            #portfolioCreationType="ngModel" optionLabel="description"></p-dropdown>
+                                    </div>
+                                </div>
+                                <div *ngxPermissionsOnly="['ADVISOR']" class="col-sm-6 col-12">
+                                    <div class="form-group">
+                                        <label class="custom-form-label" for="portfolioSubType" [translate]="'PREFERENCES.PORTFOLIO_SUB_TYPE'"></label>
+                                        <p-dropdown [options]="portfolioSubTypeOpts" name="portfolioSubType"
+                                            [(ngModel)]="selectedSubType" #portfolioSubType="ngModel" [disabled]="isDisbleSubType"
+                                            optionLabel="description"></p-dropdown>
+                                    </div>
+                                </div>
+                                <div *ngxPermissionsOnly="['ADVISOR']" class="col-sm-8 col-12">
+                                    <div class="form-group" [ngClass]="{ 'has-error': (f.submitted || investmentPolicyManage.dirty ) && !investmentPolicyManage.valid }">
+                                        <label class="custom-form-label" for="investmentPolicyManage" [translate]="'PREFERENCES.IPM'"></label>
+                                        <p-dropdown [options]="investmentPolicyManageOpts" name="investmentPolicyManage"
+                                            [(ngModel)]="selectedIvmType" #investmentPolicyManage="ngModel" optionLabel="description"></p-dropdown>
+                                    </div>
+                                </div>
+                                <div *ngxPermissionsOnly="['ADVISOR']" class="col-sm-4 col-12">
+                                    <div class="text-right checkbox-left form-group">
+                                        <label class="custom-form-label" for="policyOutRange" [translate]="'PREFERENCES.POLICY_OUT_RANGE'"></label>
+                                        <p-checkbox name="policyOutRange" binary="true" [(ngModel)]="isOutofRange"
+                                            #policyOutRange="ngModel"></p-checkbox>
+                                    </div>
+                                </div> -->
+                            </div>
+                        </div>
+                        <div class="col-12 col-lg-6 col-md-6">
+                            <div class="col-12 pl-0" *ngIf="accessRights['WEB41']['accessLevel'] > 1">
+                                <div class="form-group" [ngClass]="{ 'has-error': (f.submitted || tnEmailUpdate.dirty ) && !tnEmailUpdate.valid }">
+                                    <label class="custom-form-label" for="tnEmailUpdate" [translate]="'PREFERENCES.NOTIFY_EMAIL_UPDATES'"></label>
+                                    <p-dropdown [options]="tnEmailUpdateOpts" name="tnEmailUpdate" [(ngModel)]="advisorDetails['tnEmailUpdate']"
+                                        #tnEmailUpdate="ngModel" optionLabel="option"></p-dropdown>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6" *ngIf="accessRights['RISKTOLERCLIENT']['accessLevel'] > 0">
+                            <div class="form-group"
+                                [ngClass]="{ 'has-error': (f.submitted || riskTolerance.dirty ) && !riskTolerance.valid }">
+                                <label class="custom-form-label" for="riskTolerance" [translate]="'PREFERENCES.RISK_TOLERANCE'"></label>
+                                <p-dropdown [options]="riskToleranceOpts" name="riskTolerance" [(ngModel)]="advisorDetails['rpqType']"
+                                    #riskTolerance="ngModel" optionLabel="label" placeholder="Select risk tolerance questionnaire">
+                                </p-dropdown>
+                            </div>
+                        </div>
+                        <!-- KYC checkbox -->
+                        <div class="col-md-2" *ngIf="accessRights['KYCINVITE']['accessLevel'] > 0">
+                            <div class="checkbox-left form-group">
+                                <label class="custom-form-label fixed-width" for="kyc" [translate]="'PREFERENCES.KYC'"></label>
+                                <p-checkbox name="kyc" value="true" binary="true" [(ngModel)]="kycCheckbox" #kyc="ngModel"></p-checkbox>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="checkbox-left form-group">
+                                <label class="custom-form-label fixed-width mb-4" for="experience" [translate]="'PREFERENCES.EXPERIENCE'"></label>
+
+                                <p-checkbox name="experience" binary="true" [(ngModel)]="experienceCheckbox" #experience="ngModel">
+                                </p-checkbox>
+                            </div>
+                        </div>
+                        <div *ngIf="accessRights['PLANTRACNOTIF']['accessLevel'] > 0" class="col-md-2">
+                            <div class="checkbox-left form-group" [ngClass]="{ 'has-error': (f.submitted || plantrac_notify.dirty ) && !plantrac_notify.valid }">
+                                <label class="custom-form-label fixed-width mb-2" for="plantrac_notify" [translate]="'PREFERENCES.PLANTRAC'"></label>
+                                <p-checkbox name="plantrac_notify" value="true" [(ngModel)]="advisorDetails['plantrac_notify']"
+                                    #plantrac_notify="ngModel"></p-checkbox>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <div class="form-group text-right">
+                        <hr>
+                        <button (click)="back(); closeButtonDisable = true" type="button" class="btn btn-secondary btn-fixwidth mr-2"
+                         [translate]="'FORM.ACTION.CANCEL'" [disabled]="closeButtonDisable"></button>
+                        <button type="submit" class="btn btn-success" [translate]="'FORM.ACTION.SAVE_CHANGES'" [disabled]="saveDisable"></button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<router-outlet></router-outlet>

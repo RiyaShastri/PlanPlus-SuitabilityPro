@@ -1,0 +1,8 @@
+{
+	"DOCUMENT_SHARE_PAGE": {
+		"SEND_SHARE": {			
+			"DOCUMENT_SHARE": "\nHello {{firstname}} {{lastname}},\n\n You have had a document shared with you.",
+			"SUBJECT": "Invite To View Document"
+		}
+	}
+}

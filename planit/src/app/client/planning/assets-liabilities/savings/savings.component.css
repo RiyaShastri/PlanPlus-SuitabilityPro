@@ -1,0 +1,24 @@
+.sort-dropdown app-common-drop-down {
+    display: flex; padding-top: 0.4rem;
+}
+
+.sort-box {
+    text-transform: capitalize;
+}
+
+.dropdown-relative {
+    position: relative;
+    width: 45px;
+    display: block;
+    margin: 0 auto;
+}
+.add-btn i {
+    background: none;
+    color: #88aa33;
+    font-size: 23px;
+}
+
+.dropdown-floating::before, .dropdown-floating::after {
+    right: 12px;
+}
+

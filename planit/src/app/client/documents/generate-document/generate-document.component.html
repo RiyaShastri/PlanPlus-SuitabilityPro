@@ -1,0 +1,157 @@
+<div class="side-form">
+    <div class="box no-footer">
+        <div class="box-header">
+            <span class="sidebar_title">{{'DOCUMENT.GENERATE_DOCUMENT.TITLE' | translate}} </span>
+            <span (click)="back(); closeButtonDisable=true" class="sidebar_action_icon ion-md-close-circle float-right"></span>
+        </div>
+
+        <div class="box-body">
+            <form name="form" (ngSubmit)="f.form.valid && saveDocument()" #f="ngForm" novalidate>
+
+                <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !fileUnderType.valid }">
+                    <label class="custom-form-label">{{'DOCUMENT.GENERATE_DOCUMENT.CHOOSE_CATEGORY' | translate}}</label>
+                    <p-dropdown (onChange)="filterDocument()" [options]="documentCategory" name="fileUnderType"
+                        [(ngModel)]="model.fileUnderType" #fileUnderType="ngModel" placeholder="{{'DOCUMENT.GENERATE_DOCUMENT.CHOOSE_CATEGORY_PALACEHOLDER' | translate}}"
+                        optionLabel="categoryName"></p-dropdown>
+
+                </div>
+                <div *ngIf="documentList.length>0" class="form-group" [ngClass]="{ 'has-error': f.submitted && !selectedDocument && !documentList}">
+                    <label class="custom-form-label">{{'DOCUMENT.GENERATE_DOCUMENT.CHOOSE_DOCUMENT' | translate}}</label>
+                    <div class="row">
+                        <ng-container *ngFor="let item of documentList">
+                            <div class="col-6">
+                                <div class="choose-document-box">
+                                    <div class="document-icon cursor-p" [ngClass]="{'active' :  item.documentID== selectedDocument}"
+                                        (click)="documentCheck(item.documentID)">
+                                        <i class="ion-md-document red"></i>
+                                    </div>
+                                    <span>{{item.documentName}}</span>
+                                </div>
+                            </div>
+                        </ng-container>
+                    </div>
+                </div>
+                <div class="form-group" *ngIf="hasPortfolio && portfolioList" [ngClass]="{ 'has-error': f.submitted && !portfolio.valid && model.portfolio }">
+                    <label class="custom-form-label">{{'DOCUMENT.GENERATE_DOCUMENT.CHOOSE_PORTFOLIO' | translate}}</label>
+                    <p-dropdown [options]="portfolioList" name="portfolio" [(ngModel)]="model.portfolio" #portfolio="ngModel"
+                        required placeholder="{{'DOCUMENT.GENERATE_DOCUMENT.CHOOSE_PORTFOLIO_PALACEHOLDER' | translate}}"
+                        optionLabel="description"></p-dropdown>
+                </div>
+                <div class="form-group" *ngIf="model.fileUnderType && selectedDocument && (hasPortfolio ? model.portfolio : !hasPortfolio )">
+                    <label class="custom-form-label">{{'DOCUMENT.GENERATE_DOCUMENT.CHOOSE_SECTION_INCLUDE' |
+                        translate}}</label>
+                    <table class="table clients-list-table">
+                        <thead>
+                            <tr>
+                                <th class="dropdown-common-big-text">
+                                    <app-common-drop-down [itemList]="templateList" (OnSelect)="templateSelect($event)"
+                                        [defaultSelected]="defaultSelected"></app-common-drop-down>
+                                </th>
+                                <th class="text-right"></th>
+                            </tr>
+                        </thead>
+                        <tbody *ngIf="templatePagesList && selectedDocument === 'PROFIL1'">
+                            <tr *ngFor="let item of templatePagesList; let i = index">
+                                <td *ngIf="item.level == '1'">
+                                    {{item.label}}
+                                </td>
+                                <td *ngIf="item.level == '2'">
+                                    {{"&nbsp;&nbsp;&nbsp;&nbsp;"+item.label}}
+                                </td>
+                                <td class="text-right fw-500">
+                                    <span class="mr-1 fs-22" [ngClass]="{'ion-md-checkbox-outline' : item.isSelected, 'ion-md-square-outline' : !item.isSelected}"
+                                        (click)="changePageSelection(i);changeTemplateNone();" [style.opacity]="item.disabled ? 0.5 : 1" > </span>
+
+                                </td>
+                            </tr>
+                        </tbody>
+
+                        <tbody *ngIf="templatePagesList &&  selectedDocument === 'PROPLANNER'">
+                            <tr *ngFor="let item of templatePagesList; let i = index">
+                                <td *ngIf="item.level == '1'">
+                                    {{item.label}}
+                                </td>
+                                <td *ngIf="item.level == '2'">
+                                    {{"&nbsp;&nbsp;&nbsp;&nbsp;"+item.label}}
+                                </td> 
+                                <td class="text-center fw-500" colspan="2">
+                                <span class="mr-1 fs-22" [ngClass]="{'ion-md-checkbox-outline' : item.isSelected, 'ion-md-square-outline' : !item.isSelected}"
+                                    (click)="changePageSelection(i);changeTemplateNone();"> </span>
+                                </td>                                                     
+                            </tr>
+                            <ng-container *ngFor="let item of templatePagesListGoals; let i = index">
+                            <tr *ngIf="i === 0 || (i > 0 && item.goalId !== templatePagesListGoals[i-1].goalId)" class="section-header">
+                                <td>
+                                    <b>{{getGoalDescById(item.goalId)}}</b>
+                                </td>
+                                <td class="text-center">
+                                    <b>Current</b>
+                                </td>
+                                <td class="text-center pl-3">
+                                    <b>Strategy</b>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td *ngIf="item.level == '1'">
+                                    {{item.label}}
+                                </td>
+                                <td *ngIf="item.level == '2'">
+                                    {{"&nbsp;&nbsp;&nbsp;&nbsp;"+item.label}}
+                                </td> 
+                                <td class="text-center">
+                                <span *ngIf="item.setting === 1" class="mr-1 fs-22" [ngClass]="{'ion-md-checkbox-outline' : item.isSelected, 'ion-md-square-outline' : !item.isSelected}"
+                                    (click)="changePageSelectionGoalsCurrent(i);changeTemplateNone();"> </span></td>
+                                <td class="text-center pl-3">
+                                    <span *ngIf="item.strategySetting === 1" class="mr-1 fs-22" [ngClass]="{'ion-md-checkbox-outline' : item.isSelectedStrategy, 'ion-md-square-outline' : !item.isSelectedStrategy}"
+                                    (click)="changePageSelectionGoalsStrategy(i);changeTemplateNone();"> </span>
+                                </td>
+                            </tr>
+                            </ng-container>
+
+                        </tbody>
+                    </table>
+                </div>
+                <div class="form-group" *ngIf="model.fileUnderType && selectedDocument && (hasPortfolio ? model.portfolio : !hasPortfolio )">
+                    <div class="d-flex flex-wrap selectall">
+                        <span (click)="selectPageSelection(true)" class="mr-auto cursor-p">
+                            <i class="ion-md-checkbox-outline mr-2"></i>{{'FORM.SELECT_ALL' | translate}}
+                        </span>
+                        <span (click)="selectPageSelection(false)" class="cursor-p">
+                            <i class="ion-md-square-outline mr-2"></i>{{'FORM.SELECT_NONE' | translate}}
+                        </span>
+                    </div>
+                </div>
+                <!-- <div class="form-group" *ngIf="!hasPortfolio && documentList"    [ngClass]="{ 'has-error': f.submitted && !templateName.valid }">
+                    <label class="custom-form-label">{{ 'FORM.ACTION.SAVETEMPLATE' | translate}}</label>
+                    <input type="text" class="form-control small" name="templateName" [(ngModel)]="model.templateName" #templateName="ngModel"/>
+                </div> -->
+                <div class="form-group text-right">
+                    <button (click)="back(); closeButtonDisable=true" type="button" class="btn btn-small btn-secondary" [ngClass]="{'mr-2': model.fileUnderType && selectedDocument}"
+                    [disabled]="closeButtonDisable">{{'FORM.ACTION.CANCEL' | translate }}</button>
+                    <button *ngIf="model.fileUnderType && selectedDocument && (hasPortfolio ? model.portfolio : !hasPortfolio )" [disabled]="loading || !f.form.valid"
+                        class="btn btn-small btn-success">{{ 'FORM.ACTION.GENERATE' | translate }} <i class="fa fa-spinner fa-pulse"
+                            style="color:#fff" *ngIf="loading"></i></button>
+                </div>
+            </form>
+            <form *ngIf="model.fileUnderType && selectedDocument && (hasPortfolio ? model.portfolio : !hasPortfolio )"
+                name="formTemplate" (ngSubmit)="formTemplate.form.valid && SaveTemplate()" #formTemplate="ngForm"
+                novalidate>
+                <div class="form-group">
+                    <label class="custom-form-label">{{ 'GENERATE_REPORT.FORMATS' | translate }}</label>
+                    <p-dropdown required [options]="reportFormats" name="reportFormat" [(ngModel)]="model.reportFormat"
+                        #reportFormat="ngModel" optionLabel="description"
+                        placeholder="{{ this.selectedFormat | translate }}"></p-dropdown>
+                </div>
+                <div class="form-group" [ngClass]="{ 'has-error': formTemplate.submitted && !templateName.valid }">
+                    <label class="custom-form-label">{{'DOCUMENT.GENERATE_DOCUMENT.TEMPLATE_NAME' | translate}}</label>
+                    <input type="text" class="form-control" name="templateName" [(ngModel)]="model.templateName"
+                        pattern="^[a-zA-Z0-9]+( [a-zA-Z0-9\s]+)*$" #templateName="ngModel" required />
+                </div>
+                <div class="form-group text-right">
+                    <button [disabled]="loading || !formTemplate.form.valid" class="btn btn-small btn-success">{{
+                        'FORM.ACTION.SAVETEMPLATE' | translate }}</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

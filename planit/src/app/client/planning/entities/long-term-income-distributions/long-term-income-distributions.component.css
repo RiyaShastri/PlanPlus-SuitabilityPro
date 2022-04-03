@@ -1,0 +1,38 @@
+.index-rate-header {
+    width: 95px;
+    margin: 0 !important;
+}
+
+.long-term-income-tooltip {
+    display: inline-block;
+    width: 120px;
+}
+
+.dropdown-distribution-action.dropdown-floating .floating-dropdown li a {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+@media(max-width: 480px) {
+    .long-term-income-table thead th {
+        padding-right: 5px;
+    }
+
+    .long-term-income-table thead th .index-rate-header {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        width: 55px;
+    }
+}
+
+@media(max-width: 375px) {
+    .long-term-income-tooltip {
+        width: 65px;
+    }
+}
+
+.income-ellipse{
+  width: 100%;
+}

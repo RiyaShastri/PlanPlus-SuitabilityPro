@@ -1,0 +1,72 @@
+<div class="side-form">
+    <div class="box">
+        <form name="form" (ngSubmit)="f.form.valid && submitForm()" #f="ngForm" novalidate>
+            <div class="box-header">
+                <span class="sidebar_title" [translate]="'ESTATE_PLANING.DISTRIBUTIONS.RESIDUAL_DISTRIBUTION'"></span>
+                <span (click)="back()" class="sidebar_action_icon ion-md-close-circle float-right"></span>
+            </div>
+
+            <div class="box-body">
+                <div class="form-group">
+                    <h4 class="d-inline-block beneficiary-header"
+                        [translate]="'ESTATE_PLANING.DISTRIBUTIONS.RESIDUAL_BENEFICIARIES'"></h4>
+                    <div class="d-inline-block float-right">
+                        <a (click)="openAddBeneficiary()" class="btn-add">
+                            <i class="ion-md-add-circle"></i>
+                            <span [translate]="'ESTATE_PLANING.ADD_BENEFICIARY'"></span>
+                        </a>
+                    </div>
+                    <hr />
+                </div>
+                <div class="form-group">
+                    <table class="table residual-distribution-table">
+                        <thead>
+                            <tr>
+                                <th [translate]="'ESTATE_PLANING.BENEFICIARY'"></th>
+                                <th [translate]="'ESTATE_PLANING.RELATIONSHIP'"></th>
+                                <th [translate]="'ESTATE_PLANING.DISTRIBUTIONS.PERCENTAGE'"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let beneficiary of residualDistribution; let i = index">
+                                <td>{{beneficiary['beneficiaryName']}}</td>
+                                <td>{{beneficiary['relation']}}</td>
+                                <td>
+                                    <div class="form-group mb-0" *ngIf="beneficiary.beneficiaryId !== null"
+                                        [ngClass]="{'has-error': !percent.valid && (percent.dirty || f.submitted) }">
+                                        <input [style.width.px]="65" type="text" name="percent_{{i}}"
+                                            [(ngModel)]="beneficiary['value']" #percent="ngModel"
+                                            class="form-control d-inline-block text-right"
+                                            [textMask]="{mask: percentDecimalMask}" appNumeric required (input)="changeDistributionPercent()">
+                                        <div class="d-inline-block float-right"
+                                            *ngIf="beneficiary.beneficiaryId !== null">
+                                            <a class="delete-btn">
+                                                <i class="ion-android-cancel"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="form-group mb-0">
+                                        <span *ngIf="beneficiary.beneficiaryId === null">{{beneficiary['value']}}</span>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="3">
+                                    <p *ngIf="showError" class="text-error mb-1" [translate]="'ESTATE_PLANING.DISTRIBUTIONS.ERROR_TOTAL_MORE_THAN_100'"></p>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="box-footer">
+                <div class="form-group text-right">
+                    <button type="button" (click)="closeButtonDisabled = true; back()" value="cancel" class="btn btn-secondary btn-small"
+                        [translate]="'FORM.ACTION.CANCEL'" [disabled]="closeButtonDisabled"></button>
+                    <button type="submit" value="submit" [disabled]="f.form.invalid || saveButtonDisabled || showError"
+                        class="btn btn-success btn-small mr-3" [translate]="'FORM.ACTION.SAVE'"></button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

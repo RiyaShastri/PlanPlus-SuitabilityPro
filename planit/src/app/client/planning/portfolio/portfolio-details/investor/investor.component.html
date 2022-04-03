@@ -1,0 +1,104 @@
+<div class="mt-3">
+    <div class="row investor-waring">
+        <div class="col-12">
+            <h6 class="fw-700 d-inline" *ngxPermissionsOnly="['PROFILER']">
+                {{ 'PORTFOLIO.DETAIL.INVESTOR' | translate}}
+               
+                    <ng-container *ngIf="!selectDecisionMaker && portfolioDetailResponse.ownership.length > 1">
+                        <span class="ion-ios-alert" [ngbTooltip]="keyWarning" #warning="ngbTooltip" triggers="manual"
+                        placement="bottom right" (click)="warning.open()"></span>
+                        <ng-template #keyWarning>
+                            <p>{{ 'PORTFOLIO.ADD_INVESTOR.INVESTOR_WARNING' | translate}}</p>
+                            <p class="text-right m-0 p-0">
+                                <button class="btn btn-secondary btn-small m-0" (click)="warning.close()" [translate]="'RISK_RESULTS_PAGE.WARNING.CLOSE'"></button>
+                            </p>
+                        </ng-template>
+                    </ng-container>
+                
+            </h6>
+            <h6 *ngxPermissionsExcept="['PROFILER']" class="fw-700 d-inline" [translate]="'PORTFOLIO.DETAIL.INVESTOR'"></h6>
+            <ng-container *ngxPermissionsExcept="['ADVISOR']">
+                <a *ngIf="isEditableRoute && allowAddInvestors" routerLink="add-investor" class="btn-add pull-right">
+                    <i class="ion-md-add-circle"></i>
+                    <span [translate]="'PORTFOLIO.ADD_INVESTOR.TITLE'"></span>
+                </a>
+                <a *ngIf="!isEditableRoute || !allowAddInvestors" class="btn-add pull-right disabled-link">
+                    <i class="ion-md-add-circle"></i>
+                    <span [translate]="'PORTFOLIO.ADD_INVESTOR.TITLE'"></span>
+                </a>
+            </ng-container>
+        </div>
+    </div>
+    <hr class="mb-5" />
+    <p class="text-secondary" *ngIf="portfolioDetailResponse && portfolioDetailResponse.ownership.length == 0" [translate]="'PORTFOLIO.ADD_INVESTOR.NO_INVESTORS_ADDED'"></p>
+    <table class="investor-table table" *ngIf="portfolioDetailResponse && portfolioDetailResponse.ownership.length > 0">
+        <thead>
+            <tr>
+                <th [translate]="'PORTFOLIO.TABLE.DECISION_MAKER'" width="60" *ngIf="portfolioDetailResponse.ownership.length > 1"></th>
+                <th [translate]="'PORTFOLIO.TABLE.INVESTOR'"></th>
+                <th *ngxPermissionsOnly="['PROFILER']" [translate]="'PORTFOLIO.TABLE.RISK_TOLERANCE'" class="text-left risk-tolerance-width"></th>
+                <ng-container *ngxPermissionsOnly="['ADVISOR']">
+                    <th [translate]="'PORTFOLIO.TABLE.PERCENT_PORTFOLIO'" class="text-right hidden-xs-down" *ngIf="portfolioDetailResponse.ownership.length > 1"></th>
+                </ng-container>
+                <!-- <th [translate]="'PORTFOLIO.TABLE.PERCENT_PORTFOLIO'" class="text-right hidden-xs-down" *ngIf="portfolioDetailResponse.ownership.length > 1"></th> -->
+                <th [translate]="'PORTFOLIO.TABLE.INVESTED'" class="text-right invested-td-width"></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let investor of portfolioDetailResponse.ownership; let i = index;">
+                <td class="py-2" *ngIf="portfolioDetailResponse.ownership.length > 1">
+                    <div class="form-group">
+                        <p-radioButton name="decision_maker" [value]="investor.personalDetails.id" [(ngModel)]="decisionMaker"
+                            [disabled]="!isEditableRoute || (isEditableRoute && !selectDecisionMaker)" (onClick)="changeDecisionMaker(investor.personalDetails.id)"></p-radioButton>
+                    </div>
+                </td>
+                <td class="py-2 position-relative">
+                    <span *ngIf="!investor.personalDetails.avatar" class="initials {{investor.personalDetails.btnColor}} h-22px ">
+                        <i class="ion-ios-person"></i>
+                    </span>
+                    <img *ngIf="investor.personalDetails.avatar" [src]="investor.personalDetails.avatar" (error)="investor.personalDetails.avatar = null" class="initials">
+                    <span class="ml-2 fw-400 investor_name">{{investor.personalDetails.firstName}}</span>
+                </td>
+                <td class="py-2 risk-tolerance-width text-left" *ngxPermissionsOnly="['PROFILER']">
+                    <div *ngIf="investor.riskScore && investor.riskScore > 0; else blank">
+                        <span class="badge-number">
+                            {{investor.riskScore}}
+                        </span>
+                        <!-- <span class="badge-text">{{getRiskBadge(investor.riskScore)}}</span> -->
+                    </div>
+                </td>
+                <ng-template #blank><span></span></ng-template>
+                <ng-container *ngxPermissionsOnly="['ADVISOR']">
+                    <td class="py-2 text-right hidden-xs-down" *ngIf="portfolioDetailResponse.ownership.length > 1">
+                        {{investor.percent / 100 | percent}}
+                    </td>
+                </ng-container>
+                <ng-container *ngxPermissionsOnly="['ADVISOR']">
+                    <td class="py-2 text-right invested-td-width">
+                        {{investor.invested | currency:clientData['currencyCode']:'symbol-narrow':'1.0-0'}}
+                    </td>
+                </ng-container>
+                <ng-container *ngxPermissionsExcept="['ADVISOR']">
+                    <td class="py-2 text-right invested-td-width" *ngIf="i === 0 && !isEditableRoute">
+                        {{(totalInvested && totalInvested > 0 ? totalInvested : 0 ) |
+                        currency:clientData['currencyCode'] :'symbol-narrow':'1.0-0'}}
+                    </td>
+                    <td class="py-2 text-right invested-td-width form-group" *ngIf="i === 0 && isEditableRoute">
+                        <input type="text" name="amountText" class="form-control d-inline-block text-right h-25"
+                            [(ngModel)]="totalInvested" #amountText="ngModel" (ngModelChange)="changeTotalInvestment(totalInvested)"
+                            [textMask]="{mask: currencyMask}" appNumeric required>
+                    </td>
+                    <td class="py-2 text-right invested-td-width border-0" *ngIf="i !== 0 && isEditableRoute"></td>
+                </ng-container>
+            </tr>
+        </tbody>
+    </table>
+    <div id="investorChart" *ngxPermissionsOnly="['ADVISOR']" class="stacked-chart mt-0"></div>
+    <div class="text-right py-2">
+        <span class="d-inline" [translate]="'PORTFOLIO.TABLE.TOTAL'"></span>
+        <h5 class="pl-1 d-inline text-secondary fw-400">
+            {{ ((totalInvested && totalInvested > 0 ) ? totalInvested : 0) | currency:clientData['currencyCode']
+            :'symbol-narrow':'1.0-0'}}
+        </h5>
+    </div>
+</div>

@@ -1,0 +1,635 @@
+<div class="side-form side-form-large side-form-full-width">
+    <form name="form" #f="ngForm">
+        <div class="box">
+            <div class="box-header">
+                <span class="sidebar_title">{{ 'CALCULATOR.CALCULATORS_TITLE' | translate }}</span>
+                <span (click)="back()" class="sidebar_action_icon ion-md-close-circle float-right"></span>
+            </div>
+            <div class="box-body">
+                <div class="leverage-calculator calculator-wrap calculator-table-alignment-wrapper">
+                    <div class="row">
+                        <div class="col-12">
+                            <app-calculator-header [clientId]="clientId" currentCalculator="loan-calculator">
+                            </app-calculator-header>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-12" *ngIf="leverageDropdownlist.length > 0">
+                            <div class="form-group d-flex d-inline-block drop-down-wrap mb-3">
+                                <div class="mr-3 w-25 form-group mb-0" [ngClass]="{'has-error': !leverageDropdown.valid && f.submitted}">
+                                    <p-dropdown [options]="leverageDropdownlist" optionLabel="ssid" name="leverageDropdown" #leverageDropdown="ngModel" [(ngModel)]="leverageDropdownvalue" (onChange)="changeScenario()" placeholder="{{'CALCULATOR.LEVERAGE.SELECT_LEVERAGE_DROPDOWN' | translate}}"
+                                        required>
+                                    </p-dropdown>
+                                </div>
+                                <button type="button" class="m-0 align-content-center btn btn-small btn-secondary mr-2" [translate]="'CALCULATOR.LOAD'" (click)="refreshData()"></button>
+                                <span class="pt-2 align-content-center ml-auto save-date-wrap">{{ 'CALCULATOR.DATE_SAVED' | translate }}
+                                    {{leverageDetails['updatedDate'] ? leverageDetails['updatedDate'] :"N/A"}}</span>
+                            </div>
+                            <p *ngIf="leverageDetails['errors'] && leverageDetails['errors']['beforeTaxRetWarning']" class="text-error mb-1">
+                                {{('SSID_LABELS.LEVERAGE_CALC_ERRORS.beforeTaxRetWarning') | translate}} </p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="calulater-inner-wrap mb-15">
+                                <h4 class="leverage-title fw-600" [translate]="'CALCULATOR.LEVERAGE.SCENARIO'"> </h4>
+                                <div class="row">
+                                    <div class="col-12 col-md-6 col-xl-6">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <div class="row align-items-center">
+                                                    <div class="col-6">
+                                                        <div class="form-group mb-0">
+                                                            <span class="align-content-center" [translate]="'CALCULATOR.LEVERAGE.SCENARIO_DESCRIPTION'">
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <div class="form-group" [ngClass]="{ 'has-error': !description.valid && f.submitted}">
+                                                            <input type="text" name="description" #description="ngModel" [(ngModel)]="leverageDetails['description']" class="form-control">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row align-items-center">
+                                                    <div class="col-6">
+                                                        <div class="form-group mb-0">
+                                                            <span class="align-content-center" [translate]="'CALCULATOR.LEVERAGE.PROVINCE'"></span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-6">
+
+                                                        <div class="form-group" *ngIf="province.length > 0" [ngClass]="{ 'has-error': !provinceDataDropdown.valid && f.submitted }">
+                                                            <p-dropdown [options]="province" optionLabel="provinceState" name="provinceDataDropdown" #provinceDataDropdown="ngModel" [(ngModel)]="clientDefaultProvince" (onChange)="onChangeCalculation()">
+                                                            </p-dropdown>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-6 col-xl-6">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <div class="row align-items-center">
+                                                    <div class="col-6">
+                                                        <div class="form-group mb-0">
+                                                            <span class="align-content-center" [translate]="'CALCULATOR.LEVERAGE.MARGINAL_TAX_RATE'"></span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <div class="form-group" [ngClass]="{ 'has-error': !taxRate.valid && (f.submitted || taxRate.dirty) }">
+                                                            <input type="text" class="form-control text-right" [customMin]="0" [customMax]="100" [(ngModel)]="leverageDetails['taxRate']" #taxRate="ngModel" name="taxRate" [textMask]="{mask: percentMask}" appNumeric (input)="onChangeCalculation()" />
+                                                        </div>
+                                                        <p *ngIf="leverageDetails['errors'] && leverageDetails['errors']['taxRate']" class="text-error mb-1">
+                                                            {{('SSID_LABELS.LEVERAGE_CALC_ERRORS.' + leverageDetails['errors']['taxRate']) | translate}}
+                                                        </p>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="calulater-inner-wrap mb-15">
+                                <h4 class="leverage-title fw-600" [translate]="'CALCULATOR.LEVERAGE.LOAN_DETAILS'">
+                                </h4>
+                                <div class="row">
+                                    <div class="col-12 col-sm-6 col-xl-6">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <div class="row align-items-center">
+                                                    <div class="col-6 col-sm-6 col-xl-6">
+                                                        <div class="form-group radio-wrap" [ngClass]="{ 'has-error': !loanDetail.valid && f.submitted }">
+                                                            <p-radioButton name="loanDetail" value=0 #loanDetail="ngModel" [(ngModel)]="leverageDetails['amountOrPayment']" required (ngModelChange)="onChangeCalculation()">
+                                                            </p-radioButton>
+                                                            <label class="radio-inline" [translate]="'CALCULATOR.LEVERAGE.LOAN_AMOUNT'">
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-6 col-sm-4 col-xl-4">
+                                                        <div *ngIf="leverageDetails['amountOrPayment'] == 0 " class="form-group" [ngClass]="{ 'has-error': !loanAmounttxt.valid && (f.submitted || loanAmounttxt.dirty) }">
+                                                            <input type="text" class="form-control text-right" #loanAmounttxt="ngModel" [customMin]="0" [textMask]="{mask: currencyMask}" appNumeric [(ngModel)]="leverageDetails['loanAmount']" name="loanAmounttxt" (input)="onChangeCalculation()" />
+                                                        </div>
+                                                        <p *ngIf="leverageDetails['errors'] && leverageDetails['errors']['loanAmount']" class="text-error mb-1">
+                                                            {{('SSID_LABELS.LEVERAGE_CALC_ERRORS.' + leverageDetails['errors']['loanAmount'] | translate)}}
+                                                        </p>
+                                                        <div *ngIf="leverageDetails['amountOrPayment'] != 0" class="text-right">
+                                                            <label>
+                                                                {{leverageDetails['loanAmount'] | currency:clientData['currencyCode']:'symbol-narrow':'1.0-0'}}
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row align-items-center">
+                                                    <div class="col-6 col-sm-6 col-xl-6">
+                                                        <div class="form-group radio-wrap" [ngClass]="{ 'has-error': !loanDetail.valid && f.submitted }">
+                                                            <p-radioButton name="loanDetail" value=1 #loanDetail="ngModel" [(ngModel)]="leverageDetails['amountOrPayment']" required (ngModelChange)="onChangeCalculation()">
+                                                            </p-radioButton>
+                                                            <label class="radio-inline" [translate]="'CALCULATOR.LEVERAGE.ANNUAL_PAYMENT'">
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-6 col-sm-4 col-xl-4">
+                                                        <div class="form-group" *ngIf="leverageDetails['amountOrPayment'] == 1 " [ngClass]="{ 'has-error': !annualPayment.valid && (f.submitted || annualPayment.dirty) }">
+                                                            <input type="text" class="form-control text-right" [customMin]="0" [textMask]="{mask: currencyMask}" appNumeric name="annualPayment" #annualPayment="ngModel" [(ngModel)]="leverageDetails['annualPayment']" (input)="onChangeCalculation()" />
+                                                        </div>
+                                                        <p *ngIf="leverageDetails['errors'] && leverageDetails['errors']['annualPayment']" class="text-error mb-1">
+                                                            {{('SSID_LABELS.LEVERAGE_CALC_ERRORS.' + leverageDetails['errors']['annualPayment']) | translate}}
+                                                        </p>
+                                                        <div *ngIf="leverageDetails['amountOrPayment'] != 1" class="text-right">
+                                                            <label>
+                                                                {{leverageDetails['annualPayment'] | currency:clientData['currencyCode']:'symbol-narrow':'1.0-0'}}
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row align-items-center">
+                                                    <div class="col-6 col-sm-6 col-xl-6">
+                                                        <div class="form-group mb-0">
+                                                            <span class="align-content-center" [translate]="'CALCULATOR.LEVERAGE.INTREST_RATE_ON_LOAN'"></span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-6 col-sm-4 col-xl-4">
+                                                        <div class="form-group" [ngClass]="{ 'has-error': !loanInterest.valid && (f.submitted || loanInterest.dirty) }">
+                                                            <input type="text" class="form-control text-right" #loanInterest="ngModel" [customMin]="0" [customMax]="100" [(ngModel)]="leverageDetails['loanInterest']" [textMask]="{mask: percentMask}" appNumeric (input)="onChangeCalculation()" name="loanInterest"
+                                                                required />
+                                                        </div>
+                                                        <p *ngIf="leverageDetails['errors'] && leverageDetails['errors']['loanInterest']" class="text-error mb-1">
+                                                            {{('SSID_LABELS.LEVERAGE_CALC_ERRORS.' + leverageDetails['errors']['loanInterest']) | translate}}
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                                <div class="row align-items-center">
+                                                    <div class="col-6 col-sm-6 col-xl-6">
+                                                        <div class="form-group mb-0">
+                                                            <span class="align-content-center" [translate]="'CALCULATOR.LEVERAGE.LOAN_PERIOD'">
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-6 col-sm-4 col-xl-4">
+                                                        <div class="form-group" [ngClass]="{ 'has-error': !savingsPeriod.valid && (f.submitted || savingsPeriod.dirty) }">
+                                                            <input type="text" class="form-control text-right" #savingsPeriod="ngModel" [customMin]="0" [(ngModel)]="leverageDetails['savingsPeriod']" (input)="onChangeCalculation()" name="savingsPeriod" />
+                                                        </div>
+                                                        <p *ngIf="leverageDetails['errors'] && leverageDetails['errors']['savingsPeriod']" class="text-error mb-1">
+                                                            {{('SSID_LABELS.LEVERAGE_CALC_ERRORS.' + leverageDetails['errors']['savingsPeriod']) | translate}}
+                                                        </p>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-sm-6 col-xl-6">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <div class="row align-items-center">
+                                                    <div class="col-3 col-sm-4 col-xl-4 px-2">
+                                                        <div class="form-group mb-0">
+                                                            <span class="align-content-center" [translate]="'CALCULATOR.LEVERAGE.LOAN_TYPE'"> </span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-5 col-sm-4 col-xl-4 px-2">
+                                                        <div class="form-group radio-wrap" [ngClass]="{ 'has-error': !loanType.valid && f.submitted }">
+                                                            <p-radioButton name="loanType" value=0 #loanType="ngModel" [(ngModel)]="leverageDetails['interestOrTerm']" (ngModelChange)="onChangeCalculation()" required>
+                                                            </p-radioButton>
+
+                                                            <label class="radio-inline" [translate]="'CALCULATOR.LEVERAGE.INTEREST_ONLY'">
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-4 col-sm-4 col-xl-4 px-2">
+                                                        <div class="form-group radio-wrap" [ngClass]="{ 'has-error': !loanType.valid && f.submitted }">
+
+                                                            <p-radioButton name="loanType" value=1 #loanType="ngModel" [(ngModel)]="leverageDetails['interestOrTerm']" (ngModelChange)="onChangeCalculation()" required>
+                                                            </p-radioButton>
+                                                            <label class="radio-inline" [translate]="'CALCULATOR.LEVERAGE.TERM_LOAN'">
+
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row align-items-center">
+                                                    <div class="col-6 col-sm-4 col-xl-4 px-2">
+                                                        <div class="form-group mb-0">
+                                                            <span class="align-content-center" [translate]="'CALCULATOR.LEVERAGE.DEDUCTIBLE'"></span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-6 col-sm-4 col-xl-4 px-2">
+                                                        <div class="form-group" [ngClass]="{ 'has-error': !percentDeductible.valid && (f.submitted || percentDeductible.dirty) }">
+                                                            <input type="text" class="form-control text-right" name="percentDeductible" #percentDeductible="ngModel" [customMin]="0" [customMax]="100" [(ngModel)]="leverageDetails['percentDeductible']" [textMask]="{mask: percentMask1}" appNumeric (input)="onChangeCalculation()"
+                                                            />
+                                                        </div>
+                                                        <p *ngIf="leverageDetails['errors'] && leverageDetails['errors']['percentDeductible']" class="text-error mb-1">
+                                                            {{('SSID_LABELS.LEVERAGE_CALC_ERRORS.' + leverageDetails['errors']['percentDeductible']) | translate}}
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="calulater-inner-wrap mb-15">
+                                <h4 class="leverage-title fw-600" [translate]="'CALCULATOR.LEVERAGE.BEFORE_TAX_RETURN'"> </h4>
+                                <div class="row" *ngIf="rateIllustrate.length < 4">
+                                    <div class="col-12 btn-add">
+                                        <a (click)="addRateIllustrate()" class="btn-add">
+                                            <i class="ion-md-add-circle"></i>
+                                            <span [translate]="'CALCULATOR.LEVERAGE.ADD_RATE_TO_ILLUSTRATE'"></span>
+                                        </a>
+                                    </div>
+                                </div>
+                                <p *ngIf="leverageDetails['errors'] && leverageDetails['errors']['beforeTaxRetErr']" class="text-error mb-1">
+                                    {{('SSID_LABELS.LEVERAGE_CALC_ERRORS.' + leverageDetails['errors']['beforeTaxRetErr']) | translate}}
+                                </p>
+                                <div class="row">
+                                    <div class="col-12 col-sm-6 col-xl-4">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <div class="row align-items-center">
+                                                    <div class="col-6 col-sm-6 col-xl-6">
+                                                        <div class="form-group mb-0">
+                                                            <span class="align-content-center" [translate]="'CALCULATOR.LEVERAGE.NO_GROWTH'"> </span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-6 col-sm-6 col-xl-6">
+                                                        <div class="form-group">
+                                                            <span>{{leverageDetails['noGroth'] | number: '1.0-2'}}%</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row align-items-center">
+                                                    <div class="col-6 col-sm-6 col-xl-6">
+                                                        <div class="form-group mb-0">
+                                                            <span class="align-content-center" [translate]="'CALCULATOR.LEVERAGE.BREAK_EVEN_POINT'">
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-6 col-sm-6 col-xl-6">
+                                                        <div class="form-group">
+                                                            <span>{{leverageDetails['breakEvenPoint'] | number: '1.0-2'}}%</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row align-items-center">
+                                                    <div class="col-6 col-sm-6 col-xl-6">
+                                                        <div class="form-group mb-0">
+                                                            <span class="align-content-center" [translate]="'CALCULATOR.LEVERAGE.EXPECTED_RETURN'">
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-6 col-sm-6 col-xl-6">
+                                                        <div class="form-group">
+                                                            <span>{{leverageDetails['expectedReturn'] | number: '1.0-2'}}%</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-sm-4 col-xl-3">
+                                        <div class="row">
+                                            <div class="col-12 col-sm-12 col-xl-10">
+                                                <div class="row align-items-center">
+                                                    <div class="col-5 col-sm-12">
+                                                        <div class="form-group mb-2">
+                                                            <span class="align-content-center" [translate]="'CALCULATOR.LEVERAGE.ADDITIONAL_RATE_FOR_ILLUSTRATION'">
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-7 col-sm-12">
+                                                        <div *ngIf="rateIllustrate && rateIllustrate.length > 0 ">
+                                                            <div class="row">
+                                                                <ng-container *ngFor="let data of rateIllustrate; index as i">
+                                                                    <div class="col-6 col-sm-6 col-xl-6 mb-5 add-illustration-wrap-{{i}}">
+                                                                        <div class="form-group" [ngClass]="{ 'has-error': !ratesIllustration.valid && (f.submitted || ratesIllustration.dirty) }">
+                                                                            <input type="text" name="ratesIllustration{{i}}" class="form-control text-right" [(ngModel)]="data.value" #ratesIllustration="ngModel" [customMin]="0" [customMax]="20" [textMask]="{mask: percentMask1}" appNumeric (input)="onChangeCalculation()" required
+                                                                            />
+                                                                        </div>
+                                                                    </div>
+                                                                    <div *ngIf="rateIllustrate.length === 2" class="col-6 col-sm-6 col-xl-6 mb-5 add-illustration-wrap-{{i}}">
+                                                                    </div>
+                                                                </ng-container>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="calulater-inner-wrap mb-15">
+                                <h4 class="leverage-title fw-600" [translate]="'CALCULATOR.LEVERAGE.INCOME_DISTRIBUTION'"> </h4>
+                                <div class="row">
+                                    <div class="col-12 col-sm-12 col-xl-8">
+                                        <p *ngIf="leverageDetails['errors'] && leverageDetails['errors']['returnBreakdownSum']" class="text-error mb-1">
+                                            {{('SSID_LABELS.LEVERAGE_CALC_ERRORS.' + leverageDetails['errors']['returnBreakdownSum']) | translate}}
+                                        </p>
+                                        <p *ngIf="leverageDetails['errors'] && leverageDetails['errors']['returnBreakdownTaxes']" class="text-error mb-1">
+                                            {{('SSID_LABELS.LEVERAGE_CALC_ERRORS.' + leverageDetails['errors']['returnBreakdownTaxes']) | translate}}
+                                        </p>
+                                        <p *ngIf="leverageDetails['errors'] && leverageDetails['errors']['dividendCredit']" class="text-error mb-1">
+                                            {{('SSID_LABELS.LEVERAGE_CALC_ERRORS.' + leverageDetails['errors']['dividendCredit']) | translate}}
+                                        </p>
+                                        <div class="table-responsive">
+                                            <table class="table table-borderless ">
+                                                <thead>
+                                                    <tr class="text-center">
+                                                        <th class="border-0" width="40%"></th>
+                                                        <th class="border-0" width="20%"> </th>
+                                                        <th class="border-0" width="20%" [translate]="'CALCULATOR.LEVERAGE.TAXED'">
+                                                        </th>
+                                                        <th class="border-0" width="20%" [translate]="'CALCULATOR.LEVERAGE.CREDIT'">
+                                                        </th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr class="">
+                                                        <td width="40%">
+                                                            <div class="form-group mb-0">
+                                                                <span class="align-content-center" [translate]="'CALCULATOR.LEVERAGE.INTEREST_OR_FOREIGN_DIVIDEND'">
+                                                                </span>
+                                                            </div>
+
+                                                        </td>
+                                                        <td width="20%">
+                                                            <div class="col-12 form-group" [ngClass]="{ 'has-error': !interestOrForeignDividendPortion.valid && (f.submitted || interestOrForeignDividendPortion.dirty) }">
+                                                                <input type="text" class="form-control text-right" #interestOrForeignDividendPortion="ngModel" [(ngModel)]="leverageDetails['interestOrForeignDividendPortion']" name="interestOrForeignDividendPortion" [textMask]="{mask: percentMask}" appNumeric (input)="onChangeCalculation()"
+                                                                />
+                                                            </div>
+                                                        </td>
+                                                        <td width="20%">
+                                                            <div class="col-12 form-group" [ngClass]="{ 'has-error': !interestOrForeignDividendPortionTax.valid && (f.submitted || interestOrForeignDividendPortionTax.dirty) }">
+                                                                <input type="text" class="form-control text-right" [(ngModel)]="leverageDetails['interestOrForeignDividendPortionTax']" #interestOrForeignDividendPortionTax="ngModel" name="interestOrForeignDividendPortionTax" [textMask]="{mask: percentMask}" appNumeric
+                                                                    (input)="onChangeCalculation()" />
+                                                            </div>
+                                                        </td>
+                                                        <td width="20%"></td>
+                                                    </tr>
+                                                    <tr class="">
+                                                        <td width="40%" [translate]="'CALCULATOR.LEVERAGE.DIVIDEND'">
+                                                        </td>
+                                                        <td width="20%">
+                                                            <div class="col-12 form-group" [ngClass]="{ 'has-error': !dividendPortion.valid && (f.submitted || dividendPortion.dirty) }">
+                                                                <input type="text" class="form-control text-right" [(ngModel)]="leverageDetails['dividendPortion']" #dividendPortion="ngModel" name="dividendPortion" [textMask]="{mask: percentMask}" appNumeric (input)="onChangeCalculation()" />
+                                                            </div>
+                                                        </td>
+                                                        <td width="20%">
+                                                            <div class="col-12 form-group" [ngClass]="{ 'has-error': !dividendPortionTax.valid && (f.submitted || dividendPortionTax.dirty) }">
+                                                                <input type="text" class="form-control text-right" [(ngModel)]="leverageDetails['dividendPortionTax']" #dividendPortionTax="ngModel" name="dividendPortionTax" [textMask]="{mask: percentMask}" appNumeric (input)="onChangeCalculation()" />
+                                                            </div>
+                                                        </td>
+                                                        <td width="20%">
+                                                            <div class="col-12 form-group" [ngClass]="{ 'has-error': !dividendCredit.valid && (f.submitted || dividendCredit.dirty) }">
+                                                                <input type="text" class="form-control text-right" [(ngModel)]="leverageDetails['dividendCredit']" #dividendCredit="ngModel" name="dividendCredit" [customMin]="0" [textMask]="{mask: percentMask}" appNumeric (input)="onChangeCalculation()" />
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr class="">
+                                                        <td width="40%" [translate]="'CALCULATOR.LEVERAGE.TAXABLE_CAPITAL_GAINS'">
+                                                        </td>
+                                                        <td width="20%">
+                                                            <div class="col-12 form-group" [ngClass]="{ 'has-error': !taxableCapitalGainsPortion.valid && (f.submitted || taxableCapitalGainsPortion.dirty) }">
+                                                                <input type="text" class="form-control text-right" [(ngModel)]="leverageDetails['taxableCapitalGainsPortion']" #taxableCapitalGainsPortion="ngModel" name="taxableCapitalGainsPortion" [textMask]="{mask: percentMask}" appNumeric (input)="onChangeCalculation()"
+                                                                />
+                                                            </div>
+                                                        </td>
+                                                        <td width="20%">
+                                                            <div class="col-12 form-group" [ngClass]="{ 'has-error': !taxableCapitalGainsPortionTax.valid && (f.submitted || taxableCapitalGainsPortionTax.dirty) }">
+                                                                <input type="text" class="form-control text-right" [(ngModel)]="leverageDetails['taxableCapitalGainsPortionTax']" #taxableCapitalGainsPortionTax="ngModel" name="taxableCapitalGainsPortionTax" [textMask]="{mask: percentMask}" appNumeric (input)="onChangeCalculation()"
+                                                                />
+                                                            </div>
+                                                        </td>
+                                                        <td width="20%"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td width="40%" [translate]="'CALCULATOR.LEVERAGE.DEFERRED_CAPITAL_GAINS'">
+                                                        </td>
+                                                        <td width="20%">
+                                                            <div class="col-12 form-group" [ngClass]="{ 'has-error': !deferredCapitalGainsPortion.valid && (f.submitted || deferredCapitalGainsPortion.dirty) }">
+                                                                <input type="text" class="form-control text-right" [(ngModel)]="leverageDetails['deferredCapitalGainsPortion']" #deferredCapitalGainsPortion="ngModel" name="deferredCapitalGainsPortion" [textMask]="{mask: percentMask}" appNumeric (input)="onChangeCalculation()"
+                                                                />
+                                                            </div>
+                                                        </td>
+                                                        <td width="20%">
+                                                            <div class="col-12 form-group" [ngClass]="{ 'has-error': !deferredCapitalGainsPortionTax.valid && (f.submitted || deferredCapitalGainsPortionTax.dirty) }">
+                                                                <input type="text" class="form-control text-right" [(ngModel)]="leverageDetails['deferredCapitalGainsPortionTax']" #deferredCapitalGainsPortionTax="ngModel" name="deferredCapitalGainsPortionTax" [textMask]="{mask: percentMask}" appNumeric (input)="onChangeCalculation()"
+                                                                />
+                                                            </div>
+                                                        </td>
+                                                        <td width="20%"></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-sm-4 col-xl-4">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="calulater-inner-wrap mb-15">
+                                <h4 class="leverage-title fw-600" [translate]="'CALCULATOR.LEVERAGE.PORTFOLIO'">
+                                </h4>
+                                <div class="row">
+                                    <div class="col-12 form-group" [ngClass]="{ 'has-error': !portfoliosDropdown.valid && f.submitted}">
+                                        <div class="portfolio-dropdown-wrap">
+                                            <p-dropdown [options]="leverageDetails['portfolios']" optionLabel="description" name="portfoliosDropdown" #portfoliosDropdown="ngModel" [(ngModel)]="leverageDetails['selectedPortfolio']" (onChange)="onChangeCalculation('portfolio')">
+                                            </p-dropdown>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12 col-sm-6 col-xl-6">
+                                        <p *ngIf="leverageDetails['errors'] && leverageDetails['errors']['customReturns']" class="text-error mb-1">
+                                            {{('SSID_LABELS.LEVERAGE_CALC_ERRORS.' + leverageDetails['errors']['customReturns']) | translate}}
+                                        </p>
+                                        <div class="row">
+                                            <div class="col-12" *ngFor="let asset of leverageDetails['assetClasses']; index as i">
+                                                <div class="row align-items-center">
+
+                                                    <div class="col-6 col-sm-8 col-xl-8">
+                                                        <div class="form-group mb-0">
+                                                            <span class="align-content-center">{{('SSID_LABELS.'+ asset) | translate }}</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-6 col-sm-4 col-xl-4">
+                                                        <div class="form-group" *ngIf="leverageDetails['selectedPortfolio']['portfolioNumber'] !== 0">
+                                                            <span>{{leverageDetails['targetPercents'][i]}}%</span>
+                                                        </div>
+                                                        <div class="form-group" *ngIf="leverageDetails['selectedPortfolio']['portfolioNumber'] === 0" [ngClass]="{ 'has-error': !assetClassValue.valid && (f.submitted || assetClassValue.dirty) }">
+                                                            <input type="text" class="form-control text-right" [(ngModel)]="leverageDetails['targetPercents'][i]" #assetClassValue="ngModel" name="assetClassValue_{{i}}" [textMask]="{mask: percentMask1}" appNumeric (input)="onChangeCalculation()" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-sm-6 col-xl-6">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <div class="row align-items-center">
+                                                    <div class="col-6 col-sm-5 col-xl-5">
+                                                        <div class="form-group mb-0">
+                                                            <span class="align-content-center" [translate]="'CALCULATOR.LEVERAGE.RISK'"> </span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-6 col-sm-4 col-xl-4 text-right">
+                                                        <div class="form-group">
+                                                            <span>{{leverageDetails['risk']}}%</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row align-items-center">
+                                                    <div class="col-6 col-sm-5 col-xl-5">
+                                                        <div class="form-group mb-0">
+                                                            <span class="align-content-center" [translate]="'CALCULATOR.LEVERAGE.RETURN'"> </span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-6 col-sm-4 col-xl-4 text-right">
+                                                        <div class="form-group">
+                                                            <span>{{leverageDetails['expectedReturn']}}%</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row align-items-center">
+                                                    <div class="col-6 col-sm-5 col-xl-5">
+                                                        <div class="form-group mb-0">
+                                                            <span class="align-content-center" [translate]="'CALCULATOR.LEVERAGE.RETURN_REDUCTION'">
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-6 col-sm-4 col-xl-4">
+                                                        <div class="form-group" [ngClass]="{ 'has-error': !returnAdjustment.valid && (f.submitted || returnAdjustment.dirty) }">
+                                                            <input type="text" class="form-control  text-right" #returnAdjustment="ngModel" min="0" max="100" [(ngModel)]="leverageDetails['returnAdjustment']" [textMask]="{mask: percentMask1}" appNumeric (input)="onChangeCalculation()" name="returnAdjustment" />
+                                                        </div>
+                                                        <p *ngIf="leverageDetails['errors'] && leverageDetails['errors']['custReturnAdjust']" class="text-error mb-1">
+                                                            {{('SSID_LABELS.LEVERAGE_CALC_ERRORS.' + leverageDetails['errors']['custReturnAdjust']) | translate}}
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="calulater-inner-wrap mb-15">
+                                <h4 class="leverage-title fw-600" [translate]="'CALCULATOR.LEVERAGE.ANALYSIS'"> </h4>
+                                <div class="row">
+                                    <div class="col-md-12 col-lg-6">
+                                        <div class="analysis-wrap">
+                                            <h4 class="analysis-wrap-title border-0 p-0 fw-600 fs-14 mb-5">
+                                                {{ 'CALCULATOR.LEVERAGE.NET_BEFORE_TAX_VALUES_AFTER' | translate}} {{leverageDetails['savingsPeriod']}} {{ 'CALCULATOR.YEARS' | translate}}
+                                            </h4>
+                                            <div class="table-responsive">
+                                                <table class="table table-borderless">
+                                                    <thead>
+                                                        <tr class="text-center">
+                                                            <th class="" [translate]="'CALCULATOR.LEVERAGE.RETURN'">
+                                                            </th>
+                                                            <th [translate]="'CALCULATOR.LEVERAGE.NO_LEVERAGE'"> </th>
+                                                            <th [translate]="'CALCULATOR.LEVERAGE.LEVERAGE'"></th>
+                                                            <th [translate]="'CALCULATOR.LEVERAGE.DOLLAR_INCREASE'">
+                                                            </th>
+                                                            <th [translate]="'CALCULATOR.LEVERAGE.PER_INCREASE'"></th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr class="text-center" *ngFor="let Values of leverageDetails['annualValues']">
+                                                            <td class="fs-16"> {{Values.returnValue}}% </td>
+                                                            <td class="fs-16">
+                                                                {{Values.noLeverage | currency:clientData['currencyCode']:'symbol-narrow':'1.0-0'}}
+                                                            </td>
+                                                            <td class="fs-16">
+                                                                {{Values.leverage | currency:clientData['currencyCode']:'symbol-narrow':'1.0-0'}}
+                                                            </td>
+                                                            <td class="fs-16">
+                                                                {{Values.dollarIncrease | currency:clientData['currencyCode']:'symbol-narrow':'1.0-0'}}
+                                                            </td>
+                                                            <td class="fs-16">{{Values.percentIncrease}}%</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <div class="analysis-wrap mt-3">
+                                            <h4 class="analysis-wrap-title border-0 p-0 fw-600 fs-14 mb-5">
+                                                {{ 'CALCULATOR.LEVERAGE.NET_AFTERTAX_RETURNS' | translate }} {{leverageDetails['expectedReturn']}}% {{ 'CALCULATOR.LEVERAGE.RATE_OF_RETURN' | translate}} </h4>
+                                            <div class="table-responsive">
+                                                <table class="table table-borderless">
+                                                    <thead>
+                                                        <tr class="text-center">
+                                                            <th class="" [translate]="'CALCULATOR.LEVERAGE.YEAR'"></th>
+                                                            <th [translate]="'CALCULATOR.LEVERAGE.NO_LEVERAGE'"> </th>
+                                                            <th [translate]="'CALCULATOR.LEVERAGE.LEVERAGE'"></th>
+                                                            <th [translate]="'CALCULATOR.LEVERAGE.DOLLAR_INCREASE'">
+                                                            </th>
+                                                            <th [translate]="'CALCULATOR.LEVERAGE.PER_INCREASE'"></th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr class="text-center" *ngFor="let value of leverageDetails['returnSpecificValues']">
+                                                            <td class="fs-16" class=""> {{value.endofYear}} </td>
+                                                            <td class="fs-16">
+                                                                {{value.noLeverage| currency:clientData['currencyCode']:'symbol-narrow':'1.0-0' }}
+                                                            </td>
+                                                            <td class="fs-16">
+                                                                {{value.leverage| currency:clientData['currencyCode']:'symbol-narrow':'1.0-0'}}
+                                                            </td>
+                                                            <td class="fs-16">
+                                                                {{value.dollarIncrease| currency:clientData['currencyCode']:'symbol-narrow':'1.0-0'}}
+                                                            </td>
+                                                            <td class="fs-16">{{value.percentIncrease}}%</td>
+                                                            <td class="fs-16"> </td>
+                                                        </tr>
+                                                        <tr class="text-center total-text" *ngIf="leverageDetails['finalValues']">
+                                                            <td class="fs-16 fw-400">
+                                                                <b>{{'CALCULATOR.TOTAL' | translate}}</b></td>
+                                                            <td class="fs-16 fw-400">
+                                                                <b>{{leverageDetails['finalValues']['noLeverageBalanceTotal']| currency:clientData['currencyCode']:'symbol-narrow':'1.0-0'}}</b>
+                                                            </td>
+                                                            <td class="fs-16 fw-400">
+                                                                <b>{{leverageDetails['finalValues']['leverageInitialBalanceTotal']| currency:clientData['currencyCode']:'symbol-narrow':'1.0-0'}}</b>
+                                                            </td>
+
+                                                            <td class="fs-16 fw-400">
+                                                                <b>{{leverageDetails['finalValues']['totalDollarIncrease']| currency:clientData['currencyCode']:'symbol-narrow':'1.0-0'}}</b>
+                                                            </td>
+                                                            <td class="fs-16 fw-400">
+                                                                <b>{{leverageDetails['finalValues']['totalPercentIncrease']}}%</b>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 col-lg-6">
+                                        <div class="row mt-5">
+                                            <div id="leverageGraph" style="height:400px; width:100%; display: inline-block;margin-left: 0px;margin-right: 0px;">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="box-footer button-responsive">
+                <div class="form-group text-right calculator-save-button-wrap">
+                    <button type="button" (click)="generateReport()" [disabled]="isError" class="btn btn-small btn-primary btn-fixwidth btn-report" [translate]="'CALCULATOR.LEVERAGE.REPORT'"></button>
+                    <button type="button" (click)="back()" class="btn btn-small btn-secondary btn-fixwidth">{{'FORM.ACTION.CANCEL' | translate }}</button>
+
+                    <button type="submit" [disabled]="isError || f.form.invalid" class="btn btn-small btn-success pl-4 pr-4" (click)="save(f)" [translate]="'FORM.ACTION.SAVE'"></button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<ng-container *ngIf="isCalculatorReportSidePanelOpen">
+    <app-calculator-report-side-panel (closePanelEvent)="closePanel()" [calculatorData]="reportObject" [clientId]="clientId" type="leverage" [selectedScenario]="leverageDropdownvalue['key']"></app-calculator-report-side-panel>
+</ng-container>
+<router-outlet></router-outlet>

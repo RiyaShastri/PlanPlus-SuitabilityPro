@@ -1,0 +1,27 @@
+<div class="row">
+    <div class="col-12 mt-5">
+        <h1 class="d-inline-block fw-500 pr-5">{{titleName}}</h1>
+        <div class="sort-box d-inline-block">
+            <div class="sort-dropdown">
+                <div class="sort-dropdown-w-ico">
+                    <i class="ion-md-funnel"></i>
+                    <app-common-drop-down class="dropdown-right" [itemList]="goalMap" [defaultSelected]="selectedDropdownOption" dropDownLabel="VIEW"
+                        (OnSelect)="goalMapChange($event)"></app-common-drop-down>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 text-center" *ngIf="selectedDropdownOption.id=== GOAL_REVENUE_GRAPH_MAP.TIME_LINE_CHART">
+        <hr />
+        <div id="goalMapTimeLineDiv" style="height:300px; width:100%; display: inline-block;margin-left: 0px;margin-right: 0px;"></div>
+    </div>
+    <div class="col-12 text-center" *ngIf="selectedDropdownOption.id=== GOAL_REVENUE_GRAPH_MAP.TODAY_DOLLAR">
+        <hr />
+        <div id="goalMapDailyDollereDiv" style=" width:100%; display: inline-block;margin-left: 0px;margin-right: 0px;"></div>
+    </div>
+    <div class="col-12 text-center" *ngIf="selectedDropdownOption.id=== GOAL_REVENUE_GRAPH_MAP.FUTURE_DOLLAR">
+        <hr />
+        <div id="goalMapDailyDollereDiv" style=" width:100%; display: inline-block;margin-left: 0px;margin-right: 0px;"></div>
+    </div>
+</div>

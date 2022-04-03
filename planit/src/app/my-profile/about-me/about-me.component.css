@@ -1,0 +1,54 @@
+.about-container {
+    background: #f4f6f8;
+}
+
+.coming-soon {
+    padding: 0;
+    margin: 100px 0;
+    font-size: 60px;
+    color: #789;
+    line-height: 1;
+    text-align: center;
+    font-family: "Montserrat";
+    font-weight: 400;
+}
+
+.fixed-width {
+    width: 120px;
+}
+
+.grayed-out {
+    color: #aaaaaa;
+}
+
+.designation-chkbox p-checkbox {
+    flex: 0 0 33.33%;
+    padding: 5px 0;
+    display: flex;
+}
+
+.other_wrapper {
+    position: relative;
+    flex: 0 0 33.33%;
+}
+
+.designation-chkbox .other_wrapper p-checkbox {
+    flex: 0 0 18px;
+    padding: 0;
+}
+
+.designation-chkbox .other_wrapper input {
+    width: calc(100% - 35px);
+    height: 30px;
+}
+
+@media(max-width: 575px) {
+    .checkbox-left {
+        text-align: left !important;
+        display: flex;
+        align-items: baseline;
+    }
+    .checkbox-left p-checkbox {
+        padding-left: 10px;
+    }
+}

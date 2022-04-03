@@ -1,0 +1,8 @@
+<div>
+    <h6 class="fw-700" [translate]="'PORTFOLIO.DETAIL.PRO_JUDGEMENT_MATRIX'"></h6>
+    <hr />
+    <p *ngIf="pjmLimitingFactors !== ''" style="white-space: pre-line">
+        {{pjmLimitingFactors}}
+        <!-- Recommend limit to {{recommendedScore}} <ng-container *ngIf="pjmKeyLabel !== ''">due to {{pjmKeyLabel}}</ng-container> -->
+    </p>
+</div>

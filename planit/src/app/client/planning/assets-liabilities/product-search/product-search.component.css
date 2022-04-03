@@ -1,0 +1,41 @@
+:host {z-index: 9}
+.advanced-link {font-size: 14px; color: #58d !important; text-decoration: none; font-weight: 400; padding: 0px; display: inline-block; }
+
+.valign-bottom {vertical-align: bottom;}
+.eye-wrapper{
+    width: 20px;
+    height: 20px;
+    line-height: 20px;
+    background: #9b4;
+    border-radius: 50%;
+    padding: 0;
+    margin: 0;
+    text-align: center;
+    display: inline-block;
+}
+.eye-wrapper i{
+    font-size: 16px;
+    color: #fff;
+    line-height: inherit;
+}
+
+@media(max-width: 575px){
+    .table>tbody>tr>td.prod-description-xs{
+        padding-right: 15px;
+    }
+    .table td:last-child{
+        width: 10px;
+    }
+    .side-form-full-width{
+        min-width: 100%;
+        max-width: 100%;
+    }
+}
+@media(max-width:382px){
+   .panel-footer {
+        max-width: 260px;
+    }
+}
+.ion-ios-eye{
+	cursor: pointer;
+}

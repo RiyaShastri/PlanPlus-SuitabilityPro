@@ -1,0 +1,15 @@
+.custom-heading {
+    font-size: 16px;
+    font-weight: 700;
+    color: #4f5151;
+}
+
+.entity-return-risk.table th, .entity-distribution-table.table th {
+    padding-bottom: 10px;
+}
+
+@media(min-width: 993px){
+    .entity-distribution-table .distribution-input.form-group {
+        width: 50% !important;
+    }
+}

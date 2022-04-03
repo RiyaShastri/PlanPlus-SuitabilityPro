@@ -1,0 +1,50 @@
+<div class="panel" *ngIf="netWorth && netWorth['assetsByTypes'] && !noData">
+    <div class="flex-wrap panel-header">
+        <h4 [translate]="'CLIENT_OVERVIEW.NET_WORTH'"></h4>
+        <div class="row dashboard-box pt-4">
+            <div class="col-xl-8 col-lg-7 col-12">
+                <span class="price">{{netWorth.networthTotal | currency:clientData['currencyCode'] : 'symbol-narrow' : '1.0-0'}}</span>
+            </div>
+            <div class="col-xl-4 col-lg-5 col-12 mt-xl-0 mt-lg-0 mt-md-0 mt-sm-3 mt-3">
+                <div class="total-box">
+                    <span class="fw-700" [translate]="'CUSTOM.ASSETS'"></span>
+                    <span class="fl-right">{{netWorth.assetsTotal | currency:clientData['currencyCode'] : 'symbol-narrow' : '1.0-0'}}</span>
+                </div>
+                <div class="total-box">
+                    <span class="fw-700" [translate]="'CUSTOM.LIABILITIES'"></span>
+                    <span class="fl-right">{{netWorth.liabilitesTotal | currency:clientData['currencyCode'] : 'symbol-narrow' : '1.0-0'}}</span>
+                </div>
+            </div>
+            <hr>
+        </div>
+    </div>
+
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-12">
+                <h5 class="mt-3 mb-3 fw-700" [translate]="'CUSTOM.ASSETS'"></h5>
+            </div>
+            <div class="col-12">
+                <ng-container *ngIf="netWorth && netWorth['assetsByTypes'] && networthData.length > 0">
+                    <app-net-worth-account-table [networthData]="networthData" [chartColor]="chartColor" chartId='netWorthTile'></app-net-worth-account-table>
+                </ng-container>
+            </div>
+        </div>
+    </div>
+</div>
+<ng-container *ngIf="noData">
+    <div class="panel">
+        <div class="flex-wrap panel-header">
+            <h4 [translate]="'CLIENT_OVERVIEW.NET_WORTH'"></h4>
+        </div>
+        <table>
+            <tbody>
+                <tr>
+                    <td colspan="3" class="no-record text-center">
+                        <i class="ion-ios-alert mr-2"></i>{{'NO_RESULTS' | translate}}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</ng-container>

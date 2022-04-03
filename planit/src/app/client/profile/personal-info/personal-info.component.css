@@ -1,0 +1,46 @@
+.client-icon {
+    height: 22px;
+    width: 22px;
+    border-radius: 50%;
+    display: inline-block;
+    text-align: center;
+    color: #fff;
+    position: relative;
+}
+
+.client-icon:before {
+    bottom: 0;
+    position: absolute;
+    line-height: 22px;
+    left: 0;
+    top: 0;
+    right: 0;
+}
+
+.accordion-arrow-right {
+    margin-left: 80rem;
+}
+
+.entity-table.table>thead>tr>th {
+    border-bottom: 0px;
+    padding: 15px 0px;
+}
+
+.dropdown-relative .dropdown-floating {
+    right: -12px !important;
+}
+
+td.entity-header {
+    color: #788588;
+    padding-left: 0px;
+}
+
+.border-radius-0 {
+    border-radius: 0%;
+}
+
+@media (max-width: 575px) {
+    h1.personal-info-wrap {
+        font-size: 20px;
+    }
+}

@@ -1,0 +1,30 @@
+<div ngbDropdown class="dropdown-common prod_sub_dropdown">
+    <a class="text-uppercase" id="dropdownBasic1" ngbDropdownToggle>
+        <span class="pr-1 selected-text fs-14 fw-600">{{selectedProduct.productCode}}</span>
+        <i class="ion-md-arrow-dropdown"></i>
+    </a>
+    <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+        <table class="table tbl_prod_code">
+            <thead>
+                <tr>
+                    <th class="icon_wrapper"></th>
+                    <th>{{ 'ASSET_LIABILITY.PRODUCT_SEARCH.TABLE.PRODUCTCODE_LABEL' | translate }}</th>
+                   <!-- <th>{{ 'ASSET_LIABILITY.PRODUCT_SEARCH.TABLE.CODE_TYPE' | translate }}</th> -->
+                    <th>{{ 'ASSET_LIABILITY.PRODUCT_SEARCH.TABLE.FEE_TYPE' | translate }}</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of productCodeList" (click)="getSlected(item)">
+                    <ng-container>
+                        <td class="icon_wrapper">
+                            <i *ngIf="item.subProductId===selectedProduct.subProductId" class="ion-md-checkmark"></i>
+                        </td>
+                        <td>{{item.productCode}}</td>
+                        <!--<td>{{item.prodsub}}</td>-->
+                        <td>{{item.feeType}}</td>
+                    </ng-container>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

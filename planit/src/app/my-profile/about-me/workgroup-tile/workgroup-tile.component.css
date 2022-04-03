@@ -1,0 +1,14 @@
+.add-btn i {
+    background: none;
+    color: #88aa33;
+    font-size: 21px;
+}
+
+.workgroup-tile-container .table-ellipsis tr td{
+    position: relative;
+}
+@media only screen 
+  and (min-width: 320px) 
+  and (max-width: 492px){
+    .truncate{    max-width: 100%;}
+  }

@@ -1,0 +1,2921 @@
+{
+    "ABOUT_ME": {
+        "ADD_WORKGROUP": "Ajouter un groupe de travail",
+        "PERSONAL_INFO": "Information personnelle",
+        "PREFERENCES": "Préférence",
+        "WORKGROUP": "Groupe de travail",
+        "WORKGROUPS": "Groupes de travail",
+        "WORKGROUP_FORM": {
+            "ALREADY_MEMBER_ERROR": "Cet utilisateur est déjà invité.",
+            "INVITE_NEW_MEMBER": "Inviter un nouveau membre",
+            "MEMBERS": "Membre",
+            "USER_ID": "Code d'utilisateur",
+            "USER_NOT_FOUND_ERROR": "Oups, utilisateur non valide, veuillez réessayer.",
+            "WORKGROUP_NAME": "Nom du groupe de travail"
+        }
+    },
+    "ACCORDIAN": {
+        "COLLAPSE_ALL": "Fermer tout",
+        "EXPAND_ALL": "Ouvrir tout"
+    },
+    "ACCOUNT": {
+        "ACCOUNT_NAME": "Nom du compte",
+        "ACCOUNT_TYPE": "Type de compte",
+        "PORTFOLIO": "Portefeuille"
+    },
+    "ADD_ACCOUNT": {
+        "ACCOUNT_NAME": "Nom du compte",
+        "ACCOUNT_TYPE": "Type de compte",
+        "ADD_ACCOUNT": "AJOUTER UN COMPTE",
+        "ADD_AN_ACCOUNT": "AJOUTER UN COMPTE",
+        "ASSET_VALUE": "Valeur de l'actif",
+        "ASSOCIATED_PORTFOLIO": "Portefeuille associé",
+        "LIABILITY_VALUE": "Valeur de la responsabilité",
+        "OWNERSHIP_DESCRIPTION": "Le total de la propriété doit être égal à 100%.",
+        "OWNERSHIP_TOTAL": "Total de la propriété",
+        "POPUP": {
+            "SUCCESS": "Compte ajouté avec succès."
+        }
+    },
+    "ADD_CLIENT": {
+        "POPUP": {
+            "FROM": "Veuillez changer l'état civil du client 1 de ",
+            "SUCCESS": "Client ajouté avec succès, veuillez ajouter conjoint.",
+            "TO": " marié(e) ou en union libre ou marié(e)-célibataire."
+        }
+    },
+    "ADD_FAMILY_MEMBER": {
+        "POPUP": {
+            "SUCCESS": "Membre de la famille ajouté avec succès."
+        },
+        "SAVE_FAMILY_MEMBER": "ENREGISTRER UN MEMBRE DE LA FAMILLE",
+        "TITLE": "AJOUTER UN MEMBRE DE LA FAMILLE"
+    },
+    "ADD_GOALS": {
+        "AMOUNT": "Montant",
+        "CURRENCY": "Devise",
+        "EDUCATION": "Éducation",
+        "EDUCATION_FUNDING_FOR": "Le financement de l'éducation pour",
+        "END": "Fin",
+        "GOAL_DESCRIPTION": "Présentation de l'objectif",
+        "OTHER": "Autre",
+        "PLANNING_HORIZONE": "Horizon de planification",
+        "POPUP": {
+            "SUCCESS": "Objectif ajoutée avec succès."
+        },
+        "RETIRED": "Retraité",
+        "RETIREMENT": "Retraite",
+        "START": "Débuter",
+        "WILL_RETIRE_AT_AGE": "Prendra sa retraite à l'âge de"
+    },
+    "ADVISOR": {
+        "CLIENT1": "Client 1",
+        "CLIENT2": "Client 2",
+        "DASHBOARD": {
+            "CLIENTS_TILE": {
+                "ADDRESS": "Adresses",
+                "ADD_CLIENT": "Ajouter client",
+                "ADD_NEW_CLIENT": "AJOUTER UN NOUVEAU CLIENT",
+                "ADVANCED_SEARCH": "Recherche avancée",
+                "ADVISOR_ROLE": "Rôle de conseiller",
+                "CITY": "Ville",
+                "CLIENT_TYPE": "Type de client(e)",
+                "POPUP": {
+                    "DECSCRIPTION": "Êtes-vous sûr de vouloir supprimer de client?",
+                    "NOT_UNDO": "Cette action ne peut être annulée.",
+                    "SUCCESS": "Le fichier Client a été supprimé avec succès.",
+                    "TITLE": "Supprimer le/la client(e)"
+                },
+                "PRIVACY_STATUS": "Statut de confidentialité",
+                "SEARCH_CLIENTS": "Recherche un client",
+                "SEARCH_SPOUSE": "Recherche un conjoint",
+                "SEARCH_LABEL": "Recherche par nom de famille, téléphone, adresse ou courriel",
+                "SEARCH_PLACEHOLDER": "Commencez à taper pour rechercher par nom de famille, téléphone, adresse ou courriel",
+                "TITLE": "Clients",
+                "SPOUSE": "Conjoint(e)",
+                "UPDATED": "Mis à jour",
+                "WORKGROUPS": "Groupes de travail"
+            },
+            "CLIENT_VALUE_TILE": {
+                "TITLE": "Valeurs de vos clients"
+            },
+            "COLLABORATION_TILE": {
+                "INCONSISTENT_INDICATOR": "{{noOfInconsistent}} clients avec incohérence",
+                "PENDING_INDICATOR": "{{noOfPending}} invitations client en attente",
+                "REMOVE_ACCESS_WARNING": {
+                    "TEXT": "Le client perdra l'accès à {{collabType}}.",
+                    "TITLE": "Êtes-vous sûr de vouloir supprimer cet accès?"
+                },
+                "TITLE": "Centre de collaboration"
+            },
+            "DEMOGRAPHICS_TILE": {
+                "TITLE": "Démographique"
+            },
+            "DOCUMENT_CENTER_TILE": {
+                "CALL_OUT_FORMAT": "{{numDoc}} documents {{status}}",
+                "TITLE": "Centre du document"
+            },
+            "QUESTIONNAIRES_ADJUSTED": "Groupes à risque ajustés",
+            "QUESTIONNAIRES_COMPLETED": "Questionnaires remplis",
+            "QUESTIONNAIRES_CREATED": "Questionnaires créés",
+            "RISK_TOLERANCE_DISTRIBUTION_TILE": {
+                "TITLE": "Répartition de la tolérance au risque"
+            },
+            "SUITABILITY_BANDS_TILE": {
+                "TITLE": "Bandes d'adéquation"
+            },
+            "TASK_NOTIFICATION_TILE": {
+                "DUE_TODAY": "À rendre aujourd'hui",
+                "NOTIFICATION": "Notification",
+                "PAST_DUE": "En retard de paiement",
+                "TASK": "Tâche",
+                "TITLE": "Tâches et notifications"
+            },
+            "WORKFLOW_TILE": {
+                "COMPLETED": "Termin",
+                "IN_PROGRESS": "En cours",
+                "MONITORING": "Surveiller",
+                "SHARED": "Partager",
+                "TITLE": "Flux de travail",
+                "UNDER_REVIEW": "En cours d'examen"
+            }
+        },
+        "HI": "Salut"
+    },
+    "ALERT": {
+        "TITLE": {
+            "SUCCESS": "Succès"
+        }
+    },
+    "ALERT_MESSAGE": {
+        "CANCEL_BUTTON_TEXT": "Annuler",
+        "CONFIRM_BUTTON_TEXT": "Oui",
+        "DONE_TITLE": "Fait!",
+        "ERROR_TITLE": "Erreur!",
+        "OOPS_TEXT": "Oups!",
+        "SUCCESS_DELETED_TITLE": "Supprimé!",
+        "SUCCESS_TITLE": "Succès",
+        "UPDATED": "Mis à jour",
+        "WARNING_MESSAGE": "Vous ne serez pas en mesure d'annuler!",
+        "ALERT_TITLE": "Alerte",
+        "WISH_TO_PROCEED_QUESTION": "Voulez-vous continuer?"
+    },
+    "APPLY_SOLUTION": {
+        "CUSTOM_SOLUTION": "SOLUTION PERSONNALISÉE",
+        "MAPPED_BY_FINAMETRICA": "cartographié par FinaMetrica",
+        "MARGINALLY_SUITABLE": "Légèrement adapté",
+        "MARGINALLY_SUITABLE_HIGH": "Légèrement approprié - risque plus élevé",
+        "MARGINALLY_SUITABLE_LOW": "Peu approprié - risque plus basse",
+        "NO_SOLUTIONS": "Aucune solution.",
+        "SOLUTION_FAMILY": "Famille de solutions",
+        "SUITABLE": "Approprié",
+        "SUITABLE_RISK": "Risque appropriée",
+        "TITLE": "SOLUTION",
+        "TOO_LITTLE_RISK": "Trop peu de risques",
+        "TOO_MUCH_RISK": "Trop de risques"
+    },
+    "ASSETS": {
+        "SAVINGS": "ÉPARGNES",
+        "SUMMARY": "SOMMAIRE"
+    },
+    "ASSETS_SUMMARY": {
+        "ACTION": {
+            "ADD_HOLDINGS": "AJOUTER UN AVOIR",
+            "ADD_SAVINGS": "AJOUTER DES ÉPARGNES",
+            "DELETE_ACCOUNT": "SUPPRIMER LE COMPTE",
+            "EDIT_ACCOUNT": "MODIFIER LE COMPTE",
+            "EDIT_SAVINGS": "MODIFIER LES ÉPARGNES"
+        },
+        "ADD_AN_ACCOUNT": "AJOUTER UN COMPTE",
+        "ASSETS_HEADER": {
+            "HOLDINGS": "Actifs",
+            "SAVINGS": "Épargnes"
+        },
+        "ASSETS_LIST_ACTION": {
+            "DELETE_HOLDING": "SUPPRIMER L'AVOIR",
+            "EDIT_HOLDING": "MODIFIER L'AVOIR",
+            "PRODUCT_INFO": "INFORMATIONS SUR LE PRODUIT",
+            "RELINK_HOLDING": "RELIER UN AVOIR"
+        },
+        "INVESTMENTS": "Placements",
+        "TOTAL_OTHER": "Autre",
+        "NET_WORTH": "Valeur nette",
+        "OTHER": "Autre",
+        "POPUP": {
+            "ACCOUNT_UPDATE": "Compte a été mis à jour avec succès."
+        },
+        "TABLE_HEADER": {
+            "ACCOUNTS": "Comptes",
+            "ACCOUNT_TYPE": "Type de compte",
+            "ASSETS": "Actifs",
+            "LIABILITIES": "Passifs",
+            "PORTFOLIO": "Portefeuille",
+            "TOTAL_SAVINGS": "Total de l'épargne"
+        },
+        "SAVINGS_MAP": "Plan d'épargne"
+    },
+    "ASSET_LIABILITY": {
+        "HOLDING_ACCOUNT": {
+            "ACCOUNT_NUMBER": "Numéro de compte",
+            "ADD_CUSTOM_PRODUCT": "Ajouter un produit personnalisé",
+            "ADD_HOLDING": "AJOUTER UN AVOIR",
+            "ALLOCATION_BREAKDOWN": "Répartition des actifs",
+            "ALLOCATION_BREAKDOWN_ERROR": "La somme de tous les pourcentages de répartition doit être égale à 100%.",
+            "ASSET_INFORMATION": "Renseignements sur l'actif",
+            "ASSET_NAME": "Nom de l'actif",
+            "ASSET_VALUE": "Valeur de l'actif",
+            "AS_OF_DATE": "En date du",
+            "COMPANY": "Compagnie",
+            "COMPOUNDING": "Capitalisation",
+            "CURRENCY": "Devise",
+            "CURRENT_INTEREST_RATE": "Taux d'intérêt actuel",
+            "CURRENT_LOAN_BALANCE": "Solde des prêts actuels",
+            "DELETE_HOLDING": "SUPPRIMER L'AVOIR",
+            "DROPDOWN_DESCRIPTION": "Description",
+            "DROPDOWN_MARKETVALUE": "Valeur marchande",
+            "DROPDOWN_UNITS": "Unités",
+            "DROPDOWN_PRODUCTTYPE": "Type de produit",
+            "DESCRIPTION": "Description",
+            "FREQUENCY": "Fréquence",
+            "HOLDING_DELETED_MESSAGE": "Les avoirs ont été supprimés avec succès.",
+            "HOLDING_DELETE_WARNING": "Êtes-vous sûr de vouloir supprimer l'avoir?",
+            "INCEPTION_DATE": "Date de création",
+            "INCLUDE_IN_PLANNING": "Inclure dans la planification",
+            "INITIAL_LOAN_AMOUNT": "Montant initial du prêt",
+            "LIABILITY_INFORMATION": "Renseignements sur le passif",
+            "LINKED_CLIENT_ACCOUNT": "Compte client lié",
+            "LIQUID": "Liquides",
+            "LOAN_NUMBER": "Numéro d'emprunt",
+            "LOAN_TYPE": "Type de prêt",
+            "MARKET_VALUE": "Valeur marchande",
+            "PAYMENT_AMOUNT": "Montant du paiement",
+            "PAYMENT_TYPE": "Type de paiements",
+            "PLACEHOLDER_ACCOUNT_NUMBER": "Entrez un numéro de compte valide.",
+            "PLACEHOLDER_COUNTRY": "Choisissez le pays",
+            "PLACEHOLDER_CURRENCY": "Choisissez la monnaie",
+            "PLACEHOLDER_FREQUENCY": "Choisissez la fréquence",
+            "PLACEHOLDER_PAYMENT_TYPE": "Choisissez le type de paiement",
+            "PLACEHOLDER_PRODUCT_TYPE": "Choisissez le type de produit",
+            "PRODUCT_CODE": "Code de produit",
+            "PRODUCT_INFO": "INFORMATIONS SUR LE PRODUIT",
+            "PRODUCT_TYPE": "Type de produit",
+            "RELINK_HOLDING": "RELIER UN AVOIR",
+            "RENEWAL_DATE": "Date Renouv",
+            "SAVE_CHANGES_MESSAGE": "Sauvegarde des détails des avoirs réussie.",
+            "SELECT_COMPOUNDING": "Choisissez la capitalisation",
+            "SELECT_LOAN_TYPE": "Choisissez le type de prêt",
+            "SORT_BY": "TRIER PAR",
+            "TABLE_HEADING": {
+                "ACTION": "Action",
+                "ASSET": "Actifs",
+                "LIABILITIES": "Passifs",
+                "MARKET_VALUE": "Valeur marchande",
+                "UNITS": "Unités"
+            },
+            "TOTAL": "Total"
+        },
+        "PRODUCT_SEARCH": {
+            "ADD_CUSTOM_LABEL": "Ajouter personnalisé",
+            "ADD_FAVOURITES_TITLE": "AJOUTER UN PRODUIT À UNE LISTE DE FAVORIS",
+            "ADD_FAVOURITE_MESSAGE": "Produit ajouté à la liste des favoris avec succès.",
+            "ADVANCED_SEARCH": "Recherche avancée",
+            "ASSET_CLASS_LABEL": "Catégorie d'actif",
+            "COUNTRY_LABEL": "Pays",
+            "CURRENCY_LABEL": "Devise",
+            "CUSTOM_SUCCESS": "Produit personnalisé ajouté avec succès.",
+            "DELETED_FROM_FAVOURITE_MESSAGE": "Produit supprimé de cette liste de favoris.",
+            "DELETED_FROM_FAVOURITE_WARNING": "Êtes-vous sûr de vouloir supprimer ce produit de cette liste de favoris.",
+            "EXIST_FAVOURITE_MESSAGE": "Le produit existe déjà dans la liste des favoris.",
+            "FAVOURITES_LIST_LABEL": "Choisissez la liste des favoris",
+            "FAVOURITES_LIST_TITLE": "Ce produit est déjà dans la(les) liste(s) suivante(s):",
+            "PLACEHOLDER_ASSET_CLASS": "Choisissez la catégorie d'actifs",
+            "PLACEHOLDER_FAVOURITES_LIST": "Choisissez la liste des favoris",
+            "PLACEHOLDER_PRODUCT_TYPE": "Choisissez le type de produit",
+            "PLACEHOLDER_SEARCH_TEXT": "Commencez à taper pour rechercher par code, description ou compagnie.",
+            "PRODUCT_TYPE_LABEL": "Type de produit",
+            "RESULT_TO_DISPLAY": "RÉSULTAT À AFFICHER",
+            "SEARCH_LABEL": "Recherche par code, description ou société.",
+            "SELECT_PRODUCT_CODE_WARNING": "Veuillez sélectionner le code du produit.",
+            "TABLE": {
+                "AS_OF_DATE_LABEL": "En date du",
+                "CODE_TYPE": "Type de code",
+                "DESCRIPTION_LABEL": "Description",
+                "FEE_TYPE": "Type de frais",
+                "PRICE_LABEL": "Prix",
+                "PRODUCTCODE_LABEL": "Code de produit"
+            },
+            "TITLE": "RECHERCHE DE PRODUIT"
+        }
+    },
+    "BRANDING": {
+        "CHOOSE_A_THEME": "Choisissez un thème",
+        "COLOR": "Couleur",
+        "COVER_PAGE": "Page de couverture",
+        "COVER_PAGE_SELECTION": "Sélection de la page couverture",
+        "DISCLAIMER": "Avertissement",
+        "DOCUMENT_LIST": "Liste de documents",
+        "DOCUMENT_NAME": "Nom du document",
+        "DOC_DISCLAIMER_SELECTION": "Sélection de l'avis de non-responsabilité des documents",
+        "FORMAT": "Format",
+        "GRAPH_COLOUR_THEME": "Thème des couleurs du graphique",
+        "NO_IMAGE_UPLOADED": "Aucune image téléchargée.",
+        "PIXELS": "pixels",
+        "POPUP": {
+            "SUCCESS": "L'image de marque a été mise à jour avec succès!",
+            "TEXT": "Vous ne serez pas en mesure d'annuler!",
+            "TITLE": "Vos valeurs personnalisées seront réinitialisées aux valeurs par défaut."
+        },
+        "REPORT_DISCLAIMER_SELECTION": "Rapport d'avertissement de sélection",
+        "REPORT_LIST": "Liste des rapports",
+        "REPORT_NAME": "Nom du rapport",
+        "SECTION": {
+            "BANNER_BACKGROUND_COLOURS": "Couleurs de fond de la bannière du site",
+            "REPORT": "Rapport",
+            "DOCUMENT": "Document",
+            "CLIENT_PORTAL": "Portail Client",
+            "SITE_BANNER": "Bannière du site",
+            "VALUES_DISCOVERY_APP": "Application de découverte de valeurs",
+            "BANNER_BRANDING": "Logo de la bannière du site",
+            "BANNER_TEXT_COLOURS": "Couleurs du texte de la bannière du site",
+            "CORPORATE_LOGO_REPORTS": "Bannière de rapport",
+            "COVER_PAGE_ELEMENTS": "Éléments de la page du document",
+            "COVER_PAGE_IMAGE_1": "Image de la page couverture du document 1",
+            "COVER_PAGE_IMAGE_2": "Image de la page couverture du document 2",
+            "COVER_PAGE_TEXT_COLOUR": "Couleur du texte de la page de couverture du document",
+            "COVER_PAGE_TEXT_FORMAT": "Format de page de couverture du document",
+            "DOCUMENT_DISCLAIMER_1": "Avis du document 1",
+            "DOCUMENT_DISCLAIMER_2": "Avis du document 2",
+            "GRAPH_COLOUR_PALETTE": "Palette de couleurs du document",
+            "MIPLANPLUS_BANNER_BACKGROUND_COLOURS": "Couleur d'arrière-plan de la bannière du portail Client",
+            "MIPLANPLUS_BANNER_TEXT_COLOUR": "Couleur du texte de la bannière du portail Client",
+            "MIPLANPLUS_BRANDING": "Logo du portail Client",
+            "MIPLANPLUS_SITE_COLOURS": "Couleurs du site du portail Client",
+            "REPORT_DISCLAIMER_1": "Rapport d'avertissement 1",
+            "REPORT_DISCLAIMER_2": "Rapport d'avertissement 2",
+            "REPORT_SHADING_COLOUR": "Couleur d'ombrage du rapport",
+            "REPORT_TEXT_COLOUR": "Rapport de la couleur du texte",
+            "VALUES_DISCOVERY_APP_LOGO": "Application logo de découverte de valeurs",
+            "VALUES_DISCOVERY_APP_COLOURS": "Application couleurs de découverte de valeurs",
+            "VALUES_DISCOVERY_APP_BIO": "Application bio de la découverte de valeurs"
+        },
+        "SELECTION_LIST": {
+            "POPUP": {
+                "SUCCESS": "Sélection de la page de couverture du document mise à jour avec succès!"
+            }
+        },
+        "SIZE": "Taille",
+        "TRANSPARENT": "Transparent",
+        "UPLOAD": "Télécharger vers le serveur"
+    },
+    "BREADCRUMB": {
+        "ADD_FAMILY_MEMBER": "Ajouter un membre de la famille",
+        "ASSETS_LIABILITIES": "Actif et passif",
+        "CLIENT_PROFILE": "Profil du Client",
+        "DOCUMENTS": "Documents",
+        "EDIT_GOAL": "Éditer un objectif",
+        "EDIT_SAVINGS": "Modifier les épargnes",
+        "ENGAGEMENT": "Engagement",
+        "ESTATE_PLANNING": "Planification de la succession",
+        "GOALS": "Buts",
+        "GOALS_ANALYSIS": "Analyse",
+        "OVERVIEW": "Vue d'ensemble",
+        "PENSIONS_REVENUES": "Régimes de retraite et autres revenus",
+        "PERSONAL_INFO": "Information personnelle",
+        "PLANNING": "Planification",
+        "PLANNING_MODULES": "Modules de planification",
+        "PLANTRAC": "PlanTrac",
+        "PORTFOLIOS": "Portefeuilles",
+        "PROFILE": "Profil",
+        "PROFILE_MODULES": "Modules de profil",
+        "RISK_TOLERANCE": "Tolérance au risque et KYC",
+        "SETTINGS": "Paramètres"
+    },
+    "CALCULATOR": {
+        "CALCULATORS_TITLE": "CALCULATRICES",
+        "CRITICAL_ILLNESS": {
+            "AFTER_TAX_RATE_OF_RETURN": "Taux de rendement après impôts",
+            "CRITICAL_ILLNESS_BENEFITS_TITLE": "LES BESOINS EN MATIÈRE DE MALADIES GRAVES ET LES PRESTATIONS ACTUELLES",
+            "CURRENT_EARNED_INCOME": "Revenu gagné",
+            "CURRENT_INSURANCE_COVERAGE": "Couverture d'assurance actuel",
+            "FUNDS_NEEDED_TO_REPLACE_INCOME": "Fonds nécessaires pour remplacer les recettes",
+            "INFLATION_RATE": "Taux d'inflation",
+            "LESS_LUMP_SUM_BENEFITS": "Moins somme forfaitaire de la prestation",
+            "LUMP_SUM_COST": "Dernières dépenses",
+            "OTHER_LUMP_SUM_BENEFITS": "Autres prestations uniques",
+            "SHORTFALL": "Déficit",
+            "SUCCESS": "Données relatives aux maladies graves enregistrées avec succès.",
+            "TOTAL_FUNDS_AVAILABLE": "Total des fonds disponibles",
+            "TOTAL_FUNDS_REQUIRED": "Total des fonds requis",
+            "YEARS_TO_REPLACE_INCOME": "# années de remplacement"
+        },
+        "DATE_SAVED": "Date d'enregistrement",
+        "DEBT_CONSOLIDATION": {
+            "ADD_A_LOAN": "Ajouter un prêt",
+            "AMORTIZATION": "Amortissement",
+            "ANALYSIS": "ANALYSE",
+            "APPROXIMATE_VALUE_OF_YOUR_HOME": "Valeur approximative de votre logement",
+            "BORROWING_LIMIT": "Limite d'emprunt",
+            "CONSOLIDATED_LOAN_AMOUNT": "Montant du prêt consolidé",
+            "CURRENT": "Courant",
+            "CURRENT_PAYMENT_AMOUNT": "Montant du paiement actuel",
+            "DEBT_FREE_IN": "Libre de dettes en",
+            "DELETE_LOAN": "Supprimer le prêt",
+            "DELETE_SUCCESS": "Prêt supprimé avec succès",
+            "FIXED_AND_VARIABLE_COMBINED": "Ensemble fixe et variable",
+            "FIXED_RATE_LOAN": "Prêt à taux fixe",
+            "FIXED_RATE_PORTION_OF_LOAN": "Partie du prêt à taux fixe",
+            "FREQUENCY": "Fréquence",
+            "HOME_AND_MORTGAGE_DETAILS": "DÉTAILS SUR LE LOGEMENT ET L'HYPOTHÈQUE",
+            "IMPROVEMENT": "Amélioration",
+            "INCREASE_IN_MONTHLY_PAYMENTS": "Augmentation des paiements mensuels",
+            "INTEREST_RATE": "Taux d'intérêt",
+            "INTEREST_TYPE": "Type d'intérêt",
+            "INTEREST_TYPE_PLACEHOLDER": "Sélectionnez un type d'intérêt",
+            "LESS_LUMP_SUM_PAYMENT_TODAY": "Moins de paiement forfaitaire aujourd'hui",
+            "LOANS_AND_CREDIT_CARDS": "PRÊTS ET CARTES DE CRÉDIT",
+            "LONA_AMOUNT": "Loan amount",
+            "LOAN_DESCRIPTION": "Loan description",
+            "LOAD_LOAN": "Load loan",
+            "LOAN_ACCOUNT_WARNING": "Aucun prêt de compte n'est disponible pour ce client.",
+            "LOAN_BALANCE": "Solde du prêt",
+            "LOAN_MORTGAGE_WARNING": "Vous pouvez seulement faire des prêts hypothécaires en tant que prêts primaires.",
+            "LOAN_TYPE": "Type de prêt",
+            "LOAN_TYPE_PLACEHOLDER": "Sélectionnez un type de prêt",
+            "MAKE_PRIMARY": "Rendre primaire",
+            "MORTGAGE_BALCNCE": "Solde des prêts hypothécaires",
+            "NEW_INTEREST_RATE_FOR_FIXED_RATE_LOAN": "Nouveau taux d'intérêt de prêt à taux fixe",
+            "NEW_LOAN_AMOUNT": "Nouveau montant du prêt",
+            "PAYMENT_AMOUNT": "Montant du paiement",
+            "PAYMENT_FREQUENCY": "Fréquence des paiements",
+            "PAYMENT_FREQUENCY_PLACEHOLDER": "Sélectionnez une fréquence de paiement",
+            "PENALTY_COST": "Pénalité de coût",
+            "PRIME_OF": "Prime de",
+            "PRIME_PLUS": "Prime plus",
+            "PRIME_RATE": "Taux de prime",
+            "PROPOSED": "Proposé",
+            "PROPOSED_PAYMENT_AMOUNT": "Montant du paiement proposé",
+            "REDUCTION_IN_MONTHLY_PAYMENTS": "Réduction des paiements mensuels",
+            "TIME": "Heure",
+            "TOTAL_INTEREST": "Total des intérêts",
+            "TOTAL_INTEREST_SAVINGS": "Total des intérêts d'épargne",
+            "TOTAL_PAYMENTS": "Paiements totaux",
+            "TOTAL_TIME": "Temps total",
+            "VARIABLE_RATE_LOAN": "Prêt à taux variable",
+            "VARIABLE_RATE_PORTION_OF_LOAN": "Part à taux variable de l'emprunt"
+        },
+        "HEADER": {
+            "CRITICAL_ILLNESS": "Maladie Graves",
+            "DEBT_CONSOLIDATION": "Consolidation de la dette",
+            "DISABILITY_INSURANCE": "Assurance invalidité",
+            "FINANCIAL_CALCULATORS": "Calculatrice financière",
+            "INVESTMENT_CALCULATORS": "Calculatrices d'investissement",
+            "INSURANCE_CALCULATORS": "Calculatrices d'assurance",
+            "IRA_ILLUSTRATION": "IRA illustration",
+            "LEVERAGE": "Levier",
+            "LIFE_INSURANCE": "Assurance vie",
+            "LOAN_AMORTIZATION": "Amortissement du prêt",
+            "LOAN_CALCULATORS": "Calculateurs de prêts",
+            "LONG_TERM_CARE": "Soins prolonges",
+            "PRESENT_VALUE_FUTURE_VALUE": "present value future value",
+            "RRIF_ILLUSTRATION": "RRIF illustration",
+            "RETIREMENT_INCOME": "Retirement income"
+        },
+        "LEVERAGE": {
+            "ADDITIONAL_RATE_FOR_ILLUSTRATION": "Taux additionnels pour fins d'illustration",
+            "ADD_RATE_TO_ILLUSTRATE": "AJOUTER UN TAUX POUR ILLUSTRER",
+            "ANALYSIS": "ANALYSE",
+            "ANNUAL_PAYMENT": "Paiement annuel",
+            "BEFORE_TAX_RETURN": "AVANT LA DÉCLARATION DE REVENUS",
+            "BEFORE_TAX_RETURN_ERROR": "Un taux de rendement avant impôt doit être entre 0 % et 20 %.",
+            "BREAK_EVEN_POINT": "% Rentabilité",
+            "CREDIT": "Crédit",
+            "DEDUCTIBLE": "% déductible",
+            "DEFERRED_CAPITAL_GAINS": "Gain de capital différé",
+            "DETAILED_SCHEDULE": "Cédule détaillée",
+            "DIVIDEND": "Portion de dividendes",
+            "DOLLAR_INCREASE": "$ augmentation",
+            "EXPECTED_RETURN": "Rendement espéré",
+            "GRAPH_TITLE": "La valeur actuelle de votre coût pour financer vos besoins",
+            "ILLUSTRATE_VALUE_ERROR": "Veuillez entrer la valeur dans la dernière illustration!",
+            "INCOME_DISTRIBUTION": "LA DISTRIBUTION DU REVENU",
+            "INTEREST_ONLY": "Intérêt seulement",
+            "INTEREST_OR_FOREIGN_DIVIDEND": "Portion d'intérêts et de dividendes étrangers",
+            "INTREST_RATE_ON_LOAN": "Taux d'intérêt sur prêt",
+            "LEVERAGE": "Levier",
+            "LEVERAGE_SUCCESS": "Calculatrice de levier enregistrée avec succès.",
+            "LOAN_AMOUNT": "Montant du prêt",
+            "LOAN_DETAILS": "Détails du prêt",
+            "LOAN_PERIOD": "Durée du prêt (en années)",
+            "LOAN_TYPE": "Type de prêt",
+            "MARGINAL_TAX_RATE": "Taux marginal",
+            "NET_AFTERTAX_RETURNS": "Déclarations nettes après impôt pour",
+            "NET_BEFORE_TAX_VALUES_AFTER": "Valeur nette avant impôt après",
+            "NO_GROWTH": "Sans croissance",
+            "NO_LEVERAGE": "Sans levier",
+            "PER_INCREASE": "% augmentation",
+            "PORTFOLIO": "PORTEFEUILLE",
+            "PROVINCE": "Province",
+            "RATE_OF_RETURN": "Taux de rendement",
+            "REPORT": "RAPPORT",
+            "RETURN": "Rendement",
+            "RETURN_REDUCTION": "Réduction du rendement",
+            "RISK": "Risque",
+            "SAVE_NEW": "ENREGISTRER / NOUVEAU",
+            "SCENARIO": "Scénario",
+            "SCENARIO_DESCRIPTION": "Description de sc",
+            "SELECT_LEVERAGE_DROPDOWN": "Sélectionnez un scénario de levier",
+            "SUMMARY": "Sommaire",
+            "SUMMARY_SIGNATURES": "Résumé (avec signatures)",
+            "TAXABLE_CAPITAL_GAINS": "Portion de gains en capital imposables",
+            "TAXED": "% imposable",
+            "TERM_LOAN": "Prêt à terme",
+            "UNCERTAINTY_ANALYSIS": "Analyse de l'incertitude ",
+            "YEAR": "Année"
+        },
+        "LIFE_INSURANCE": {
+            "ADDITIONAL_INSURANCE_REQUIRED": "Additional insurance required",
+            "CURRENT_EARNED_INCOME": "Current Earned Income",
+            "CURRENT_INSURANCE_COVERAGE":"Current Insurance Coverage",
+            "CASH_FROM_BENEFITS":"Cash From Benefits",
+            "FUNDS_TO_REPLACE_INCOME":"Funds To Replace Income",
+            "FUNDS_FROM_REVENUES":"Funds From Revenues",
+            "INDEX_RATE_ON_BENEFITS": "Index rate on benefits",
+            "INFLATION": "Inflation",
+            "LIFE_INSURANCE_CALCULATOR": "Life Insurance Calculator",
+            "LUMP_SUM_COSTS":"Lump Sum Costs",
+            "LUMP_SUM_BENEFITS":"Lump Sum Benefits",
+            "OTHER_REVENUES_PER_YEAR":"Other Revenues Per Year",
+            "PERCENTAGE_SALARY_TO_REPLACE": "Percentage Salary To Replace",
+            "REPLACE_INCOME_TO_AGE": "Replace Income To Age",
+            "RESULTS":"Results",
+            "SCENARIO": "Scenario",
+            "SHORTAGE":"Shortage @",
+            "SUCCESS_FOR_LIFE_INSURANCE": "Life insurance data saved successfully.",
+            "SUCCESS_FOR_DISABILITY_INSURANCE": "Disability insurance data saved successfully.",
+            "TOTAL_CAPITAL_REQUIRED":"Total Capital Required",
+            "TOTAL_CAPITAL_AVAILABLE":"Total Capital Available"
+        },
+        "LOAD": "Load",
+        "LOAN_AMORTIZATION": {
+            "AMORTIZATION": "Amortissement",
+            "AMORTIZATION_PERIOD": "Période d'amortissement",
+            "AMOUNT": "Montant",
+            "AMOUNT_BORROWED": "Montant emprunté",
+            "ANNIVERSARY_LUMP_SUM_PAYMENT": "Paiement forfaitaire d'anniversaire",
+            "AS_OF_DATE": "En date du",
+            "BREAK_EVEN_POINT": "% Rentabilité",
+            "COMPOUNDED": "Capitalisé",
+            "CURRENT_BALANCE": "Solde actuel",
+            "DATE": "Date",
+            "EXISTING_INTEREST_RATE": "Taux d'intérêt existant",
+            "FAMILY_INCOME_PER_YEAR": "Revenu familial par année",
+            "FEES_ON_INVESTMENT_PURCHASES": "Droits sur les achats d'investissements",
+            "GRAPH_LABELS": {
+                "TOTAL_INTEREST_PAID": "Intérêt total payé",
+                "TOTAL_PAYMENTS": "Paiements totaux",
+                "TOTAL_PRINCIPAL_PAID": "Capital total remboursé"
+            },
+            "INCREASE_PAYMENT_ANNUALLY": "Augmentation annuelle des paiements",
+            "INTEREST_RATE": "Taux d'intérêt",
+            "RATE_DIFFERENTIAL": "DIFFÉRENTIEL DE TAUX",
+            "INTEREST_SAVINGS": "Épargne à intérêt",
+            "LEVERAGE_BREAK_EVEN": "SEUIL DE RENTABILITÉ",
+            "LOAN_AMORTIZATION_TITLE": "CALCULATRICE POUR PRÊTS",
+            "LOAN_DATE": "Date du prêt",
+            "MARGINAL_TEXT_RATE": "Taux marginal",
+            "MAXIMUM_LOAN": "PRÊT MAXIMUM",
+            "MAXIMUM_LOAN_AMOUNT": "Montant maximal du prêt",
+            "MONTHS": "Mois",
+            "NEW_INTEREST_RATE": "Taux courant",
+            "NO_OF_IRREGULAR_PAYMENTS": "Nombre de paiements irréguliers",
+            "PAYMENT": "Paiement",
+            "PAYMENTS": "Paiement",
+            "PAYMENT_AMOUNT": "Montant du paiement",
+            "PAYMENT_FREQUENCY": "Fréquence des paiements",
+            "PAYMENT_TYPE": "Type de paiements",
+            "PERCENT_OF_INVESTMENT_INCOME_TAXABLE": "% du revenu d'investissement imposable",
+            "RENEWAL_DATE": "Date Renouv",
+            "RENEWAL_DATE_BALANCE": "Solde à la date de renouvellement",
+            "RETAIN": "Conserver",
+            "TOTAL_COST": "Coût total",
+            "TOTAL_DEBT_SERVICE_LIMIT": "Ratio d'endettement maximal",
+            "TOTAL_INTEREST_PAID": "Intérêt total payé",
+            "TOTAL_OTHER_PAYEMENTS_PER_MONTH": "Total autres paiements mensuels",
+            "TOTAL_PAYMENTS": "Paiements totaux",
+            "TOTAL_PRINCIPAL_PAID": "Capital total remboursé",
+            "YEARS": "Années"
+        },
+        "LONG_TERM": {
+            "100_PERCENT": "100%",
+            "50_PERCENT": "50%",
+            "AFTER_TAX_RATE_OF_RETURN": "Taux de rendement après impôts",
+            "ANALYSIS": "ANALYSE",
+            "CURRENT_AGE": "Âge actuel",
+            "DAILY_FACILITY_CARE_BENEFIT_INSURED": "Indemnité journalière de soins en établissement assurés",
+            "DAILY_HOME_CARE_BENEFIT_INSURED": "Indemnité journalière de soins à domicile assurés",
+            "ESTIMATED_MONTHLY_COST": "Coût mensuel estimatif",
+            "FACILITY_CARE_COVERAGE": "Couverture des soins en établissement",
+            "HOME_CARE_COVERAGE": "Couverture des soins à domicile",
+            "INDEXED_SAVINGS_TO_FUND_YOUR_COST": "Épargne indexée pour financer vos coûts",
+            "INFLATION_RATE": "Taux d'inflation",
+            "LONG_TERM_CARE_NEEDS": "BESOINS EN SOINS DE LONGUE DURÉE",
+            "MARGINAL_TAX_RATE": "Taux marginal",
+            "PERCENTAGE_OF_COST_TO_INSURE": "Pourcentage des coûts pour assurer",
+            "PLANNING_HORIZON": "Horizon de planification",
+            "PRESENT_VALUE_OF_YOUR_COST": "Valeur actuelle de votre coût",
+            "RETIREMENT_AGE": "Âge de la retraite",
+            "STARTING_AGE": "Âge de début",
+            "SUCCESS": "Les données sur les soins de longue durée ont été sauvegardées avec succès.",
+            "YOUR_COST_TO_FUND_YOUR_NEEDS": "Votre coût pour financer vos besoins"
+        },
+        "MONTHS": "Mois",
+        "PLACEHOLDER": {
+            "SELECT_A_AMORTIZATION_PERIOD": "Sélectionnez une période d'amortissement",
+            "SELECT_A_COMPOUND": "Sélectionnez un composé",
+            "SELECT_A_LOAN": "Sélectionnez un prêt",
+            "SELECT_A_SCENARIO": "Sélectionnez un scénario",
+            "SELECT_PAYMENT_FREQUENCY": "Sélectionnez une fréquence de paiement",
+            "SELECT_PAYMENT_TYPE": "Sélectionnez un type de paiement"
+        },
+        "RRIF_ILLUSTRATION":{
+            "ACCUMULATED_FUNDS":"Accumulated funds",
+            "AGE_AS_OF_FIRST_JAN":"Age as of Jan 1st of Current Year",
+            "ANNUAL_INCOME":"Annual Income",
+            "ANNUAL_SAVINGS":"Annual Savings",
+            "AMOUNT":"Amount",
+            "CONTRIBUTORY_PAYMENTS":"Contributory Payments",
+            "FROM_AGE":"From Age (as of jan 1st)",
+            "FULL_YEAR_ACCRUAL":"(0 = Full Year Accrual ; 12= No Current year Accrual)",
+            "INDEX":"Index",
+            "NEW_FUNDS_AFTER_1992":"New Funds After 1992",
+            "PAYMENT":"Payment",
+            "PLAN_DETAILS":"Plan Details",
+            "PLAN_TYPE":"Plan Type",
+            "RATE_OF_RETURN":"Rate of return",
+            "SAVINGS":"Savings",
+            "SET":"Set",
+            "STARTING_CAPITAL":"Starting capital",
+            "START_MONTH":"Start Month (0-12)",
+            "TO_AGE":"To Age (as of jan 1st)",
+            "UNTIL_AGE":"Until Age (Jan 1st)"
+        },
+        "REPORT": "RAPPORT",
+        "SAVE_TO_VAULT": "save to vault",
+        "TOTAL": "Total",
+        "WARNING_SELECT_SCENARIO": "Veuillez sélectionner le scénario de liste déroulante.",
+        "WARNING_TITLE": "Avertissement",
+        "YEARS": "Années"
+    },
+    "CASH_FLOW_MANAGEMENT": {
+        "ADD_A_CASH_FLOW_ITEM": "Ajouter un élément de flux de trésorerie",
+        "ADD_CASH_FLOW_ITEM": "Ajouter un élément de flux de trésorerie",
+        "AUTO_REINVEST_INCOME": "Réinvestissement automatique des revenus d'investissements",
+        "CASH_FLOW_SURPLUS_DEFICIT": "Excédent / déficit de flux de trésorerie",
+        "CATEGORY": "Catégorie",
+        "CHOOSE_A_CATEGORY": "Choisissez une catégorie",
+        "CLIENT_AMOUNT": "Montant du client",
+        "DESCRIPTION": "Description",
+        "ENTER_DESCRIPTION": "Entrez une description.",
+        "EXPENSES": "Dépenses",
+        "IMPACTS_TAX_CALC": "Incidence sur le calcul de l'impôt",
+        "INCOME": "Revenu",
+        "JOINT": "Conjoint",
+        "MONTHLY": "Mensuel",
+        "PERCENT_OF_EXPENSES": "% des dépenses",
+        "POPUP": {
+            "SUCCESSFULLY_ADDED": "Élément de flux de trésorerie ajouté avec succès.",
+            "SUCCESSFULLY_DELETED": "Élément de flux de trésorerie supprimé avec succès.",
+            "SUCCESSFULLY_UPDATED": "Flux de trésorerie mis à jour avec succès."
+        },
+        "SAVINGS_AND_TAXES": "Épargne et taxes",
+        "SPOUSE_AMOUNT": "Montant du conjoint",
+        "TOTAL": "Total",
+        "TOTAL_EXPENSES": "Dépenses totales",
+        "TOTAL_FAMILY_LIVING_EXPENSES": "Total des dépenses familiales de base",
+        "TOTAL_INCOME": "Revenu total",
+        "TOTAL_SAVINGS_TAXES": "Total de l'épargne et des impôts"
+    },
+    "CHANGE_PASSWORD": {
+        "CURRENT_PASSWORD": "Mot de passe actuel",
+        "NEW_PASSWORD": "Nouveau mot de passe",
+        "PASSWORD_DESCRIPTION": "Votre mot de passe doit avoir un minimum de 6 caractères avec un maximum de 12. Il doit contenir au moins deux chiffres et au moins deux lettres.",
+        "RETYPE_PASSWORD": "Confirmer le mot de passe",
+        "SECURITY_DETAILS": "Il est important que vous changiez périodiquement votre mot de passe à des fins de sécurité.",
+        "SUCCESS_MESSAGE": "Mot de passe modifié avec succès. Veuillez vous connecter pour continuer."
+    },
+    "CLIENT": {
+        "ALERT": "Les renseignements sur le Client 2 n'ont pas encore été ajoutés pour cette famille."
+    },
+    "CLIENT_OVERVIEW": {
+        "ASSET_ALLOCATION": "Répartition d`actifs",
+        "COLLABORATION": "Centre de collaboration",
+        "COMING_SOON": "À venir...",
+        "DOCUMENT_CENTER": "Centre du document",
+        "FAMILY": "Famille",
+        "INVESTMENTS": "Placements",
+        "NET_WORTH": "Valeur nette",
+        "RISK_TOLERANCE": "Tolérance aux risques",
+        "TASK_NOTIFICATION": "Tâches et notifications"
+    },
+    "CONTENT": {
+        "APPLT_MODEL_DETAIL": "Choisissez le portefeuille de modèles à mettre en œuvre pour ce compte. Vous pouvez ajuster le montant à déployer au besoin.",
+        "DOCUMENT_CONTENT": "Le centre de documentation vous permet de générer des rapports et des documents, de télécharger des fichiers et de partager vos documents en toute sécurité avec vos clients. Il vous permet également de recevoir en toute sécurité des fichiers de vos clients.",
+        "FAMILY_PORTFOLIO_DETAIL": "Par défaut, chaque nouveau compte est inclus dans un portefeuille appelé “Portefeuille familial”. Si vous préférez, vous pouvez choisir ou créer un autre portefeuille ici. Notez que tous les portefeuilles peuvent être consultés et analysés dans le module Portefeuilles",
+        "TOTAL_LIABILITY_DETAIL": "Pour modifier la valeur totale des avoirs ou la valeur totale du passif, vous devez éditer les avoirs sous-jacents."
+    },
+    "CUSTOM": {
+        "ACCOUNT_TYPES": "Types de compte",
+        "ACTIONS": "Action",
+        "ADD_FROM_FAVOURITES": "Ajouter des favoris",
+        "ADD_PRODUCT": "Ajouter produit",
+        "AGE": "Âge",
+        "APPLY_MODEL": "Appliquer le modèle",
+        "ASSETS": "Actifs",
+        "CASH": "Liquidités",
+        "CLIENT": "Client",
+        "CURRENT": "Courant",
+        "DELETE": "Supprimer",
+        "DOWNLOAD": "Télécharger du serveur",
+        "END_DATE": "Date de fin",
+        "EQUITY": "Actions",
+        "FIXED_INCOME": "Revenu fixe",
+        "FUNDED_BY": "Financé par",
+        "GENERATE_DOCUMENT": "Générer un document",
+        "GOALS": "Buts",
+        "GOALS_FUNDED": "Objectifs financés",
+        "IGNORE_WARNING": "Ignorer l'avertissement",
+        "IMPLEMENTATION_QUESTIONS": "Questions de mise en œuvre",
+        "IMPLEMENTATION_QUESTIONS_SUCCESS": "Mise à jour réussie des questions de mise en œuvre!",
+        "INVESTMENT_POLICY": "Politique d'investissement",
+        "KEEP_CURRENT_HOLDINGS": "Tenir à jour les avoirs",
+        "LIABILITIES": "Passifs",
+        "MANAGED": "Géré",
+        "MANAGED_UNMANAGED": "Géré / Non géré",
+        "NEW": "New",
+        "OWNERS": "Propriétaires",
+        "PLANNED": "Prévisionnel",
+        "PLANNED_FOR": "Prévu ou non prévu pour",
+        "PLANTRAC_STATUS": "Statut de PlanTrac",
+        "PORTFOLIO": "Portefeuille",
+        "PORTFOLIOS": "Portefeuilles",
+        "PRODUCT_INFO": "Informations sur le produit",
+        "REMOVE_ACCESS": "Supprimer l'accès",
+        "REMOVE_PRODUCT": "Supprimer le produit",
+        "RESET": "Reinitialiser",
+        "RE_NAME": "Renommer",
+        "SEND_REMINDER": "Envoyer un rappel",
+        "SHARED": "Partagez",
+        "START_DATE": "Date de début",
+        "STATUS": "Statut",
+        "SUITABILITY": "Adéquation",
+        "TARGET": "Proposé",
+        "TOTAL_ASSETS": "Total des actifs",
+        "UNLOCK_RESET": "Déverrouiller et réinitialiser",
+        "UNMANAGED": "Non géré",
+        "UNPLANNED": "Non planifié",
+        "UNSHARED": "Non partagé",
+        "UPDATE_STATUS": "Mise à jour de statut",
+        "UPLOAD_DOCUMENT": "Télécharger un document",
+        "VIEW_MORE": "Afficher plus",
+        "YEAR": "$ / année"
+    },
+    "DELETE": {
+        "POPUP": {
+            "ACCOUNT_TITLE": "Êtes-vous sûr de vouloir supprimer le compte?",
+            "DOCUMENT_TITLE": "Êtes-vous sûr de vouloir supprimer le document?",
+            "ENTITY_TITLE": "Êtes-vous sûr de vouloir supprimer cette entité?",
+            "ESTATE_DISTRIBUTION_TITLE": "Êtes-vous sûr de vouloir supprimer ce bénéficiaire?",
+            "GOAL_TITLE": "Êtes-vous sûr de vouloir supprimer cet objectif?",
+            "HOLDING_TITLE": "Êtes-vous sûr de vouloir supprimer les avoirs?",
+            "PRIORITY_TITLE": "Êtes-vous sûr de vouloir supprimer cette priorité?",
+            "REVENUE_TITLE": "Êtes-vous sûr de vouloir supprimer ce revenu?",
+            "SAVING_TITLE": "Êtes-vous sûr de vouloir supprimer cet enregistrement?",
+            "TEXT": "Vous ne serez pas en mesure de revenir!",
+            "YES": "Oui"
+        }
+    },
+    "DOCUMENT": {
+        "DOCUMENT_UPLOAD": {
+            "CHOOSE_FILE_UNDER": "Choisissez fichier sous",
+            "DOCUMENT_NAME": "Nom du document",
+            "ERROR_FILE_NOT_SELECT": "Sélectionnez un fichier valide.",
+            "FILE_UNDER": "Fichier sous",
+            "TITLE": "Télécharger un document",
+            "UPLOADED_SUCCESS_MESSAGE": "Téléchargement réussi!"
+        },
+        "FILTER_OPTIONS": {
+            "ALL": "Tous",
+            "IN_PROGRESS": "En cours",
+            "REVIEW": "En cours d'examen",
+            "COMPLETE": "Termin",
+            "PENDING": "Partagé - en attente",
+            "VIEWED": "Partagé - vu"
+        },
+        "GENERATE_DOCUMENT": {
+            "CHOOSE_CATEGORY": "Choisissez une catégorie",
+            "CHOOSE_CATEGORY_PALACEHOLDER": "Choisissez une catégorie",
+            "CHOOSE_DOCUMENT": "Choisissez un document",
+            "CHOOSE_PORTFOLIO": "Choisissez un portefeuille",
+            "CHOOSE_PORTFOLIO_PALACEHOLDER": "Choisissez un portefeuille",
+            "CHOOSE_SECTION_INCLUDE": "Choisissez les sections à inclure",
+            "DOWNLOAD": "Télécharger du serveur",
+            "DOWNLOAD_MESSAGE": "Le document a été téléchargé avec succès.",
+            "DUCUMENT_DOWNLOAD_QUESTION": "Voulez-vous le télécharger maintenant?",
+            "DUCUMENT_GENERATED_MESSAGE": "Le document a été généré avec succès et est disponible pour consultation / téléchargement.",
+            "PAGE_NOT_SELECT_MESSAGE": "Vous n'avez pas sélectionné de page dans les sections à choisir pour inclure.",
+            "SELECT_EXIST_TEMPLATE_ERROR": "Vous ne pouvez pas définir le nom de modèle comme aucun ou par défaut.",
+            "TYPE_NAMES": {
+                "AUTOGEN": "Rapport généré automatiquement",
+                "AUTORPTFAIL": "Rapport automatisé — Échec des règles",
+                "CALCCUR": "Calculate current scenario",
+                "CALCMOD": "Calculate model scenario",
+                "CALC_CLDIS": "Calculate client's disability scenario",
+                "CALC_CLDTH": "Calculate client's death scenario",
+                "CALC_COM_M": "Calculate death & disability scenarios",
+                "CALC_SPDIS": "Calculate spouse's disability scenario",
+                "CALC_SPDTH": "Calculate spouse's death scenario",
+                "CASHFLOW": "Rapport sur les flux de trésorerie",
+                "CSNEDREP01": "SNA Client Summary",
+                "DOC07": "Gestion financière stratégique",
+                "DOC08": "Processus décisionnel stratégique",
+                "DOC09": "Principes de la gestion de l'encaisse",
+                "DOC11": "Principes de gestion des investissements",
+                "DOC12": "Le pouvoir de la diversification",
+                "DOC14": "Principes de planification successorale",
+                "DOC15": "Questions à examiner lors de la rédaction d'un testament",
+                "DOC16": "Devoirs de l'exécuteur testamentaire",
+                "DOC17": "Planificateur de testament",
+                "DOC19": "Types d'assurance vie",
+                "DOC20": "Types d'assurance invalidité",
+                "DOC21": "FAQ au sujet de l'assurance vie",
+                "DOC22": "Principes de la gestion du risque",
+                "DPLAN01": "Sommaire exécutif",
+                "DPLAN02": "Énoncé de politique de placement sommaire",
+                "DPLAN03": "Questionnaire de 90 secondes sur l'efficacité du service",
+                "DPLAN04": "Sommaire exécutif de l'énoncé de politique d'investissement",
+                "DPLAN05": "Détaillé",
+                "DPLAN06": "Summary Discovery",
+                "DPLAN07": "Détaillé",
+                "DPLAN08": "Flux monétaire à long terme - actuel",
+                "DPLAN10": "Long Term Cashflow - Model",
+                "DPLAN11": "Flux monétaire à long terme - décès du client",
+                "DPLAN12": "Flux monétaire à long terme - décès du conjoint",
+                "DPLAN13": "Flux monétaire à long terme - invalidité du client",
+                "DPLAN14": "Flux monétaire à long terme - invalidité du conjoint",
+                "DPLAN16": "Sommaire des objectifs de vie-Actuel",
+                "DPLAN17": "Life Goals Summary - Modal",
+                "DPLAN18": "Life Goals Summary - Client's Death",
+                "DPLAN19": "Life Goals Summary - Spouse's Death",
+                "DPLAN20": "Sommaire des objectifs de vie - Décès du (de la) conjoint(e)",
+                "DPLAN21": "Sommaire des objectifs de vie-Invalidité du(de la) conjoint(e)",
+                "DPLAN22": "Rapport de comparaison de la répartition des actifs",
+                "DPLAN23": "Rapport de planification successorale",
+                "DPLAN24": "French Integrated Financial Plan",
+                "EDUCATION": "Rapport sur l'éducation",
+                "ENHANCE016": "Besoins en cas d'invalidité",
+                "ENHANCE017": "Besoins au décès",
+                "ENHANCE020": "Stratégie financière personnelle",
+                "ENHANCE021": "Évaluation de 6 mois",
+                "ENHANCE022": "Lettre sondage annuelle",
+                "ENHANCE023": "Lettre de mission - Services à honoraires",
+                "ENHANCE024": "Lettre de mission - Aucun frais",
+                "ENHANCE032": "Lettre d'accompagnement du rapport",
+                "ENHANCE033": "Facture et lettre d'accompagnement",
+                "ENHANCE035": "Détaillé - Gestion des investissements",
+                "EPADOC": "Risk Management Assessment",
+                "IMPLSTRAT": "Stratégie de mise en oeuvre",
+                "INVPOLICY": "Déclaration de politique d'investissement",
+                "MENUREP074": "Initial / discovery Report",
+                "OTHER": "Autre",
+                "OTHERGOAL": "Rapport sur les autres objectifs",
+                "PROPLANNER": "Rapport ProPlanner",
+                "PROFIL1": "Rapport du profileur",
+                "REVL": "VÉRIFIER L",
+                "REVP": "Réviser",
+                "RETIREMENT": "Rapport de retraite",
+                "RIPREPLBL": "Rapport de projection financière axé sur les objectifs du FPS",
+                "RMPLAN": "Rapport de gestion des risques",
+                "RPLBL10": "Ancien profil de risque",
+                "SAFDEPBOX02": "Besoin unique",
+                "SAFDEPBOX03": "Assurance vie",
+                "SAFDEPBOX04": "Document téléchargé",
+                "SAFDEPBOX05": "Calculatrice de retraite",
+                "SAFDEPBOX06": "Assurance invalidité",
+                "SAFDEPBOX07": "Maladie Graves",
+                "SAFDEPBOX08": "Soins prolonges",
+                "SAFDEPBOX09": "IllBesFin détail",
+                "SAFDEPBOX10": "IllBesFin sommaire",
+                "SAFDEPBOX11": "Calculatrice de probabilité",
+                "SAFDEPBOX12": "Calculatrice effet de levier",
+                "SEL_SCENAR": "Scénario actif",
+                "SNEEDREP08": "SNA Other Revenues",
+                "SNEEDREP28": "SNA Summary",
+                "SNEEDREP55": "SNA Inv. Analysis",
+                "SNEEDREP82": "SNA Consolidated",
+                "SUBSNEED03": "SNA Tax Summary",
+                "UNKNOWN": "Inconnu"
+            },
+            "TEMPLATE_CONFIRM": {
+                "CONFIRMBUTTONTEXT": "Oui",
+                "TEXT": "Voulez-vous remplacer le modèle existant?",
+                "TITLE": "Le modèle existe déjà."
+            },
+            "TEMPLATE_NAME": "Nom du modèle",
+            "TEMPLATE_SAVE_MESSAGE": "Sauvegarde du modèle réussie.",
+            "TEMPLATE_UPDATED_MESSAGE": "Mise à jour du modèle réussie.",
+            "TITLE": "GÉNÉRER UN DOCUMENT"
+        },
+        "RENAME_DOCUMENT": "Renommer le document"
+    },
+    "EDIT_CLIENT": {
+        "CHANGE_MARITAL_STATUS": {
+            "CLIENT2_ACCOUNT_OWNER": "{{client2Name}} est un propriétaire sur {{noOfAccounts}} comptes.",
+            "CLIENT2_REMOVE": "{{client2Name}} sera supprimé de ce fichier client.",
+            "CREATE_NEW_FILE": "Créez un nouveau fichier",
+            "JOINT_TO_SINGLE": "Voulez-vous supprimer {{client2Name}} du système ou créer un nouveau fichier client?",
+            "MANUALLY_ADD_CLIENT2": "Non, ajouter manuellement le client 2",
+            "REMOVE": "Supprimer",
+            "SEARCH_CLIENT2": "Oui, rechercher client 2",
+            "SINGLE_TO_JOINT": "Voulez-vous ajouter le client 2 à partir de la base de données?"
+        },
+        "DELETE_POPUP": {
+            "SUCCESS": "Le membre de la famille a été supprimé avec succès.",
+            "TEXT1": "Êtes-vous sûr de vouloir supprimer ce membre de votre famille?",
+            "TEXT2": "Cette action ne peut être annulée.",
+            "TITLE": "Supprimer le membre de la famille"
+        },
+        "POPUP": {
+            "SUCCESS": "Profil mis à jour avec succès."
+        }
+    },
+    "EDIT_CURRENT": {
+        "ERROR_MESSAGE": {
+            "TOTAL_MUST_BE_EQUAL_TO_100": "Le total doit être égal à 100%."
+        },
+        "INVESTMENT_INCOME_DISTRIBUTION": "Distribution des revenus d'investissements",
+        "TITLE": {
+            "EDIT_CURRENT_ALLOCATION": "MODIFIER L'ALLOCATION ACTUELLE"
+        }
+    },
+    "EDIT_GOAL": {
+        "ADD_TIER": "AJOUTER UN TIERS",
+        "AMOUNT": "Montant",
+        "CURRENCY": "Devise",
+        "EDIT_ASSUMPTIONS": "MODIFIER LES HYPOTHÈSES",
+        "END": "Fin",
+        "GOAL_NAME": "Nom de l'objectif",
+        "GOAL_TYPE": "Type de but",
+        "INDEX": "Indice",
+        "POPUP": {
+            "SUCCESS": "L'objectif a été mis à jour avec succès!",
+            "TIER_ALERT": "Aucun tiers ne peut être ajouté."
+        },
+        "START": "Débuter"
+    },
+    "EDIT_SAVINGS": {
+        "DELETE_TIER": "Supprimer le tiers",
+        "ERROR_1": "L'année de fin ne peut pas être antérieure à l'année de début.",
+        "ERROR_2": "L'âge de fin ne peut être inférieur à l'âge de début.",
+        "ERROR_3": "Sélectionnez n'importe quel objectif ou sélectionnez un autre type de lien de fin d'année.",
+        "ERROR_4": "Entrez une année valide (AAAA).",
+        "ERROR_5": "Entrer un âge valide.",
+        "ERROR_6": "L'année de début ne peut pas être antérieure à l'année en cours.",
+        "ERROR_7": "L'âge de début ne peut être inférieur à l'âge actuel."
+    },
+    "ENGAGEMENT": {
+        "ACTIONS": "Action",
+        "ADD_A_VALUE": "Ajouter une valeur",
+        "ADD_PRIORITY": "Ajouter une priorité",
+        "DELETE_PRIORITY": "Supprimer la priorité",
+        "DESCRIPTION": "Description",
+        "EDIT_PRIORITY": "Modifier la priorité",
+        "INVITE_SENT": "Invitation envoyée",
+        "LAST_COMPLETED": "Dernièrement complété",
+        "METHOD": "Méthode",
+        "POPUP": {
+            "SUCCESS": "La priorité a été sauvegardée avec succès.",
+            "SUCCESS_PRIORITIES": "Les priorités ont été mises à jour avec succès."
+        },
+        "PRIORITIES": "Priorités",
+        "SELECT_VALUES": "Sélectionnez des valeurs",
+        "SELECT_VALUES_LABEL": {
+            "PART_1": "Sélectionnez les cinq valeurs les plus importantes identifiées par",
+            "PART_2": "dans les valeurs de l'exercice."
+        },
+        "SEND_INVITE": "Envoyer une invitation",
+        "SEND_REMINDER": "Envoyer un rappel",
+        "SERVICE_LEVEL": "Niveau de service",
+        "SERVICE_LEVEL_ADVISOR_INFO": {
+            "ADD": "Ajouter",
+            "ADVISOR_ID": "Conseiller ID",
+            "EXPIRED": "Expiré",
+            "EXPIRES": "Expire",
+            "NEVER": "Jamais",
+            "NO_SUCH_ADVISOR": "Il n'existe aucun conseiller de ce genre. Veuillez entrer un numéro d'identification de conseiller valide.",
+            "PRIMARY_ADVISOR": "Conseiller(ère) principal(e)",
+            "REGION": "Région",
+            "REGION_ERROR": "Veuillez sélectionner une région. C'est un champ obligatoire.",
+            "REGION_PLACEHOLDER": "Sélectionnez une région",
+            "SECONDARY_ADVISORS": "Conseiller(ère/s) secondaire(s)",
+            "TITLE": {
+                "ADVISOR_INFO": "Information sur le conseiller"
+            },
+            "WORK_GROUP": "Groupe de travail",
+            "WORKGROUP_ERROR": "Veuillez sélectionner un groupe de travail. C'est un champ obligatoire.",
+            "WORKGROUP_PLACEHOLDER": "Sélectionnez un groupe de travail",
+            "WORKGROUP_AND_REGION_ERROR": "Veuillez sélectionner groupe de travail et région. Les deux champs sont obligatoires."
+        },
+        "SERVICE_LEVEL_CLIENT_INFO": {
+            "AS_OF": "(le {{date}})",
+            "BECAME_A_CLIENT": "Devenu un client le ({{dateFormat}})",
+            "CLIENT_TYPE": "Type de client(e)",
+            "FREQUENCY": "Fréquence",
+            "FUTURE_DATE_ERROR": "Vous ne pouvez pas sélectionner ou saisir une date postérieure (il peut s'agir de la date locale actuelle ou d'une date antérieure).",
+            "PLAN_LAST_REVIEWED": "Dernière révision du plan ({{dateFormat}})",
+            "PLAN_LAST_REVIEWED_DATE_ERROR": "La date du dernier examen du plan ne peut pas être antérieure à la date à laquelle il est devenu client.",
+            "PORTFOLIO_LAST_REVIEWED": "Dernière révision du portefeuille ({{dateFormat}})",
+            "PORTFOLIO_LAST_REVIEWED_DATE_ERROR": "La date du dernier examen du portefeuille ne peut être antérieure à la date à laquelle il est devenu client.",
+            "TITLE": {
+                "CLIENT_INFO": "Information sur le client"
+            }
+        },
+        "SERVICE_LEVEL_INFO": {
+            "ADD_A_SERVICE": "AJOUTER UN SERVICE",
+            "DELETE_POPUP": {
+                "SUCCESS": "Le service a été supprimé avec succès.",
+                "TEXT": "Vous ne serez pas en mesure d'annuler!",
+                "TITLE": "Êtes-vous sûr de vouloir supprimer un service?"
+            },
+            "DELETE_SERVICE": "SUPPRIMER LE SERVICE",
+            "EDIT_SERVICE": "MODIFIER LE SERVICE",
+            "MANAGE_BY": "Gérer par",
+            "TITLE": {
+                "SERVICE_LEVEL": "Niveau de service"
+            }
+        },
+        "SERVICE_LEVEL_UPDATED": "Mise à jour réussie de l'information sur les niveaux de Service.",
+        "SUMMARY": "Sommaire",
+        "TITLE": "Engagement",
+        "VALUES": "Valeurs",
+        "VALUES_WARNING": "Vous avez sélectionné les valeurs {{length}}. Sélectionnez en cinq puis sauvegardez."
+    },
+    "ENTITY": {
+        "ACB_OF_INVESTMENTS": "PBR des investissements",
+        "ACTIVE_BUISNESS": "Actifs d'entreprise / société d'exploitation",
+        "ADD_OWNER": "Ajouter propriétaire",
+        "ADD_SHARE_CLASS": "Ajouter une classe d'actions",
+        "ASSETS_INFORMATION": "Le montant en dollars est disponible après que les actifs et les passifs ont été remplis.",
+        "CORPORATION_PLACEHOLDER": "Sélectionnez une société",
+        "CURRENT_FAIR_MARKET_VALUE": "Juste valeur marchande actuelle",
+        "DELETE_MESSAGE": "L'entité a été supprimée avec succès.",
+        "DELETE_SHARE_CLASS": "Supprimer la classe de partage",
+        "DESCRIPTION": "Description",
+        "ENTITIES": "Entités",
+        "ENTITY_ASSUMPTIONS": "Hypothèses de l'entité",
+        "ENTITY_ACTION": {
+            "EDIT_ENTITY_DETAILS": "Modifier les détails de l'entité",
+            "EDIT_ENTITY_OWNERSHIP": "Modifier la propriété de l'entité",
+            "VIEW_ANALYSIS": "Voir l'analyse",
+            "DELETE_ENTITY": "Supprimer l'entité"
+        },
+        "ENTITY_DETAILS": "Détails de l'entité",
+        "EDIT_SHARE_CLASS": "Modifier la classe d'actions",
+        "FEDERAL": "Fédéral",
+        "GENERATE_TABLE": "Générer un tableau",
+        "HOLDING_COMPANY": "Société de portefeuille",
+        "NO": "Non",
+        "OWNERS": "Propriétaires",
+        "OWNERS_PLACEHOLDER": "Sélectionnez des propriétaires",
+        "OWNERSHIP": "Propriété",
+        "OWNERSHIP_SHARE_DELETE": "Classe d'actions supprimée avec succès.",
+        "OWNERSHIP_UPDATE_MESSAGE": "La propriété de l'entité a été mise à jour avec succès.",
+        "PROVINCE": "Province",
+        "PROVINCIAL": "Provincial",
+        "PROVINCE_PLACEHOLDER": "Sélectionnez une province",
+        "RELATED_CORPORATION": "Société liée",
+        "RELATED_CORPORATION_DESCRIPTION": "Description de la société liée",
+        "ROLE": "Rôle",
+        "SHARE": "Partagez",
+        "SHARES": "Action",
+        "SHARE_PLACEHOLDER": "Sélectionnez une catégorie d'actions",
+        "SHARE_DISTRIBUTION": "Distribution d'actions",
+        "SUCCESS_MESSAGE": "Entité ajoutée avec succès.",
+        "TAX_ASSUMPTIONS": "Hypothèses d'impôts",
+        "TITLE": "AJOUTER UNE ENTITÉ",
+        "TOTAL_MUST_BE_EQUAL_TO_100": "Le total doit être égal à 100%.",
+        "TRUST": "Fiducie",
+        "TYPE": "Type de placement",
+        "TYPE_PLACEHOLDER": "Sélectionnez un type de",
+        "UPDATE_MESSAGE": "L'entité a été mise à jour avec succès.",
+        "WARNING_FOR_GENERATE_TABLE": "Le tableau de propriété sera affiché une fois que les propriétaires et les catégories d'actions auront été choisis.",
+        "YES": "Oui"
+    },
+    "ESTATE_PLANING": {
+        "ADD_BENEFICIARY": "Ajouter un bénéficiaire",
+        "ADD_BENEFICIARY_FORM": {
+            "DISABLED": "Invalide",
+            "NAME_OF_CHARITY": "Nom de l'organisation caritative"
+        },
+        "ADD_NAMED_BENEFICIARY": {
+            "NO_SPOUSAL_ROLLOVER": "Aucun roulement de conjoint",
+            "PLACE_HOLDER": "Sélectionnez un bénéficiaire",
+            "PRIMARY_BENEFICIARY": "Principal bénéficiaire"
+        },
+        "ANALYSIS": {
+            "ADJUST_TAXABLE_INCOME": "Ajuster le revenu imposable",
+            "ADJUST_TAX_CREDITS": "Ajuster les crédits d'impôt",
+            "ESTIMATED_INCOME_TAX": "Impôts estimés",
+            "FIRST_DEATH": "1er décès",
+            "INCOME_TAXES": "Impôts sur les revenus",
+            "SECOND_DEATH": "Deuxième décès"
+        },
+        "BENEFICIARY": "Bénéficiaire",
+        "CONTINGENT_BENEFICIARY": "Bénéficiaire subsidiaire",
+        "DELETE": "Supprimer",
+        "DISTRIBUTIONS": {
+            "ADD_A_DISTRIBUTION": "Ajouter une distribution",
+            "AMOUNT": "Montant",
+            "BEQUEST_MADE_BY": "Legs effectué par",
+            "DISTRIBUTION_METHOD": "Méthode de distribution",
+            "ERROR_TOTAL_MORE_THAN_100": "La distribution totale ne peut pas dépasser 100.",
+            "NAME": "Nom",
+            "PERCENT": "Pourcentage",
+            "PERCENTAGE": "Pourcentage",
+            "RELATIONSHIP": "Rapport",
+            "RESIDUAL": "Résiduel",
+            "RESIDUAL_BENEFICIARIES": "Bénéficiaires résiduels",
+            "RESIDUAL_DISTRIBUTION": "Distribution résiduelle"
+        },
+        "EDIT": "Modifier",
+        "EDIT_BENEFICIARY": "Modifier le bénéficiaire",
+        "EDIT_NAMED_BENEFICIARY": "Modifier le nom du bénéficiaire",
+        "HEADER": {
+            "ANALYSIS": "ANALYSE",
+            "DISTRIBUTIONS": "DISTRIBUTIONS",
+            "LEGAL_INFORMATION": "INFORMATIONS LÉGALES",
+            "NAMED_BENEFICIARY": "BÉNÉFICIAIRE DÉSIGNÉ"
+        },
+        "LEGAL_INFORMATION": {
+            "DATE": "Date",
+            "DATE_OF_LAST_UPDATE": "Date de la dernière mise à jour",
+            "EXECUTORS": "Montant en dollars",
+            "GUARDIANS": "Montant en dollars",
+            "HAVE_A_WILL": "Avoir un testament",
+            "HAVE_POWER_OF_ATTORNEY_FOR_PERSONAL_CARE": "Avoir une procuration pour soins personnels",
+            "HAVE_POWER_OF_ATTORNEY_FOR_PROPERTY": "Avoir une procuration pour les biens",
+            "POPUP": {
+                "SUCESS": "L'information juridique a été sauvegardée avec succès."
+            },
+            "RENUNCIATION_OF_FAMILY_PATRIMONY_PARTITION": "Renonciation à la séparation du patrimoine familial",
+            "TRUSTEES": "Montant en dollars",
+            "WILL_DETAILS": "Détails"
+        },
+        "NAMED_BENEFICIARY": {
+            "DEATH": "Décès",
+            "EMERGENCY": "urgence",
+            "LIQUID_ON": "Liquide sur",
+            "PROBATE": "homologation",
+            "SUBJECT_TO": "Sous réserve de",
+            "WARNING": "Cette désignation de bénéficiaire du conjoint a été signalée comme étant imposable au moment du décès et n'utilise pas les dispositions de roulement au conjoint."
+        },
+        "NEW_BENEFICIARY": "Nouveau bénéficiaire",
+        "OTHER_BENEFICIARIES": "Autres bénéficiaires",
+        "POPUP": {
+            "ANALYSIS_UPDATED_SUCCESSFULLY": "L'analyse a été mise à jour avec succès.",
+            "BENEFICIARY_DELETED_SUCCESSFULLY": "Le bénéficiaire a été supprimé avec succès.",
+            "BENEFICIARY_SUCCESSFULLY_ADDED": "Le bénéficiaire a été ajouté avec succès.",
+            "BENEFICIARY_SUCCESSFULLY_UPDATED": "Le bénéficiaire a été mis à jour avec succès.",
+            "DISTRIBUTION_SUCCESSFULLY_ADDED": "La distribution a été ajoutée avec succès.",
+            "DISTRIBUTION_SUCCESSFULLY_UPDATED": "La distribution a été mise à jour avec succès."
+        },
+        "RELATIONSHIP": "Rapport"
+    },
+    "FAMILY_MEMBER_EDIT": {
+        "CLIENT": "Client",
+        "DELETE_FAMILY_MEMBER": "Supprimer le membre de la famille",
+        "FAMILY_MEMBER_DETAILS": "DÉTAILS SUR LE MEMBRE DE LA FAMILLE"
+    },
+    "FILEUPLOAD": {
+        "BROWSE_IMAGE": "parcourir",
+        "CROP_IMAGE": "Recadrer l'image",
+        "DROP_FILE_HERE": "Déposer le fichier ici",
+        "DROP_IMAGE_HERE": "Déposer l'image ici",
+        "MAX_FILE": "12 fichiers maximum dans la file d'attente",
+        "ERROR": {
+            "FILE_SIZE": "La taille du fichier doit être inférieure à {{value}}MB.",
+            "INVALID_FILE": "Type de fichier non valide sélectionné.",
+            "MAX_FILE": "À un moment vous ne pouvez télécharger que {{value}} fichier(s)."
+        }
+    },
+    "FOOTER": {
+        "COPY_RIGHT_DESCRIPTION": "Copyright © PlanPlus Global Inc. Tous droits réservés. \n <b><u>Politique de Confidentialité</u></b>",
+        "PRIVACY": "Confidentialité"
+    },
+    "FORM": {
+        "ACCOUNT_NAME": "Nom du compte",
+        "ACCOUNT_NUMBER": "Numéro de compte",
+        "ACCOUNT_TYPE": "Type de compte",
+        "ACCOUNT_TYPE_PLACEHOLDER": "Sélectionnez un type de compte",
+        "REGULATORY_TYPE": "Type de réglementation",
+        "REGULATORY_TYPE_PLACEHOLDER": "Sélectionnez un type de réglementation",
+        "ACTION": {
+            "ADD_PRODUCTS": "Ajouter des produits",
+            "APPLY": "APPLIQUER",
+            "BACK": "Précédent",
+            "BACK_TO_ASSETS": "RETOUR AUX ÉLÉMENTS D'ACTIFS ET DE PASSIFS",
+            "CANCEL": "Annuler",
+            "CLOSE": "Annuler",
+            "REMOVE": "Supprimer",
+            "COMPLETE": "Complet",
+            "DECLINE": "Refuser",
+            "GENERATE": "Générer",
+            "I_ACCEPT": "J'accepte",
+            "PROCEED": "Procéder",
+            "REFRESH": "RAFRAICHIR",
+            "SAVE": "SAUVEGARDER",
+            "SAVE/ADD_FAMILY_MEMBER": "ENREGISTRER / Ajouter un membre de la famille",
+            "SAVE/ADD_MORE": "ENREGISTRER / AJOUTER PLUS",
+            "SAVE/ADD_NOTE": "ENREGISTRER / AJOUTER UNE NOTE",
+            "SAVE/EDIT": "ENREGISTRER / MODIFIER",
+            "SAVE_ENTITY": "ENREGISTRER L'ENTITÉ",
+            "SAVE_AND_EDIT_ENTITY": "ENREGISTRER ET ÉDITER L'ENTITÉ",
+            "SAVE/ADD_ENTITY": "ENREGISTRER / AJOUTER UNE ENTITÉ",
+            "SAVE/NEW": "ENREGISTRER / NOUVEAU",
+            "SAVE/PRINT": "ENREGISTRER / IMPRIMER",
+            "SAVE/SEARCH": "ENREGISTRER / RECHERCHER",
+            "SAVETEMPLATE": "Enregistrer comme modèle",
+            "SAVE_CHANGES": "SAUVEGARDER LES CHANGEMENTS",
+            "SEND": "ENVOYER",
+            "UPLOAD": "Télécharger vers le serveur",
+            "UPLOAD_NEW": "TÉLÉCHARGER UN NOUVEAU FICHIER"
+        },
+        "ADDRESS": "Adresses",
+        "AGE": "Âge",
+        "AMOUNT": "Montant",
+        "ASSOCIATED_GOAL": "Objectif associé",
+        "ASSOCIATED_PORTFOLIO": "Portefeuille associé",
+        "CELL_PHONE": "Téléphone mobile",
+        "CHOOSE_MODEL": "Choisissez le modèle",
+        "CITY": "Ville",
+        "CLIENT_STATUS": "Statut du Client",
+        "COMPANY": "Compagnie",
+        "COUNTRY": "Pays",
+        "DATE_OF_BIRTH": "Date de naissance",
+        "DATE_OF_CREATION": "Date de création (AAAA-MM-JJ)",
+        "EMAIL": "Courriel",
+        "FIRST_NAME": "Prénom",
+        "FREQUENCY": "Fréquence",
+        "FUTURE_DATE_ERROR": "La date ne peut pas être une date future (peut être la date locale actuelle ou une date antérieure).",
+        "FUTURE_TIME_ERROR": "Le temps ne peut pas être un temps futur (il peut s'agir de l'heure locale courante ou d'une heure antérieure).",
+        "GENDER": "Sexe",
+        "HOME_PHONE": "Téléphone",
+        "INDEX": "Indice",
+        "INFLATION": "Inflation",
+        "INITIALS": "Initial",
+        "INVALID_BIRTHDATE": "Veuillez entrer une date de naissance valide.",
+        "INVALID_BIRTHYEAR": "Vous ne pouvez pas entrer une année de naissance inférieure à {{minYear}}.",
+        "INVALID_DATE": "La date de naissance ne peut pas être supérieure à la date d'aujourd'hui.",
+        "INVALID_DATE_ERROR": "La date de début ne peut être supérieure à la date de fin.",
+        "LANGUAGE": "Langue",
+        "LAST_NAME": "Nom",
+        "MARITAL_STATUS": "État matrimonial",
+        "MATRIMONIAL_REGIME": "Régime matrimonial",
+        "MESSAGE": "Message",
+        "NAME": "Nom",
+        "NEW_DOCUMENT_NAME": "Nouveau nom de document",
+        "NEW_PORTFOLIO_NAME": "Nouveau nom de portefeuille",
+        "OFFICE_FAX": "Fax de bureau",
+        "OFFICE_PHONE": "Téléphone de bureau",
+        "OLD_DOCUMENT_NAME": "Ancien nom de document",
+        "OLD_PORTFOLIO_NAME": "Ancien nom du portefeuille",
+        "OWNERSHIP": "Propriété",
+        "PASSWORD": "Mot de passe",
+        "PLACEHOLDER": {
+            "SELECT": "Sélectionner",
+            "SELECT_ACCOUNT": "Sélectionnez un compte",
+            "SELECT_A_COUNTRY": "Sélectionnez un pays",
+            "SELECT_A_LANGUAGE": "Sélectionnez une langue",
+            "SELECT_A_MARITAL_STATUS": "Sélectionnez un état matrimonial",
+            "SELECT_A_PROVINCE": "Sélectionnez une province",
+            "SELECT_A_STATUS": "Sélectionnez un statut",
+            "SELECT_GOAL": "Sélectionnez un objectif",
+            "SELECT_INVESTMENT_STRATEGY": "Sélectionnez une politique d'investissement",
+            "SELECT_MATRIMONIAL_REGIME": "Sélectionnez un régime matrimonial",
+            "SELECT_NOTE_TYPE": "Sélectionnez un type de note",
+            "SELECT_PORTFOLIO": "Choisir un portefeuille"
+        },
+        "PLAN_ASSUMPTION": "Hypothèses du plan",
+        "PORTFOLIO": "Portefeuille",
+        "POSTAL_CODE": "Code postal",
+        "PROCESS": {
+            "UPLOADING": "Téléchargement"
+        },
+        "PROVINCE": "Province",
+        "REGION": "Région",
+        "RESPONSE_REQUIRED": "Réponse requise",
+        "RETIRED": "Retraité",
+        "SELECT_ALL": "Sélectionnez tous",
+        "SELECT_FAVOURITES_LIST": "Sélectionnez une liste des favoris",
+        "SELECT_NONE": "Sélectionnez aucun",
+        "SELECT_STATUS": "Sélectionnez un statut",
+        "SEND_TO": "Envoyer à",
+        "STATE": "Province",
+        "STATUS": "Statut",
+        "SUBJECT": "Sujet",
+        "TOTAL_HOLDING_VALUE": "Valeur totale des avoirs",
+        "TOTAL_LIABILITY": "Valeur totale du passif",
+        "UPDATE_REVIEW_DATE": "Mise à jour de la date d'examen",
+        "USERNAME": "Code d'utilisateur",
+        "ZIP_CODE": "Code postal"
+    },
+    "GENERATE_REPORT": {
+        "BUDGET": "Budget",
+        "CASH_FLOW_REPORT": "État des flux de trésorerie",
+        "COMBINED_INVESTMENT_REPORT ": "Rapport combiné des placements",
+        "CRITERIA": "CRITÈRE",
+        "CRITERIA_PLACEHOLDER": "Sélectionnez des critères de déclaration",
+        "GOAL_PLACEHOLDER": "Sélectionnez un objectif pour le rapport",
+        "DETAILED_ESTATE_ANALYSIS": "Analyse successorale détaillée",
+        "ESTATE_LIQUIDITY_ANALYSIS": "Liquidités successorales",
+        "ESTATE_NET_WORTH": "Bilan successoral",
+        "FORMATS": "FORMAT",
+        "FORMATS_PLACEHOLDER": "Sélectionnez un format de rapport",
+        "FUND_ROLLUP": "Fonds cumulatif",
+        "GOALS": "Buts",
+        "GOALS_AND_OBJECTIVES": "Buts & objectifs",
+        "INCOME_TAX_PROJECTION": "Analyse d'impôts",
+        "INVESTMENT_HOLDINGS": "Avoirs d'investissement",
+        "INVESTMENT_PROPOSAL": "PROPOSITION D'INVESTISSEMENT",
+        "NET_WORTH": "Valeur nette",
+        "POPUP": {
+            "REPORT_DOWNLOAD_QUESTION": "Voulez-vous le télécharger maintenant?",
+            "REPORT_GENERATED_MESSAGE": "{{reportName}} Le rapport été généré avec succès et peut être téléchargé.",
+            "REPORT_NOT_SELECTED": "Aucun rapport n'est sélectionné. Veuillez sélectionnez le rapport que vous souhaitez générer."
+        },
+        "PORTFOLIOS": "PORTEFEUILLES",
+        "PORTFOLIO_PLACEHOLDER": "Sélectionnez un portefeuille pour le rapport",
+        "ROLLUP_REPORT": "Rapport d'analyse de synthèse du portefeuille",
+        "DETAIL_IMPLEMENTATION_STRATEGY_REPORT": "Rapport détaillé sur la stratégie de mise en œuvre",
+        "TAX": "Impôt",
+        "TAX_AUDIT_REPORT": "Audit de l'impôt",
+        "TAX_REPORT_SCENARIO": "Scénario du rapport fiscal",
+        "TAX_REPORT_SCENARIOS": {
+            "ON_CLIENT_FIRST_DEATH": "Au premier décès du client",
+            "ON_CLIENT_SECOND_DEATH": "Au deuxième décès du client",
+            "ON_SPOUSE_FIRST_DEATH": "Au premier décès du conjoint",
+            "ON_SPOUSE_SECOND_DEATH": "Au deuxième décès du conjoint"
+        },
+        "TAX_REPORT_SCENARIO_PLACEHOLDER": "Sélectionnez un scénario pour le rapport d'impôt",
+        "TITLE": "RAPPORTS",
+        "WEALTH": "RICHESSE"
+    },
+    "GOAL": {
+        "ANALYSIS": {
+            "LABEL": {
+                "ALL_AGES": "Tous les âges",
+                "AMOUNT": "Montant",
+                "ANNUAL_SAVINGS": "Épargne annuelle",
+                "AT_AGE": "À l'âge de {{age}}",
+                "CHOOSE_SAVINGS_RECORD": "Choisissez le dossier d'épargne",
+                "CORPORATE_DEFERRAL_PERIOD": "Période (en années) du report de la classe d'entreprise",
+                "CORPORATE_TAX_DEFERRAL": "Report d'impôt de la classe d'entreprise",
+                "CURRENT_SAVING": "Épargne actuelle",
+                "CURRENT_SITUATION": "Situation actuelle",
+                "DEFERRED_CAPITAL_GAINS": "Gain de capital différé",
+                "DIVIDEND": "Portion de dividendes",
+                "END": "Fin",
+                "END_GOAL": "Objectif final (âge)",
+                "GOAL_AFTER_TAX": "Objectif après impôt",
+                "GOAL_DURATION": "Durée (en années) {{duration}}",
+                "HIGH_LEVEL_GRAPH_TEXT": "Pourcentage atteint \n de l'objectif",
+                "IMPACT": "L'incidence",
+                "INCOME_AVAILABLE": "Revenu disponible",
+                "INCOME_DISTRIBUTION": "La distribution du revenu",
+                "INCOME_GOAL": "Objectif de revenu",
+                "INTEREST": "Intérêt",
+                "INVESTMENT_STRATEGY": "Stratégie d'investissement",
+                "MORTALITY_ADJUSTED": "Mortalité corrigée",
+                "NET_AFTER_TAX_INCOME": "Revenu disponible après impôts",
+                "NET_INVESTMENT_WITHDRAWALS": "Retrait net de placement",
+                "NON_TAXABLE": "Non imposable",
+                "NOTES": "Notes",
+                "INCOME_TAX_RATES": "Taux d'impôts fédéral",
+                "AVERAGE_TAX": "Taux d'imposition moyen",
+                "FULL_TAX": "Calcul intégral de l'impôt (à la retraite)",
+                "OPTIMIZATION_OPTIONS": "Options d'optimisation",
+                "OTHER_OPTIONS": "Autres options",
+                "OUT_OF_RANGE_ERROR": "Veuillez entrer la valeur entre la portée de son curseur.",
+                "PENSIONS_AND_OTHER_REVENUES": "Régimes de retraite et autres revenus",
+                "PORTFOLIO": "Portefeuille",
+                "PORTFOLIO_TURNOVER_PERIOD": "Période (en années) de rotation du portefeuille",
+                "PRESENT_VALUE": "Valeur actuelle {{devise}}",
+                "RATE_OF_RETURN": "Taux de rendement (%)",
+                "REALIZED_CAPITAL_GAINS": "Plus-values réalisées",
+                "RESULTS": "Résultats",
+                "RETURN_ON_ASSETS": "Rendement sur les actifs",
+                "SAVINGS_RECORDS": "Records d'épargne",
+                "SHORTFALL": "Déficit",
+                "SHORTFALL_TO_ACHIEVE_OBJECTIVES": "Déficit à combler pour l'atteinte des objectifs",
+                "STANDARD_DEVIATION": "Écart-type",
+                "START": "Débuter",
+                "START_GOAL": "Objectif de départ (âge)",
+                "STRATEGY_SCENARIO": "Scénario de stratégie",
+                "STRATEGY_SITUATION": "Solution de la stratégie",
+                "SUCCESS_LIKELIHOOD": "Probabilité de succès",
+                "SURPLUS": "Surplus",
+                "SURPLUS_SHORTFALL": "Excédent / déficit",
+                "TAXES": "Impôts",
+                "TAX_OPTIMIZATION": "Optimisation d'impot",
+                "TOTAL_INCOME_PRETAX": "Total revenus avant impôts",
+                "TOTAL_VALUE_ADVICE": "La valeur totale des conseils",
+                "USE_CUSTOM_DISTRIBUTION": "Utilisation personnalisée de la distribution des revenus",
+                "WEIGHTED": "Pondéré",
+                "WEIGHTED_RETURN_DEVIATION": "Rendement pondéré et écart-type"
+            },
+            "PANEL": {
+                "CASH_FLOW": "Analyse du flux monétaire",
+                "CERTAINTY_OUTCOME": "Probabilité de réussite",
+                "FAVOURABLE_UNFAVOURABLE": "Marchés favorables et défavorables",
+                "HIGH_LEVEL_ANALYSIS": "Analyse de haut niveau",
+                "INVESTMENT_CAPITAL": "Utilisation de capital d'investissement",
+                "PLANNING_ALTERNATIVES": "Solutions de planification",
+                "SUMMARY_ASSUMPTIONS": "Résumé des hypothèses",
+                "VALUE_ADVICE": "La valeur des conseils",
+                "VALUE_AT_RISK": "Valeur à risque (VaR)"
+            },
+            "POPUP": {
+                "ASSUMPTIONS_PORTFOLIO_UPDATED": "Sélection du portefeuille mise à jour.",
+                "ASSUMPTIONS_SUCCESS": "Hypothèses correctement mis à jour.",
+                "CHANGE_END_AGE": {
+                    "TEXT": "En procédant à ce changement, on mettra à jour le but de départ (âge) pour qu'il soit égal au but final (âge). Êtes-vous sûr de vouloir changer l'objectif final (âge) ?",
+                    "TITLE": "Vous changez l'objectif final (âge) plus tôt que l'objectif initial (âge)."
+                },
+                "PLANNING_ALTERNATIVES_SUCCESS": "Vos réglages sont sauvegardés!"
+            }
+        },
+        "WARNING": {
+            "UNALLOCATED_SAVINGS": "Les économies non affectées ne seront pas utilisées pour financer des objectifs. Vous devriez examiner pour vous assurer que cela est souhaité et si nécessaire, éditer l'enregistrement d'épargne pour sélectionner un objectif associé."
+        }
+    },
+    "GOALS": {
+        "AMOUNT_IN": "Montant en",
+        "ANALYSIS": {
+            "TITLE": "Analyse"
+        },
+        "DETAILS": {
+            "TITLE": "Détails"
+        },
+        "EDIT_RETIREMENT_ASSUMPTIONS": "MODIFIER LES HYPOTHÈSES DE RETRAITE",
+        "EDUCATION_INSTITUTION": {
+            "INSTITUTION": "Institution",
+            "NON_RESIDENT_TUITION": "Scolarité non-résident",
+            "RESIDENT_TUITION": "Frais de scolarité des résidents",
+            "ROOM_BOARD": "Frais de scolarité et d'hébergement",
+            "TITLE": "AIDE AUX ÉTABLISSEMENTS D'ENSEIGNEMENT",
+            "TUITION": "Scolarité"
+        },
+        "LABEL": {
+            "GOAL_TYPE": "Type de but"
+        },
+        "MULTIPLE": "Multiple",
+        "ON_TRACK": "sur la voie",
+        "PLANTRAC": {
+            "TITLE": "PlanTrac"
+        },
+        "REVENUES": {
+            "TITLE": "Revenus"
+        },
+        "SAVINGS": {
+            "TITLE": "Épargnes"
+        },
+        "SUMMARY": {
+            "ADD_GOALS": "AJOUTER UN OBJECTIF",
+            "DELETE_GOAL": "SUPPRIMER L'OBJECTIF",
+            "EDIT_GOAL": "MODIFIER L'OBJECTIF",
+            "LINK_PORTFOLIOS_TO_GOALS": "Lier les portefeuilles aux objectifs",
+            "PLANTRAC": "PLANTRAC",
+            "VIEW_ANALYSIS": "VOIR L'ANALYSE",
+            "VIEW_REVENUES": "VOIR LES REVENUS",
+            "VIEW_SAVINGS": "VOIR LES ÉPARGNES"
+        },
+        "FAV_UNFAV": {
+            "PENSION": "Régimes de retraite et autres revenus",
+            "CAPITAL": "Capital et épargne",
+            "UNFAV": "Marchés défavorables",
+            "FAV": "Marchés favorables"
+        }
+    },
+    "GRAPH": {
+        "DROPDOWN": {
+            "FUTURE_DOLLER": "Graphique - avenir",
+            "TIMELINE": "Chronologie",
+            "TODAY_DOLLER": "Graphique - aujourd'hui"
+        },
+        "SAVINGS_MAP": "Plan d'épargne",
+        "GOAL_MAP": "Carte de l'objectif",
+        "REVENUE_MAP": "Carte des revenus"
+    },
+    "GROUP_BY_DROPDOWN": "Grouper par",
+    "HEADER": {
+        "BETA": "Beta",
+        "CLIENTS": "Clients",
+        "DASHBOARD": "Tableau de bord",
+        "LIVE_CHAT_URL": "https://secure.livechatinc.com/licence/1062979/v2/open_chat.cgi?lang=en&groups=10",
+        "LOGOUT": "Fin de session",
+        "MY_PROFILE": "Mon profil",
+        "SETTINGS": "Paramètres"
+    },
+    "KYC": {
+        "RISK_TOLERANCE": "Tolérance aux risques"
+    },
+    "LESS_DETAIL": "Moins de détails",
+    "LOGIN": {
+        "ACTION": {
+            "LOGIN": "Connexion",
+            "GET_STARTED": "COMMENCER"
+        },
+        "ALTERNATE_LOGIN": "Connexion alternative",
+        "ERROR_DESCRIPTION": "Désolé, il y avait un problème avec votre demande et elle n'a pu aboutir correctement.",
+        "EXPIRED": "Le compte d'utilisateur a expiré",
+        "FORGOT_PASSWORD": "Avez-vous oubli\u00e9 votre mot de passe?",
+        "INVALID_PASSWORD": "Le nom d'utilisateur ou le mot de passe ne correspond pas à nos enregistrements.",
+        "INVALID_LICENSE": "Vous n'avez pas de licence valide.",
+        "NEED_HELP": "Avez-vous besoin d\u2019aide?",
+        "POPUP": {
+            "CONFIRM_BUTTON": "Annuler",
+            "DESCRIPTION": "Si vous avez besoin de soutien technique, veuillez contacter le Service à la clientèle :",
+            "LIVE_CHAT": "Clavardage",
+            "LIVE_CHAT_URL": "https://secure.livechatinc.com/licence/1062979/v2/open_chat.cgi?lang=en&groups=10",
+            "MAIL_SUPPORT_URL": "mailto:support@planplus.com",
+            "USER_ALREADY_LOGGEDIN": "vous êtes déjà connecté avec "
+        },
+        "REFERENCE_CODE": "Code de référence",
+        "SETTING": {
+            "POPUP": {
+                "AGREE": "ACCEPTER (Fermer)",
+                "CMA": "Hypothèses concernant le marché des capitaux",
+                "DECLINE": "Refuser (fin de session)",
+                "DESC": "Pour éviter ce message à l'avenir, veuillez examiner et vérifier vos hypothèses",
+                "DIP": "Politiques d'investissement par défaut",
+                "END": "Pour cette session, vous reconnaissez que vous acceptez les hypothèses par défaut comme étant les vôtres.",
+                "FOR": "pour",
+                "PJM": "Matrice de jugement professionnel",
+                "SETTING": "Paramètres",
+                "TITLE": "Examiner les hypothèses"
+            }
+        },
+        "SUB_HEADER_LINE1": "ÉTABLISSEMENT D'UN PROFIL DE RISQUE ÉPROUVÉ SUR LE MARCHÉ,",
+        "SUB_HEADER_LINE2": "PLANIFICATION FINANCIÈRE ET TECHNOLOGIE DE L'ADÉQUATION",
+        "TIMEOUT_MESSAGE": "Votre session a expiré. Veuillez vous reconnecter",
+        "COOKIE_DISABLED_MESSAGE": "Le cookie est désactivé! Veuillez activer les cookies pour utiliser ce site!"
+    },
+    "MORE_DETAIL": "Plus de détails",
+    "MORTALITY": {
+        "FEMALE": "femme",
+        "MALE": "Homme",
+        "MORTALITY_TITLE": "Tableau de mortalité pour"
+    },
+    "MY_PROFILE": {
+        "LICENCE_AGREEMENT": {
+            "POPUP": {
+                "SUCCESS": "Vous avez accepté tous les conditions d'utilisation spécifiées dans le contrat de licence."
+            }
+        },
+        "POPUP": {
+            "ERROR": "Oups, erreur de mise à jour des détails du conseiller.",
+            "SUCCESS": "Détails du conseiller mis à jour avec succès."
+        },
+        "TAB": {
+            "ABOUT_ME": "À propos de moi",
+            "SUBSCRIPTIONS": "Souscription",
+            "BRANDING": "Marquage",
+            "CHANGE_PASSWORD": "Changez votre mot de passe",
+            "LICENCE_AGREEMENT": "Contrat de licence",
+            "PRIVACY_POLICY": "Confidentialité"
+        },
+        "TITLE": "Mon profil"
+    },
+    "NOTES": {
+        "ACTIONS": "Action",
+        "ADD_A_NOTE": "Ajouter une note",
+        "DATE": "Date",
+        "DELETE_NOTE": "Supprimer la note",
+        "EDIT_BY": "Modifier selon",
+        "FROM_DATE": "De",
+        "NOTE": "Note",
+        "NOTES_TITLE": "Notes",
+        "POPUP": {
+            "CONFIRM_DELETE_TEXT": "Vous ne serez pas en mesure de revenir!",
+            "CONFIRM_DELETE_TITLE": "Êtes-vous sûr de vouloir supprimer la note {{noteType}} datée du {{dateStamp}} ?",
+            "NOTE_SUCCESSFULLY_ADDED": "La note a été ajoutée avec succès.",
+            "SUCCESSFULLY_DELETED": "La note a été supprimée avec succès."
+        },
+        "SEARCH": "Rechercher",
+        "SEARCH_NOTES_TITLE": "Recherche des notes",
+        "TIME": "Heure",
+        "TO": "à",
+        "TYPE": "Type de placement",
+        "VIEW_NOTE": "Voir la note"
+    },
+    "NO_RESULTS": "Aucun résultat",
+    "PERSONAL_INFO": {
+        "DESIGNATION": "Désignation(s)",
+        "FAMILY_MEMBER": "Membre de la famille",
+        "LICENCE": "Licence",
+        "PREF_LANGUAGE": "Langue préférée",
+        "ROLE": "Rôle",
+        "TITLE": "Information personnelle",
+        "USER_ID": "Code d'utilisateur",
+        "USERNAME": "Code d'utilisateur",
+        "EXPIRY": "Date d'expiration de la souscription",
+        "MANAGE_SUBSCRIPTION": "Gestion des abonnements",
+        "MY_SUBSCRIPTION": "Mon abonnement"
+    },
+    "SUBSCRIPTION": {
+        "USER_ID_GUIDE": "Votre nom d'utilisateur est utilisé pour partager l'accès au sein de SuitabilityPro (par exemple, vous devrez fournir votre nom d'utilisateur pour être invité à un groupe de travail ou être ajouté en tant que conseiller secondaire).",
+        "USERNAME_GUIDE": "Votre nom d'utilisateur est utilisé pour vous connecter à l'application SuitabilityPro."
+    },
+    "PLANNING": {
+        "LESS_DETAIL": "Moins de détails",
+        "MORE_DETAIL": "Plus de détails"
+    },
+    "PLANNING_SUMMARY": {
+        "ANALYSIS": {
+            "DESCRIPTION": "Créez et comparez des scénarios. Affinez votre stratégie.",
+            "TITLE": "Analyse"
+        },
+        "ASSETS_LIABILITIES": {
+            "DESCRIPTION": "Affichez et modifiez tous les avoirs de votre client. Groupe dans des portefeuilles. Accédez aux détails sur les produits d'investissement.",
+            "TITLE": "Actif et passif"
+        },
+        "CASH_FLOW_MANAGEMENT": {
+            "DESCRIPTION": "Flux monétaires courants",
+            "TITLE": "Flux monétaires courants"
+        },
+        "DESCRIPTION": {
+            "PARA_1": "Vous êtes à quelques minutes de l'élaboration d'un plan d'investissement axé sur les objectifs pour ce client.",
+            "PARA_2": "Ces modules doivent être remplis d'informations. Selon la configuration de votre back-office, certains d'entre eux peuvent se remplir automatiquement."
+        },
+        "ESTATE": {
+            "TITLE": "Succession"
+        },
+        "GOALS": {
+            "DESCRIPTION": "Déterminez les objectifs financiers de votre client, les besoins en dollars et les dates précises.",
+            "TITLE": "Buts"
+        },
+        "PORTFOLIOS": {
+            "DESCRIPTION": "Créez des portefeuilles pour grouper les comptes de vos clients. Évaluez les objectifs et élaborer une stratégie d'investissement.",
+            "TITLE": "Portefeuilles"
+        },
+        "PRODUCT_RECOMM": {
+            "TITLE": "Recommandations de produits"
+        },
+        "REVENUES": {
+            "DESCRIPTION": "Incluez le revenu que le client recevra à la retraite, par exemple un régime de pension privé ou public, ou un travail à temps partiel.",
+            "TITLE": "Revenus"
+        },
+        "TITLE": "Résumé de la planification"
+    },
+    "PLANTRAC": {
+        "ACTUAL_NET_SAVINGS": "Économies nettes réelles",
+        "ACTUAL_SAVINGS": "Épargnes actuelles",
+        "ACTUAL_WITHDRAWALS": "Retraits réels",
+        "DATE": "Date",
+        "DESCRIPTION": "Description",
+        "GRAPH": {
+            "ACTUAL": "Véritable",
+            "PLANNED": "Prévisionnel",
+            "TOTAL_NET_SAVINGS": "Total des épargnes nettes",
+            "TOTAL_SAVINGS": "Total de l'épargne",
+            "TOTAL_WITHDRAWALS": "Total des retraits"
+        },
+        "NET_SAVINGS": "Épargne nette",
+        "NOT_TRACKING": "aucun suivi",
+        "OFF_TRACK": "hors-piste",
+        "ON_TRACK": "sur la voie",
+        "PLANNED_NET_SAVINGS": "Économies nettes prévues",
+        "PLANNED_SAVINGS": "Épargne planifiée",
+        "PLANNED_WITHDRAWALS": "Retraits planifiés",
+        "REFRESH-BUTTON": "Rafraîchir PlanTrac",
+        "REFRESH_WARNING": {
+            "CONTENT": "Lorsque vous rafraîchissez vos données PlanTrac, votre historique sera conservé, mais votre projection du capital et de l'épargne sera actualisée et ne pourra être annulée. Voulez-vous continuer ?",
+            "HEADING": "Avertissement",
+            "TITLE": "Rafraîchir PlanTrac"
+        },
+        "SAVINGS_ANALYSIS": "Analyse des économies de PlanTrac",
+        "SAVINGS_TRANSACTIONS": "Opérations d'épargne de PlanTrac",
+        "SAVINGS_WITHDRAWAL_ANALYSIS": "Analyse des économies et des retraits",
+        "SIDE_PANEL": {
+            "TITLE": "DÉTAIL DES ÉCONOMIES ET DES RETRAITS"
+        },
+        "START-BUTTON": "Commencer PlanTrac",
+        "TYPE": "Type de placement",
+        "VARIANCE": "Écart",
+        "VIEW_BY_OPTION": {
+            "ACCOUNT": "Compte",
+            "TOTALS": "Totaux",
+            "TYPE": "Type de placement"
+        },
+        "WITHDRAWAL_ANALYSIS": "Analyse de retrait de PlanTrac",
+        "WITHDRAWAL_TRANSACTIONS": "Opérations de retrait de PlanTrac"
+    },
+    "PORTFOLIO": {
+        "ACTION": {
+            "ANALYTICS": "ANALYTIQUES",
+            "DELETE_PORTFOLIO": "Supprimer le portefeuille",
+            "EDIT": "Modifier",
+            "EDIT_CURRENT": "MODIFIER ACTUEL",
+            "EDIT_POLICY": "MODIFIER LA POLITIQUE",
+            "LINK_GOALS": "OBJECTIFS DE LIEN",
+            "OBJECTIVES": "Objectifs"
+        },
+        "ADD_INVESTOR": {
+            "INVESTOR_WARNING": "Un seul investisseur a obtenu une note de tolérance au risque, qui servira de base de référence pour déterminer la note d'adéquation. Remplir un questionnaire sur la tolérance au risque pour chaque investisseur afin de choisir un décideur pour ce portefeuille.",
+            "LABEL": {
+                "INVESTOR": "INVESTISSEUR",
+                "PORTFOLIO_NAME": "NOM DU PORTEFEUILLE"
+            },
+            "NO_INVESTORS": "Aucun investisseur",
+            "NO_INVESTORS_ADDED": "Aucun investisseur ajouté",
+            "POPUP": {
+                "SUCCESS": "Investisseur(s) ajouté(s) au portefeuille avec succès."
+            },
+            "TITLE": "AJOUTER UN INVESTISSEUR"
+        },
+        "ANALYTICS": {
+            "LABEL": {
+                "ADDITIONAL_LIQUIDITY": "Besoin de liquidités supplémentaires",
+                "ANALYZED_PORTFOLIO": "Portefeuille analysé",
+                "ASSET_CLASSES": "Classes d'actifs",
+                "BIGGEST_FALL": "Les plus grosses chutes",
+                "BIGGEST_FALL_LABEL": "Les 3 premières chutes pour un portefeuille similaire",
+                "BIGGEST_POTENTIAL": "Les plus grandes pertes potentielles",
+                "BIGGEST_POTENTIAL_LABEL": "Les 3 principales pertes pour un portefeuille similaire",
+                "CASH_WEDGE": "Portion de liquidités",
+                "CASH_WEDGE_MESSAGE": "Pour disposer de liquidités suffisantes pour financer l'(les) objectif(s) associé(s), ce portefeuille doit être {{percentNeeded}}% ou {{amountNeeded}} (avant impôts) liquide au cours des prochaines {{years}}années. Sur la base des Investissements, {{amountAvailable}} de ce portefeuille devrait être liquide.",
+                "EFFICIENT_FRONTIER": "Frontière efficiente",
+                "EXCESS_LIQUIDITY": "Excès de liquidité",
+                "FALLING_DETAIL": "La valeur du portefeuille \u00e9tait en-dessous de sa plus r\u00e9cente hausse.",
+                "ILLQUID": "Illiquide",
+                "IMPLEMENTATION": "Mise en œuvre",
+                "INEFFICIENT_FRONTIER": "Frontière inefficace",
+                "MARGINALLY_SUITABLE": "Légèrement adapté",
+                "NOT_SUITABLE": "Ne convient pas",
+                "RECOVERING_DETAIL": "La valeur du portefeuille \u00e9tait au-dessus de sa plus r\u00e9cente baisse, mais pas encore au-dessus de sa plus r\u00e9cente hausse.",
+                "RETURN": "Rendement",
+                "RISING": "En hausse",
+                "RISING_FALLING_RECOVERING": "En hausse, en baisse... et en remont\u00e9e",
+                "RISING_DETAIL": "La valeur du portefeuille \u00e9tait au-dessus de sa plus r\u00e9cente hausse.",
+                "RISK": "Risque",
+                "SUITABLE": "Approprié",
+                "TARGET": "Proposé",
+                "TARGET_PORTFOLIOS": "Portefeuilles cibles",
+                "UPS_AND_DOWNS": "Hauts et bas"
+            },
+            "PANEL": {
+                "ALLOCATION": "Pondération",
+                "BACK_TEST": "Retour de test",
+                "CASH_WEDGE": "Portion de liquidités",
+                "EFFICIENT_FRONTIER": "Frontière efficiente",
+                "FALLING": "En baisse",
+                "RECOVERING": "En remont\u00e9e",
+                "RISING": "En hausse",
+                "SUITABILITY_TITLE": "Adéquation"
+            },
+            "TABLE": {
+                "AMOUNT": "Montant",
+                "CLASS": "Catégorie",
+                "DEPTH_OF_FALL": "Profondeur de chute",
+                "HOW_LONG": "Combien de temps (mois)",
+                "LOSS": "Perte",
+                "MONTHS_IN_FALL": "Mois en chute",
+                "MONTHS_TO_RECOVER": "Mois de rétablissement",
+                "RECOVERY": "Récupération",
+                "STARTED_FALLING": "A commencé à chuter",
+                "WHEN": "Quand"
+            },
+            "TITLE": "ANALYTIQUES"
+        },
+        "DETAIL": {
+            "ALLOCATION": "Pondération",
+            "CURRENT": "Courant",
+            "EXPLANATION_CONTAIN": {
+                "PROFILER": "Veuillez documenter toutes les considérations qui ont fait l'objet de discussions et qui ont fait l'objet d'un accord afin d'obtenir la note d'aptitude ajustée.",
+                "PROPLANNER": "Veuillez documenter toutes les considérations qui ont fait l'objet de discussions et qui ont fait l'objet d'un accord en vue de l'élaboration de la stratégie d'investissement."
+            },
+            "EXPLANATION_DOCUMENTATION": "Explication et documentation",
+            "INVESTMENT_STRATEGY": "Stratégie d'investissement",
+            "INVESTOR": "Investisseur",
+            "LINKED_ACCOUNTS": "Comptes liés",
+            "LINKED_GOALS": "Objectifs liés",
+            "PORTFOLIO_SUITABILITY_SCORE": "Note d'adéquation du portefeuille",
+            "PRO_JUDGEMENT_MATRIX": "Contraintes de la matrice du jugement professionnel",
+            "TIME_HORIZON": "Horizon de temps",
+            "TIME_HORIZON_ACCORDIN_DESC": "Quand prévoyez-vous devoir retirer une partie importante (1/3 ou plus) de l'argent de votre portefeuille d'investissement ?",
+            "WARNINGS": "Avertissements",
+            "WARNINGS_LABEL": "Ci-dessus le jugement professionnel de la matrice limite de"
+        },
+        "EDIT_POLICY": {
+            "LABEL": {
+                "ANALYTICS": "ANALYTIQUES",
+                "ASSET_CLASSES": "Classes d'actifs",
+                "FEES_COSTS": "Frais / coûts",
+                "INCOME_DISTRIBUTION": "Distribution des revenus d'investissements",
+                "INVESTMENT_POLICY_NAME": "Nom de la politique d'investissement",
+                "RETURN": "Rendement",
+                "RISK": "Risque",
+                "SHARP_RATIO": "Ratiode Sharpe",
+                "TARGET": "Proposé"
+            },
+            "SAVE_MESSAGE": "Politique enregistrée avec succès.",
+            "TABLE": {
+                "CLASS": "Catégorie",
+                "MAX": "Max",
+                "MIN": "Min"
+            },
+            "TITLE": "POLICE"
+        },
+        "IMPLEMENTATION": {
+            "APPLY_SOLUTION": "APPLIQUER LA SOLUTION",
+            "CONSIDERATION": "Considérations",
+            "CONSIDERATION_TEXT": "Aucune considération pour cette mise en œuvre.",
+            "CONSIDERATION_DETAIL": "Veuillez documenter toutes les considérations qui ont fait l'objet de discussions et qui ont fait l'objet d'un accord pour en arriver à la solution appropriée mise en œuvre.",
+            "CURRENT": "Courant",
+            "CUSTOM": "À définir",
+            "DELETE_UNUSED_PRODUCTS": "Supprimer les produits non utilisés",
+            "EDIT_QUESTIONS": "MODIFIER LES QUESTIONS",
+            "FOOTNOTES": {
+                "MAPPED_BY_FINAMETRICA": "cartographié par FinaMetrica",
+                "TRANSFERRED_FROM_ANOTHER_ACCOUNT": "2 transféré d'un autre compte",
+                "TRANSFERRED_TO_ANOTHER_ACCOUNT": "1 transféré à un autre compte"
+            },
+            "IMPLEMENTATION_SOLUTION": "Solution de mise en œuvre",
+            "IMPLEMENTATION_SOLUTION_DATE_STAMP": "Questions de mise en œuvre examinées",
+            "INVESTMENT_POLICY": "Politique d'investissement",
+            "NET_TOTAL": "Total net",
+            "POPUP": {
+                "ACCOUNT_SOLUTION_SUCCESSFULLY_RESET": "La solution pour le compte {{accountName}} a été réinitialisée.",
+                "ACCOUNT_SUCCESSFULLY_REBALANCED": "{{accountName}} le compte a été rééquilibré avec succès.",
+                "DELETED_UNUSED_PRODUCTS_SUCCESSFULLY": "Tous les produits non utilisés ont été supprimés avec succès.",
+                "DELETE_UNUSED_PRODUCTS_WARNING": "Êtes-vous sûr de vouloir supprimer tous les produits non utilisés ?",
+                "IMPLEMENTATED_PRODUCTS_UPDATED": "Les produits mis en œuvre ont été mis à jour avec succès.",
+                "KEEP_CURRENT_HOLDINGS_SUCCESS_MESSAGE": "La répartition des avoirs mise en œuvre a été établie de façon identique à la répartition actuelle des avoirs.",
+                "PRODUCTS_SUCCESSFULLY_ADDED_TO_THE_ACCOUNT": "Les produits ont été ajoutés aux comptes avec succès.",
+                "SOLUTION_SUCCESSFULLY_APPLIED": "Solution appliquée avec succès."
+            },
+            "PORTFOLIO_SUITABILITY_SCORE": "Note d'adéquation du portefeuille",
+            "PRODUCT_INFO_DOCUMENT_AVAILABLE": "Le document d'information sur le produit sélectionné est disponible.",
+            "REBALANCE": "Rééquilibrer",
+            "RECOMMENDED_SOLUTION": {
+                "CAUTION": "Il peut y avoir des considérations fiscales, des pénalités, des restrictions, des frais et d'autres facteurs dont il faut tenir compte au moment d'apporter des changements aux attributions d'investissements.",
+                "WARNING_OVERALLOCATED": "Vous avez alloué plus d'argent que la répartition actuelle.",
+                "WARNING_UNALLOCATED": "Vous avez alloué moins d'argent que dans la répartition actuelle."
+            },
+            "RECOMMENDED_SOLUTION_SELECTED_ACCOUNTS": "Solution recommandée - comptes sélectionnés",
+            "SELECT_ACCOUNTS_TO_CUSTOMIZE": "Sélectionnez des comptes à personnaliser",
+            "SOLUTION_INFO": "INFORMATIONS SUR LA SOLUTION",
+            "TOTAL": "Total",
+            "TOTAL_SELECTED_ACCOUNTS": "Total - comptes sélectionnés",
+            "TRANSFER": "TRANSFERT"
+        },
+        "POPUP": {
+            "ALERT": "Le formulaire n'est pas valide!",
+            "SUCCESS": "Portefeuille ajouté avec succès."
+        },
+        "TABLE": {
+            "ACCOUNTS": "Comptes",
+            "ACCOUNT_TYPE": "Type de placement",
+            "ACTION": "Action",
+            "ADD_ACCOUNT": "Ajouter un compte",
+            "AMOUNT": "Montant",
+            "ASSETS": "Actifs",
+            "ASSOCIATED_GOALS": "Objectifs associés",
+            "CURRENT": "Courant",
+            "DECISION_MAKER": "Décideur",
+            "FROMT_TO": "De - à",
+            "GOAL_YEAR": "$ / année",
+            "IMPLEMENTED": "Mise en œuvre",
+            "INVESTED": "Investi",
+            "INVESTOR": "Investisseur",
+            "PERCENT": "Pourcentage",
+            "PERCENT_PORTFOLIO": "% du portefeuille",
+            "PORTFOLIO_ALLOCATION_GOAL": "Portefeuille affecté aux objectifs",
+            "RISK_TOLERANCE": "Tolérance aux risques",
+            "SOLUTION": "Solution",
+            "SUITABILITY_RANGE": "Gamme d'adéquation",
+            "SUITABLE_SOLUTION": "Solution appropriée",
+            "TOTAL": "Total",
+            "TYPE": "Type de placement"
+        },
+        "TIME_HORIZON": "Horizon de temps",
+        "TIME_HORIZON_DESCRIPTION": "Quand prévoyez-vous devoir retirer une partie importante (1/3 ou plus) de l'argent de votre portefeuille d'investissement ?",
+        "YEARS": "Années"
+    },
+    "PORTFOLIOS": {
+        "ACTIONS": {
+            "ADD_PORTFOLIO": "Ajouter un portefeuille",
+            "DELETE_PORTFOLIO": "Supprimer le portefeuille",
+            "IMPLEMENTATION": "Mise en oeuvre",
+            "LINK_GOALS": "Lier le portefeuille aux objectifs",
+            "PORTFOLIO_DETAILS": "Détails du portefeuille",
+            "RENAME_PORTFOLIO": "Renommer le portefeuille",
+            "RISK_CAPACITY": "Capacité de risque"
+        },
+        "ASSET_CLASSES_DROPDOWN": "Classes d'actifs",
+        "DELETE_POPUP": {
+            "DELETE_SUCCESS": "Le portefeuille a été supprimé avec succès.",
+            "TEXT": "Vous ne serez pas en mesure d'annuler!",
+            "TITLE": "Êtes-vous sûr de vouloir supprimer ce portefeuille?"
+        },
+        "EDIT_CURRENT_WARNING": "Les comptes suivants ont des actifs alloués à 100% de trésorerie. Si ceci n'est pas prévu, l'écart calculé pour ce portefeuille sera inexact. Pour corriger cette situation, vous pouvez affecter les avoirs pour chaque compte sur la page Planification > actif et passif > avoirs, inclure la liste des comptes applicables avec trésorerie = 100%.",
+        "NAME": "Nom du portefeuille",
+        "OVERALLOCATED_WARNING": "Ce portefeuille est sur-attribué et les objectifs peuvent ne pas être financés tels que définis. Revoir les montants et les pourcentages alloués aux objectifs pour s'assurer que {{totalInvested}} n'est pas dépassé.",
+        "POPUP": {
+            "ALERT": "Veuillez remplir tous les champs requis.",
+            "DELETE_TEXT": "Vous ne serez pas en mesure d'annuler!",
+            "DELETE_TITLE": "Êtes-vous sûr de vouloir annuler vos modifications?",
+            "SUCCESS": "Détails du portefeuille mis à jour!"
+        },
+        "RESTRICTED_ACCOUNTS_WARNING": "Ce portefeuille contient des comptes restreints. Il peut y avoir des considérations fiscales, des pénalités, des restrictions et des modalités de remboursement dont il faut tenir compte dans l'affectation des fonds à certains objectifs.",
+        "TIME_HORIZON": {
+            "LESS_THAN_A_YEAR": "Moins de 1 an",
+            "MORE_THAN_TWENTY_YEARS": "Plus de 20 ans"
+        },
+        "TITLE": "Portefeuilles",
+        "TOTAL": "Total",
+        "TRANSFER": {
+            "REGULATORY_TYPE": "Type de réglementation",
+            "TITLE": "TRANSFERTS",
+            "TRANSFER_FROM": "Transfert de",
+            "TRANSFER_TO": "Transfert à"
+        },
+        "UNALLOCATED": "Non affecté",
+        "VIEW_DROPDOWN": "Afficher"
+    },
+    "PORTFOLIO_ALLOCATION": {
+        "ALLOCATED": "% alloué",
+        "CURRENT": "Courant",
+        "IMPLEMENTED": "Mise en œuvre",
+        "INVESTMENT_DETAILS": {
+            "HEADING": "Distribution des revenus d'investissements"
+        },
+        "MAX": "Max %",
+        "MIN": "Min %",
+        "MIN_MAX_GROUPING": "Groupement Min / Max",
+        "POPUP": {
+            "ALERT": "Vérifiez vos entrées",
+            "SUCCESS": "Modifications enregistrées avec succès."
+        },
+        "SOLUTION": "Solution",
+        "TABLE": {
+            "AMOUNT": "Montant",
+            "ASSET_CLASS": "Classes d'actifs",
+            "CLASS": "Catégorie",
+            "FEES_COSTS": "Frais / coûts",
+            "OUT_OF_RANGE": "En dehors de la plage",
+            "RETURN": "Rendement",
+            "RISK": "Risque",
+            "SHARPE_RATIO": "Ratiode Sharpe",
+            "VARIANCE": "Écart"
+        },
+        "TARGET": "Proposé",
+        "TITLE": "Répartition de portefeuille",
+        "TOTAL": "Total",
+        "VIEW_BY": {
+            "CURRENT": "Courant",
+            "CURRENT_POLICY_RANGE": "Portée des politiques actuelles",
+            "TARGET_POLICY_RANGE": "Fourchette de la politique monétaire cible",
+            "IMPLEMENTED_POLICY_RANGE": "Mise en œuvre-gamme de politiques",
+            "CURRENT_VS_TARGET": "Actuel vs cible",
+            "CURRENT_VS_IMPLEMENTED": "Actuel vs mis en œuvre",
+            "TARGET_VS_IMPLEMENTED": "Cible vs. mise en œuvre"
+        },
+        "WARNING": {
+            "CLOSE": "Annuler",
+            "IMPLEMENTATION_SOLUTION_WARNING": "Les questions de mise en œuvre doivent être examinées.",
+            "IMPLEMENTATION_SOLUTION_OUT_OF_RANGE_WARNING": "La note d'adéquation du portefeuille ne se situe pas dans la plage de convenance de la solution choisie.",
+            "IMPLEMENTED_PERCENT_WARNING": "Le portefeuille n'a pas été entièrement mis en œuvre",
+            "IMPLEMENTATION_WARNING": "Données manquantes pour le portefeuille. Veuillez examiner.",
+            "IMPLEMENTATION_WARNING_FOR_ALL": "Des données manquent pour un ou plusieurs portefeuilles. Veuillez examiner les portefeuilles.",
+            "NO_ALLOCATION_DATA": "Aucune donnée d'affectation disponible pour ce portefeuille."
+        }
+    },
+    "PREFERENCES": {
+        "DROPDOWN": {
+            "ACCOUNT": "Compte",
+            "INTENTED_USE": "Utilisation prévue \n (retraite, études, autres)",
+            "INVESTOR": "Investisseur",
+            "NONE": "Aucun",
+            "OWNERSHIP_GROUP": "Groupe de propriété",
+            "PORTFOLIO": "Portefeuille",
+            "STRATEGIC": "Stratégique"
+        },
+        "IPM": "Gestion de la politique d'investissement",
+        "KYC": "Connaître son client (CSC)",
+        "EXPERIENCE": "Connaissances",
+        "NOTIFY_EMAIL_UPDATES": "Mises à jour des courriels sur les tâches et les notifications",
+        "PLANTRAC": "Notification PlanTrac",
+        "POLICY_OUT_RANGE": "Politique de notification hors de portée",
+        "PORTFOLIO_CREATION_TYPE": "Type de création de portefeuille",
+        "PORTFOLIO_SUB_TYPE": "Sous-type de portefeuille",
+        "RISK_TOLERANCE": "Tolérance aux risques",
+        "TIME_ZONE": "Fuseau horaire"
+    },
+    "PRODUCT_RECOMM": {
+        "TAB": {
+            "DETAILED_RECOMM": "Recommandations détaillées",
+            "INVESTMENT_PROD": "Produits de placement",
+            "REBALACING_SUMMARY": "Sommaire de rééquilibrage"
+        },
+        "TABLE": {
+            "ACCOUNTS": "Comptes",
+            "ACCOUNT_NUMBER": "Numéro de compte",
+            "ACCOUNT_TYPE": "Type de placement",
+            "ACTION": "Action",
+            "ADD_ACCOUNT": "Ajouter un compte",
+            "AMOUNT": "Montant",
+            "ASSET_CLASS": "Catégorie d'actif",
+            "CLASS": "Catégorie",
+            "CURRENT": "Courant",
+            "CURRENT_ALLOCATION": "Répartitions courantes",
+            "IMPLEMENTED_ALLOCATION": "Mise en œuvre de l'allocation",
+            "MODEL_WEIGHTING": "Modèle de pondération",
+            "PERCENT": "Pourcentage",
+            "PRODUCT": "Produit",
+            "RECOMMMENDED": "Recommandé",
+            "TOTAL_ACCOUNTS": "Total - comptes sélectionnés",
+            "VARIANCE": "Écart",
+            "YOUR_RECOMMENDATION": "Votre recommandation",
+            "YOUR_WEIGHTING": "Votre pondération"
+        },
+        "TITLE": {
+            "ADD_FROM_FAV_LIST": "Ajouter à partir de listes de produits favoris",
+            "ALL_PRODUCTS": "Tous les produits",
+            "APPLT_MODEL": "Appliquer le modèle",
+            "INVESTMENT_STRATEGY": "Stratégie d'investissement",
+            "SELECT_ACCOUNT_MANAGE": "Sélectionnez les comptes à gérer"
+        }
+    },
+    "PROFILE_SUMMARY": {
+        "PROFILE_SUMMARY_TEXT_1": "Apprendre à connaître son client est une étape importante dans l'élaboration d'un plan d'investissement approprié pour ce client. \n \n Ces modules doivent être remplis d'informations. Selon la configuration de votre back-office, certains d'entre eux peuvent se remplir automatiquement.",
+        "PROFILE_SUMMARY_TEXT_2": "Une fois cette étape terminée, passez à la section de planification.",
+        "PROFILE_SUMMARY_TITLE": "Résumé de profil"
+    },
+    "RADIOBUTTON": {
+        "LABELS": {
+            "NO": "Non",
+            "YES": "Oui"
+        }
+    },
+    "RATES_OF_RETURN": {
+        "ASSET_CLASS": "Catégorie d'actif",
+        "CMA_ACCEPT": "J'ai examiné et accepté les hypothèses par défaut ou personnalisées du marché des capitaux indiquées ci-dessus comme étant les miennes.",
+        "CUSTOM": "À définir",
+        "CUS_NOM_FWD": "Avance nominale personnalisée",
+        "CUS_REAL": "Réel personnalisé",
+        "CUS_STDEV": "STDEV personnalisé",
+        "DEFAULT": "Défaut",
+        "DEFINE_CMA": "Veuillez définir vos hypothèses sur les marchés financiers.",
+        "DEF_NOM_FWD": "Avance nominale par défaut",
+        "DEF_REAL": "Réel par défaut",
+        "DEF_STDEV": "STDEV par défaut",
+        "INFLATION": "Inflation",
+        "METHOD": "Méthodologie",
+        "NOMINAL_RATES": "Taux nominaux",
+        "NOM_ADJ": "Réglage nominal",
+        "NOTES": "Notes",
+        "POPUP": {
+            "CUSTOME_RATE_CHANGE_TEXT": "Vous ne serez pas en mesure d'annuler!",
+            "CUSTOME_RATE_CHANGE_TITLE": "Votre tarif personnalisé sera effacé.",
+            "RATE_CHANGE_TEXT": "Vous ne serez pas en mesure d'annuler!",
+            "RATE_CHANGE_TITLE": "Tous les taux personnalisés seront réinitialisés aux valeurs par défaut.",
+            "REVIEW_ALERT": "Veuillez vérifier que vous avez examiné et accepté les hypothèses par défaut ou personnalisées des marchés financiers indiquées ci-dessus comme étant les vôtres.",
+            "SUCCESS": "Taux de rendement mis à jour avec succès."
+        },
+        "REAL_ADJ": "Ajustement réel",
+        "REAL_RATES": "Taux réels",
+        "RTA": "Taux à appliquer"
+    },
+    "REVENUES": {
+        "ACTION": {
+            "ADD_REVENUE": "Ajouter un revenu",
+            "DELETE_PENSION": "Supprimer la pension",
+            "DELETE_REVENUE": "Supprimer les revenus",
+            "EDIT_REVENUE": "Modifier les revenus"
+        },
+        "ADD_A_REVENUE": "Ajouter un revenu",
+        "AGE": "Âge",
+        "ALERT": "Des revenus existent déjà pour ce client.",
+        "AMOUNT": "Montant",
+        "AMOUNT_PER_YEAR": "Montant par année",
+        "ASSOCIATED_GOAL": "Objectif associé",
+        "CALCULATED_PERCENT": "Pourcentage calculé",
+        "CALCULATION_METHOD": "Méthode de calcul",
+        "CATEGORY": "Catégorie de revenus",
+        "CONTRIBUTORY_PERIOD": "Période de cotisation",
+        "CURRENCY": "Devise",
+        "CURRENT_ANNUAL_INCOME": "Revenu annuel actuel",
+        "DESCRIPTION": "Description",
+        "END": "Fin",
+        "END_AGE": "L'âge final ",
+        "END_AT_MORTALITY": "Termine au décès",
+        "ESTIMATED_BENEFIT": "Estimation des avantages",
+        "GOAL": "Objectif",
+        "GOVERNMENT_PENSION": "Pension du gouvernement",
+        "INCREASE_DEFERRED": "Augmenter si différés",
+        "INDEX": "Indice",
+        "INDEX_FROM_START": "Indexation à partir du versement",
+        "INDEX_PRIOR_START": "Taux d`indexation avant la date de commencement",
+        "MAXIMUM_BENEFIT": "Avantage maximal",
+        "MONTHLY_AMOUNT": "Revenu mensuel",
+        "OTHER_REVENUE": "Autres revenus",
+        "PERCENTAGE": "Pourcentage",
+        "POPUP": {
+            "ALERT": "Veuillez ajouter un objectif avant d'ajouter tout revenu.",
+            "SUCCESS": "Revenu ajouté avec succès.",
+            "SUCCESS_UPDATE": "Les revenus ont été mis à jour avec succès!"
+        },
+        "RECIPIENT": "Prestataire",
+        "RESIDENCY_AT_AGE": "Résidence à l'âge de {{age}}",
+        "START": "Débuter",
+        "START_AGE": "Âge au début",
+        "TAXABLE": "% imposable",
+        "TAXABLE_PORTION": "Partie imposable",
+        "TYPE": "Type de revenus",
+        "YEAR": "Année"
+    },
+    "RISK_GROUPS": {
+        "AVERAGE": "Moyen",
+        "TITLE": "Groupe de risque"
+    },
+    "RISK_KYC_PAGE": {
+        "TITLE": "Connaître son client"
+    },
+    "RISK_EXPERIENCE_PAGE": {
+        "TITLE": "Connaissances"
+    },
+    "RISK_RESULTS_PAGE": {
+        "ADJUSTED_SCORE": {
+            "DESCRIPTION": "Compte tenu de votre différence par rapport à ceux qui ont une tolérance au risque similaire à celle indiquée ci-dessus, votre note de risque a été ajustée de {{calculatedScore}} à {{adjustedScore}}.",
+            "TITLE": "Score de risque ajusté",
+            "WARNING": "Un score de tolérance au risque ajusté a été appliqué en fonction des différences ci-dessus. \n\nIf you wish to accept the suggested adjusted risk score, you can change your client's risk tolerance score by setting an AGREED SCORE at the top right."
+        },
+        "AGREED": {
+            "GROUP": "Groupe de risque convenu",
+            "SCORE": "Score Accepté"
+        },
+        "CALC": {
+            "GROUP": "Groupe de risque",
+            "SCORE": "Score calculé"
+        },
+        "CHANGE_SCORE_FORM": {
+            "ADD_COMMENT": "Ajouter un commentaire",
+            "RISK_SCORE": "Score convenu",
+            "SHOW_ERROR": "Entrez un nombre de 1 à 100.",
+            "TITLE": "Modifier le score de risque pour ",
+            "WARNING": "Accepté de changer le score de {{calcScore}} pour {{agreedScore}} le {{date}}."
+        },
+        "AGREED_SCORE_HISTORY": {
+            "DATE": "Date",
+            "COMMENT": "Commentaire",
+            "AGREED_SCORE": "Score Accepté"
+        },
+        "CURRENT_AGE": "Âge actuel",
+        "DATE_AS_OF": "Le",
+        "GRAPH_CAPTION": {
+            "PARA_1": "Votre score de tolérance du risque vous permet de vous comparer à un échantillon représentatif de la population adulte. Votre score est <b>{{score}}</b>. {{riskTolerancePercentText}}",
+            "PARA_2": "Une fois que les résultats sont présentés graphiquement, ils forment une courbe de Gauss (en cloche) comme présentée ci-dessous. Afin d’obtenir des résultats encore plus significatifs, l’échelle de 0 à 100 a été divisée en cinq groupes de risque. Votre résultat vous place dans le groupe de risque <b>{{riskGroup}}</b>.",
+            "PARA_2_ALT": "Une fois que les résultats sont présentés graphiquement, ils forment une courbe de Gauss (en cloche) comme présentée ci-dessous. Afin d’obtenir des résultats encore plus significatifs, l’échelle de 0 à 100 a été divisée en sept groupes de risque. Votre résultat vous place dans le groupe de risque <b>{{riskGroup}}</b>.",
+            "PARA_3_ALT": "En réponse à la dernière question, l'estimation de votre score serait de {{fm25SelfEstimateScore}}. {{fm25SelfEstimateScoreText}}"
+        },
+        "INCOME_AND_NET_WORTH": "Revenu et valeur nette",
+        "INCONSISTENCY_ALERT": {
+            "DESCRIPTION": "Comme indiqué ci-dessus, vos réponses manquent de cohérence. Il est conseillé dans un tel cas de discuter de votre rapport de tolérance aux risques avec votre conseiller en placements.",
+            "TITLE": "Cas de réponses incohérentes"
+        },
+        "KEY_DIFF": {
+            "DESCRIPTION": "Il peut arriver que certaines réponses aux questions du questionnaire d’évaluation des risques diffèrent de celles généralement données par les personnes présentant une tolérance aux risques similaire. Parfois, une différence indique une plus grande tolérance aux risques et parfois une tolérance moindre. Dans le tableau ci-dessous figurent vos différences.",
+            "TITLE": "Aperçu des différences",
+            "WARNING": "La cote de tolérance au risque représente une évaluation globale des réponses que le répondant a données au questionnaire. Ces réponses ne seront pas nécessairement homogènes. Une réponse incohérente sera identifiée comme une \"différence\" dans le tableau ci-dessous. Il est recommandé que vous discutiez de ces différences avec votre client.\n\nSi vous le souhaitez, vous pouvez changer le score de tolérance au risque de votre client en fixant un SCORE CONVENU en haut à droite."
+        },
+        "LEGEND": {
+            "FM10_POINT_1": "Votre réponse indique en fait un degré de risque supérieur au degré de risque le plus élevé qui caractérise généralement les investisseurs appartenant au groupe de risque « Très Haut ».",
+            "FM10_POINT_2": "Votre réponse indique en fait un degré de risque inférieur au degré de risque le plus bas qui caractérise généralement les investisseurs appartenant au groupe de risque « Très Bas ».",
+            "FM25_POINT_1": "Votre réponse indique en fait un degré de risque supérieur au degré de risque le plus élevé qui caractérise généralement les investisseurs appartenant au groupe de risque « 7 ».",
+            "FM25_POINT_2": "Votre réponse indique en fait un degré de risque inférieur au degré de risque le plus bas qui caractérise généralement les investisseurs appartenant au groupe de risque « 1 ».",
+            "TITLE": "Légende"
+        },
+        "OUT_OF": "Profil de tolérance aux risques",
+        "REPORT": "Profil de tolérance au risque",
+        "TITLE": "Résultats",
+        "WARNING": {
+            "CLOSE": "Annuler"
+        },
+        "AGREED_SCORE_WARNING": "La note convenue a été fixée à {{agreedScore}} le {{agreedDate}}, ce qui est différent de la note calculée de {{calcScore}} à partir de {{reviewDate}}. <br/><br/>Le Rapport sur la tolérance au risque fournit une analyse fondée sur la cote de tolérance au risque calculée par le client ; toutefois, il est important de noter que la cote convenue servira de référence pour déterminer la Note d'adéquation.<br/><br/>Assurez-vous de documenter toute considération faite et discutée avec le client dans les commentaires sur la note convenue. Les commentaires existants et antérieurs peuvent être consultés en utilisant la liste déroulante à côté de la note convenue.",
+        "YOUR_RISK_GROUP": {
+            "CONTENT_1": {
+                "TITLE": "Vue d'ensemble"
+            },
+            "CONTENT_2": {
+                "TITLE": "Prise De Décisions Financières"
+            },
+            "CONTENT_3": {
+                "TITLE": "Emploi"
+            },
+            "CONTENT_4": {
+                "TITLE": "Décomptes Financiers"
+            },
+            "CONTENT_5": {
+                "TITLE": "Passé Financier"
+            },
+            "CONTENT_6": {
+                "TITLE": "Investissement"
+            },
+            "CONTENT_7": {
+                "TITLE": "Prestations Gouvernementales Et Taxes"
+            },
+            "TITLE": "Votre Groupe De Risque"
+        },
+        "YOUR_SCORE": "Votre Score De Tolérance Du Risque"
+    },
+    "RISK_TOLERANCE_PAGE": {
+        "FORM": {
+            "TITLE": {
+                "SEND_INVITE": "ENVOYER UNE INVITATION",
+                "SEND_REMINDER": "ENVOYER UN RAPPEL"
+            }
+        },
+        "QUESTIONNAIRE_POPUP": {
+            "EMAIL_ALERT": "Veuillez ajouter une adresse courriel pour cette personne.",
+            "UNLOCK_RESET": "Le questionnaire a été déverrouillé et réinitialisé avec succès.",
+            "ON_CHANGE_QUESTIONNAIRE": "Modifier le type de questionnaire de tolérance au risque permettra de réinitialiser le questionnaire de tolérance au risque pour tous les membres de la famille et ils devront remplir un nouveau questionnaire avant que vous puissiez générer un document.",
+            "ON_CHANGE_QUESTIONNAIRE_TITLE": "Cela permettra de rétablir la tolérance au risque pour tous les membres de la famille.",
+            "SUCCESS": "Réinitialisation réussie du questionnaire sur la tolérance au risque."
+        },
+        "SEND_INVITE": {
+            "DESCRIPTION": "Un lien pour collaborer en ligne dans le portail client SuitabilityPro sera automatiquement inclus avec ce message. Si le destinataire n'a pas déjà de compte, il lui sera demandé d'en créer un et de choisir son propre mot de passe. Si ils ont déjà un compte, ils auront la possibilité de réinitialiser leur mot de passe si nécessaire.",
+            "DOCUMENT_VAULT": "Coffre-fort à documents",
+            "ENABLE_READ_RECEIPT": "Activer la réception de lecture (notification au conseiller)",
+            "INVITE_TO": "Inviter à",
+            "POPUP": {
+                "ALERT": "Veuillez ajouter une adresse courriel pour cette personne.",
+                "SUCCESS": "L'Invitation a été envoyée avec succès."
+            },
+            "SHOW_REPORT": "Afficher le rapport après l'achèvement",
+            "GUIDEMESSAGE": "Vous pouvez personnaliser le sujet du courriel et l'introduction aux clients. Veuillez utiliser {{firstname}} {{lastname}} pour insérer le nom du client dans le courriel.",
+            "INVITE_INTRO": "Introduction",
+            "INVITE_INTRO_MESSAGE": "\nBonjour {{firstname}} {{lastname}},\n\nVous avez été invité à remplir votre questionnaire sur la tolérance au risque financier ou à accéder à l'information en ligne dans le portail client SuitabilityPro par {{advisorname}}."
+        },
+        "SEND_REMINDER": {
+            "SUCCESS": "Le rappel a été envoyé avec succès.",
+            "REMINDER_INTRO_MESSAGE": "\nBonjour {{firstname}} {{lastname}},\n\nC'est un rappel amical que vous avez été invité à répondre à vos risques financiers personnels de la tolérance questionnaire ou d'accéder à des informations en ligne dans le SuitabilityPro portail client par {{advisorname}}.",
+            "DOCUMENT_SHARE": "\nBonjour {{firstname}} {{lastname}},\n\n{{advisorname}} a partagé un nouveau document avec vous dans le portail client SuitabilityPro."
+        },
+        "TABLE": {
+            "ACTIONS": {
+                "COMPLETE_QUEST": "Remplir le questionnaire",
+                "FINAMETRICA_10": "FinaMetrica 10",
+                "FINAMETRICA_25": "FinaMetrica 25",
+                "SEND_INVITE": "Envoyer une invitation",
+                "SEND_REMINDER": "Envoyer un rappel",
+                "UNLOCK_RESET": "Déverrouiller et réinitialiser",
+                "RISK_TOLERANCE_RESULTS": "Résultats en matière de tolérance au risque",
+                "EXPERIENCE": "Connaissances",
+                "KNOW_YOUR_CLIENT": "Connaître son client (CSC)"
+            },
+            "HEADING": {
+                "ACTIONS": "Action",
+                "FAMILY_MEMBER": "Membre de la famille",
+                "INVITE_SENT": "Invitation envoyée",
+                "LAST_UPDATE": "Dernièrement complété",
+                "QUESTIONNAIRE": "Questionnaire",
+                "RISK_TOLERANCE": "Tolérance aux risques"
+            },
+            "PENDING": "En attente"
+        },
+        "TITLE": "Tolérance au risque et KYC"
+    },
+    "SAVINGS": {
+        "ACCOUNT_NAME": "Nom du compte",
+        "ACCOUNT_TYPE": "Type de compte",
+        "ACTION": {
+            "DELETE_SAVINGS": "Supprimer les épargnes"
+        },
+        "ADD_SAVINGS": {
+            "SUCCESS": "Sauvegarde ajoutée avec succès."
+        },
+        "ADD_TIER": "Ajouter un tiers",
+        "CLIENT_SAVINGS": "Épargnes des clients",
+        "END": "Fin",
+        "GOAL": "Objectif",
+        "NO_ACCOUNTS": "Aucun compte disponible pour ajouter des épargnes.",
+        "POPUP": {
+            "ALERT": "Aucun tiers ne peut être ajouté.",
+            "SUCCESS": "La sauvegarde a été mise à jour avec succès!"
+        },
+        "START": "Débuter",
+        "THIRD_PARTY_SAVINGS": "Épargnes de tierce partie",
+        "TIER": "Tiers"
+    },
+    "SETTINGS": {
+        "CMA": {
+            "DESCRIPTION": "Définissez le taux de rendement et les données sur la répartition des revenus à utiliser dans les projections et les calculs.",
+            "TITLE": "Hypothèses concernant le marché des capitaux"
+        },
+        "CUSTOM": "À définir",
+        "DEFAULT": "Défaut",
+        "DESCRIPTION": "Les paramètres vous permettent de configurer cette application pour vous fournir un maximum d'efficacité. Ces hypothèses par défaut orienteront la plupart des conseils que vous générez et il est important qu'elles correspondent à ce que vous voulez et ce que vous vous attendez à voir. Prenez le temps de revoir chaque écran de réglage même si vous décidez de tout laisser exactement en l'état.",
+        "FAVOURITE_PRODUCTS": {
+            "DESCRIPTION": "Définissez des listes et des groupements de vos produits préférés pour simplifier le processus de recherche.",
+            "TITLE": "Produits préférés du conseiller"
+        },
+        "INCOME_DISTRIBUTION": {
+            "ACCEPTANCE": "J'ai examiné et accepté la distribution de revenu par défaut ou personnalisée ci-dessus comme étant la mienne.",
+            "ALERT": "Veuillez préciser comment le revenu de chaque catégorie d'actif doit être réparti.",
+            "ASSET_CLASS": "Catégorie d'actif",
+            "DEFERRED_CAPITAL_GAINS": "Gain de capital différé",
+            "DISTRIBUTION_TO_APPLY": "Distribution à appliquer",
+            "DIVIDEND": "Portion de dividendes",
+            "INTEREST": "Intérêt",
+            "LAST_REVIEWED_ON": "Dernière révision",
+            "NON_TAXABLE": "Non imposable",
+            "POPUP": {
+                "CUSTOM_ALERT_TEXT": "Vous ne serez pas en mesure d'annuler!",
+                "CUSTOM_ALERT_TITLE": "Tous les taux personnalisés seront réinitialisés aux valeurs par défaut.",
+                "REQUIRED_FIELDS_ALERT": "Veuillez remplir tous les champs requis.",
+                "REVIEW_ALERT": "Veuillez vérifier que vous avez examiné et accepté la distribution de revenu par défaut ou personnalisée ci-dessus comme votre propre.",
+                "SUCCESS": "Répartition des revenus mise à jour avec succès."
+            },
+            "REALIZED_CAPITAL_GAINS": "Plus-values réalisées",
+            "TITLE": "La distribution du revenu",
+            "TOTAL": "Total",
+            "WARNING_TOTAL100": "Le total doit être égal à 100%."
+        },
+        "INVESTMENT_POLICIES": {
+            "ADD_POLICY": "AJOUTER POLICE",
+            "ALERT_TOOLTIP_MESSAGE_1": "Un minimum de quatre Politiques D'investissement est requis. Vous avez actuellement seulement",
+            "ALERT_TOOLTIP_MESSAGE_2": "politiques d'investissement. Veuillez créer",
+            "ALERT_TOOLTIP_MESSAGE_3": "Politique d'investissement supplémentaire avant d'épargner.",
+            "ASSETS_CLASS": "Catégorie d'actif",
+            "BY_ASSET_CLASS": "Par classe d'actifs",
+            "DEFAULT_SCORE_RANGE": "Fourchette de pointage par défaut",
+            "DELETE_POLICY": "SUPPRIMER LA POLITIQUE",
+            "DESCRIPTION": "Définissez les affectations des stratégies d'investissement cibles, les fourchettes maximale et minimale et les fourchettes de note d'adéquation.",
+            "DOWNSIDE_VOLATILITY": "Volatilité à la baisse",
+            "INCOME_DISTRIBUTION": "La distribution du revenu",
+            "LICENCE_ACCEPT_DESCRIPTION": "J'ai examiné et accepté les politiques d'investissement par défaut ou personnalisées montré comme étant les miennes.",
+            "RETURN": "Rendement",
+            "RISK": "Risque",
+            "SHARP_RATIO": "Ratiode Sharpe",
+            "STDEV": "STDEV",
+            "SUCCESS_UPDATE_CUSTOM_POLICY": "Politique d'investissement personnalisée mise à jour avec succès.",
+            "SUCCESS_UPDATE_DEFAULT_POLICY": "Politique d'investissement par défaut mise à jour avec succès.",
+            "TARGET": "Proposé",
+            "TARGET_POLICY_RANGE": "Fourchette de la politique monétaire cible",
+            "TITLE": "Politiques d'investissement",
+            "YOUR_RANGE": "Votre gamme"
+        },
+        "LAST_REVIEWED_ON": "Dernière révision",
+        "NEEDS_REVEIW": "Examen des besoins",
+        "PJM": {
+            "DESCRIPTION": "Définissez le cadre de pertinence pour l'horizon temporel, l'expérience, les connaissances et le sang-froid.",
+            "TITLE": "Matrice de jugement professionnel"
+        },
+        "PJM_": {
+            "TIME_HORIZONE": {
+                "SELECT_VALID_SUITABILITY_SCORE": "La limite de la Note d'adéquation doit être supérieure à la limite de l'option d'horizon temporel précédente.",
+                "SUITABILITY_SCORE_LIMIT": "Limite de la note d'adéquation",
+                "TIME_HORIZONE": "Horizon de temps",
+                "ADD_TIME_HORIZON": "Ajouter un horizon temporel"
+            }
+        },
+        "PJM_DATA": {
+            "ADD_A_TIME_HORIZON": "AJOUTER UN HORIZON TEMPOREL",
+            "BASIC_KNOWLEDGE_ABOUT_INVESTING": "Je possède des connaissances de niveau élémentaire à intermédiaire en matière d'investissement.",
+            "COMPOSURE": "Sang-froid",
+            "DELETE_TIME_HORIZONE": "SUPPRIMER L'HORIZON TEMPOREL",
+            "DETAIL": "Veuillez définir votre matrice de jugement professionnel.",
+            "DOWNLOAD": "Téléchargez le guide de la matrice de pertinence et de jugement professionnel pour savoir comment établir votre matrice de jugement professionnel.",
+            "EXPERIENCE": "Connaissances",
+            "INVESTMENT_POLICY": "Politique d'investissement",
+            "KNOWLEDGE": "Savoir",
+            "KNOWLEDGE_DESCRIPTION": "Définissez la note maximale d'adéquation pour chaque niveau de connaissances.",
+            "LICENCE_DESCRIPTION": "J'ai examiné et accepté la matrice de jugement professionnel par défaut ou personnalisée ci-dessus comme étant la mienne.",
+            "MATRIX_TO_APPLY": "Matrice à appliquer",
+            "MESSAGE_CHECK_RANGE": "Veuillez vérifier à nouveau votre gamme.",
+            "NERVOUS_SOLD_SHARES": "J'étais nerveux et j'ai vendu des actions.",
+            "NEVER_EXPERIENCED_FINANCIAL_DOWNTURN": "Je n'ai jamais observé de récession financière.",
+            "NO_IMPACT": "Aucun impact, je n'ai pas fait de changements à mon plan d'investissement.",
+            "NO_KNOWLEDGE_ABOUT_INVESTING": "Je ne possède aucune connaissance, ou très peu, en matière d'investissement.",
+            "NO_PRIOR_INVESTMENT_EXPERIENCE": "Aucune expérience préalable en investissement en actions.",
+            "OPPORTUNITY_BOUGHT_SHARES": "J'ai vu une opportunité et a acheté plus d'actions.",
+            "POPUP": {
+                "DISTRIBUTION_CHANGE_TEXT": "Vous ne serez pas en mesure d'annuler!",
+                "DISTRIBUTION_CHANGE_TITLE": "Toutes les valeurs personnalisées seront réinitialisées aux valeurs par défaut.",
+                "SUCESS": "Matrice mise à jour avec succès.",
+                "REVIEW_ALERT": "Veuillez vérifier que vous avez examiné et accepté la matrice de jugement professionnel par défaut ou personnalisée ci-dessus comme votre propre."
+            },
+            "PRIOR_INVESTMENT_EXPERIENCE": "Expérience antérieure en investissement de titres de participation",
+            "SUITABILITY_DESCRIPTION": "Définissez la note maximale d'adéquation pour chaque horizon temporel.",
+            "SUITABILITY_SCORE_COMPOSURE_DETAIL": "Définissez la note maximale d'adéquation pour chaque niveau de sang-froid.",
+            "SUITABILITY_SCORE_EXPERIANCE_DETAIL": "Définissez la note maximale d'adéquation pour chaque niveau d'expérience.",
+            "SUITABILITY_SCORE_RANGE": "Fourchette de la Note d'adéquation",
+            "TIME_HORIZON": "Horizon de temps",
+            "TIME_HORIZON_LIMIT": "Limite d'horizon de temps",
+            "UNKNOWN": "Inconnu",
+            "UPPER_LIMIT": "Limite supérieure",
+            "VERY_KNOWLEDGE_ABOUT_INVESTING": "Je possède des connaissances de niveau expert en matière d'investissement."
+        },
+        "PREFERRED_SOLUTION": {
+            "ACTION": "Action",
+            "ADD_SOLUTION": "AJOUTER UNE SOLUTION",
+            "CLONE_SOLUTION": "SOLUTION CLONE",
+            "DELETE_SOLUTION": "SUPPRIMER LA SOLUTION",
+            "DELETE_SOLUTION_FAMILY": "SUPPRIMER LA FAMILLE DE SOLUTIONS",
+            "DETAILS": {
+                "ADD_PRODUCT": "Ajouter produit",
+                "ASSET_ALLOCATION": "Répartition d`actifs",
+                "CALCULATED_GROWTH": "Croissance calculée",
+                "CANCEL": "Annuler",
+                "CURRENCY": "Devise",
+                "CURRENCY_ALLOCATION": "Répartition de monnaie",
+                "CUSTOM": "À définir",
+                "DEFAULT": "Défaut",
+                "INVALID_MARGINAL_RISK_RANGE_ERROR": "Plage marginale invalide valeur élevée!",
+                "INVALID_OK_RISK_RANGE_ERROR": "Ok La portée inférieure ne peut pas être inférieure à la valeur marginale inférieure",
+                "INVALID_RISK_RANGE_ERROR": "Sélection de portée non valide!",
+                "INVALID_UPPER_RISK_RANGE_ERROR": "La gamme supérieure ne peut pas être inférieure à la gamme inférieure",
+                "LAST_REVIEWED": "Dernière révision de la solution",
+                "LAST_UPDATED": "Dernière mise à jour",
+                "MARGINAL_RANGE": "Gamme marginale",
+                "MAXIMUM_GROWTH": "Croissance appliquée",
+                "MAX_GROWTH_ALERT": "La valeur de croissance appliquée ne doit pas être inférieure à la valeur de croissance calculée.",
+                "NO_RESULT": "Aucun résultat",
+                "OK_RANGE": "Portée ok",
+                "PERCENTAGE": "Pourcentage",
+                "POPUP": {
+                    "CHANGE_TO_SINGLE_FUND_WARNING": "Tous les produits seront supprimés.",
+                    "SAVE_SOLUTION_SUCCESS": "La solution a été ajoutée avec succès.",
+                    "SAVE_SOLUTION_TEXT": "Veuillez entrer une adresse web valide",
+                    "SAVE_SOLUTION_TITLE": "Avertissement"
+                },
+                "PREFERRED_SOLUTION_PRODUCTS": "Produits de la solution préférée",
+                "PRODUCT_TABLE": {
+                    "ACTIONS": {
+                        "DELETE_PRODUCT": "Supprimer le produit",
+                        "PRODUCT_INFO": "Informations sur le produit"
+                    },
+                    "CLASS": "Catégorie",
+                    "CODE": "Code",
+                    "DESCRIPTION": "Description"
+                },
+                "RANGE": "Gamme",
+                "RISK_RANGES": {
+                    "MARGINALLY_LOWER": "Légèrement à la baisse",
+                    "MARGINALLY_UPPER": "Légèrement supérieure",
+                    "SUITABLE": "Approprié",
+                    "TOO_LITTLE": "Trop peu",
+                    "TOO_MUCH": "Trop"
+                },
+                "SAVE": "Sauvegarder",
+                "SELECT_REGION": "Sélectionnez une région",
+                "SELECT_SOLUTION_FAMILY": "Sélectionnez une famille de solutions",
+                "SOLUTION_FAMILY": "Famille de solutions",
+                "SOLUTION_FAMILY_PLACEHOLDER": "Sélectionnez une famille de solutions",
+                "SOLUTION_INFORMATION": "Informations sur la solution",
+                "SOLUTION_NAME": "Nom de solution",
+                "SOLUTION_TYPE": "Type de solution",
+                "SOLUTION_TYPES": {
+                    "FUND_OF_FUNDS_SOLUTION": "Solution de fonds de fonds",
+                    "SINGLE_FUND_SOLUTION": "Solution à fonds unique",
+                    "TAILORED_SOLUTION": "Solution sur mesure"
+                },
+                "SUITABILITY_RANGE": "Gamme d'adéquation",
+                "USER_LICENCE_TYPE": {
+                    "PROFILER": "Profileur",
+                    "PROTRACKER": "ProTracker"
+                }
+            },
+            "EDIT_SOLUTION_FAMILY": "MODIFIER LA FAMILLE DE SOLUTIONS",
+            "FINAMETRICA_MAPPED_SOLUTION": "Solution cartographique FinaMetrica",
+            "INVESTMENT_POLICIES": "Politiques d'investissement",
+            "POPUP": {
+                "DELETE_SOLUTION_FAMILY_SUCCESS": "La famille de solutions a été supprimée avec succès.",
+                "DELETE_SOLUTION_FAMILY_TEXT": "Vous ne serez pas en mesure d'annuler!",
+                "DELETE_SOLUTION_FAMILY_TITLE": "Êtes-vous sûr de vouloir supprimer cette famille de solutions ?",
+                "DELETE_SOLUTION_SUCCESS": "La solution a été supprimée avec succès.",
+                "DELETE_SOLUTION_TEXT": "Vous ne serez pas en mesure d'annuler!",
+                "DELETE_SOLUTION_TITLE": "Êtes-vous sûr de vouloir supprimer cette solution ?"
+            },
+            "SOLUTION": "Solution",
+            "SOLUTION_CAPITAL": "SOLUTION",
+            "SOLUTION_FAMILY": {
+                "ADD_SOLUTION_FAMILY": "Ajouter une famille de solutions",
+                "COUNTRY": "Pays",
+                "POPUP": {
+                    "ADD_SUCCESS": "La famille de solutions a été ajoutée avec succès.",
+                    "EDIT_SUCCESS": "La famille de solutions a été modifiée avec succès."
+                },
+                "REGION": "Région",
+                "SOLUTION_FAMILY_DESCRIPTION": "Description de la famille de solutions"
+            },
+            "SOLUTION_FAMILY_BUTTON": "AJOUTER UNE FAMILLE DE SOLUTIONS",
+            "SOLUTION_INFO": "INFORMATIONS SUR LA SOLUTION",
+            "SUITABILITY_RANGE": "Gamme d'adéquation",
+            "SUPPRESS_SOLUTION": "SUPPRIMER LA SOLUTION",
+            "SUPPRESS_SOLUTION_FAMILY": "SUPPRIMER LA FAMILLE DE SOLUTIONS",
+            "UNSUPPRESS_SOLUTION": "SOLUTION NON SUPPRESSIVE",
+            "UNSUPPRESS_SOLUTION_FAMILY": "FAMILLE DE SOLUTIONS NON SUPPRESSIVES"
+        },
+        "PREFERRED_SOLUTIONS": {
+            "DESCRIPTION": "Définissez les solutions appropriées et faites-les correspondre à vos politiques d'investissement.",
+            "TITLE": "Solutions préférées"
+        },
+        "RATES_OF_RETURN": {
+            "TITLE": "Taux de rendement"
+        },
+        "TITLE": "Paramètres"
+    },
+    "SORT_BY_DROPDOWN": "Trier par",
+    "SSID_LABELS": {
+        "OBJECTIV002": "Coût de vie à la retraite (après impôts)",
+        "A_ASSCAT042": "Liquidités",
+        "A_ASSCAT043": "Revenu fixe court terme",
+        "A_ASSCAT044": "Revenu fixe",
+        "A_ASSCAT045": "Actions canadiennes",
+        "A_ASSCAT046": "Actions canadiennes à petite capitalisation",
+        "A_ASSCAT047": "Actions américaines",
+        "A_ASSCAT048": "Actions américaines à petite capitalisation",
+        "A_ASSCAT049": "Actions internationales",
+        "A_ASSCAT050": "Marchés émergents",
+        "A_ASSCAT051": "Immobilier",
+        "A_ASSCAT062": "Actions étrangères",
+        "ACCTYP_OTHER": "Autre",
+        "ACCTYP_SHELTERED": "À l'abri de l'impôt",
+        "ACCTYP_DEFERRED": "Impôt différé",
+        "ACCTYP_OPEN": "Ouvrir",
+        "ACCTYP_PERSONAL": "Utilisation personnelle",
+        "ACCTYP_BUSINESS": "Autres affaires",
+        "ACCTYP_CORPORATE": "corporatif",
+        "BALANCED": "Équilibré",
+        "LTCALC008": "Auto-assuré",
+        "ASSETS_025": "Assuré",
+        "ALLNOTES": "Toutes les notes",
+        "CLIENTNOTE": "Observations concernant le client",
+        "ADVISORNTS": "Notes du conseiller",
+        "ContaLog1": "Journal des contacts",
+        "FundWealh1": "Fonds et richesse",
+        "InvComm1": "Commentaire sur les placements",
+        "LoanAdv1": "Notes sur emprunts",
+        "ProtComm1": "Commentaire sur les assurances",
+        "SaveSomm1": "Commentaire sur les épargnes",
+        "STRUCTPRD1": "Commentaires sur le produit structuré",
+        "AdvPro1": "Conseils offerts pour remboursement des emprunts sur capital",
+        "BothAva1": "Tous deux disponibles",
+        "OtherPre1": "Autre personne présente",
+        "PenlPay1": "Pénalités payables lors du remboursement",
+        "ProdSold1": "Produit vendu / montant - note",
+        "SourFund1": "Source de fonds",
+        "Sourwealh1": "Source de prospérité",
+        "WhoPres1": "Qui est présent",
+        "CASH_FLOWS": {
+            "ACCOMOMISC": "Logement - divers",
+            "EMPLINCOMEMISC": "Revenu d'emploi - divers",
+            "FAMILYMISC": "Dépenses familiales de base - divers",
+            "INVINCOMEMISC": "Revenu de placement - divers",
+            "MISCCASHFLWMISC": "Dépenses - divers",
+            "MISCINCOMEMISC": "Revenu - divers",
+            "PENSIONINCMISC": "Revenu de pension - divers",
+            "PERSONALEXPMISC": "Dépenses personnelles - divers",
+            "SOURCEDETMISC": "Déductions à la source - divers",
+            "TRANSPORTMISC": "Transport - divers",
+            "HTMLEDGE138": "Épargne retraite enregistrée",
+            "TAX_CASH002": "Cotisation assurance emploi",
+            "TAX_CASH003": "Contribution REER",
+            "TAX_CASH004": "Autres épargnes",
+            "TAX_CASH006": "Cotisations Syndicales",
+            "TAX_CASH007": "Maison - divers",
+            "TAX_CASH008": "Vêtements",
+            "TAX_CASH009": "Soins personnels",
+            "TAX_CASH010": "Frais - divers",
+            "TAX_CASH011": "Adhésions / cotisations au club",
+            "TAX_CASH012": "Honoraires professionnels (déductible d'impôt)",
+            "J_TAX_ON008": "Autres déductions à la source (non déductibles de l'impôt)",
+            "J_CASHDE 20": "Impôts déduits",
+            "CASH_TAX073": "Épargne Reér du conjoint",
+            "J_CASHDE 50": "Bénéfices PSV/RRQ",
+            "J_CASHDE 49": "Pension de la Sécurité de la vieillesse",
+            "J_CASHDE 53": "Autre revenu imposable",
+            "J_CASHDE 54": "Cotisation RRQ",
+            "J_CASHDE 41": "Épargnes pour les études",
+            "CASH_TAX097": "Bonus",
+            "J_CASHDE 40": "Dividendes",
+            "CASH_TAX088": "Revenu de location",
+            "CASH_TAX090": "Pension alimentaire",
+            "J_CASHDE44D": "Dépenses pour enfant a charge",
+            "J_CASHDE44B": "Entretien de la maison",
+            "J_CASHDE 89": "Frais médicaux ",
+            "CASH_TAX102": "Paiement de prêt non-déductible de REER",
+            "J_CASHDE 38": "Prêts pour investissements",
+            "CASH_TAX092": "Frais de scolarité",
+            "CASH_TAX091": "Paiements de pension alimentaire / de soutien aux enfants",
+            "CASH_TAX104": "Remb. capital prêt auto",
+            "CASH_TAX032": "Paiements Auto ",
+            "J_CASHDE65B": "Gaz / pétrole",
+            "J_CASHDE65C": "Réparations / entretien",
+            "J_CASHDE65D": "Assurance auto",
+            "J_CASHDE65E": "Transport en commun / stationnement",
+            "CASH_TAX111": "Paiements loyer",
+            "J_CASHDE84F": "Paiments sur hypothèque",
+            "J_CASHDE 84": "Loyer et intérêts sur hypothèque.",
+            "J_CASHDE84B": "Impôts sur la propriété",
+            "J_CASHDE84C": "Services publics (chauffage et eau)",
+            "J_CASHDE84D": "Assurance maison",
+            "J_CASHDE84E": "Dépenses sur résidence secondaire",
+            "CASH_TAX101": "Remboursement de prêt personnel",
+            "J_CASHDE 27": "Primes d'assurance",
+            "J_CASHDE 85": "Jours fériés / vacances",
+            "J_CASHDE85D": "Cadeaux",
+            "J_CASHDE85C": "Animations / restaurant",
+            "J_CASHDE85B": "Argent liquide / argent de poche",
+            "CASH_TAX110": "Paiements par carte de crédit",
+            "J_CASHDE 62": "Dons de charité",
+            "J_CASHDE 92": "Revenu d'investissements réinvestit",
+            "CASH_TAX071": "Impôts à payer",
+            "CASH_TAX093": "Autres déductions d'impôts",
+            "J_CASHDE 78": "Revenu non-imposable",
+            "J_CASHDE 21": "Régime de pension agréé ",
+            "J_CASHDE 22": "Intérêt",
+            "CASH_TAX005": "Gains en capital",
+            "CASHDETA001": "FERR / FRV revenu",
+            "CASH_TAX089": "Assurance-emploi",
+            "J_CASHDE 72": "Cotisation RPA ",
+            "J_CASHDE 44": "Nourriture et boissons",
+            "J_CASHDE44C": "Téléphone fixe",
+            "J_CASHDE 17": "Salaire",
+            "CASH_TAX096": "Crédits d'impôt provincial",
+            "CASH_TAX094": "Crédits d'impôt fédéral",
+            "J_CASHDE 39": "Frais d'intérêts",
+            "CASHDETA002": "Compensation de travailleur",
+            "CASHDETA003": "Pension alimentaire non imposable",
+            "CASHDETA004": "Service Internet",
+            "CASHDETA005": "Téléphone Cellulaire",
+            "CASHDETA006": "TV par câble / satellite et radio",
+            "CASHDETA007": "Paiements de pension alimentaire / de soutien aux enfants (non-déductibles d'impôt)",
+            "CASHDETA018": "Solde dû ou remboursement attendu",
+            "CASHDETA019": "Déductions du système",
+            "CASHDETA020": "Dépenses non-allouées",
+            "CFGROUP_N": "Dépenses personnelles",
+            "CFGROUP_O": "Épargne et réinvestissement",
+            "CFGROUP_P": "Dépenses - divers",
+            "CFGROUP_Q": "Impôts",
+            "J_CASHDE 25": "Intérêt sur emprunt personnel",
+            "CFGROUP_A": "Revenu d'emploi",
+            "CFGROUP_B": "Revenu de pension",
+            "CFGROUP_C": "Revenus de placement",
+            "CFGROUP_F": "Revenu - divers",
+            "CFGROUP_G": "Déductions à la source",
+            "CFGROUP_H": "Famille et vie",
+            "CFGROUP_I": "Transport",
+            "CFGROUP_J": "Logement",
+            "CASHDET008 ": "Intérêt libre d'impôt",
+            "CASHDET009 ": "Dividendes étrangers",
+            "CASHDET010 ": "Gains en capital étrangers",
+            "NONELIGDIV": "Dividendes non admissibles"
+        },
+        "COLLAB_RISK_TOLERANCE": "Tolérance aux risques",
+        "COLLAB_DOCUMENT_VAULT": "Coffre-fort à documents",
+        "ERROR_MESSAGE": {
+            "HTML_TAX_REPORT_ERROR": "Le rapport n'est pas disponible en format HTML.",
+            "WORD_TAX_REPORT_ERROR": "Le rapport n'est pas disponible en format WORD.",
+            "EXCEL_TAX_REPORT_ERROR": "Le rapport n'est pas disponible en format Excel."
+        },
+        "BENEFICIARY_RELATIONS": {
+            "CLIENTS148": "Fille",
+            "CLIENTS147": "Fils",
+            "CLIENTS150": "Soeur",
+            "CLIENTS149": "Frère",
+            "CLIENTS151": "Mère",
+            "CLIENTS152": "Père",
+            "CLIENTS180": "Petite-Fille",
+            "CLIENTS179": "Petit-Fils",
+            "A_BENEF037": "Autre",
+            "A_BENEF046": "Charité"
+        },
+        "MATRIMONIAL_REGIMES": {
+            "SELECTPLS": "Sélectionnez un régime matrimonial",
+            "PARTNAQUES": "Société d'acquêts",
+            "SEPARASTPR": "Séparation de biens",
+            "COMMUREGIM": "Communauté de biens",
+            "OTHERVIEW": "Autre"
+        },
+        "LEVERAGE_CALC_ERRORS": {
+            "beforeTaxRetWarning": "Une déclaration avant impôt de 50,0 est plus grande que ce portefeuille recommandé par les clients.",
+            "LEVRGCALC28": "La période d'épargne doit être un nombre positif.",
+            "LEVRGCALC29": "Le taux d'imposition doit être entre 0 et 100.",
+            "LEVRGCALC30": "Le taux d'intérêt pour le prêt doit être entre 0 et 100.",
+            "LEVRGCALC31": "Le paiement annuel doit être plus grand que zéro.",
+            "LEVRGCALC32": "Le montant du prêt doit être plus grand que zéro.",
+            "LEVRGCALC33": "Un taux de rendement avant impôt doit être entre 0 % et 20 %.",
+            "LEVRGCALC35": "Le total de la ventilation doit être égal à 100%.",
+            "LEVRGCALC90": "Pourcentage des valeurs imposables doit être positif",
+            "LEVRGCALC91": "Crédit d'impôt pour dividendes doit être positif",
+            "LEVRGCALC92": "Le total des rendements doit être égal à 100%.",
+            "LEVRGCALC94": "Le taux de franchise doit être compris entre 0 et 100."
+        }
+    },
+    "SUMMARY": {
+        "ENGAGEMENT": "Engagement",
+        "ENGAGEMENT_DESCRIPTION": "Définissez votre engagement avec votre client et entamez la conversation.",
+        "PERSONAL_INFO": "Information personnelle",
+        "PERSONAL_INFO_DESCRIPTION": "Documentez les renseignements personnels de votre client, y compris les membres de sa famille et les entités commerciales.",
+        "RISK_TOLERANCE_KYC": "Tolérance au risque et KYC",
+        "RISK_TOLERANCE_KYC_DESCRIPTION": "Invitez votre client à effectuer une évaluation de la tolérance au risque et à discuter des résultats."
+    },
+    "SWEET_ALERT": {
+        "POPUP": {
+            "ACCOUNT_DELETE": "Le compte a été supprimé avec succès.",
+            "DOCUMENT_DELETE": "Votre document a été supprimé.",
+            "GOAL_DELETE": "L'objectif a été supprimé avec succès.",
+            "HOLDING_DELETE": "Les avoirs ont été supprimés avec succès.",
+            "PRIORITY_DELETE": "La priorité a été supprimée avec succès.",
+            "REVENUE_DELETE": "Les revenus ont été supprimés avec succès",
+            "SAVING_DELETE": "La sauvegarde a été supprimée avec succès.",
+            "UPDATE_DOCUMENT_STATUS": "Statut du document mis à jour avec succès.",
+            "VALUES_UPDATE": "Les valeurs ont été mises à jour avec succès."
+        }
+    },
+    "TAB": {
+        "ABOUT_ME_TITLE": "SuitabilityPro - À propos de moi",
+        "SUBSCRIPTION_TITLE": "SuitabilityPro - Souscription",
+        "ADD_AN_ACCOUNT": "SuitabilityPro - Ajouter un compte",
+        "ADD_CLIENT_TITLE": "SuitabilityPro - Ajouter client",
+        "ADD_FAMILY_MEMBER_TITLE": "SuitabilityPro - Ajouter un membre de la famille",
+        "ADD_GOAL": "SuitabilityPro - Ajouter un objectif",
+        "ADD_INVESTOR_TITLE": "SuitabilityPro - Ajouter un investisseur",
+        "ADD_POLICY_SIDE_PANEL": "SuitabilityPro - Ajouter une politique",
+        "ADD_PORTFOLIO_TITLE": "SuitabilityPro - Ajouter un portefeuille",
+        "ADD_REVENUE": "SuitabilityPro - Ajouter un revenu",
+        "ADD_SAVING": "SuitabilityPro - Ajouter une épargne",
+        "ADD_TASK_TITLE": "SuitabilityPro - Ajouter un une tâche",
+        "ADD_WORKGROUP": "SuitabilityPro - Ajouter un groupe de travail",
+        "ALL_SAVINGS": "SuitabilityPro - Liste d'épargne",
+        "ANALYTICS_TITLE": "SuitabilityPro - Analytiques",
+        "APPLY_SOLUTION_TITLE": "SuitabilityPro - Appliquer la solution",
+        "ASSETS_AND_LIABILITIES": "SuitabilityPro - Actif et passif",
+        "CHANGE_PASSWORD_TITLE": "SuitabilityPro - Changez votre mot de passe",
+        "CLIENT_OVERVIEW_TITLE": "SuitabilityPro - Aperçu du client",
+        "CRITICAL_ILLNESS_CALCULATOR": "SuitabilityPro - Calculateur de maladies graves",
+        "DASHBOARD_TITLE": "SuitabilityPro - Tableau de bord",
+        "DEBT_CONSOLIDATION_CALCULATOR": "SuitabilityPro - Calculateur de consolidation de la dette",
+        "DOCUMENT_CENTER_TITLE": "SuitabilityPro - Centre du document",
+        "EDIT_ACCOUNT": "SuitabilityPro - Modifier le compte",
+        "EDIT_CLIENT_TITLE": "SuitabilityPro - Modifier un client",
+        "EDIT_CURRENT_TITLE": "SuitabilityPro - Modifier actuel",
+        "EDIT_GOAL": "SuitabilityPro - Modifier l'objectif",
+        "EDIT_POLICY": "SuitabilityPro - Modifier la politique",
+        "EDIT_REVENUE": "SuitabilityPro - Modifier les revenus",
+        "EDIT_SAVINGS": "SuitabilityPro - Modifier les épargnes",
+        "EDIT_WORKGROUP": "SuitabilityPro - Modifier le groupe de travail",
+        "EDUCATION_INSTITUTION": "SuitabilityPro - Établissement d'enseignement",
+        "ENGAGEMENT_SERVICE_LEVEL": "SuitabilityPro - Niveau de service d'engagement",
+        "ENGAGEMENT_SUMMARY": "SuitabilityPro - Résumé de l'engagement",
+        "FAMILY_MEMBER_LIST_TITLE": "SuitabilityPro - Liste des membres de la famille",
+        "GENERATE_DOCUMENT_TITLE": "SuitabilityPro - Générer un document",
+        "GOALS": "SuitabilityPro - Buts",
+        "GOAL_ANALYSIS_TITLE": "SuitabilityPro - Analyse des objectifs",
+        "HOLDINGS": "SuitabilityPro - Actifs",
+        "IMPLEMENTATION_TITLE": "SuitabilityPro - Mise en oeuvre",
+        "INCOME_DISTRIBUTION_TITLE": "SuitabilityPro - La distribution du revenu",
+        "INVESTMENT_POLICIES": "SuitabilityPro - Politiques d'investissement",
+        "LEVERAGE_CALCULATOR": "SuitabilityPro - Calculatrice effet de levier",
+        "LICENCE_AGREEMENT_TITLE": "SuitabilityPro - Contrat de licence",
+        "LINK_TO_GOALS": "SuitabilityPro - Lien d'objectifs",
+        "LOAN_AMORTIZATION_CALCULATOR": "SuitabilityPro - Calculatrice pour prêts",
+        "LOGIN_TITLE": "SuitabilityPro - Connexion",
+        "LONG_TERM_CARE_CALCULATOR": "SuitabilityPro - Calculatrice de soins de longue durée",
+        "MY_PROFILE_BRANDING": "SuitabilityPro - Marquage",
+        "MY_PROFILE_BRANDING_DOCUMENT_COVER_PAGE_SELECTION": "SuitabilityPro - Sélection de la page couverture d'un document",
+        "MY_PROFILE_BRANDING_DOCUMENT_DISCLAIMER_SELECTION": "SuitabilityPro - Sélection de l'avis de non-responsabilité des documents",
+        "MY_PROFILE_BRANDING_GRAPH_COLOUR_THEME": "SuitabilityPro - Thème des couleurs du graphique",
+        "MY_PROFILE_BRANDING_REPORT_DISCLAIMER_SELECTION": "SuitabilityPro - Rapport d'avertissement de sélection",
+        "NOTES": "SuitabilityPro - Notes",
+        "PJM_TITLE": "SuitabilityPro - Matrice de jugement professionnel",
+        "PLANNING_SUMMARY_TITLE": "SuitabilityPro - Résumé de la planification",
+        "PLANTRAC": "PlanTrac",
+        "PORTFOLIO_DETAILS_TITLE": "SuitabilityPro - Détails du portefeuille",
+        "PORTFOLIO_LIST_TITLE": "SuitabilityPro - Liste de portefeuille",
+        "PREFERRED_SOLUTION_DETAILS_TITLE": "SuitabilityPro - Détails des solutions préférées",
+        "PREFERRED_SOLUTION_TITLE": "SuitabilityPro - Solutions préférées",
+        "PRODUCT_SEARCH": "SuitabilityPro - Recherche de produit ",
+        "PROFILE_SUMMARY_TITLE": "SuitabilityPro - Résumé de profil",
+        "RATES_OF_RETURNS_TITLE": "SuitabilityPro - Taux de rendement",
+        "RENAME_DOCUMENT_TITLE": "SuitabilityPro - Renommer le document",
+        "RENAME_PORTFOLIO_TITLE": "SuitabilityPro - Renommer le portefeuille",
+        "REVENUES": "SuitabilityPro - Revenus",
+        "RISK_TOLERANCE_KYC_TITLE": "SuitabilityPro - Tolérance au risque et KYC",
+        "RISK_TOLERANCE_LIST_TITLE": "SuitabilityPro - Liste de tolérance au risque",
+        "RISK_TOLERANCE_RESULT_TITLE": "SuitabilityPro - Résultat sur la tolérance au risque",
+        "SAVINGDETAIL": "SuitabilityPro - Détail des épargnes",
+        "SAVINGS": "SuitabilityPro - Épargnes",
+        "SAVING_SPECIFIED": "SuitabilityPro - Enregistrement du compte spécifié",
+        "SEARCH_CLIENT_TITLE": "SuitabilityPro - Recherche un client",
+        "SEARCH_NOTES": "Recherche des notes",
+        "SELECT_VALUES_SIDE_PANEL": "SuitabilityPro - Sélectionnez des valeurs",
+        "SEND_INVITE": "SuitabilityPro - Envoyer une invitation",
+        "SEND_REMINDER": "SuitabilityPro - Envoyer un rappel",
+        "SETTING_SUMMARY_TITLE": "SuitabilityPro - Résumé de la configuration",
+        "SOLUTION_FAMILY_TITLE": "SuitabilityPro - Famille de solutions",
+        "TASK_AND_NOTIFICATION_TITLE": "SuitabilityPro - Tâches et notifications",
+        "TRANSLATION_TITLE": "SuitabilityPro - Traductions",
+        "UPLOAD_DOCUMENT_TITLE": "SuitabilityPro - Télécharger le document"
+    },
+    "TABLE": {
+        "ACTIONS": "Action",
+        "ADDED": "Ajouter",
+        "DOCUMENT": "Document",
+        "SHARED": "Partager",
+        "STATUS": "Statut",
+        "VIEWEDBY": "Vu par"
+    },
+    "TASK_AND_NOTIFICATION": {
+        "POPUP": {
+            "CHANGES_SAVED_SUCCESS": "Modifications enregistrées avec succès.",
+            "DELETE_TASK_SUCCESS": "La tâche a été supprimée avec succès.",
+            "DELETE_TASK_TEXT": "Vous ne serez pas en mesure d'annuler!",
+            "DELETE_TASK_TITLE": "Êtes-vous sûr de vouloir supprimer la tâche ?",
+            "UPDATE_SUCCESS": "La tâche a été mise à jour avec succès."
+        },
+        "TASK_NOTIFICATION": {
+            "ASSIGNED": "Assigné",
+            "BACK_TO_PREVIOUS": "RETOUR À LA PRÉCÉDENTE",
+            "CLIENT_NAME": "Nom du Client",
+            "COMPLETED": "Termin",
+            "DESCRIPTION": "Description",
+            "FORM": "DE",
+            "MANUAL_TASK": "Tâche manuelle",
+            "NOTES": "Notes",
+            "STATUS": "Statut",
+            "SYSTEM_TASK": "Tâche système",
+            "TASKAND_NOTIFICATION": "Tâches et notifications",
+            "TO": "À"
+        }
+    },
+    "TASK_NOTIFICATION": {
+        "ADD_TASK": {
+            "DESCRIPTION": "Description",
+            "DUE_DATE": "Date d'échéance",
+            "POPUP": {
+                "SUCCESS": "Tâche ajoutée avec succès."
+            },
+            "TITLE": {
+                "ADD_A_TASK": "AJOUTER UNE TÂCHE"
+            },
+            "TYPE": "Type de placement"
+        }
+    },
+    "TRANSLATION": {
+        "DESCRIPTION": "Description",
+        "POPUP": {
+            "SUCCESS": "Traduction ajoutée avec succès."
+        },
+        "REGION": "RÉGION",
+        "TITLE": "TRADUCTIONS"
+    },
+    "VIEW_BY_DROPDOWN": "Visualiser par",
+    "WORKGROUP": {
+        "ACTION": {
+            "DELETE_WORKGROUP": "SUPPRIMER LE GROUPE DE TRAVAIL",
+            "EDIT_WORKGROUP": "MODIFIER LE GROUPE DE TRAVAIL",
+            "JOIN": "REJOINDRE",
+            "LEAVE": "QUITTER"
+        },
+        "MEMBERS": "Membre",
+        "MEMBER_WORKGROUPS": "Groupes de travail des membres",
+        "MY_WORKGROUPS": "Mes groupes de travail",
+        "POPUP": {
+            "DELETE_CONFIRMATION": {
+                "TEXT": "Tous les membres et les fichiers clients seront supprimés du groupe de travail lorsque le groupe de travail sera supprimé et que les membres ne pourront plus collaborer!",
+                "TITLE": "Êtes-vous sûr de vouloir supprimer ce groupe de travail?"
+            },
+            "DELETE_MEMBER_CONFIRMATION": {
+                "TEXT": {
+                    "PART_1": "Êtes-vous sûr de vouloir supprimer",
+                    "PART_2": "du groupe de travail?",
+                    "PART_3": "Ils ne pourront plus collaborer avec les clients."
+                },
+                "TITLE": "Supprimer le membre"
+            },
+            "GROUP_SUCCESSFULLY_ADDED": "Le groupe de travail a été ajouté avec succès.",
+            "GROUP_SUCCESSFULLY_UPDATED": "Le groupe de travail a été mis à jour avec succès.",
+            "LEAVE_GROUP_CONFIRM": {
+                "TEXT": "Lorsque vous quittez le groupe de travail, vous pourrez plus collaborer sur les clients.",
+                "TITLE": "Êtes-vous sûr de vouloir quitter?"
+            },
+            "MEMBER_SUCCESSFULLY_DELETED": "Membre supprimé du groupe.",
+            "SUCCESSFULLY_DELETED": "Le groupe de travail a été supprimé avec succès.",
+            "SUCCESSFULLY_JOINED_GROUP": "Vous avez rejoint le groupe avec succès.",
+            "SUCCESSFULLY_LEFT_GROUP": "Vous n'êtes plus membre de ce groupe."
+        }
+    }
+}

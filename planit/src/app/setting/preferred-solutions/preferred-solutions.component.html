@@ -1,0 +1,401 @@
+<div class="container">
+    <div class="scroll-header">
+        <div class="fixed-scroll-header-container">
+            <div class="row">
+                <div class="col-12">
+                    <app-settings-header currentPage="ps"></app-settings-header>
+                </div>
+            </div>
+            <div class="row">
+                <div class="sort-box col-md-4 d-flex align-items-start flex-column">
+                    <!-- View: -->
+                    <div class="dropdown-common mt-1 sort-dropdown dropdown-common-full w-100">
+                        <!-- <app-common-drop-down [itemList]="viewBy" [defaultSelected]="selectedViewBy" dropDownLabel="VIEW"
+                                (OnSelect)="sorting($event)"></app-common-drop-down> -->
+
+                        <!-- tree-view drop-down -->
+                        <label class="d-inline-block va-middle mr-2">View:</label>
+                        <div class="tree-select-custom d-inline-block  va-middle tree-select-custom-dropdown">
+                            <tree-select name="regionList" idField="regionCode" [multiple]="false" [allowFilter]="false"
+                                [items]="regionArray" placeholder="Select a region" textField="regionName"
+                                childrenField="childRegions" [(ngModel)]="region" #regionList="ngModel"
+                                [allowParentSelection]="true" expandMode="All" (ngModelChange)="sorting($event)">
+                            </tree-select>
+                            <div class="tree-select-custom-caret-down">
+                                <span class="fa fa-fw fa-caret-down"></span>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="add-solution-row mt-md-auto mt-2">
+                        <a class="btn-add" (click)="addSolutionFamily()">
+                            <i class="ion-md-add-circle"></i>
+                            <span [translate]="'SETTINGS.PREFERRED_SOLUTION.SOLUTION_FAMILY_BUTTON'"></span>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="col-12 col-lg-6 offset-lg-1">
+                    <div class="investment-policies-graph">
+                        <span class="graph-label ff-Montserrat fw-500"
+                            [translate]="'SETTINGS.PREFERRED_SOLUTION.INVESTMENT_POLICIES'"></span>
+                        <!-- <app-stack-bar-chart></app-stack-bar-chart> -->
+                        <div id="chartdiv"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="solutions-wrapper-height">
+        <div class="row solutions-wrapper">
+            <div class="col-12" *ngIf="dataSet">
+                <hr class="mt-1" />
+                <table class="table va-middle-table ff-Montserrat solution-parent-table">
+                    <thead>
+                        <tr>
+                            <th width="30.333333%" class="fw-600"><span [translate]="'SETTINGS.PREFERRED_SOLUTION.SOLUTION'">
+                            </span><i *ngIf="!solutionsLoaded" aria-hidden="true" class="fa fa-spinner fa-pulse loader-icon"></i>
+                            </th>
+                            <th width="11.333333%">&nbsp;</th>
+                            <th width="50%" class="fw-600"><span class="suitability-range-label"
+                                    [translate]="'SETTINGS.PREFERRED_SOLUTION.SUITABILITY_RANGE'"></span></th>
+                            <th width="5%" class="text-center fw-600 action-header"
+                                [translate]="'SETTINGS.PREFERRED_SOLUTION.ACTION'"></th>
+                            <th width="3.33334%" class="th-pr-10 text-right hidden-md-down">&nbsp;</th>
+
+                        </tr>
+                    </thead>
+                    <tbody *ngFor="let payload of dataSet;let f = index">
+
+                        <tr>
+                            <td width="96.66666%" colspan="4">
+                                <h3 class="fs-20 fw-600">{{payload.parentText}}</h3>
+                            </td>
+                            <td width="3.33334%" class=" text-right" (click)="payload.template = !payload.template">
+                                <i [ngClass]="payload.template ? 'ion-ios-arrow-up' : 'ion-ios-arrow-down'"
+                                    class="cursor-p ion-ios-arrow-down"></i>
+                            </td>
+                        </tr>
+
+                        <ng-container *ngFor="let data of payload['solutionFamilies'];let j= index;">
+                            <tr [hidden]="!payload.template || (data.isSuppress && data.suppressedByParent)">
+                                <td colspan="3" width="91.66666%" [ngClass]="{'suppressed-gray-out': data.isSuppress}">
+                                    <h4 class="subtitle p-0 fw-500 fs-18">{{data.solutionName}}</h4>
+                                </td>
+                                <td width="5%" class="text-center" *ngIf="dataSet.length > 2">
+                                    <div class="dropdown-relative change-action-dropdown"
+                                        [ngClass]="{'dropdown-up' : (dataSet.length > 2 || payload['solutionFamilies'].length >= 4) && (payload['solutionFamilies'].length -2 < j+1) && (dataSet.length - 2 < f+1) }">
+                                        <button type="button" class="btn-floating"
+                                            (click)="changeAction(data.solutionFamilyId)">
+                                            <span class="ion-md-more"></span>
+                                        </button>
+                                        <div [id]="'dropdown-action-' + data.solutionFamilyId"
+                                            class="dropdown-portfolio-action dropdown-floating hide-ele">
+                                            <ul class="floating-dropdown">
+                                                <li
+                                                    *ngIf="payload.parentId === advisorId || (isShowRegion && ! payload.parentRegion)">
+                                                    <!-- <a [routerLink]="['add-solution']"> -->
+                                                    <a class="action-list" [routerLink]="[data['solutionFamilyId'],'add-solution']">
+                                                        <i class="ion-md-add-circle w-no-bg action-list"></i>
+                                                        <span class="action-list" [translate]="'SETTINGS.PREFERRED_SOLUTION.ADD_SOLUTION'"></span>
+                                                    </a>
+                                                </li>
+                                                <li
+                                                    *ngIf="payload.parentId === advisorId || (isShowRegion  && ! payload.parentRegion)">
+                                                    <a class="action-list" [routerLink]="[data['solutionFamilyId'],'edit-solution-family']">
+                                                        <i class="ion-md-create action-list"></i>
+                                                        <span class="action-list" [translate]="'SETTINGS.PREFERRED_SOLUTION.EDIT_SOLUTION_FAMILY'"></span>
+                                                    </a>
+                                                </li>
+                                                <li
+                                                    (click)="solutionFamilySuppressionOption(data, data.isSuppress);data.isSuppress = !data.isSuppress;">
+                                                    <a class="action-list" *ngIf="!data.isSuppress">
+                                                        <i class="ion-ios-thumbs-down icon-x-lg w-o-bg action-list"></i>
+                                                        <span class="action-list" [translate]="'SETTINGS.PREFERRED_SOLUTION.SUPPRESS_SOLUTION_FAMILY'"></span>
+                                                    </a>
+                                                    <a class="action-list" *ngIf="data.isSuppress">
+                                                        <i class="ion-ios-thumbs-up icon-x-lg w-o-bg w-o-bg-c action-list"></i>
+                                                        <span class="action-list" [translate]="'SETTINGS.PREFERRED_SOLUTION.UNSUPPRESS_SOLUTION_FAMILY'"></span>
+                                                    </a>
+                                                </li>
+                                                <li *ngIf="data['child'].length === 0 && ( payload.parentId === advisorId || (isShowRegion && ! payload.parentRegion))"
+                                                    class="delete-btn"
+                                                    (click)="deleteSolutionFamily(data['solutionFamilyId'])">
+                                                    <a class="action-list">
+                                                        <i class="ion-md-close-circle action-list"></i>
+                                                        <span class="action-list" [translate]="'SETTINGS.PREFERRED_SOLUTION.DELETE_SOLUTION_FAMILY'"></span>
+                                                    </a>
+                                                </li>
+                                                <li *ngIf="data['child'].length > 0 && (payload.parentId === advisorId || (isShowRegion &&  ! payload.parentRegion))"
+                                                    class="delete-btn"
+                                                    [ngClass]="{'disable-link': data['child'].length > 0}">
+                                                    <a class="action-list">
+                                                        <i class="ion-md-close-circle action-list"></i>
+                                                        <span class="action-list" [translate]="'SETTINGS.PREFERRED_SOLUTION.DELETE_SOLUTION_FAMILY'"></span>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td width="5%" class="text-center" *ngIf="dataSet.length <= 2">
+                                    <div class="dropdown-relative change-action-dropdown">
+                                        <button type="button" class="btn-floating"
+                                            (click)="changeAction(data.solutionFamilyId)">
+                                            <span class="ion-md-more"></span>
+                                        </button>
+                                        <div [id]="'dropdown-action-' + data.solutionFamilyId"
+                                            class="dropdown-portfolio-action dropdown-floating hide-ele">
+                                            <ul class="floating-dropdown">
+                                                <li
+                                                    *ngIf="payload.parentId === advisorId || (isShowRegion &&   ! payload.parentRegion)">
+                                                    <!-- <a [routerLink]="['add-solution']"> -->
+                                                    <a class="action-list" [routerLink]="[data['solutionFamilyId'],'add-solution']">
+                                                        <i class="ion-md-add-circle w-no-bg action-list"></i>
+                                                        <span class="action-list" [translate]="'SETTINGS.PREFERRED_SOLUTION.ADD_SOLUTION'"></span>
+                                                    </a>
+                                                </li>
+                                                <li
+                                                    *ngIf="payload.parentId === advisorId || (isShowRegion && ! payload.parentRegion)">
+                                                    <a class="action-list" [routerLink]="[data['solutionFamilyId'],'edit-solution-family']">
+                                                        <i class="ion-md-create action-list"></i>
+                                                        <span class="action-list" [translate]="'SETTINGS.PREFERRED_SOLUTION.EDIT_SOLUTION_FAMILY'"></span>
+                                                    </a>
+                                                </li>
+                                                <li
+                                                    (click)="solutionFamilySuppressionOption(data, data.isSuppress);data.isSuppress = !data.isSuppress">
+                                                    <a class="action-list" *ngIf="!data.isSuppress">
+                                                        <i class="ion-ios-thumbs-down icon-x-lg w-o-bg action-list"></i>
+                                                        <span class="action-list" [translate]="'SETTINGS.PREFERRED_SOLUTION.SUPPRESS_SOLUTION_FAMILY'"></span>
+                                                    </a>
+                                                    <a class="action-list" *ngIf="data.isSuppress">
+                                                        <i class="ion-ios-thumbs-up icon-x-lg w-o-bg w-o-bg-c action-list"></i>
+                                                        <span class="action-list" [translate]="'SETTINGS.PREFERRED_SOLUTION.UNSUPPRESS_SOLUTION_FAMILY'"></span>
+                                                    </a>
+                                                </li>
+                                                <li *ngIf="data['child'].length === 0 && (payload.parentId === advisorId || (isShowRegion &&   ! payload.parentRegion))"
+                                                    class="delete-btn"
+                                                    (click)="deleteSolutionFamily(data['solutionFamilyId'])">
+                                                    <a class="action-list">
+                                                        <i class="ion-md-close-circle action-list"></i>
+                                                        <span class="action-list" [translate]="'SETTINGS.PREFERRED_SOLUTION.DELETE_SOLUTION_FAMILY'"></span>
+                                                    </a>
+                                                </li>
+                                                <li *ngIf="data['child'].length > 0 && (payload.parentId === advisorId || (isShowRegion &&  ! payload.parentRegion))"
+                                                    class="delete-btn"
+                                                    [ngClass]="{'disable-link': data['child'].length > 0}">
+                                                    <a class="action-list">
+                                                        <i class="ion-md-close-circle action-list"></i>
+                                                        <span class="action-list" [translate]="'SETTINGS.PREFERRED_SOLUTION.DELETE_SOLUTION_FAMILY'"></span>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td width="3.33334%" class="text-right">
+                                    <i class="cursor-p ion-ios-arrow-down"
+                                        [ngClass]="data.template ? 'ion-ios-arrow-up' : 'ion-ios-arrow-down'"
+                                        (click)="data.template=!data.template"></i>
+                                </td>
+                            </tr>
+
+                            <tr [hidden]="!data.template || !payload.template || (data.isSuppress && data.suppressedByParent) || (solutionData.isSuppress && solutionData.suppressedByParent)"
+                                *ngFor="let solutionData of data.child; let i = index;" [attr.data-index]="i">
+                                <td colspan="5" class="p-0">
+                                    <table class="table inner-solution-table">
+                                        <tbody>
+                                            <tr>
+                                                <td width="30.333333%" class="border-0"
+                                                    [ngClass]="{'suppressed-gray-out': (data.isSuppress || solutionData.isSuppress)}">
+                                                    <span class="fw-500 fs-14">{{solutionData.childName}}</span>
+                                                    <span class="testing" *ngIf="solutionData['isWarning']"><i
+                                                            class="ion-ios-alert"></i></span>
+                                                </td>
+                                                <td width="11.333333%" class="border-0 p-1 finametrica-image"
+                                                    [ngClass]="{'suppressed-gray-out': (data.isSuppress || solutionData.isSuppress)}">
+
+                                                    <img *ngIf="solutionData['finaMetricaRangeImage']" src="{{solutionData['finaMetricaRangeImage']}}"
+                                                        width="80px">
+                                                </td>
+                                                <td width="50%" class="border-0 chart-wrapper" style="padding: 0;"
+                                                    [ngClass]="{'suppressed-gray-out': (data.isSuppress || solutionData.isSuppress)}">
+                                                    <div>
+                                                        <app-gantt-chart style="width: 100%;display: inline-block;"
+                                                            *ngIf="data.template && payload.template"
+                                                            [uniqeId]="'chartID-' + data.solutionFamilyId + '-' + solutionData.solutionId"
+                                                            [dataSet]="solutionData['dataProvider']"></app-gantt-chart>
+                                                    </div>
+                                                </td>
+                                                <td width="5%" class="text-center border-0 solution-chart"
+                                                    *ngIf="dataSet.length > 2">
+                                                    <div class="dropdown-relative"
+                                                        [ngClass]="{'dropdown-up' : (dataSet.length > 2 || payload['solutionFamilies'].length >= 4) && (data.child.length - 2 < i+1 ) && (payload['solutionFamilies'].length -2 < j+1) && (dataSet.length - 2 < f+1) }">
+                                                        <button type="button" class="btn-floating"
+                                                            (click)="changeAction(solutionData.solutionId)">
+                                                            <span
+                                                                class="ion-md-more elep-green-color"></span>
+                                                        </button>
+                                                        <div [id]="'dropdown-action-' + solutionData.solutionId"
+                                                            class="dropdown-portfolio-action dropdown-floating hide-ele">
+                                                            <ul class="floating-dropdown">
+                                                                <li>
+                                                                    <a class="action-list"
+                                                                        [routerLink]="[solutionData['solutionId'],'solution-info']">
+                                                                        <i class="ion-ios-arrow-forward action-list"></i>
+                                                                        <span class="action-list" [translate]="'SETTINGS.PREFERRED_SOLUTION.SOLUTION_CAPITAL'"></span>
+                                                                    </a>
+                                                                </li>
+                                                                <li>
+                                                                    <a class="action-list"
+                                                                        (click)="navigateToSolutionInfo(solutionData['solutionUrl'])">
+                                                                        <i class="ion-ios-eye icon-lg action-list"></i>
+                                                                        <span class="action-list" [translate]="'SETTINGS.PREFERRED_SOLUTION.SOLUTION_INFO'"></span>
+                                                                    </a>
+                                                                </li>
+                                                                <li *ngIf="!solutionData['finaMetricaRangeImage']"
+                                                                    (click)="openModel(content, payload['parentId'], solutionData['solutionId'], solutionData['countryCode'])">
+                                                                    <a class="action-list">
+                                                                        <i class="ion-md-images icon-mid action-list"></i>
+                                                                        <span class="action-list" [translate]="'SETTINGS.PREFERRED_SOLUTION.CLONE_SOLUTION'"></span>
+                                                                    </a>
+                                                                </li>
+                                                                <li *ngIf="!data.isSuppress"
+                                                                    (click)="solutionSuppressionOption(solutionData['solutionId'], solutionData.isSuppress); solutionData.isSuppress = !solutionData.isSuppress">
+                                                                    <a class="action-list" *ngIf="!solutionData.isSuppress">
+                                                                        <i class="ion-ios-thumbs-down icon-x-lg w-o-bg action-list"></i>
+                                                                        <span class="action-list" [translate]="'SETTINGS.PREFERRED_SOLUTION.SUPPRESS_SOLUTION'"></span>
+                                                                    </a>
+                                                                    <a class="action-list" *ngIf="solutionData.isSuppress">
+                                                                        <i class="ion-ios-thumbs-up icon-x-lg w-o-bg w-o-bg-c action-list"></i>
+                                                                        <span class="action-list" [translate]="'SETTINGS.PREFERRED_SOLUTION.UNSUPPRESS_SOLUTION'"></span>
+                                                                    </a>
+                                                                </li>
+                                                                <li *ngIf="payload.parentId === advisorId || (isShowRegion &&  ! payload.parentRegion)"
+                                                                    class="delete-btn"
+                                                                    (click)="deleteSolution(solutionData['solutionId'])">
+                                                                    <a class="action-list">
+                                                                        <i class="ion-md-close-circle action-list"></i>
+                                                                        <span class="action-list" [translate]="'SETTINGS.PREFERRED_SOLUTION.DELETE_SOLUTION'"></span>
+                                                                    </a>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td width="5%" class="text-center border-0" *ngIf="dataSet.length <= 2">
+                                                    <div class="dropdown-relative"
+                                                        [ngClass]="{'dropdown-up' : (f === 1) && (data.child.length - 2 < i+1 ) && (payload['solutionFamilies'].length - 2 < j+1) && (dataSet.length - 2 < f+1) }">
+                                                        <button type="button" class="btn-floating"
+                                                            (click)="changeAction(solutionData.solutionId)">
+                                                            <span
+                                                                class="ion-md-more elep-green-color"></span>
+                                                        </button>
+                                                        <div [id]="'dropdown-action-' + solutionData.solutionId"
+                                                            class="dropdown-portfolio-action dropdown-floating hide-ele">
+                                                            <ul class="floating-dropdown">
+                                                                <li>
+                                                                    <a class="action-list"
+                                                                        [routerLink]="[solutionData['solutionId'],'solution-info']">
+                                                                        <i class="ion-ios-arrow-forward action-list"></i>
+                                                                        <span class="action-list" [translate]="'SETTINGS.PREFERRED_SOLUTION.SOLUTION_CAPITAL'"></span>
+                                                                    </a>
+                                                                </li>
+                                                                <li>
+                                                                    <a class="action-list"
+                                                                        (click)="navigateToSolutionInfo(solutionData['solutionUrl'])">
+                                                                        <i class="ion-ios-eye icon-lg action-list"></i>
+                                                                        <span class="action-list" [translate]="'SETTINGS.PREFERRED_SOLUTION.SOLUTION_INFO'"></span>
+                                                                    </a>
+                                                                </li>
+                                                                <li *ngIf="!solutionData['finaMetricaRangeImage']"
+                                                                    (click)="openModel(content, payload['parentId'], solutionData['solutionId'], solutionData['countryCode'])">
+                                                                    <a class="action-list">
+                                                                        <i class="ion-md-images icon-mid action-list"></i>
+                                                                        <span class="action-list" [translate]="'SETTINGS.PREFERRED_SOLUTION.CLONE_SOLUTION'"></span>
+                                                                    </a>
+                                                                </li>
+                                                                <li
+                                                                    (click)="solutionSuppressionOption(solutionData['solutionId'], solutionData.isSuppress); solutionData.isSuppress = !solutionData.isSuppress">
+                                                                    <a class="action-list" *ngIf="!solutionData.isSuppress">
+                                                                        <i class="ion-ios-thumbs-down icon-x-lg w-o-bg action-list"></i>
+                                                                        <span [translate]="'SETTINGS.PREFERRED_SOLUTION.SUPPRESS_SOLUTION'"></span>
+                                                                    </a>
+                                                                    <a class="action-list" *ngIf="solutionData.isSuppress">
+                                                                        <i class="ion-ios-thumbs-up icon-x-lg w-o-bg w-o-bg-c action-list"></i>
+                                                                        <span class="action-list" [translate]="'SETTINGS.PREFERRED_SOLUTION.UNSUPPRESS_SOLUTION'"></span>
+                                                                    </a>
+                                                                </li>
+                                                                <li *ngIf="payload.parentId === advisorId || (isShowRegion &&  ! payload.parentRegion)"
+                                                                    class="delete-btn"
+                                                                    (click)="deleteSolution(solutionData['solutionId'])">
+                                                                    <a class="action-list">
+                                                                        <i class="ion-md-close-circle action-list"></i>
+                                                                        <span class="action-list" [translate]="'SETTINGS.PREFERRED_SOLUTION.DELETE_SOLUTION'"></span>
+                                                                    </a>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td width="3.33334%" class="text-right border-0 hidden-md-down">
+                                                    <!-- <i class="cursor-p ion-ios-arrow-down"></i> -->
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                        </ng-container>
+
+                    </tbody>
+                    <tbody *ngIf="dataSet.length === 0 && solutionsLoaded">
+                        <ng-container>
+                            <tr>
+                                <td colspan="5" class="no-record text-center">
+                                    <i class="ion-ios-alert mr-2"></i>{{'NO_RESULTS' | translate}}
+                                </td>
+                            </tr>
+                        </ng-container>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<ng-template #content let-c="close" let-d="dismiss">
+    <div class="modal-header">
+        <span class="modal-title" id="modal-basic-title">Clone Solution</span>
+        <span (click)="d('Cross click')" class="sidebar_action_icon ion-md-close-circle">
+        </span>
+    </div>
+    <form name="form" #f="ngForm" novalidate>
+        <div class="modal-body">
+            <div class="form-group">
+                <label class="custom-form-label">Region</label>
+                <p-dropdown [options]="regions" name="regions_name" [(ngModel)]="regions_model"
+                    (onClick)="selectRegion()" #regions_name="ngModel" required optionLabel="parentText"
+                    placeholder="{{selectRegionPlaceHolder}}"></p-dropdown>
+            </div>
+            <div class="form-group">
+                <label class="custom-form-label"
+                    [translate]="'SETTINGS.PREFERRED_SOLUTION.DETAILS.SOLUTION_FAMILY'"></label>
+                <p-dropdown [options]="solutionFamiliesByRegion" name="solution_family" [(ngModel)]="solutionFamily"
+                    #solution_family="ngModel" required optionLabel="solutionName"
+                    placeholder="{{selectSolutionFamilyPlaceHolder}}"></p-dropdown>
+            </div>
+
+        </div>
+        <div class="modal-footer">
+            <div class="form-group text-right">
+                <button class="btn btn-secondary btn-small mr-2" type="button" (click)="d('Cross click')"
+                    [translate]="'FORM.ACTION.CANCEL'"></button>
+                <button type="submit" [disabled]="!f.form.valid" class="btn btn-success btn-small"
+                    (click)="cloneSolution(); c('Save click');" [translate]="'FORM.ACTION.SAVE'"></button>
+            </div>
+        </div>
+    </form>
+</ng-template>
+
+<router-outlet></router-outlet>

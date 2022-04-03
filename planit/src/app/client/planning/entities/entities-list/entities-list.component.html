@@ -1,0 +1,24 @@
+<div class="bg-white pt-4 pb-4">
+    <div class="container cash-flow-management-wrapper">
+        <div class="row">
+            <div class="col-5">
+                <h4>
+                    <a [routerLink]="['/client',clientId,'planning']" [translate]="'BREADCRUMB.PLANNING'"></a> /
+                </h4>
+                <h1 class="d-inline-block fw-500" [translate]="'ENTITY.ENTITIES'"></h1>
+            </div>
+            <div class="col-7 d-flex flex-wrap justify-content-end">
+                <div class="mt-auto">
+                    <app-planning-module-drop-down class="dropdown-right" [clientId]="clientId">
+                    </app-planning-module-drop-down>
+                </div>
+            </div>
+            <div class="col-12">
+                <hr />
+            </div>
+            <div class="col-12" *ngIf="entitiesList">
+                <app-entities-table [clientId]="clientId" [entitiesList]="entitiesList" [isAllEntities]='true'></app-entities-table>
+            </div>
+        </div>
+    </div>
+</div>

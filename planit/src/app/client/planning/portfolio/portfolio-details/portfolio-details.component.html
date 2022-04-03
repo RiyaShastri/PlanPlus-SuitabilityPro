@@ -1,0 +1,73 @@
+<div class="bg-white pt-4 pb-4">
+    <div class="container">
+        <app-portfolio-header [currentPage]="currentPage" [clientId]="clientId" [portfolioId]="portfolioId" [goalId]="goalId"
+            [isEditableRoute]="isEditableRoute" [detailsLoaded]="portfoliosLoaded" (switchPortfolio)="switchPortfolio($event)"></app-portfolio-header>
+        <form *ngIf="portfoliosLoaded" name="form" (ngSubmit)="updatePortfolioDetail(f.form.valid)" #f="ngForm"
+            novalidate>
+            <div class="mt-4 row portfolio-detail portfolio-detail-flex" id="portfolio_detail">
+                <div class="col-lg-6 col-sm-12 order-sm-1 order-md-1" *ngIf="allocationsLoaded && allocationResponse">
+                    <app-allocation [currentPage]="currentPage" [clientId]="clientId" [portfolioId]="portfolioId"
+                        [isEditableRoute]="isEditableRoute" [allocationResponse]="allocationResponse"
+                        [currentCashPercent]="currentCashPercent" [investedAmount]="portfolioDetailResponse.totalAssets"
+                        [isEditAllocationAllowed]="isEditAllocationAllowed"></app-allocation>
+                </div>
+                <div class="col-lg-6 col-sm-12 order-sm-2 order-md-2">
+                    <div class="row">
+                        <div class="col-12">
+                            <app-professional-judgement *ngIf="accessRights['RISKTOLERCLIENT']['accessLevel'] > 0" [clientId]="clientId"
+                                [portfolioId]="portfolioId" [isEditableRoute]="isEditableRoute" [recommendedScore]="recommendedScore"
+                                [pjmLimitingFactors]="PjmLimitingFactors"></app-professional-judgement>
+                        </div>
+                        <div class="col-12" *ngIf="portfolioDetailResponse && investmentPolicies.length > 0">
+                            <app-portfolio-suitability [clientId]="clientId" [portfolioId]="portfolioId"
+                                [isEditableRoute]="isEditableRoute" [suitabilityScore]="portfolioDetailResponse.suitabilityScore"
+                                [suitabilityBand]="portfolioDetailResponse.suitabilityBandDetails" [sliderValue]="investmentPolicies"
+                                [graphIndicator]="recommendedScore" [suitabilityBands]="suitabilityBands"
+                                (suitabilityScoreChanged)="changeSuitabilityScore($event)" (investmentPolicyChanged)="changeSuitabilityBand($event)"></app-portfolio-suitability>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-sm-12 order-sm-4 order-md-3" *ngIf="portfolioDetailResponse">
+                    <app-investor [clientId]="clientId" [portfolioId]="portfolioId" [isEditableRoute]="isEditableRoute"
+                        (decisionMakerChanged)="ChangeDecisionMaker($event)" (investmentChanged)="changeTotalInvestment($event)"
+                        [portfolioDetailResponse]="portfolioDetailResponse"></app-investor>
+                </div>
+                <div class="col-lg-6 col-sm-12 order-sm-3 order-md-4 explanation-documentation-col" [ngClass]="{'mb--150': isEditableRoute}"
+                    *ngIf="portfolioDetailResponse">
+                    <app-explanation-documentation [clientId]="clientId" [portfolioId]="portfolioId" [isEditableRoute]="isEditableRoute"
+                        [constraints]="portfolioDetail.constraints"></app-explanation-documentation>
+                    <div *ngIf="isEditableRoute" class="form-group" [ngClass]="{'has-error': !documentation.valid && (documentation.dirty || documentation.touched || f.submitted)}">
+                        <textarea name="documentation" class="form-control txt-documentation" [(ngModel)]="portfolioDetail.constraints"
+                            #documentation="ngModel" required></textarea>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-sm-12 order-sm-5 order-md-5" *ngIf="portfolioDetailResponse && selectedTimeHorizon">
+                    <app-time-horizon [timeHorizons]="timeHorizons" [clientId]="clientId" [portfolioId]="portfolioId" [timeHorizoneDetail]="timeHorizoneDetail"
+                        [isEditableRoute]="isEditableRoute" [selectedTimeHorizon]="selectedTimeHorizon"
+                        (timeHorizonChanged)="changeTimeHorizon($event)" [goalAllocations]="portfolioDetailResponse.goalPortfolioAllocations"></app-time-horizon>
+                </div>
+                <div class="col-lg-6 col-sm-12 order-sm-7 order-md-6" [ngClass]="{'mt-150': isEditableRoute}" *ngIf="linkedAccount">
+                    <app-linked-accounts *ngIf="accessRights['CLI05']['accessLevel'] > 0" [clientId]="clientId" [portfolioId]="portfolioId"
+                        [isEditableRoute]="isEditableRoute" [accountResponse]="linkedAccount"></app-linked-accounts>
+                </div>
+                <div class="col-lg-6 col-sm-12 order-sm-6 order-7" *ngIf="linkedGoal">
+                    <app-linked-goals *ngIf="accessRights['CLI02']['accessLevel'] > 0" [clientId]="clientId" [portfolioId]="portfolioId"
+                        [isEditableRoute]="isEditableRoute" [goalResponse]="linkedGoal"></app-linked-goals>
+                </div>
+            </div>
+            <div class="mt-3 row" *ngIf="isEditableRoute">
+                <div class="col-12">
+                    <div class="form-group text-right">
+                        <hr>
+                        <button type="button" class="btn btn-secondary btn-fixwidth mr-2" (click)="cancelChanges()">{{
+                            'FORM.ACTION.CANCEL' | translate }}</button>
+                        <button type="submit" class="btn btn-success">{{ 'FORM.ACTION.SAVE_CHANGES' | translate }}</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="view-side-form">
+    <router-outlet></router-outlet>
+</div>

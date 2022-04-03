@@ -1,0 +1,145 @@
+<div class="bg-white pt-4 pb-4">
+    <div class="container">
+        <app-estate-header [clientId]="clientId" currentPage="distributions"></app-estate-header>
+        <div class="row">
+            <div class="col-12">
+                <a [routerLink]="['add-distribution']" class="btn-add">
+                    <i class="ion-md-add-circle"></i>
+                    <span [translate]="'ESTATE_PLANING.DISTRIBUTIONS.ADD_A_DISTRIBUTION'"></span>
+                </a>
+            </div>
+            <div class="col-12">
+                <hr>
+            </div>
+            <div class="col-12" *ngIf="distributionData">
+                <table class="table savingsData-table estate-distributions-table">
+                    <thead>
+                        <tr>
+                            <th width="15%" [translate]="'ESTATE_PLANING.DISTRIBUTIONS.NAME'" class="pr-2"></th>
+                            <th width="85%">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th width="30%" [translate]="'ESTATE_PLANING.BENEFICIARY'"></th>
+                                            <th width="20%" [translate]="'ESTATE_PLANING.RELATIONSHIP'" class="hidden-xs-down">
+                                            </th>
+                                            <th width="20%" class="text-right"
+                                                [translate]="'ESTATE_PLANING.DISTRIBUTIONS.AMOUNT'"></th>
+                                            <th width="20%" class="text-right"
+                                                [translate]="'ESTATE_PLANING.DISTRIBUTIONS.PERCENT'"></th>
+                                            <th width="10%" class="text-right">&nbsp;</th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <ng-container *ngIf="distributionData.length > 0">
+                            <ng-container *ngFor="let testator of distributionData; index as ti">
+                                <tr>
+                                    <td colspan="testator.distributionBeneficiaryDetails.length" width="15%" class="pr-2 distribution-tooltip-wrap">
+                                        <div class="d-flex align-items-center">
+                                            <span *ngIf="!testator.avatar" class="initials"
+                                                [ngClass]="testator.btnColor">
+                                                {{testator.testatorFirstName[0] + (testator.testatorLastName ? testator.testatorLastName[0]: testator.testatorFirstName[1])}}
+                                            </span>
+                                            <img class="client-icon" height="50" *ngIf="testator.avatar"
+                                                [src]="testator.avatar" (error)="testator.avatar = null" />
+                                            <span class="text-truncate beneficiary-fixed-width pl-1"
+                                                [appNoOverflowTooltip]="testator.testatorName" triggers="manual"
+                                                placement="bottom">
+                                                {{testator.testatorName}}
+                                            </span>
+                                        </div>
+                                    </td>
+                                    <td width="85%">
+                                        <table>
+                                            <tbody>
+                                                <tr
+                                                    *ngFor="let beneficiary of testator.distributionBeneficiaryDetails; let i = index">
+                                                    <td width="30%">
+                                                        <div class="text-truncate beneficiary-fixed-width"
+                                                            [appNoOverflowTooltip]="beneficiary['beneficiaryName']"
+                                                            triggers="manual" placement="bottom">
+                                                            {{beneficiary['beneficiaryName']}}
+                                                        </div>
+                                                    </td>
+                                                    <td class="hidden-xs-down" width="20%">{{beneficiary['relation']}}
+                                                    </td>
+                                                    <td width="20%" class="text-right">
+                                                        {{ beneficiary['residualBeneficiary'] === true ? ('ESTATE_PLANING.DISTRIBUTIONS.RESIDUAL' | translate)
+                                                                    : beneficiary['distributeType'] === 'amount' ? (beneficiary['value'] | currency:clientData['currencyCode']:'symbol-narrow':'0.0-0') : ''}}
+                                                    </td>
+                                                    <td width="20%" class="text-right">
+                                                        {{beneficiary['distributeType'] === 'percentage' ? (beneficiary['value']/100 | percent : '0.0-0') : ''}}
+                                                    </td>
+                                                    <td width="10%" class="text-right">
+                                                        <div class="dropdown-relative">
+                                                            <button type="button" class="btn-floating"
+                                                                (click)="toggleActionMenu('dropdownAssetsAction', ti, i, beneficiary.beneficiaryId)">
+                                                                <span class="ion-md-more"></span>
+                                                            </button>
+                                                            <div [id]="'dropdownAssetsAction_' + ti + '_' + i + '_' + beneficiary.beneficiaryId"
+                                                                class="dropdown-distribution-action dropdown-floating hide-ele">
+                                                                <ul class="floating-dropdown">
+                                                                    <li *ngIf="beneficiary.residualBeneficiary === false"
+                                                                        (click)="toggleActionMenu('dropdownAssetsAction', ti, i, beneficiary.beneficiaryId)">
+                                                                        <a [routerLink]="['edit-distribution']" class="action-list"
+                                                                            [queryParams]="{ testatorId: beneficiary.testatorId, beneficiaryId: beneficiary.beneficiaryId}">
+                                                                            <i class="ion-md-create action-list"></i>
+                                                                            <span class="action-list" [translate]="'ESTATE_PLANING.EDIT'"></span>
+                                                                        </a>
+                                                                    </li>
+                                                                    <li *ngIf="beneficiary.residualBeneficiary === true"
+                                                                        (click)="toggleActionMenu('dropdownAssetsAction', ti, i, beneficiary.beneficiaryId)">
+                                                                        <a class="action-list"
+                                                                            [routerLink]="[beneficiary.testatorId, 'residual-distribution']">
+                                                                            <i class="ion-md-create action-list"></i>
+                                                                            <span class="action-list" [translate]="'ESTATE_PLANING.EDIT'"></span>
+                                                                        </a>
+                                                                    </li>
+                                                                    <li *ngIf="beneficiary.residualBeneficiary === false"
+                                                                        (click)="toggleActionMenu('dropdownAssetsAction', ti, i, beneficiary.beneficiaryId)"
+                                                                        class="delete-btn">
+                                                                        <a class="action-list"
+                                                                            (click)="deleteDistribution(beneficiary)">
+                                                                            <i class="ion-md-close-circle action-list"></i>
+                                                                            <span class="action-list" [translate]="'ESTATE_PLANING.DELETE'"></span>
+                                                                        </a>
+                                                                    </li>
+                                                                    <li *ngIf="beneficiary.residualBeneficiary === true"
+                                                                        (click)="toggleActionMenu('dropdownAssetsAction', ti, i, beneficiary.beneficiaryId)"
+                                                                        class="delete-btn disable-link">
+                                                                        <a class="action-list">
+                                                                            <i class="ion-md-close-circle action-list"></i>
+                                                                            <span action-list [translate]="'ESTATE_PLANING.DELETE'"></span>
+                                                                        </a>
+                                                                    </li>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </ng-container>
+                        </ng-container>
+                        <ng-container *ngIf="distributionData.length == 0">
+                            <tr>
+                                <td colspan="7" class="no-record text-center">
+                                    <i class="ion-alert mr-2"></i>{{'NO_RESULTS' | translate}}
+                                </td>
+                            </tr>
+                        </ng-container>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="view-side-form">
+    <router-outlet></router-outlet>
+</div>

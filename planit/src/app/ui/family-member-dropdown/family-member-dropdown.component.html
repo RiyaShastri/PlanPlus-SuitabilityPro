@@ -1,0 +1,26 @@
+<div ngbDropdown class="dropdown-common dropdown-multiline family-dropdown m-0" *ngIf="familyMembers.length > 0">
+    <a id="familyDropdown" class="d-flex align-items-center" ngbDropdownToggle>
+        <div *ngIf="typeId !== TYPE.ENTITY" id="on-mouseover-tooltip" class="text-truncate fixed-width-text"
+            [appNoOverflowTooltip]="personDetails['firstName'] + ' ' + personDetails['lastName']">
+            {{personDetails['firstName']}} {{personDetails['lastName']}}</div>
+        <div *ngIf="this.typeId === TYPE.ENTITY && personDetails && personDetails['description']" id="on-mouseover-tooltip" class="text-truncate fixed-width-text"
+            [appNoOverflowTooltip]="personDetails['description']">{{personDetails['description']}}</div>
+        <i class="ion-md-arrow-dropdown fs-18 ml-2" *ngIf="familyMembers.length > 1"></i>
+    </a>
+    <div ngbDropdownMenu aria-labelledby="familyDropdown" *ngIf="familyMembers.length > 1">
+        <ul>
+            <li *ngFor="let member of familyMembers">
+                <a  *ngIf="typeId && typeId !== TYPE.ENTITY" class="dropdown-item" [ngClass]="{ 'active' : personalId === member.id }"
+                    (click)="memberClick(member)">
+                    {{member.firstName}} {{member.lastName}}
+                    <span></span>
+                </a>
+                <a  *ngIf="typeId && typeId ===  TYPE.ENTITY" class="dropdown-item" [ngClass]="{ 'active' : personalId === member.entityId }"
+                    (click)="memberClick(member)">
+                    {{member['description']}}
+                    <span></span>
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>

@@ -1,0 +1,14 @@
+<div class="clearfix"></div>
+<footer class="footer bg-footer">
+    <div class="main-container">
+        <div class="text-center">
+            <p>&copy; {{ 'FOOTER.COPY_RIGHT_DESCRIPTION' | translate }} ({{environment.version}}) -
+                <a *ngIf="!isLogin" [routerLink]="['/licence-agreement']" target="_blank" [translate]="'MY_PROFILE.TAB.LICENCE_AGREEMENT'"></a>
+                <a *ngIf="isLogin" [routerLink]="['/my-profile/licence-agreement']" target="_blank" [translate]="'MY_PROFILE.TAB.LICENCE_AGREEMENT'"></a>
+                - 
+                <a *ngIf="!isLogin" [routerLink]="['/privacy']" target="_blank" [translate]="'FOOTER.PRIVACY'"></a>
+                <a *ngIf="isLogin" [routerLink]="['/my-profile/privacy']" target="_blank" [translate]="'FOOTER.PRIVACY'"></a>                
+            </p>
+        </div>
+    </div>
+</footer>

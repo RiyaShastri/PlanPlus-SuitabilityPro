@@ -1,0 +1,111 @@
+<div class="mt-3" *ngIf="goalResponse && linkedGoals && chartColor">
+    <div class="row">
+        <div class="col-12">
+            <h6 class="fw-700 d-inline" [translate]="'PORTFOLIO.DETAIL.LINKED_GOALS'"></h6>
+            <a *ngIf="isEditableRoute" [routerLink]="['link-portfolios-to-goals']" class="fs-12 pull-right text-icon-wrapper">
+                <i class="action_icon ion-md-link"></i>
+                <span class="text-lbl icon-left" [translate]="'PORTFOLIO.ACTION.LINK_GOALS'"></span>
+            </a>
+            <a *ngIf="!isEditableRoute" class="fs-12 pull-right text-icon-wrapper disabled-link">
+                <i class="action_icon ion-md-link"></i>
+                <span class="text-lbl icon-left" [translate]="'PORTFOLIO.ACTION.LINK_GOALS'"></span>
+            </a>
+        </div>
+    </div>
+    <hr />
+
+    <table class="table mt-3  td-last-child-50 table-ellipsis-first-child">
+        <thead>
+            <tr>
+                <th [translate]="'PORTFOLIO.TABLE.ASSOCIATED_GOALS'"></th>
+                <th [translate]="'PORTFOLIO.TABLE.GOAL_YEAR'"></th>
+                <th class="text-right" [translate]="'PORTFOLIO.TABLE.FROMT_TO'"></th>
+                <th class="text-right hidden-xs-down" [translate]="'PORTFOLIO.TABLE.AMOUNT'"></th>
+                <th class="text-center" width="50"></th>
+            </tr>
+        </thead>
+        <tbody>
+            <ng-container *ngIf="goalResponse.length > 0">
+                <tr *ngFor="let goal of goalResponse; let i = index;">
+                    <td>
+                        <span class="asset_indicator square" [style.background]="chartColor[i]"></span>
+                        <span class="asset_lbl text-overflow">{{goal.description}}</span>
+                    </td>
+                    <td class="text-left">
+                        {{goal.amountPerYear | currency:clientData['currencyCode'] :'symbol-narrow':'1.0-0'}}
+                    </td>
+                    <td class="text-right">
+                        {{goal['startYear'] + '-' + goal['endYear']}}
+                    </td>
+                    <td class="text-right hidden-xs-down">
+                        {{goal.netPresentValue | currency:clientData['currencyCode'] :'symbol-narrow':'1.0-0'}}
+                    </td>
+                    <td class="text-center pr-0">
+                        <div class="dropdown-relative dropdown-up">
+                            <button type="button" class="btn-floating" (click)="changeAction(i)">
+                                <span class="ion-md-more"></span>
+                            </button>
+                            <div [id]="'dropdownGoalAction'+i"
+                                class="dropdown-portfolio-action dropdown-floating hide-ele">
+                                <ul class="floating-dropdown">
+                                    <li>
+                                        <a class="action-list"
+                                            [routerLink]="['/client', clientId, 'planning','goals', goal.id, 'edit-goal']">
+                                            <i class="ion-md-create action-list"></i>
+                                            <span class="action-list"> {{'GOALS.SUMMARY.EDIT_GOAL' | translate}}
+                                            </span>
+                                        </a>
+                                    </li>
+                                    <li *ngIf="accessRights['SAV01']['accessLevel'] > 0">
+                                        <a class="action-list"
+                                            [routerLink]="['/client', clientId, 'planning', 'goals', goal.id, 'savings']">
+                                            <i class="ion-ios-eye action-list"></i>
+                                            <span class="action-list">{{'GOALS.SUMMARY.VIEW_SAVINGS' | translate}}</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="action-list"
+                                            [routerLink]="['/client', clientId, 'planning','goals', goal.id, 'revenues']">
+                                            <i class="ion-ios-eye action-list"></i>
+                                            <span class="action-list">{{'GOALS.SUMMARY.VIEW_REVENUES' | translate}}</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="action-list"
+                                            [routerLink]="['/client', clientId, 'planning','goals', goal.id, 'analysis']">
+                                            <i class="ion-ios-eye action-list"></i>
+                                            <span class="action-list">{{'GOALS.SUMMARY.VIEW_ANALYSIS' | translate}}</span>
+                                        </a>
+                                    </li>
+                                    <li class="delete-btn" (click)="delete(goal.id)">
+                                        <a class="action-list" [routerLink]="">
+                                            <i class="ion-md-close-circle action-list"></i>
+                                            <span class="action-list">{{'GOALS.SUMMARY.DELETE_GOAL' | translate}}</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </ng-container>
+            <ng-container *ngIf="goalResponse.length === 0">
+                <tr>
+                    <td colspan="5" class="no-record text-center">
+                        <i class="ion-ios-alert mr-2"></i>{{'NO_RESULTS' | translate}}
+                    </td>
+                </tr>
+            </ng-container>
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="4" class="text-right pb-0">
+                    <span class="fw-600">{{'PORTFOLIO.TABLE.PORTFOLIO_ALLOCATION_GOAL' | translate }}</span>
+                    <span>{{allocatedPercent | percent}}</span>
+                </td>
+                <td class="hidden-xs-down"></td>
+            </tr>
+        </tfoot>
+    </table>
+    <div id="linkedGoalChart" class="stacked-chart mt-0"></div>
+</div>

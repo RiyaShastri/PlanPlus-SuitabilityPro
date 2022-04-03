@@ -1,0 +1,15 @@
+<div>
+    <h6 [translate]="'CUSTOM.ACCOUNT_TYPES'" class="text-left"></h6>
+    <div id="{{chartId}}" class="stacked-chart" style="height: 100px;"></div>
+    <table class="table account-table mt--15">
+        <tbody>
+            <tr *ngFor="let asset of networthData;let i = index">
+                <td class="fw-600" width="250">
+                    <span class="square mr-2" [ngStyle]="{'background': chartColor[i]}"></span> {{asset.type}}
+                </td>
+                <td width="150" class="fw-500 text-right">{{asset.value | currency:clientData['currencyCode'] : 'symbol-narrow':'1.0-0'}}</td>
+                <td class="text-right">{{asset.percent ? asset.percent + '%' : '0%'}}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>

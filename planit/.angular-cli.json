@@ -1,0 +1,94 @@
+{
+    "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+    "project": {
+        "name": "planit"
+    },
+    "apps": [
+        {
+            "root": "src",
+            "outDir": "dist",
+            "assets": [
+                "assets/",
+                "favicon.ico"
+            ],
+            "index": "index.html",
+            "main": "main.ts",
+            "polyfills": "polyfills.ts",
+            "test": "test.ts",
+            "tsconfig": "tsconfig.app.json",
+            "testTsconfig": "tsconfig.spec.json",
+            "prefix": "app",
+            "styles": [
+                "../node_modules/bootstrap/dist/css/bootstrap.min.css",
+                "../node_modules/ionicons/dist/scss/ionicons.scss",
+                "../node_modules/font-awesome/css/font-awesome.min.css",
+                "../node_modules/primeng/resources/themes/omega/theme.css",
+                "../node_modules/primeng/resources/primeng.min.css",
+                "assets/css/grid.css",
+                "assets/css/main.css",
+                "assets/css/header.css",
+                "assets/css/custom.css",
+                "assets/css/custom_ac.css",
+                "assets/css/custom_hir.css",
+                "assets/css/custom_panel.css",
+                "../node_modules/ion-rangeslider/css/ion.rangeSlider.css",
+                "../node_modules/ion-rangeslider/css/ion.rangeSlider.skinNice.css",
+                "styles.css"
+            ],
+            "scripts": [
+                "./assets/amcharts/amcharts.min.js", 
+                "./assets/amcharts/pie.min.js",
+                "./assets/amcharts/gauge.min.js",
+                "./assets/amcharts/serial.min.js",
+                "./assets/amcharts/light.js",
+                "./assets/amcharts/responsive.js",
+                "./assets/amcharts/xy.min.js",
+                "./assets/amcharts/gantt.min.js",
+                "../node_modules/jquery/dist/jquery.min.js",
+                "../node_modules/ion-rangeslider/js/ion.rangeSlider.min.js"
+            ],
+            "environmentSource": "environments/environment.ts",
+            "environments": {
+                "dev": "environments/environment.ts",
+                "prod": "environments/environment.prod.ts",
+                "ppprod": "environments/environment.ppprod.ts",
+                "ppstaging": "environments/environment.ppstaging.ts",
+                "pp-asp-staging": "environments/environment.pp-asp-staging.ts",
+                "pp-md2-staging": "environments/environment.pp-md2-staging.ts",
+                "ppdev": "environments/environment.ppdev.ts",
+                "local": "environments/environment.local.ts",
+                "ez-dev": "environments/environment.ez-dev.ts",
+                "ez-stage": "environments/environment.ez-stage.ts",
+                "ez-demo": "environments/environment.ez-demo.ts"
+            }
+        }
+    ],
+    "e2e": {
+        "protractor": {
+            "config": "./protractor.conf.js"
+        }
+    },
+    "lint": [
+        {
+            "project": "src/tsconfig.app.json",
+            "exclude": "**/node_modules/**"
+        },
+        {
+            "project": "src/tsconfig.spec.json",
+            "exclude": "**/node_modules/**"
+        },
+        {
+            "project": "e2e/tsconfig.e2e.json",
+            "exclude": "**/node_modules/**"
+        }
+    ],
+    "test": {
+        "karma": {
+            "config": "./karma.conf.js"
+        }
+    },
+    "defaults": {
+        "styleExt": "css",
+        "component": {}
+    }
+}

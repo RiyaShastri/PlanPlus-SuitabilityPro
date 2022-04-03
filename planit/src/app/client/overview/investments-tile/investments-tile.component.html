@@ -1,0 +1,63 @@
+<div class="panel" *ngIf="data">
+
+    <div class="d-flex flex-wrap panel-header">
+        <h4 [translate]="'CLIENT_OVERVIEW.INVESTMENTS'"></h4>
+        <div class="price-box d-flex">
+            <span class="price">{{data.investmentsTotal | currency:clientData['currencyCode']:'symbol-narrow':'1.0-0'}}</span>
+        </div>
+    </div>
+
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-12 hidden-md-down">
+                <h5 class="mt-3 mb-3 fw-700">&nbsp;</h5>
+            </div>
+            <div class="col-12 col-md-6 mb-sm-4 mb-3 mb-lg-0 mb-md-0 mb-xl-0 mt-3 mt-lg-0 mt-xl-0">
+                <h6 [translate]="'CUSTOM.MANAGED_UNMANAGED'"></h6>
+                <ng-container *ngIf="data.investmentsByManaged.length > 0">
+                    <div id="managedTypeChartDiv" class="stacked-chart"></div>
+                    <table class="table account-table">
+                        <tbody>
+                            <tr *ngFor="let asset of data.investmentsByManaged;let i = index">
+                                <td class="fw-600">
+                                    <span class="square mr-2" [ngStyle]="{'background': graphColors[i]}"></span>
+                                    {{asset.type}}
+                                </td>
+                                <td class="text-right">{{asset.value | currency:clientData['currencyCode']:'symbol-narrow':'1.0-0'}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </ng-container>
+                <ng-container *ngIf="data.investmentsByManaged.length === 0">
+                    <table class="table account-table">
+                        <div class="no-record text-center position-relative" style="height: 100%; width: 100%; display: inline-block;">
+                            <p class="no_data_graph"><i class="ion-ios-alert mr-2"></i>{{'NO_RESULTS' | translate}}</p>
+                        </div>
+                    </table>
+                </ng-container>
+            </div>
+            <div class="col-12 col-md-6 mt-0 mt-md-3 mt-lg-0 mt-xl-0">
+                <h6 [translate]="'CUSTOM.PLANNED_FOR'"></h6>
+                <ng-container *ngIf="data.investmentsByPlanned.length > 0">
+                    <div id="plannedTypeChartDiv" class="stacked-chart"></div>
+                    <table class="table account-table">
+                        <tbody>
+                            <tr *ngFor="let asset of data.investmentsByPlanned;let i = index">
+                                <td class="fw-600">
+                                    <span class="square mr-2" [ngStyle]="{'background': graphColors[i]}"></span>
+                                    {{asset.type}}
+                                </td>
+                                <td class="text-right">{{asset.value | currency:clientData['currencyCode']:'symbol-narrow':'1.0-0'}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </ng-container>
+                <ng-container *ngIf="data.investmentsByPlanned.length === 0">
+                    <div class="no-record text-center position-relative" style="height: 100%; width: 100%; display: inline-block;">
+                        <p class="no_data_graph"><i class="ion-ios-alert mr-2"></i>{{'NO_RESULTS' | translate}}</p>
+                    </div>
+                </ng-container>
+            </div>
+        </div>
+    </div>
+</div>

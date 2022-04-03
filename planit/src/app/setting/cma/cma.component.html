@@ -1,0 +1,40 @@
+<div class="bg-white assets-summary-bg">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <app-settings-header currentPage="cma"></app-settings-header>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-8 col-12">
+                <ul class="nav nav-tabs" role="tablist">
+                    <li class="nav-item" *ngIf="accessRights['CMAROR']['accessLevel'] > 1">
+                        <a routerLink="rates_of_return" routerLinkActive="active" data-toggle="tab" class="nav-link"
+                            [translate]="'SETTINGS.RATES_OF_RETURN.TITLE'"></a>
+                    </li>
+
+                    <li class="nav-item" *ngIf="accessRights['CMAINCDIST']['accessLevel'] > 1">
+                        <a routerLink="income_distribution" routerLinkActive="active" class="nav-link" data-toggle="tab"
+                            [translate]="'SETTINGS.INCOME_DISTRIBUTION.TITLE'"></a>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-4 col-12 text-right ff-Montserrat fs-14 last-reviewed pl-0">
+                <ng-container *ngIf="lastReviewedDate !== ''">
+                    <span class="last-reviewed-label">
+                        {{ 'SETTINGS.LAST_REVIEWED_ON' | translate }}:
+                    </span>
+                    {{lastReviewedDate | date: dateFormat}}
+                </ng-container>
+                <ng-container *ngIf="lastReviewedDate === ''">
+                    <span class="last-reviewed-label">
+                        {{ 'SETTINGS.LAST_REVIEWED_ON' | translate }}:
+                    </span>
+                    <span class="text-uppercase">{{'SETTINGS.NEEDS_REVEIW' | translate}}</span>
+                </ng-container>
+            </div>
+            <div class="col-12">
+                <hr>
+            </div>
+        </div>
+        <router-outlet></router-outlet>
+    </div>
+</div>

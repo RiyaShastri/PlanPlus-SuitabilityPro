@@ -1,0 +1,30 @@
+<div class="panel pb-0">
+    <div class="d-flex flex-wrap panel-header mb-3">
+        <h4 [translate]="'ENGAGEMENT.PRIORITIES'"></h4>
+        <i *ngIf="!isClientPrioritiesLoaded" aria-hidden="true" class="fa fa-spinner fa-pulse loader-icon"></i>
+    </div>
+
+    <div class="panel-body">
+        <table class="table table-ellipsis">
+            <tbody *ngIf="clientPriorities">
+                <tr *ngFor="let priority of clientPriorities | slice:0:5; index as i;">
+                    <td>
+                        <span>{{priority.text}}</span>
+                    </td>
+                </tr>
+                <ng-container *ngIf="isClientPrioritiesLoaded && clientPriorities.length == 0">
+                    <tr>
+                        <td class="no-record text-center">
+                            <i class="ion-ios-alert mr-2"></i>{{'NO_RESULTS' | translate}}
+                        </td>
+                    </tr>
+                </ng-container>
+            </tbody>
+
+        </table>
+    </div>
+
+    <div class="panel-footer">
+        <a [routerLink]="['/client',clientId,'profile','engagement', 'summary']" class="btn btn-link ion-md-arrow-dropright" [translate]="'CUSTOM.VIEW_MORE'"></a>
+    </div>
+</div>

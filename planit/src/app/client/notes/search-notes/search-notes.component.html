@@ -1,0 +1,159 @@
+<div class="side-form side-form-large side-form-full-width">
+    <form name="form" #f="ngForm" novalidate>
+        <div class="box">
+            <div class="box-header">
+                <span class="sidebar_title" [translate]="'NOTES.SEARCH_NOTES_TITLE'"></span>
+                <span (click)="back(); closeButtonDisable = true" class="sidebar_action_icon ion-md-close-circle"></span>
+            </div>
+            <br />
+            <div class="box-body" *ngIf="noteTypes.length > 0 && formatsByCountry">
+                <div class="form-group" [ngClass]="{ 'has-error': !noteType.valid && (noteType.dirty || f.submitted)}">
+                    <label class="custom-form-label" [translate]="'NOTES.TYPE'"></label>
+                    <p-dropdown placeholder="{{ 'FORM.PLACEHOLDER.SELECT_ACCOUNT' | translate }}" [options]="noteTypes"
+                        (onChange)="searchNote()" optionLabel="description" name="noteType"
+                        [(ngModel)]="searchParams['type']" #noteType="ngModel" required>
+                    </p-dropdown>
+                </div>
+                <div class="row ui-fluid">
+                    <div class="col-sm-6">
+                        <div class="form-group"
+                            [ngClass]="{ 'has-error': (!from_date.valid || invalidFromDate) && (from_date.dirty || from_date.touched || f.submitted)}">
+                            <label class="custom-form-label">{{ 'NOTES.FROM_DATE' | translate }}</label>
+                            <p-calendar [showIcon]="true" [maxDate]="maxDate" [monthNavigator]="true" required='true'
+                                [yearNavigator]="true" [yearRange]="yearRange" name="from_date"
+                                [(ngModel)]="searchParams['from']" #from_date="ngModel" [dateFormat]="dateFormat"
+                                (onSelect)="searchNote()" (onInput)="searchNote()"></p-calendar>
+                            <p class="text-error" *ngIf="invalidFromDate == true"
+                                [translate]="'FORM.FUTURE_DATE_ERROR'">
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-6 pl-2">
+                        <div class="form-group"
+                            [ngClass]="{ 'has-error': (!to_date.valid || invalidToDate) && (to_date.dirty || to_date.touched || f.submitted)}">
+                            <label class="custom-form-label">{{ 'NOTES.TO' | translate }}</label>
+                            <p-calendar [showIcon]="true" [maxDate]="maxDate" [monthNavigator]="true" required='true'
+                                [yearNavigator]="true" [yearRange]="yearRange" name="to_date"
+                                [(ngModel)]="searchParams['to']" #to_date="ngModel" [dateFormat]="dateFormat"
+                                (onSelect)="searchNote()" (onInput)="searchNote()"></p-calendar>
+                            <p class="text-error" *ngIf="invalidToDate == true" [translate]="'FORM.FUTURE_DATE_ERROR'">
+                            </p>
+                        </div>
+                    </div>
+                    <div *ngIf="showDateError" class="col-12">
+                        <p class="text-error text-center" [translate]="'FORM.INVALID_DATE_ERROR'"></p>
+                    </div>
+                </div>
+                <table class="table search-note-table">
+                    <thead>
+                        <tr>
+                            <th [translate]="'NOTES.TYPE'" width="26%"></th>
+                            <th [translate]="'NOTES.DATE'" width="26%"></th>
+                            <th [translate]="'NOTES.EDIT_BY'" width="20%" class="hidden-sm-down"></th>
+                            <th [translate]="'NOTES.NOTE'" width="26%"></th>
+                            <th [translate]="'NOTES.ACTIONS'" width="2%"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <ng-container *ngIf="notesList && notesList['noteDatas'] && notesList['noteDatas'].length > 0">
+                            <tr *ngFor="let note of notesList['noteDatas']; index as i">
+                                <td width="26%" class="hidden-sm-down">
+                                    {{noteTypesObject[note['noteTypeSsid']]}}
+                                </td>
+                                <td width="26%" class="hidden-md-up">
+                                    {{noteTypesObject[note['noteTypeSsid']] | slice:0:10}}
+                                    <span *ngIf="noteTypesObject[note['noteTypeSsid']].length>10"
+                                        [ngbTooltip]="truncateNoteType" #t="ngbTooltip" placement="bottom"
+                                        triggers="click"
+                                        class="ion-md-more-horizontal action-ellipses-icon-color pt-1 pl-1"></span>
+                                    <ng-template #truncateNoteType>
+                                        <p>{{noteTypesObject[note['noteTypeSsid']]}}</p>
+                                    </ng-template>
+                                </td>
+                                <td width="26%" class="hidden-lg-up">{{note['date']}}</td>
+                                <td width="26%" class="hidden-md-down">{{note['date']}}
+                                    {{note['hours']}}:{{note['min'] | number:'2.0-0'}}
+                                    {{note['block'] == 0 ? 'am' : 'pm'}}</td>
+                                <td width="20%" class="hidden-sm-down">{{note['advisorFirstname']}}
+                                    {{note['advisorLastname']}}</td>
+                                <td width="26%" class="hidden-sm-down">
+                                    {{note['note'] | slice:0:150}}
+                                    <span *ngIf="note['note'].length>150" [ngbTooltip]="truncateNoteType"
+                                        #t="ngbTooltip" placement="bottom" triggers="click"
+                                        class="ion-android-more-horizontal action-ellipses-icon-color pt-1 pl-1"></span>
+                                    <ng-template #truncateNoteType>
+                                        <p>{{note['note']}}</p>
+                                    </ng-template>
+                                </td>
+                                <td width="26%" class="hidden-md-up">
+                                    {{note['note'] | slice:0:12}}
+                                    <span *ngIf="note['note'].length>12" [ngbTooltip]="truncateNoteType" #t="ngbTooltip"
+                                        placement="bottom" triggers="click"
+                                        class="ion-android-more-horizontal action-ellipses-icon-color pt-1 pl-1"></span>
+                                    <ng-template #truncateNoteType>
+                                        <p>{{note['note']}}</p>
+                                    </ng-template>
+                                </td>
+                                <td width="2%" class="text-center">
+                                    <a class="view-button btn-add"
+                                        [routerLink]="['/client', clientId, 'view-note', note['cliNoteId']]"
+                                        *ngIf="!accessToDelete">
+                                        <i class="ion-ios-eye"></i>
+                                        <!-- <span [translate]="'NOTES.VIEW_NOTE'"></span> -->
+                                    </a>
+                                    <div class="dropdown-relative" [ngClass]="{'dropdown-up' : last}"
+                                        *ngIf="accessToDelete">
+                                        <button type="button" class="btn-floating"
+                                            (click)="toggleActionMenu('drodpdownNotesAction', i)">
+                                            <span class="ion-md-more"></span>
+                                        </button>
+                                        <div [id]="'drodpdownNotesAction_'+i"
+                                            class="dropdown-notes-action dropdown-floating hide-ele">
+                                            <ul class="floating-dropdown">
+                                                <li>
+                                                    <a class="action-list"
+                                                        [routerLink]="['/client', clientId, 'view-note', note['cliNoteId']]">
+                                                        <i class="ion-ios-eye action-list"></i>
+                                                        <span class="action-list" [translate]="'NOTES.VIEW_NOTE'"></span>
+                                                    </a>
+                                                </li>
+                                                <li (click)="toggleActionMenu('drodpdownNotesAction', i); deleteNote(note['cliNoteId'], note['noteTypeSsid'], note['date'])"
+                                                    class="delete-btn">
+                                                    <a class="action-list">
+                                                        <i class="ion-md-close-circle action-list"></i>
+                                                        <span [translate]="'NOTES.DELETE_NOTE'" class="action-list"></span>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </ng-container>
+                        <ng-container
+                            *ngIf="!notesList || (notesList && !notesList['noteDatas']) || (notesList && notesList['noteDatas'] && notesList['noteDatas'].length === 0)">
+                            <tr>
+                                <td colspan="9" class="no-record text-center">
+                                    <i class="ion-ios-alert mr-2"></i>{{'NO_RESULTS' | translate}}
+                                </td>
+                            </tr>
+                        </ng-container>
+                    </tbody>
+                </table>
+                <div class="pt-3">
+                    <a [routerLink]="['/client', clientId, 'add-note']" class="btn-add">
+                        <i class="ion-md-add-circle"></i>
+                        <span [translate]="'NOTES.ADD_A_NOTE'"></span>
+                    </a>
+                </div>
+            </div>
+            <div class="box-footer">
+                <div class="form-group text-right pt-2">
+                    <button class="btn btn-secondary btn-small mr-2" type="button"
+                        (click)="back(); closeButtonDisable = true" [translate]="'FORM.ACTION.CANCEL'"
+                        [disabled]="closeButtonDisable"></button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

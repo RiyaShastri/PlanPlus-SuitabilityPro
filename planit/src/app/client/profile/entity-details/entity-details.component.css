@@ -1,0 +1,36 @@
+.form-group .entity-value {
+    margin: 0;
+    padding: 0;
+    color: #345;
+}
+
+table.assumption-table thead th {
+    font-size: 14px;
+    color: #788588;
+    padding-left: 0px;
+    font-family: 'Open Sans', sans-serif;
+}
+
+table.assumption-table tbody td {
+    padding: 14px 0;
+    margin: 0px;
+    font-size: 14px;
+    color: #39414A;
+    font-weight: 400;
+    vertical-align: middle;
+    font-family: 'Open Sans', sans-serif;
+}
+
+h3.entity-header{
+    color: #112233;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 18px;
+    font-weight: bold;
+    display: block;
+}
+
+.entity-text {
+    font-size: 14px;
+    color: #788588;
+    font-weight: bold
+}

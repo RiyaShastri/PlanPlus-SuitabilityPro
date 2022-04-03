@@ -1,0 +1,102 @@
+<div class="form-group mt-3 mb-0">
+    <hr>
+    <table class="table allocation-table text-center">
+        <thead>
+            <tr class="text-center fw-600 heading-color">
+                <th colspan="3" [translate]="'PORTFOLIO.DETAIL.CURRENT'"></th>
+                <th colspan="2" [translate]="'PORTFOLIO.ANALYTICS.LABEL.TARGET'"></th>
+                <th colspan="4" [translate]="'PORTFOLIO.ANALYTICS.LABEL.IMPLEMENTATION'"></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="secondary-header">
+                <td class="text-left" [translate]="'PORTFOLIO.ANALYTICS.TABLE.CLASS'"></td>
+                <td>%</td>
+                <td [translate]="'FORM.AMOUNT'"></td>
+                <td [translate]="'PORTFOLIO_ALLOCATION.MIN'"></td>
+                <td>%</td>
+                <td>%</td>
+                <td [translate]="'FORM.AMOUNT'"></td>
+                <td [translate]="'PORTFOLIO_ALLOCATION.MAX'"></td>
+                <td>&nbsp;</td>
+            </tr>
+            <ng-container *ngFor="let item of allocationResponse.allocations; let i =index;">
+                <tr>
+                    <td class="pt-2 pb-2">
+                        <span class="square asset_indicator" [style.background]="graphColors[assetClassColours[item.ssid]]"></span>
+                    </td>
+                    <td>{{ item.currentPercent | number : '1.1-1'}}%</td>
+                    <td>{{ item.currentAmount | currency:clientData['currencyCode']:'symbol-narrow':'1.0-0'}}</td>
+                    <td class="back-color-min-max">
+                        {{ item['targetMinPolicy'] | number : '1.1-1'}}%
+                    </td>
+                    <td>{{ item['targetPercent'] | number : '1.1-1'}}%
+                    </td>
+                    <td class="sky-color">{{ item.implementedPercent | number : '1.1-1'}}%</td>
+                    <td class="sky-color">
+                        {{ item.implementedAmount | currency:clientData['currencyCode']:'symbol-narrow':'1.0-0'}}</td>
+                    <td class="back-color-min-max">
+                        {{ item['targetMaxPolicy'] | number : '1.1-1'}}%
+                    </td>
+                    <td>
+                        <a *ngIf="item['portfolioAssetAllocationProductDetails'] && item['portfolioAssetAllocationProductDetails'].length > 0"
+                            (click)="open(content, item)">
+                            <i class="ion-ios-eye icon-lg elep-green-color"></i>
+                        </a>
+                        <a class="not-active" *ngIf="item['portfolioAssetAllocationProductDetails'] && item['portfolioAssetAllocationProductDetails'].length == 0">
+                            <i class="ion-ios-eye icon-lg elep-green-color"></i>
+                        </a>
+                    </td>
+                </tr>
+            </ng-container>
+            <tr>
+                    <td>&nbsp;</td>
+                    <td class="fw-700">{{totalCurrentPercent | number : '1.1-1'}}%</td>
+                    <td class="fw-700">{{totalCurrentAmount | currency:clientData['currencyCode']:'symbol-narrow':'1.0-0'}}</td>
+                    <td>&nbsp;</td>
+                    <td class="fw-700">{{totalTargetPercent | number : '1.1-1'}}%</td>
+                    <td class="fw-700">{{totalImplementedPercent | number : '1.1-1'}}%</td>
+                    <td class="fw-700">{{totalImplementedAmount | currency:clientData['currencyCode']:'symbol-narrow':'1.0-0'}}</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                </tr>
+        </tbody>
+    </table>
+</div>
+
+<ng-template #content let-d="dismiss">
+    <div class="modal-header">
+        <span class="modal-title" id="modal-basic-title"></span>
+        <span class="sidebar_action_icon ion-md-close-circle pr-1" (click)="d('Cross click')">
+        </span>
+    </div>
+
+    <div class="modal-body asset-classes-modal">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th class="text-left" [translate]="'PORTFOLIO_ALLOCATION.SOLUTION'"></th>
+                    <th class="text-center" [translate]="'PORTFOLIO_ALLOCATION.MIN_MAX_GROUPING'"></th>
+                    <th class="text-center" [translate]="'PORTFOLIO_ALLOCATION.ALLOCATED'"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr
+                    *ngFor="let allocation of allocationsData['portfolioAssetAllocationProductDetails']; index as aIndex">
+                    <td class="text-left">
+                        {{allocation['productCode']}}
+                    </td>
+                    <td class="fw-400 text-center">{{ ('SSID_LABELS.' + allocation.assetClass) | translate }}</td>
+                    <td class="text-center">{{ allocation['allocated'] | number : '1.1-1' }}%</td>
+                </tr>
+                <tr>
+                    <td>&nbsp;</td>
+                    <td class="text-right fw-700" [translate]="'PORTFOLIO_ALLOCATION.TOTAL'"></td>
+                    <td class="text-center fw-700">{{allocationsData['productTotal'] | number : '1.1-1'}}%</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="modal-footer">
+    </div>
+</ng-template>

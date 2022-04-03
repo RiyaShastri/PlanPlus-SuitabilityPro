@@ -1,0 +1,19 @@
+<div class="panel pb-0" *ngIf="valueList.length > 0">
+    <div class="d-flex flex-wrap panel-header">
+        <h4>{{'ADVISOR.DASHBOARD.CLIENT_VALUE_TILE.TITLE' | translate}}</h4>
+        <i *ngIf="!valuesLoaded" aria-hidden="true" class="fa fa-spinner fa-pulse loader-icon"></i>
+    </div>
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-12">
+                <div class="wordCloudWraper" *ngIf="valuesLoaded && valueList.length > 0">
+                    <angular-tag-cloud [data]="valueList" [height]="options.height" [width]="options.width"
+                        [realignOnResize]="options.realignOnResize"></angular-tag-cloud>
+                </div>
+                <div *ngIf="valuesLoaded && valueList.length === 0" class="no-record text-center my-5">
+                    <i class="ion-alert mr-2"></i>{{'NO_RESULTS' | translate}}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

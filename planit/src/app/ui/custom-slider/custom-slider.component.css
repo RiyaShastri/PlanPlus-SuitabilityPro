@@ -1,0 +1,39 @@
+.indicator {
+    z-index: 1;
+    width: 6px;
+    bottom: 24px;
+    height: 45px;
+    margin-left: -3px;
+    background: #000;
+    position: absolute;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+
+.cs-wrapper{
+    padding: 0 20px;
+}
+
+.slider-contain > div {
+    display: inline-block;
+    text-align: center;
+    font-size: 12px;
+    color: #788588;
+    font-weight: 700;
+    word-break: break-word;
+}
+
+.initials {
+    bottom: 16px;
+}
+
+.p-slider{
+    position: relative;
+}
+
+@media(max-width: 1199px){
+    .slider-contain > div{
+        padding: 0 2px;
+    }
+    padding: 0 2px;
+}

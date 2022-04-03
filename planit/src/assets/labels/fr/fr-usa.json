@@ -1,0 +1,21 @@
+{
+    "SSID_LABELS": {
+        "A_ASSCAT042": "LiquiditÃ©s",
+        "A_ASSCAT043": "Lien municipal",
+        "A_ASSCAT044": "Corporate Bond",
+        "A_ASSCAT045": "Emprunt Gouvernemental",
+        "A_ASSCAT046": "Actions canadiennes petite capitalisation",
+        "A_ASSCAT047": "Actions amÃ©ricaines",
+        "A_ASSCAT048": "Actions amÃ©ricaines petite capitalisation",
+        "A_ASSCAT050": "LiquiditÃ©s",
+        "A_ASSCAT051": "Marchés émergents",
+        "OBJECTIV002": "Mode de vie à la retraite (après impôt)",
+        "ACCTYP_OTHER": "Autre",
+        "ACCTYP_SHELTERED": "ROTH",
+        "ACCTYP_DEFERRED": "Qualifié",
+        "ACCTYP_OPEN": "Ouvrir",
+        "ACCTYP_PERSONAL": "Usage personnel",
+        "ACCTYP_BUSINESS": "Affaires Autre",
+        "ACCTYP_CORPORATE": "D'entreprise"
+    }
+}

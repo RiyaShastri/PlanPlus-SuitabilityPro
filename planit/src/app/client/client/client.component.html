@@ -1,0 +1,62 @@
+<!-- Client header  -->
+<div class="top-nav">
+    <div class="main-container">
+        <div class="row">
+            <div class="left-edge d-flex align-items-center">
+                <div class="avatar-box">
+                    <div class="client-img client-icon" *ngIf="clientData['clientAvatar']">
+                        <img [src]="clientData['clientAvatar']" (error)="clientData['clientAvatar'] = null" />
+                    </div>
+                    <button *ngIf="!clientData['clientAvatar']" class="client-icon btn-circle-blue ion-ios-person"></button>
+
+                    <div class="client-img client-icon" *ngIf="clientData['spouseFirstName'] && clientData['spouseAvatar']">
+                        <img [src]="clientData['spouseAvatar']" (error)="clientData['spouseAvatar'] = null" />
+                    </div>
+                    <button *ngIf="!clientData['spouseAvatar'] && clientData['spouseFirstName']" class="client-icon btn-circle-lightblue ion-ios-person"></button>
+                </div>
+                <span class="client-name" *ngIf="familyName" [innerHTML]="familyName"></span>
+            </div>
+
+            <div class="right-edge navbar d-flex align-items-center">
+                <ul class="navbar-nav ml-md-auto">
+                    <li class="nav-item">
+                        <a [routerLink]="['overview']" routerLinkActive="active-menu" class="nav-link" [translate]="'BREADCRUMB.OVERVIEW'"></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" [routerLink]="['profile']" routerLinkActive="active-menu" [translate]="'BREADCRUMB.PROFILE'"></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" [routerLink]="['planning']" routerLinkActive="active-menu" [translate]="'BREADCRUMB.PLANNING'"></a>
+                    </li>
+                    <!-- <li class="nav-item">
+                        <a class="nav-link" [translate]="'BREADCRUMB.COLLABORATION'"></a>
+                    </li> -->
+                    <li class="nav-item">
+                        <a class="nav-link" [routerLink]="['document-centre']" routerLinkActive="active-menu" *ngIf="accessRights['WEB07'] && accessRights['WEB07']['accessLevel'] >= 1">
+                            <span [translate]="'BREADCRUMB.DOCUMENTS'"></span>
+                            <!-- <i class="ion-md-document hidden-md-up"></i> -->
+                        </a>
+                    </li>
+
+                    <li class="nav-item" *ngIf="searchNotes && accessRights['NOT01']['accessLevel'] >= 1">
+                        <a class="nav-link" [routerLink]="['search-notes']" routerLinkActive="active-menu">
+                            <i class="ion-ios-create"></i>
+                        </a>
+                    </li>
+                    <li class="nav-item" *ngIf="calculator">
+                        <a class="nav-link" (click)="goToCalculator()">
+                            <i class="ion-md-calculator"></i>
+                        </a>
+                    </li>
+                    <li class="nav-item" *ngIf="accessRights['REPORTPANEL']['accessLevel'] > 0">
+                        <a class="nav-link" (click)="goToGenerateReport()">
+                            <i class="ion-md-document"></i>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+        </div>
+    </div>
+</div>
+<router-outlet></router-outlet>

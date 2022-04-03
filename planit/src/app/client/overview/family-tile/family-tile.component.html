@@ -1,0 +1,61 @@
+<div class="panel mt-0 pb-0">
+    <div class="d-flex flex-wrap panel-header">
+        <h4 class="family-alert">
+            {{'CLIENT_OVERVIEW.FAMILY' | translate}}
+            <span *ngIf="displayWarning" class="pl-2">
+                <i class="ion-ios-alert fs-16" [ngbTooltip]="alertMessage" placement="bottom" triggers="manual"
+                    #alert="ngbTooltip" (click)="alert.open()"></i>
+                <ng-template #alertMessage>
+                    <p class="font" [translate]="'CLIENT.ALERT'"></p>
+                    <p class="text-right m-0 p-0">
+                        <button class="btn btn-secondary btn-small m-0" (click)="alert.close()" [translate]="'FORM.ACTION.CLOSE'"></button>
+                    </p>
+                </ng-template>
+            </span>
+        </h4>
+        <div class="ml-auto d-flex">
+            <!-- <span class="initials btn-circle-green ml-2 cursor-p" ngbTooltip="Total entities" placement="bottom" triggers="click" #entities="ngbTooltip"
+                (click)="fmembers.close();">2</span> -->
+            <span class="initials btn-circle-skyblue ml-2 cursor-p" *ngIf="familyMembers.length>0" ngbTooltip="Total family members"
+                placement="bottom" triggers="click" #fmembers="ngbTooltip">
+                {{familyMembers.length}}
+            </span>
+        </div>
+        <div class="address-box mt-3" *ngIf="clientAddresses && clientAddresses.length > 0">
+            <p class="mb-1" *ngIf="clientAddresses[0].line1">{{clientAddresses[0].line1}}</p>
+            <span *ngIf="clientAddresses[0].city">{{clientAddresses[0].city}}, </span>
+            <span *ngIf="clientAddresses[0].province">{{clientAddresses[0].province}}</span>
+            <span *ngIf="clientAddresses[0].postalCode">{{clientAddresses[0].postalCode}}</span>
+        </div>
+    </div>
+
+    <div class="panel-body">
+        <table class="table table-wrap">
+            <thead>
+                <tr>
+                    <th [translate]="'CUSTOM.CLIENT'"></th>
+                    <th [translate]="'CUSTOM.STATUS'"></th>
+                    <th class="text-center" [translate]="'CUSTOM.AGE'"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <ng-container *ngFor="let person of familyMembers; let i = index;">
+                    <tr *ngIf="i < 3">
+                        <td class="fw-700">
+                            <app-member-avatar [initials]="person.btnInitials" [relationClass]="person.btnColor" avatarClass="initials" [avatarUrl]="person.avatar">
+                            </app-member-avatar>
+                            <span class="fw-700 pl-md-3 pl-1">{{person.firstName + " " + person.lastName}}</span>
+                        </td>
+                        <td>{{person.relation_staus}}</td>
+                        <td class="text-center">{{person.age}}</td>
+                    </tr>
+                </ng-container>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="panel-footer">
+        <a [routerLink]="['/client',clientId,'profile','personal-info']" class="btn btn-link ion-md-arrow-dropright" i18n="View More on a Tile@@tile.general.view.more" [translate]="'CUSTOM.VIEW_MORE'"></a>
+    </div>
+
+</div>

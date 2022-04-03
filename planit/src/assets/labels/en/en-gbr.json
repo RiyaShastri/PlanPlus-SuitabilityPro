@@ -1,0 +1,44 @@
+{
+    "SSID_LABELS": {
+        "A_ASSCAT042": "Cash",
+        "A_ASSCAT043": "Fixed Income",
+        "A_ASSCAT044": "Global Fixed Income",
+        "A_ASSCAT045": "Global Property",
+        "A_ASSCAT046": "UK Equity",
+        "A_ASSCAT047": "UK Small Cap Equity",
+        "A_ASSCAT048": "Global Equity",
+        "A_ASSCAT049": "Emerging Markets",
+        "A_ASSCAT050": "Alternatives",
+        "OBJECTIV002": "Retirement Lifestyle (After Tax)"
+    },
+  "BENCHMARKS": {
+    "1": "Sterling Certificate of Deposit Rates 3M",
+    "2": "FTSE UK Conventional Gilts All Stocks TR Index",
+    "3": "JPM GBI Global Traded TR Index",
+    "4": "S&P United Kingdom Property TR Index",
+    "5": "FTSE All Share TR Index",
+    "6": "FTSE Small Cap Total Return Index",
+    "7": "MSCI World ex UK Index",
+    "8": "MSCI Emerging Markets Index",
+    "9": "Credit Suisse Hedge Fund Index"
+
+  },
+  "BENCHNOTES": {
+    "1": "Return reduced by 0.5%",
+    "2": "UK 10 Years Govt Bond Total Return Index from 1970, FTSE UK Conventional Gilts All Stocks TR Index from 1976, return reduced by 0.5%",
+    "3": "Proxy based on 10-year US Govt Bonds from 1970, Lehman Composite from 1973, JPM GBI Global Traded TR Index from 1986",
+    "4": "Data from 1990",
+    "5": "",
+    "6": "Data from 1986, we are using UK Equities to serve as a proxy UK Small Cap Equities.",
+    "7": "",
+    "8": "Data from 1988",
+    "9": "Data from 1994"
+
+  },
+  "FORM": {
+        "PLACEHOLDER": {
+            "SELECT_A_PROVINCE": "Select a Region"
+        },
+        "PROVINCE": "Region"
+  }
+}

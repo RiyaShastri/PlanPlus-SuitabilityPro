@@ -1,0 +1,151 @@
+<div class="side-form">
+    <div class="box">
+        <div class="box-header">
+            <span class="sidebar_title" [translate]="'PORTFOLIOS.TRANSFER.TITLE'"></span>
+            <span class="sidebar_action_icon ion-md-close-circle float-right" (click)="back(); closeButtonDisable = true"></span>
+        </div>
+        <i *ngIf="!portfolioDetailResponse" aria-hidden="true" class="fa fa-spinner fa-pulse loader-icon"></i>
+        <div class="box-body" *ngIf="portfolioDetailResponse">
+            <h4 class="fw-500" [translate]="'PORTFOLIOS.TRANSFER.TRANSFER_FROM'"></h4>
+            <h5>
+                <p class="text-secondary fs-14 fw-500 pt-3 mb-0" [translate]="'PORTFOLIOS.NAME'"></p>
+            </h5>
+            <p class="text-secondary pt-2 mb-0">{{portfolioDetailResponse.description}}</p>
+            <div class="row">
+                <div class="col-7" *ngIf="accountData">
+                    <h5>
+                        <p class="text-secondary fs-14 fw-500 pt-3 mb-0" [translate]="'SAVINGS.ACCOUNT_NAME'"></p>
+                    </h5>
+                    <p class="text-secondary pt-2 mb-0">{{accountData.description}}</p>
+                </div>
+                <div class="col-5 text-right">
+                    <h5>
+                        <span class="text-secondary fs-14 fw-500 d-block pt-3 mb-0" [translate]="'PORTFOLIOS.TRANSFER.REGULATORY_TYPE'"></span>
+                    </h5>
+                    <span class="text-secondary pt-2 mb-0" *ngIf="accountData.regulatoryTypeDTO !== null; else noData">{{accountData.regulatoryTypeDTO}}</span>
+                    <ng-template #noData>
+                        <span class="text-secondary pt-2 mb-0">N/A</span>
+                    </ng-template>
+                </div>
+            </div>
+            <hr>
+            <h4 class="fw-500" [translate]="'PORTFOLIOS.TRANSFER.TRANSFER_TO'"></h4>
+            <h5>
+                <p class="text-secondary fs-14 fw-500 pt-3 mb-0" [translate]="'PORTFOLIOS.NAME'"></p>
+            </h5>
+            <div class="row pt-2 mb-0">
+                <div class="col-9 form-group mb-0" *ngIf="portfolioList">
+                    <p-dropdown name="portfolioName" placeholder="Select a portfolio" [options]="portfolioList" optionLabel="description"></p-dropdown>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-7 form-group" *ngIf="accountList">
+                    <h5>
+                        <p class="text-secondary fs-14 fw-500 pt-3 d-block mb-0" [translate]="'SAVINGS.ACCOUNT_NAME'"></p>
+                    </h5>
+                    <p-dropdown name="accountName" placeholder="Select account name" [options]="accountList" optionLabel="description"></p-dropdown>
+                </div>
+                <div class="col-5 text-right">
+                    <h5>
+                        <span class="text-secondary fs-14 fw-500 pt-3 d-block mb-0" [translate]="'PORTFOLIOS.TRANSFER.REGULATORY_TYPE'"></span>
+                    </h5>
+                    <span class="text-secondary pt-2 mb-0" *ngIf="accountData.regulatoryTypeDTO !== null; else noRegulatoryType">{{accountData.regulatoryTypeDTO}}</span>
+                    <ng-template #noRegulatoryType>
+                        <span class="text-secondary pt-2 mb-0">N/A</span>
+                    </ng-template>
+                </div>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col-6 form-group">
+                    <p-checkbox name="inKind" [(ngModel)]="productModel" label="In kind" binary="true"></p-checkbox>
+                </div>
+                <div class="col-6 text-right">
+                    <h5>
+                        <span class="text-secondary fs-14 fw-500 pt-3 mb-0 ">Current market value</span>
+                    </h5>
+                    <span class="text-secondary text-right pt-2 mb-0">$400,000</span>
+                    <div class="text-right">
+                        <span class="text-secondary text-right pt-2 mb-0">Net {{((netAmount) > 0 ? netAmount : 0) | currency:clientData['currencyCode']:'symbol-narrow':'1.0-1' }}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group pt-2 mb-0">
+                <p-checkbox name="selectAll" label="Select all" [(ngModel)]="allSelected" (onChange)="selectAll($event)" binary="true"></p-checkbox>
+            </div>
+            <hr>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th colspan="2">Product</th>
+                        <th>Amount</th>
+                    </tr>
+                </thead>
+                <tbody *ngIf="productData">
+                    <ng-container *ngFor="let data of productData; let i = index">
+                        <tr>
+                            <td class="form-group">
+                                <p-checkbox name="tableCheck_{{i}}" [(ngModel)]="data.checked" (onChange)="checkedSelect($event, data)" binary="true"></p-checkbox>
+                            </td>
+                            <td class="pl-1">
+                                <span>{{data.productCode}} {{data.name}}</span>
+                                <p>({{data.productName}})</p>
+                            </td>
+                            <td>
+                                <span>{{data.amount}}</span>
+                            </td>
+                        </tr>
+                        <ng-container *ngIf="data.checked">
+                            <tr>
+                                <td colspan="3" class="border-0">
+                                    <div class="form-group float-right">
+                                        <input type="text" name="amountText_{{i}}" class="form-control d-inline-block text-right h-25" [(ngModel)]="data.transferValue"
+                                            #amountText="ngModel" style="width: 90px" [textMask]="{mask: currencyMask}" appNumeric (blur)="totalTransfer(data.transferValue)"
+                                            required>
+                                        <span style="width: 10px" *ngIf="data.transferValue" class="ion-ios-alert text-right" [ngbTooltip]="alertMessage" placement="bottom"
+                                            triggers="manual" #alert="ngbTooltip" (click)="alert.open()">
+                                            <ng-template #alertMessage>
+                                                <p class="font">There may be tax considerations, penalties, restrictions, fees, and other
+                                                    factors that need to be considered when transferring funds to other accounts.
+                                                </p>
+                                                <p class="text-right m-0 p-0">
+                                                    <button class="btn btn-secondary btn-small m-0" (click)="alert.close()" [translate]="'FORM.ACTION.CLOSE'"></button>
+                                                </p>
+                                            </ng-template>
+                                        </span>
+                                    </div>
+                                </td>
+                            </tr>
+                        </ng-container>
+                    </ng-container>
+                    <tr>
+                        <td colspan="2">
+                            <span class="text-secondary">Transferred out</span>
+                        </td>
+                        <td>
+                            <span class="text-danger">($1,000)</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" class="border-0">
+                            <span class="text-secondary">Net current market value</span>
+                        </td>
+                        <td>
+                            <b>$399,000</b>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div *ngIf="netAmount && netAmount < 0" class="form-group mb-0 text-center has-error">
+                <span class="text-danger">The transfer exceeds the funds available. Please revise the amount.</span>
+            </div>
+        </div>
+        <div class="box-footer">
+            <div class="form-group text-right">
+                <button (click)="back(); closeButtonDisable = true" type="button" class="btn btn-small btn-secondary mr-2"
+                [disabled]="closeButtonDisable">{{ 'FORM.ACTION.CANCEL' | translate }}</button>
+                <button type="submit" [disabled]="netAmount && netAmount < 0" class="btn btn-small btn-success">{{ 'FORM.ACTION.SAVE' | translate }}</button>
+            </div>
+        </div>
+    </div>
+</div>

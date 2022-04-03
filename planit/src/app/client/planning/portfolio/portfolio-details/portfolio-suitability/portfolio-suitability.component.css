@@ -1,0 +1,15 @@
+.suitability-legend .asset_indicator {
+    margin-top: 8px;
+}
+.flex-even{
+    flex-grow: 1;
+    width: 30%;
+}
+.suitability-legend {
+    padding: 0 40px;
+}
+@media(max-width: 575px) {
+    .score-bages-responsive {
+        margin-top: 10px;
+    }
+}

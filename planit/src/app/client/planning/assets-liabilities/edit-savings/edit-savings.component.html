@@ -1,0 +1,265 @@
+<div class="bg-white pt-4 pb-4 savings-edit-bg">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-md-8 col-sm-12">
+                <h4 class="mb-1">
+                    <a [routerLink]="['/client', clientId, 'planning']" [translate]="'BREADCRUMB.PLANNING'"></a> /
+                    <a *ngIf="!isSpecifiedAccount && !isSpecifiedGoalSaving && !isAllGoalSaving" [routerLink]="['/client', clientId, 'planning', 'assets-liabilities-savings', savingsId, 'edit-savings']"
+                        [translate]="'BREADCRUMB.EDIT_SAVINGS'"></a>
+                    <a *ngIf="isSpecifiedAccount" [routerLink]="['/client', clientId, 'planning', 'assets-liabilities', accountId, 'savings', savingsId, 'edit-savings']"
+                        [translate]="'BREADCRUMB.EDIT_SAVINGS'"></a>
+                    <a *ngIf="isSpecifiedGoalSaving" [routerLink]="['/client', clientId, 'planning', 'goals', goalId, 'savings', savingsId, 'edit-savings']"
+                        [translate]="'BREADCRUMB.EDIT_SAVINGS'"></a>
+                    <a *ngIf="isAllGoalSaving" [routerLink]="['/client', clientId, 'planning', 'goals', 'savings', savingsId, 'edit-savings']"
+                        [translate]="'BREADCRUMB.EDIT_SAVINGS'"></a>
+                </h4>
+                <h1 class="d-sm-inline-block d-block fw-500" *ngIf="savingsData.length > 0">
+                    <div ngbDropdown class="dropdown-common dropdown-multiline m-0" *ngIf="savingsName">
+                        <a id="savingsDropdown" class="d-flex align-items-center" ngbDropdownToggle>
+                            <div id="on-mouseover-tooltip" class="text-truncate fixed-width-text"
+                                [appNoOverflowTooltip]="savingsName">
+                                {{savingsName}}
+                            </div>
+                            <i class="ion-md-arrow-dropdown fs-18 ml-2"></i>
+                        </a>
+                        <div ngbDropdownMenu aria-labelledby="savingsDropdown">
+                            <ul>
+                                <li *ngFor="let saving of savingsData">
+                                    <a class="dropdown-item" [ngClass]="{ 'active' : saving.key == savingsId }"
+                                        (click)="changeSavings(saving.key, saving.description)">
+                                        {{saving.description}}
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </h1>
+            </div>
+            <div class="col-12 mt-4">
+                <div class="d-flex flex-wrap">
+                    <a class="btn-add" (click)="addTier()">
+                        <i class="ion-md-add-circle"></i>
+                        <span [translate]="'SAVINGS.ADD_TIER'"></span>
+                    </a>
+                    <div class="sort-dropdown ml-auto pt-1">
+                        <app-common-drop-down class="dropdown-right d-flex" [itemList]="viewBy"
+                            [defaultSelected]="selectedViewBy" dropDownLabel="{{'VIEW_BY_DROPDOWN' | translate}}"
+                            (OnSelect)="displayViewBy($event)"></app-common-drop-down>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12">
+                <hr>
+            </div>
+        </div>
+        <div
+            *ngIf="frequencyOptions.length > 0 && selectedEndYearOptions.length > 0 && endYearOptions.length > 0 && savings !== null && goals !== null">
+            <form name="form" (ngSubmit)="updateSavings() && f.form.valid" #f="ngForm" novalidate>
+                <div class="row">
+                    <div class="col-lg-3 col-8" [ngClass]="{'pt-4' : secondTier}">
+                        <div class="form-group" [ngClass]="{'mt-3' : secondTier}">
+                            <label class=custom-form-label [translate]="'FORM.ACCOUNT_NAME'"></label>
+                            <p>{{savings.linkedAccount}}</p>
+                        </div>
+                        <div class="form-group">
+                            <label class=custom-form-label [translate]="'FORM.ACCOUNT_TYPE'"></label>
+                            <p>{{savings.regulatoryType}}</p>
+                        </div>
+                        <div class="form-group dropdown"
+                            [ngClass]="{ 'has-error': !associatedGoal.valid && (associatedGoal.dirty || f.submitted)}">
+                            <label class="custom-form-label" [translate]="'FORM.ASSOCIATED_GOAL'"></label>
+                            <p-dropdown placeholder="Select Goal"
+                                [options]="(savings.regulatoryType === 'RESP - FP' || savings.regulatoryType === 'RESP - IP') ? selectedGoalsList : goalsList"
+                                (ngModelChange)="changeGoal($event)" name="associatedGoal"
+                                [(ngModel)]="savings.linkedGoal" #associatedGoal="ngModel" required>
+                                <ng-template let-item pTemplate="selectedItem">
+                                    <span [ngClass]="{'text-red' : item.value == 0}">{{item.label}}</span>
+                                </ng-template>
+                                <ng-template let-goal pTemplate="item">
+                                    <div [ngClass]="{'text-red' : goal.value == 0}">{{goal.label}}</div>
+                                </ng-template>
+                            </p-dropdown>
+                        </div>
+                        <div class="form-group">
+                            <label class=custom-form-label [translate]="'FORM.PORTFOLIO'"></label>
+                            <p>{{savings.portfolio}}</p>
+                        </div>
+                        <div class="form-group"
+                            [ngClass]="{'has-error': !frequency.valid && (frequency.dirty || frequency.touched || f.submitted)}">
+                            <label class=custom-form-label [translate]="'FORM.FREQUENCY'"></label>
+                            <p-dropdown placeholder="Select frequency" [options]="frequencyOptions"
+                                optionLabel="frequency" name="frequency" [(ngModel)]="savings.frequency"
+                                #frequency="ngModel" required></p-dropdown>
+                        </div>
+
+                        <div class="form-group">
+                            <label class=custom-form-label [translate]="'FORM.INDEX'"></label>
+                            <span *ngIf="!savings.useDefaultIndex">
+                                {{defaultIndex | number : '1.2-2'}}%
+                            </span>
+                            <div *ngIf="savings.useDefaultIndex" class="check-form-group"
+                                [ngClass]="{'has-error': !index.valid && (index.dirty || f.submitted) }">
+                                <input type="text" class="form-control text-left" name="index" placeholder="0.00 %"
+                                [textMask]="{mask: percentMask}" appNumeric [customMax]="100" [customMin]="0"
+                                    [(ngModel)]="savings.index" #index="ngModel" required />
+                            </div>
+                            <p-checkbox name="checkbox" [(ngModel)]="savings.useDefaultIndex" binary="true">
+                            </p-checkbox>
+                        </div>
+                    </div>
+                    <ng-container *ngFor="let tier of savings.tierPayloadList; index as i;">
+                        <div class="col-lg-3 col-md-4 col-6 text-right form-small">
+                            <h3 *ngIf="secondTier" class="mb-3">{{ 'SAVINGS.TIER' | translate }} {{tier.tierNumber}}
+                            </h3>
+                            <div class="form-group"
+                                [ngClass]="{'has-error': !clientSavings1.valid && (clientSavings1.dirty || f.submitted) }">
+                                <label class="custom-form-label" [translate]="'SAVINGS.CLIENT_SAVINGS'"></label>
+                                <input type="text" class="form-control text-right" name="clientSavings_{{i}}"
+                                    placeholder="{{currency}}0.00" [customMin]="0.01"
+                                    [(ngModel)]="tier.savingsAmount"  [textMask]="{mask: currencyMask}" appNumeric
+                                    #clientSavings1="ngModel" required />
+                            </div>
+                            <div class="form-group"
+                                [ngClass]="{'has-error': !thirdPartySavings1.valid && (thirdPartySavings1.dirty || f.submitted)}">
+                                <label class=custom-form-label [translate]="'SAVINGS.THIRD_PARTY_SAVINGS'"></label>
+                                <input type="text" class="form-control text-right" name="thirdPartySavings_{{i}}"
+                                    placeholder="{{currency}}0.00" [(ngModel)]="tier.thirdPartySavings"
+                                     [textMask]="{mask: currencyMask}" appNumeric #thirdPartySavings1="ngModel" required />
+                            </div>
+                            <div *ngIf="selectedViewBy.id == 1" class="form-group">
+                                <label class="custom-form-label" [translate]="'SAVINGS.START'"></label>
+                                <ng-container *ngIf="tier.tierNumber == 1">
+                                    <div
+                                        [ngClass]="{'has-error': !startYear1.valid && (startYear1.dirty || f.submitted) }">
+                                        <input type="text" class="form-control text-right" name="startYear1_{{i}}"
+                                            pattern="(?:19|20)[0-9]{2}" [(ngModel)]="tier.startYear"
+                                            (ngModelChange)="changeYear($event, 'tier1_startYear')"
+                                            #startYear1="ngModel" required />
+                                    </div>
+                                    <p *ngIf="tier.startYear.toString().length != 4 || tier.startYear<1000"
+                                        class="text-error" [translate]="'EDIT_SAVINGS.ERROR_4'"></p>
+                                    
+                                </ng-container>
+                                <ng-container *ngIf="tier.tierNumber > 1">
+                                    <p>
+                                        {{tier.startYear}}
+                                    </p>
+                                </ng-container>
+                                <span *ngIf="tier.startYear > 0">
+                                    {{tier.spouseStartAge > 0 ? tier.clientStartAge + '/' + tier.spouseStartAge :
+                                    tier.clientStartAge}}
+                                </span>
+                            </div>
+                            <div *ngIf="selectedViewBy.id == 2" class="form-group">
+                                <label class="custom-form-label" [translate]="'SAVINGS.START'"></label>
+                                <div *ngFor="let owner of savings.ownersList; index as oi"
+                                    class="text-center owner-with-age">
+                                    <p class="initials client-icon"
+                                        [ngClass]="{'spouse': owner.relation == PERSON_RELATION.CLIENT2, 'childs': owner.relation == PERSON_RELATION.OTHER}">
+                                        {{owner.btnInitials}}</p>:
+                                    &nbsp;
+                                    <div *ngIf="tier.tierNumber === 1 && owner.relation == PERSON_RELATION.CLIENT1"
+                                        [ngClass]="{'has-error': !startAge1.valid && (startAge1.dirty || f.submitted) }"
+                                        class="owner-age">
+                                        <input type="text" class="form-control text-right" pattern="([0-9]{2})"
+                                            name="startAge1_{{i}}" [(ngModel)]="tier.clientStartAge"
+                                            #startAge1="ngModel" 
+                                            (ngModelChange)="changeAge($event, 'tier1_startAge')" required>
+                                    </div>
+                                    <div *ngIf="owner.relation == PERSON_RELATION.CLIENT2 || tier.tierNumber > 1"
+                                        class="inline-block  owner-age">
+                                        {{owner.relation == PERSON_RELATION.CLIENT1 ? tier.clientStartAge : tier.spouseStartAge}}
+                                    </div>
+                                    <p *ngIf="tier.clientStartAge <= 0 || (owner.relation == PERSON_RELATION.CLIENT2 && tier.spouseStartAge <= 0)"
+                                        class="text-error" [translate]="'EDIT_SAVINGS.ERROR_5'"></p>
+                                    <p *ngIf="owner.relation == PERSON_RELATION.CLIENT1 && tier.clientStartAge > 0 && tier.clientStartAge < clientCurrentAge"
+                                        class="text-error" [translate]="'EDIT_SAVINGS.ERROR_7'"></p>
+                                </div>
+                            </div>
+                            <div *ngIf="selectedViewBy.id == 1" class="form-group">
+                                <label class="custom-form-label" [translate]="'SAVINGS.END'"></label>
+                                <div
+                                    *ngIf="tier.tierNumber === savings.tierPayloadList.length && tier.endYearLinkType.endOptionId !== 3">
+                                    <p>{{tier.endYear}}</p>
+                                </div>
+                                <div *ngIf="tier.tierNumber < savings.tierPayloadList.length || tier.endYearLinkType.endOptionId == 3"
+                                    [ngClass]="{'has-error': (endYear1 < tier.startYear || !endYear1.valid) && (endYear1.dirty || f.submitted) }">
+                                    <input type="text" class="form-control text-right" name="endYear1_{{i}}"
+                                        pattern="([1-9][0-9]{3})" [(ngModel)]="tier.endYear"
+                                        [customMin]="tier.startYear" (ngModelChange)="changeYear($event, i)"
+                                        #endYear1="ngModel" required />
+                                </div>
+                                <span *ngIf="tier.endYear > 0">
+                                    {{tier.spouseEndAge > 0 ? tier.clientEndAge + '/' + tier.spouseEndAge :
+                                    tier.clientEndAge}}
+                                </span>
+                                <p *ngIf="tier.endYear.toString().length == 4 && tier.endYear > 1000 && tier.endYear < tier.startYear"
+                                    class="text-error" [translate]="'EDIT_SAVINGS.ERROR_1'"></p>
+                                <p *ngIf="tier.endYear.toString().length != 4 || tier.endYear<1000" class="text-error"
+                                    [translate]="'EDIT_SAVINGS.ERROR_4'"></p>
+                            </div>
+                            <div *ngIf="selectedViewBy.id == 2" class="form-group">
+                                <label class="custom-form-label" [translate]="'SAVINGS.END'"></label>
+                                <div *ngFor="let owner of savings.ownersList; index as oi"
+                                    class="text-center owner-with-age">
+                                    <p class="initials client-icon"
+                                        [ngClass]="{'spouse': owner.relation == PERSON_RELATION.CLIENT2, 'childs': owner.relation == PERSON_RELATION.OTHER}">
+                                        {{owner.btnInitials}}</p>:
+                                    <div *ngIf="(tier.tierNumber < savings.tierPayloadList.length || tier.endYearLinkType.endOptionId == 3) && owner.relation === PERSON_RELATION.CLIENT1"
+                                        [ngClass]="{'has-error': !endAge1.valid && (endAge1.dirty || f.submitted) }"
+                                        class="owner-age">
+                                        <input type="text" class="form-control text-right" pattern="([0-9]{2})"
+                                            name="endAge1_{{i}}" [(ngModel)]="tier.clientEndAge" #endAge1="ngModel"
+                                            [customMin]="tier.clientStartAge" (ngModelChange)="changeAge($event, i)"
+                                            required>
+                                    </div>
+                                    <div *ngIf="owner.relation == PERSON_RELATION.CLIENT2 || (tier.tierNumber === savings.tierPayloadList.length && tier.endYearLinkType.endOptionId !== 3)"
+                                        class="inline-block owner-age">
+                                        {{owner.relation == PERSON_RELATION.CLIENT1 ? tier.clientEndAge : tier.spouseEndAge}}
+                                    </div>
+                                    <p *ngIf="(tier.clientEndAge > 0 && tier.clientEndAge < tier.clientStartAge) || (tier.spouseEndAge > 0 && tier.spouseEndAge < tier.spouseStartAge)"
+                                        class="text-error" [translate]="'EDIT_SAVINGS.ERROR_2'"></p>
+                                    <p *ngIf="tier.clientEndAge <= 0 || (owner.relation == PERSON_RELATION.CLIENT2 && tier.spouseEndAge <= 0)"
+                                        class="text-error" [translate]="'EDIT_SAVINGS.ERROR_5'"></p>
+                                </div>
+                            </div>
+                            <div *ngIf="savings.tierPayloadList.length == 1 || tier.tierNumber == savings.tierPayloadList.length"
+                                class="form-group"
+                                [ngClass]="{'has-error': !endYear1LinkType.valid && (endYear1LinkType.dirty || endYear1LinkType.touched || f.submitted)}">
+                                <p-dropdown placeholder="Select EndYear Link Type"
+                                    [options]="linkedGoal !== null ? endYearOptions : selectedEndYearOptions"
+                                    optionLabel="description" name="endYear1LinkType_{{i}}"
+                                    (ngModelChange)="changeEndYearAge($event, i)" [(ngModel)]="tier.endYearLinkType"
+                                    #endYear1LinkType="ngModel" required></p-dropdown>
+                            </div>
+                            <p *ngIf="linkedGoal == null && (savings.tierPayloadList.length == 1 || tier.tierNumber == savings.tierPayloadList.length) && (tier.endYearLinkType.endOptionId == 1 || tier.endYearLinkType.endOptionId == 2)"
+                                class="text-error" [translate]="'EDIT_SAVINGS.ERROR_3'"></p>
+                            <div class="pull-right"
+                                *ngIf="tier.tierNumber > 1 && tier.tierNumber == savings.tierPayloadList.length">
+                                <a (click)="deleteTier(i)" class="delete-link">
+                                    <i class="ion-md-close-circle"></i>
+                                    <span [translate]="'EDIT_SAVINGS.DELETE_TIER'"></span>
+                                </a>
+                            </div>
+                        </div>
+                    </ng-container>
+                </div>
+                <div class="col-md-12 col-12 mt-3">
+                    <div class="form-group text-right">
+                        <button type="button" class="btn btn-secondary btn-small" [translate]="'FORM.ACTION.CANCEL'"
+                            (click)="back(); closeButtonDisable = true" [disabled]="closeButtonDisable"></button>
+                        <button *ngIf="thirdTier"
+                            [disabled]="saveDisable || f.form.invalid || savings.tierPayloadList[2].endYear < savings.tierPayloadList[2].startYear || savings.tierPayloadList[2].savingsAmount === 0"
+                            type="submit" class="btn btn-success btn-small" [translate]="'FORM.ACTION.SAVE'"></button>
+                        <button *ngIf="!thirdTier && secondTier"
+                            [disabled]="saveDisable || f.form.invalid || savings.tierPayloadList[1].endYear < savings.tierPayloadList[1].startYear || savings.tierPayloadList[1].savingsAmount === 0"
+                            type="submit" class="btn btn-success btn-small" [translate]="'FORM.ACTION.SAVE'"></button>
+                        <button *ngIf="!thirdTier && !secondTier"
+                            [disabled]="saveDisable || f.form.invalid || savings.tierPayloadList[0].endYear < savings.tierPayloadList[0].startYear || savings.tierPayloadList[0].savingsAmount === 0"
+                            type="submit" class="btn btn-success btn-small" [translate]="'FORM.ACTION.SAVE'"></button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

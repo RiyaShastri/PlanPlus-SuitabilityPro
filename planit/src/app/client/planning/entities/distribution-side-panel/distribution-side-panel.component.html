@@ -1,0 +1,214 @@
+<div class="side-form">
+    <div class="box">
+        <form name="form" (ngSubmit)="f.form.valid && submitForm()" #f="ngForm" novalidate>
+            <div class="box-header">
+                <span *ngIf="!editDistribution" class="sidebar_title" [translate]="'ENTITY.ADD_DISTRIBUTION'"></span>
+                <span *ngIf="editDistribution" class="sidebar_title"
+                    [translate]="'ENTITY.EDIT_LONG_TERM_DISTRIBUTION'"></span>
+                <span (click)="back()" class="sidebar_action_icon ion-md-close-circle float-right"></span>
+            </div>
+
+            <div class="box-body">
+                <ng-container *ngIf="sourcesOptions && distribution">
+                    <div class="row">
+                        <!-- <div class="col-12">
+                            <div class="form-group">
+                                <label class="custom-form-label" [translate]="'ENTITY.DESCRIPTION'"></label>
+                                <span class="display-text fw-400 fs-14" *ngIf="distribution['defaultRecord']">
+                                    {{distribution['description']}}
+                                </span>
+                                <input *ngIf="!distribution['defaultRecord']" type="text" class="form-control"
+                                    name="description" [(ngModel)]="distribution['description']" #description="ngModel"
+                                    required />
+                                <p-dropdown *ngIf="editDistribution && distribution['defaultRecord']"
+                                    placeholder="{{'ENTITY.SELECT_DISTRIBUTION_PLACEHOLDER' | translate}}"
+                                    [options]="allDistributions" optionLabel="description" name="selectedDistribution"
+                                    [(ngModel)]="distribution" #selectedDistribution="ngModel" required
+                                    (onChange)="onChangeOfDistribution()"></p-dropdown>
+                            </div>
+                        </div> -->
+                        <div class="col-12">
+                            <div class="form-group">
+                                <label class="custom-form-label" [translate]="'ENTITY.SHARE_CLASS'"></label>
+                                <span class="display-text fw-400 fs-14" *ngIf="distribution['defaultRecord']">
+                                    {{distribution['shareClassId'] && distribution['shareClassId']['description'] ? distribution['shareClassId']['description'] : 'N/A'}}
+                                </span>
+                                <p-dropdown *ngIf="!distribution['defaultRecord']"
+                                    placeholder="{{'ENTITY.SHARE_PLACEHOLDER' | translate}}" [options]="shareClassesOpt"
+                                    optionLabel="description" name="share_class" [(ngModel)]="distribution['shareClassId']"
+                                    #share_class="ngModel" (onChange)="onChangeOfShareClass()" required></p-dropdown>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="form-group">
+                                <label class="custom-form-label" [translate]="'ENTITY.SOURCE'"></label>
+                                <span class="display-text fw-400 fs-14" *ngIf="distribution['defaultRecord']">
+                                    {{distribution['source'] && distribution['source']['description'] ? distribution['source']['description'] : 'N/A'}}
+                                </span>
+                                <p-dropdown *ngIf="!distribution['defaultRecord']"
+                                    placeholder="{{'ENTITY.SOURCE_PLACEHOLDER' | translate}}" [options]="sourcesOptions"
+                                    name="source" [(ngModel)]="distribution['sourceId']"
+                                    #source="ngModel" required>
+                                    <ng-template let-selectedOrder pTemplate="selectedItem">
+                                        <span>{{ 'ENTITY.SOURCE_TYPE.' + selectedOrder.ssid | translate }}</span>
+                                    </ng-template>
+                                    <ng-template let-order pTemplate="item">
+                                        <div class="ui-helper-clearfix">
+                                            <span>{{ 'ENTITY.SOURCE_TYPE.' + order.ssid | translate }}</span>
+                                        </div>
+                                    </ng-template>
+                                </p-dropdown>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row form-group d-flex align-items-center">
+                        <div class="col-6">
+                            <label class="custom-form-label mb-0" [translate]="'ENTITY.AMOUNT'"></label>
+                        </div>
+                        <div class="col-6 text-right">
+                            <span class="display-text fw-400 fs-14" *ngIf="distribution['defaultRecord']">
+                                {{distribution['amount'] | currency:clientData['currencyCode'] : 'symbol-narrow':'1.0-0'}}
+                            </span>
+                            <div class="form-group mb-0" *ngIf="!distribution['defaultRecord']"
+                                [ngClass]="{'has-error': !amount.valid && (amount.dirty || f.submitted) }">
+                                <input type="text" class="form-control text-right" name="amount"
+                                    [(ngModel)]="distribution['amount']" [textMask]="{mask: currencyMask}" appNumeric
+                                    #amount="ngModel" placeholder="{{currencyPrefix}}0" required />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row form-group d-flex align-items-center">
+                        <div class="col-6">
+                            <label class="custom-form-label mb-0" [translate]="'ENTITY.FROM_YEAR'"></label>
+                        </div>
+                        <div class="col-6 text-right">
+                            <span class="display-text fw-400 fs-14" *ngIf="distribution['defaultRecord']">
+                                {{distribution['startyear']}}
+                            </span>
+                            <div class="form-group mb-0" *ngIf="!distribution['defaultRecord']"
+                                [ngClass]="{'has-error': !startyear.valid && (startyear.dirty || f.submitted) }">
+                                <input type="text" class="form-control text-right" name="startyear"
+                                    [(ngModel)]="distribution['startyear']" pattern="([1-9][0-9]{3})" #startyear="ngModel"
+                                    required />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row form-group d-flex align-items-center"
+                        [ngClass]="{'has-error': !endyear.valid && (endyear.dirty || f.submitted) }">
+                        <div class="col-6">
+                            <label class="custom-form-label mb-0" [translate]="'ENTITY.TO_YEAR'"></label>
+                        </div>
+                        <div class="col-6 text-right">
+                            <input type="text" class="form-control text-right" name="endyear"
+                                [(ngModel)]="distribution['endyear']" pattern="([1-9][0-9]{3})" #endyear="ngModel"
+                                [customMin]="distribution['startyear']" required />
+                        </div>
+                    </div>
+                    <div class="form-group row d-flex align-items-center">
+                        <div class="col-6">
+                            <label class="custom-form-label mb-0" [translate]="'ENTITY.INDEX_RATE_PRIOR_TO_START'"></label>
+                        </div>
+                        <div class="col-2 form-group text-right mb-0">
+                            <p-checkbox name="defaultToStart" [(ngModel)]="distribution['defaultToStart']" binary="true"
+                                #defaultToStart="ngModel" (ngModelChange)="onToggleCheckbox(0)">
+                            </p-checkbox>
+                        </div>
+                        <div class="col-4 text-right">
+                            <span class="display-text fw-400 fs-14" *ngIf="!distribution['defaultToStart']">
+                                {{distribution['indexToStart'] | number: '1.2-2'}}%
+                            </span>
+                            <div *ngIf="distribution['defaultToStart']" class="form-group mb-0"
+                                [ngClass]="{'has-error': !indexToStart.valid && (indexToStart.dirty || f.submitted) }">
+                                <input type="text" class="form-control text-right" name="indexToStart"
+                                    [(ngModel)]="distribution['indexToStart']" [customMin]="0" [customMax]="100"
+                                    [textMask]="{mask: percentDecimalMask}" appNumeric #indexToStart="ngModel" required />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row d-flex align-items-center">
+                        <div class="col-6">
+                            <label class="custom-form-label mb-0" [translate]="'ENTITY.INDEX_RATE_FROM_START'"></label>
+                        </div>
+                        <div class="col-2 text-right form-group mb-0">
+                            <p-checkbox name="defaultFromStart" [(ngModel)]="distribution['defaultFromStart']" binary="true"
+                                #defaultFromStart="ngModel" (ngModelChange)="onToggleCheckbox(1)">
+                            </p-checkbox>
+                        </div>
+                        <div class="col-4 text-right">
+                            <span class="display-text fw-400 fs-14" *ngIf="!distribution['defaultFromStart']">
+                                {{distribution['indexFromStart'] | number: '1.2-2'}}%
+                            </span>
+                            <div *ngIf="distribution['defaultFromStart']" class="form-group mb-0"
+                                [ngClass]="{'has-error': !indexFromStart.valid && (indexFromStart.dirty || f.submitted) }">
+                                <input type="text" class="form-control text-right" name="indexFromStart"
+                                    [(ngModel)]="distribution['indexFromStart']" [customMin]="0" [customMax]="100"
+                                    [textMask]="{mask: percentDecimalMask}" appNumeric #indexFromStart="ngModel" required />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <h3 class="custom-heading fw-600 fs-16 pb-4 pt-3" [translate]="'ENTITY.GOALS_TO_FUND'"></h3>
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th class="pb-2 pr-5px" [translate]="'ENTITY.SHAREHOLDER'"></th>
+                                        <th class="text-center pb-2 pr-5px" [translate]="'ENTITY.AMOUNT'"></th>
+                                        <th class="text-center pb-2" [translate]="'ENTITY.GOAL'"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <ng-container
+                                        *ngIf="distribution['shareOwnerGoaltoFundList'] && distribution['shareOwnerGoaltoFundList'].length > 0">
+                                        <tr *ngFor="let owner of distribution['shareOwnerGoaltoFundList']">
+                                            <td class="pr-5px">{{owner.name}}</td>
+                                            <td class="text-center pr-5px">
+                                                {{ distribution['amount'] > 0 ? (((owner.percentage * distribution['amount']) / 100) 
+                                                | currency:clientData['currencyCode'] : 'symbol-narrow':'1.0-0') : ('0' | currency:clientData['currencyCode'] : 'symbol-narrow':'1.0-0')}}
+                                            </td>
+                                            <td class="text-center pr-0">
+                                                <div *ngIf="!distribution['defaultRecord']"
+                                                    class="form-group mb-0"
+                                                    [ngClass]="{'has-error': !selectedGoal.valid && (selectedGoal.dirty || f.submitted) }">
+                                                    <p-dropdown placeholder="{{'ENTITY.SELECT_GOAL' | translate}}"
+                                                        [options]="goals" optionLabel="description" name="selectedGoal_{{owner.personKey}}"
+                                                        [(ngModel)]="owner['fundedGoal']" #selectedGoal="ngModel">
+                                                    </p-dropdown>
+                                                </div>
+                                                <ng-container *ngIf="distribution['defaultRecord']">
+                                                    <span *ngIf="owner['fundedGoalDescription']; else noData"
+                                                        class="d-block fixed-width text-truncate"
+                                                        [appNoOverflowTooltip]="owner['fundedGoalDescription']"
+                                                        triggers="manual"
+                                                        placement="bottom">{{ owner['fundedGoalDescription'] }}</span>
+                                                </ng-container>
+                                                <ng-template #noData>N/A</ng-template>
+                                            </td>
+                                        </tr>
+                                    </ng-container>
+                                    <ng-container
+                                        *ngIf="!distribution['shareOwnerGoaltoFundList'] || (distribution['shareOwnerGoaltoFundList'] && distribution['shareOwnerGoaltoFundList'].length == 0)">
+                                        <tr>
+                                            <td colspan="3" class="no-record text-center">
+                                                <i class="ion-ios-alert mr-2"></i>{{'NO_RESULTS' | translate}}
+                                            </td>
+                                        </tr>
+                                    </ng-container>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </ng-container>
+            </div>
+            <div class="box-footer">
+                <div class="form-group text-right">
+                    <button type="button" (click)="closeButtonDisabled = true; back();" value="cancel"
+                        class="btn btn-secondary btn-small" [translate]="'FORM.ACTION.CANCEL'"
+                        [disabled]="closeButtonDisabled"></button>
+                    <button type="submit" value="submit" [disabled]="f.form.invalid || saveButtonDisabled"
+                        class="btn btn-success btn-small mr-3" [translate]="'FORM.ACTION.SAVE'"></button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

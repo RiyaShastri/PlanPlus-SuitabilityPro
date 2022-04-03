@@ -1,0 +1,28 @@
+<div class="cs-wrapper">
+    <div class="mb-3">
+        <!-- <div class="slider-contain">
+            <div *ngFor="let sliderVal of sliderValue" [style.width.%]="sliderVal.percent">{{sliderVal.name}}</div>
+        </div> -->
+    </div>
+    <div class="p-slider">
+        <span class="client-avatars">
+            <span class="initials" *ngIf="member" [style.left.%]="indicator.left" [ngClass]="{'spouse': member.relation == PERSON_RELATION.CLIENT2, 'childs': member.relation == PERSON_RELATION.SON || member.relation == PERSON_RELATION.DAUGHTER}">{{ member.firstName[0] + member.lastName[0] }}</span>
+        </span>
+        <span class="indicator" *ngIf="indicator" [style.left.%]="indicator.left" [style.bottom.px]="indicator.bottom" [style.background]="indicator.background">|</span>
+        <ion-range-slider #sliderElement
+            type="single"
+            min="0"
+            max="100"
+            [disable]="!isEditableRoute"
+            [from]="fromPoint"
+            grid="true"
+            step="1" 
+            grid_num="5"
+            hide_min_max="true"
+            hide_from_to="true"
+            (onChange)="myOnChange($event)"
+            (onFinish)="myOnFinish($event)"
+            >
+        </ion-range-slider>
+    </div>
+</div>

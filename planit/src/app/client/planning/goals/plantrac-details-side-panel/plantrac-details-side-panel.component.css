@@ -1,0 +1,30 @@
+:host {
+    background: #fff;
+    position: fixed;
+    left: auto;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 30%;
+    min-width: 250px;
+    z-index: 9;
+}
+
+.title-section {
+    border-top: 1px solid rgba(0, 0, 0, .1);
+    border-bottom: 1px solid rgba(0, 0, 0, .1);
+    padding: 6px 0;
+}
+
+table.plantac-analysis-tbl > tbody > tr.plantrac-detail-row > td {
+    padding-left: 0px;
+    padding: 4px 0;
+    border: none;
+}
+
+.mb-5 {
+    margin-bottom: 3rem !important;
+}
+table.plantac-analysis-tbl > tbody > tr.plantrac-heading-row > td {
+    border-bottom: 1px solid #ddd;
+}

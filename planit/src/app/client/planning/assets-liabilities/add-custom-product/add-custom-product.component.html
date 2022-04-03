@@ -1,0 +1,62 @@
+<div class="side-form">
+    <form name="form" #f="ngForm" novalidate>
+        <div class="box">
+            <div class="box-header">
+                <span class="sidebar_title" [translate]="'ASSET_LIABILITY.HOLDING_ACCOUNT.ADD_CUSTOM_PRODUCT'"></span>
+                <span (click)="back()" class="sidebar_action_icon ion-md-close-circle float-right"></span>
+            </div>
+            <div class="box-body">
+                <div class="form-group" [ngClass]="{ 'has-error': (description.dirty || description.touched || f.submitted) && !description.valid}">
+                    <label class="custom-form-label m-0">{{'ASSET_LIABILITY.HOLDING_ACCOUNT.ASSET_NAME' | translate}}</label>
+                    <input class="form-control" name="asst_description" [(ngModel)]="customProduct['productDescription']" #description="ngModel" required
+                    />
+                </div>
+                <div class="form-group" [ngClass]="{ 'has-error': (productCode.dirty || f.submitted) && !productCode.valid}">
+                    <label class="custom-form-label"> {{'ASSET_LIABILITY.HOLDING_ACCOUNT.PRODUCT_TYPE' | translate}}</label>
+                    <p-dropdown [options]="productType" name="productCode" [(ngModel)]="customProduct['prod_type']" required optionLabel="description"
+                        placeholder="{{'ASSET_LIABILITY.HOLDING_ACCOUNT.PLACEHOLDER_PRODUCT_TYPE' | translate}}" #productCode="ngModel"></p-dropdown>
+                </div>
+                <div class="form-group">
+                    <span class="fw-700 pb-3 d-block">{{'ASSET_LIABILITY.HOLDING_ACCOUNT.ALLOCATION_BREAKDOWN' | translate}}
+                    </span>
+                    <table class="table bt-none">
+                        <ng-container *ngFor="let item of assetsBreakdown;">
+                            <tr>
+                                <td class="pt-2 pb-2">{{('SSID_LABELS.' + item['ssid']) | translate}}</td>
+                                <td class="pt-2 pb-2">
+                                    <div class="form-group  mb-0 text-right" [ngClass]="{ 'has-error': !assetsBreakdown.valid || f.submitted }">
+                                        <input class="form-control d-inline-block  text-right h-25" min="0" max="100" #assetsBreakdown="ngModel" [textMask]="{mask: percentMask1}"
+                                            appNumeric style="width: 80px" [(ngModel)]="item.allocationPercent" (ngModelChange)="totalAllocation()"
+                                            name="assetsBreakdown{{item.allocationBreakdownId}}" pattern="^100(\.0{0,2})? *%?$|^\d{1,2}(\.\d{1,2})? *%?$"
+                                            required />
+                                    </div>
+                                </td>
+                            </tr>
+                        </ng-container>
+
+                        <tr>
+                            <td>
+                                <b> {{'ASSET_LIABILITY.HOLDING_ACCOUNT.TOTAL' | translate}} </b>
+                            </td>
+                            <td class="text-right fw-400">
+                                <div class="form-group" [ngClass]="{ 'has-error': f.submitted ||  totalBreakDown > 100  }">
+                                    <label class="custom-form-label">
+                                        <b>{{totalBreakDown | number : "1.0-0" }} </b>
+                                    </label>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                    <p *ngIf="totalBreakDown > 100" class="text-error" [translate]="'EDIT_CURRENT.ERROR_MESSAGE.TOTAL_MUST_BE_EQUAL_TO_100'"></p>
+                </div>
+            </div>
+            <div class="box-footer">
+                <div class="form-group text-right">
+                    <button type="button" (click)="back();closeDisable = true" value="cancel" [disabled]="closeDisable" class="btn btn-secondary btn-small" [translate]="'FORM.ACTION.CANCEL'"></button>
+                    <button type="submit" value="submit" [disabled]="f.form.invalid || saveButtonDisable || totalBreakDown != 100" class="btn btn-success btn-small mr-3"
+                        [translate]="'FORM.ACTION.SAVE'" (click)="addCustomProduct(); saveButtonDisable = true"></button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

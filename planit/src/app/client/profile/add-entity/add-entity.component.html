@@ -1,0 +1,73 @@
+<div class="side-form">
+    <form name="form" #f="ngForm" novalidate>
+        <div class="box">
+            <div class="box-header">
+                <span class="sidebar_title" [translate]="'ENTITY.TITLE'"></span>
+                <span (click)="back();cancelDisable = true" class="sidebar_action_icon ion-md-close-circle float-right"></span>
+            </div>
+            <div class="box-body">
+                <div class="form-group center">
+                    <app-image-upload maxFiles="1" maxSize="2" [existingFile]="isAvatar" [isEntity]="true" [isFileselected]="isFileUploded" (fileSelected)="uploadImage($event)"></app-image-upload>
+                </div>
+                <div class="form-group" [ngClass]="{ 'has-error': !description.valid && (description.dirty || description.touched || f.submitted)}">
+                    <label class="custom-form-label" [translate]="'ENTITY.DESCRIPTION'"></label>
+                    <input type="text" class="form-control" name="description" [(ngModel)]="entityData['description']" #description="ngModel"
+                        pattern="^[a-zA-Z].*" required />
+                </div>
+                <div class="form-group" [ngClass]="{ 'has-error': !typeList.valid && (typeList.dirty || typeList.touched || f.submitted)}">
+                    <label class="custom-form-label" [translate]="'ENTITY.TYPE'"></label>
+                    <p-dropdown placeholder="{{'ENTITY.TYPE_PLACEHOLDER' | translate }}" [options]="typeDropList" optionLabel="name" name="typeList"
+                        [(ngModel)]="entityData['type']" #typeList="ngModel" required></p-dropdown>
+                </div>
+                <div class="form-group" [ngClass]="{ 'has-error': !province.valid && (province.dirty || province.touched || f.submitted)}">
+                    <label class="custom-form-label" [translate]="'ENTITY.PROVINCE'"></label>
+                    <p-dropdown placeholder="{{'ENTITY.PROVINCE_PLACEHOLDER' | translate }}" [options]="provinceArr" optionLabel="provinceState"
+                        name="province" [(ngModel)]="selectedProvince" #province="ngModel" required></p-dropdown>
+                </div>
+                <ng-container *ngIf="entityData['type'] && entityData['type']['id'] === TYPES.ACTIVE_BUISNESS">
+                    <div class="form-group">
+                        <fieldset class="form-group add-entity-radio-wrap">
+                            <legend class="custom-form-label w-100" [translate]="'ENTITY.RELATED_CORPORATION'"></legend>
+                            <div class="form-check d-flex" [ngClass]="{ 'has-error': !relatedCorpo.valid && (relatedCorpo.dirty || relatedCorpo.touched || f.submitted)}">
+                                <span class="mr-2">
+                                    <p-radioButton name="relatedCorpo" value="{{CORPORATION_OPTIONS.NO}}" [(ngModel)]="entityData['relatedCorpo']" #relatedCorpo="ngModel"
+                                        required>
+                                    </p-radioButton>
+                                    {{'ENTITY.NO' | translate}}
+                                </span>
+                                <span>
+                                    <p-radioButton name="relatedCorpo" value="{{CORPORATION_OPTIONS.YES}}" [(ngModel)]="entityData['relatedCorpo']" #relatedCorpo="ngModel"
+                                        required>
+                                    </p-radioButton>
+                                    {{'ENTITY.YES' | translate}}
+                                </span>
+                            </div>
+                        </fieldset>
+                    </div>
+                    <div class="form-group" *ngIf="entityData['relatedCorpo'] && entityData['relatedCorpo'] === CORPORATION_OPTIONS.YES">
+                        <label class="custom-form-label" [translate]="'ENTITY.RELATED_CORPORATION_DESCRIPTION'"></label>
+                        <p-dropdown placeholder="{{ (relatedCorporateList.length == 0 ? 'ENTITY.NO_OTHER_CORPORATE_ENTITIES_EXIST' : 'ENTITY.CORPORATION_PLACEHOLDER')  | translate }}"
+                            [options]="relatedCorporateList" optionLabel="description" name="corporationDesc" [(ngModel)]="entityData['relatedCorporate']"
+                            #corporationDesc="ngModel" [required]="relatedCorporateList.length !== 0"></p-dropdown>
+                    </div>
+                </ng-container>
+            </div>
+            <div class="box-footer">
+                <div class="form-group">
+                    <button [disabled]="cancelDisable" (click)="back(); cancelDisable = true" type="button" class="btn btn-small btn-secondary btn-fixwidth mr-2"
+                        [translate]="'FORM.ACTION.CANCEL'"></button>
+                    <button (click)="addEntity(f, SAVE_OPTIONS['SAVE_ENTITY']);saveDisabled = true;" [disabled]="f.form.invalid || saveDisabled"
+                        type="submit" class="btn btn-small btn-success" [translate]="'FORM.ACTION.SAVE_ENTITY'"></button>
+                    <div class="btn-group btn-save btn-custom-split" ngbDropdown role="group" placement="top-right" aria-label="Button group with nested dropdown">
+                        <button [disabled]="f.form.invalid || saveDisabled" class="btn btn-small btn-success dropdown-toggle-split" ngbDropdownToggle></button>
+                        <div class="dropdown-menu btn-dropDown-top" ngbDropdownMenu>
+                            <button class="dropdown-item" (click)="addEntity(f, SAVE_OPTIONS['SAVE_ENTITY']);saveDisabled = true;" [translate]="'FORM.ACTION.SAVE_ENTITY'"></button>
+                            <button class="dropdown-item" (click)="addEntity(f, SAVE_OPTIONS['SAVE_AND_EDIT_ENTITY']);saveDisabled = true;" [translate]="'FORM.ACTION.SAVE_AND_EDIT_ENTITY'"></button>
+                            <button class="dropdown-item" (click)="addEntity(f, SAVE_OPTIONS['SAVE/ADD_ENTITY']);saveDisabled = true;" [translate]="'FORM.ACTION.SAVE/ADD_ENTITY'"></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

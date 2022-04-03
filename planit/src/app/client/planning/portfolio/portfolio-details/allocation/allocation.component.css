@@ -1,0 +1,18 @@
+i.current-edit {
+    background: #fff !important;
+    font-size: 20px !important;
+    line-height: 20px !important;
+    color: #88aa33 !important;
+}
+
+h5 {
+    font-size: 13px;
+    color: #789;
+    font-weight: 400;
+}
+
+@media(min-width:576px) {
+    .text-left-large {
+        text-align: left;
+    }
+}

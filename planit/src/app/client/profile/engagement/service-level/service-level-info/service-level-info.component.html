@@ -1,0 +1,153 @@
+<div class="row">
+    <div class="col-12">
+        <div class="card mb-md-3 rounded-0 ml-md-2">
+            <div class="card-body">
+                <div class=" form-group pr-service-level position-relative">
+                    <a class="btn-add pull-right position-absolute right-15" *ngIf="isEditable" (click)="openModelPopup(content, 1)">
+                        <i class="ion-md-add-circle"></i>
+                        <span class="d-inline-block text-right" [translate]="'ENGAGEMENT.SERVICE_LEVEL_INFO.ADD_A_SERVICE'"></span>
+                    </a>
+                    <h5 class="fw-500 d-inline-block va-middle fs-16" [translate]="'ENGAGEMENT.SERVICE_LEVEL_INFO.TITLE.SERVICE_LEVEL'"></h5>
+                    <span *ngIf="!isEditable" class="pl-2 fw-300">Goal based investing</span>
+                    <div class="col-xs-8 col-sm-6 col-md-12 col-lg-6 d-inline-block va-middle p-sm-0 " *ngIf="isEditable">
+                        <p-dropdown name="serviceLevel" [options]="serviceList" optionLabel="name" placeholder="Select service level"></p-dropdown>
+                    </div>
+
+                </div>
+
+
+                <table class="table">
+                    <tbody class="border-0">
+                        <tr>
+                            <td colspan="3" class="fw-700 pt-2 pb-2 bg-light-gray pl-2">
+                                <span>Engagement</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="border-0 pt-1 pb-1 pl-3">
+                                <span>Value Discussion</span>
+                            </td>
+                            <td colspan="2" class="border-0 pt-1 pb-1">
+                                <div class="form-group mb-0">
+                                    <i *ngIf="!isEditable" class="ion-md-done"></i>
+                                    <p-checkbox *ngIf="isEditable" name="valudiscussion" binary="true"></p-checkbox>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="border-0 pt-1 pb-1 pl-3">
+                                <span>Priorities</span>
+                            </td>
+                            <td colspan="2" class="border-0 pt-1 pb-1">
+                                <div class="form-group mb-0">
+                                    <span>
+                                        <i *ngIf="!isEditable" class="ion-md-done"></i>
+                                        <p-checkbox *ngIf="isEditable" name="valudiscussion" binary="true"></p-checkbox>
+                                    </span>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td colspan="3" class="fw-700 pt-2 pb-2 bg-light-gray pl-2">
+                                <span>Risk profiling</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="border-0 pt-1 pb-1 pl-3">
+                                <span>Risk tolerance test</span>
+                            </td>
+                            <td colspan="2" class="border-0 pt-1 pb-1">
+                                <div class="form-group mb-0">
+                                    <i *ngIf="!isEditable" class="ion-md-done"></i>
+                                    <p-checkbox *ngIf="isEditable" name="valudiscussion" binary="true"></p-checkbox>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="border-0 pt-1 pb-1 pl-3 border-bottom-0">
+                                <span>Know your client and professional judgement matrix</span>
+                            </td>
+                            <td colspan="2" class="border-0 pt-1 pb-1 border-bottom-0">
+                                <div class="form-group mb-0">
+                                    <span>
+                                        <i *ngIf="!isEditable" class="ion-md-done"></i>
+                                        <p-checkbox *ngIf="isEditable" name="valudiscussion" binary="true"></p-checkbox>
+                                    </span>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="3" class="fw-700 pt-2 pb-2 bg-light-gray pl-2">
+                                <span>Other Services</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="border-0 pt-1 pb-1 pl-3">
+                                <span>Risk tolerance test</span>
+                            </td>
+                            <td class="border-0 pt-1 pb-1">
+                                <div class="form-group mb-0">
+                                    <i *ngIf="!isEditable" class="ion-md-done"></i>
+                                    <p-checkbox *ngIf="isEditable" name="valudiscussion" binary="true"></p-checkbox>
+                                </div>
+                            </td>
+                            <td class="border-0 pt-1 pb-1">
+                                <div class="dropdown-relative dropdown-relative-right" *ngIf="isEditable">
+                                    <button type="button" class="btn-floating" (click)="toggleActionMenu('dropdownPrioritiesAction', i)">
+                                        <span class="ion-md-more"></span>
+                                    </button>
+                                    <div [id]="'dropdownPrioritiesAction_' + i" class="dropdown-portfolio-action dropdown-floating hide-ele">
+                                        <ul class="floating-dropdown">
+                                            <li (click)="toggleActionMenu('dropdownPrioritiesAction', i)">
+                                                <a class="action-list" (click)="openModelPopup(content, 2)">
+                                                    <i class="ion-md-create action-list"></i>
+                                                    <span class="action-list" [translate]="'ENGAGEMENT.SERVICE_LEVEL_INFO.EDIT_SERVICE'"></span>
+                                                </a>
+                                            </li>
+                                            <li (click)="toggleActionMenu('dropdownPrioritiesAction', i)" class="delete-btn">
+                                                <a class="action-list" (click)="deleteService()">
+                                                    <i class="ion-md-close-circle action-list"></i>
+                                                    <span class="action-list" [translate]="'ENGAGEMENT.SERVICE_LEVEL_INFO.DELETE_SERVICE'"></span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="form-group pt-3 mt-4">
+                    <h5 class="mb-0  d-inline-block va-middle fs-16" [translate]="'ENGAGEMENT.SERVICE_LEVEL_INFO.MANAGE_BY'"></h5>
+                    <span *ngIf="!isEditable" class="d-inline-block pl-2 va-middle">Individual portfolio</span>
+                    <div class="d-inline-block mb-0 va-middle w-50">
+                        <p-dropdown *ngIf="isEditable" name="manageBy" [options]="manageByList" optionLabel="name"></p-dropdown>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<ng-template #content let-c="close" let-d="dismiss">
+    <div class="modal-header">
+        <span class="modal-title" id="modal-basic-title">{{title}}</span>
+        <span (click)="d('Cross click')" class="sidebar_action_icon ion-md-close-circle">
+        </span>
+    </div>
+    <form name="form" #f="ngForm" novalidate>
+        <div class="modal-body">
+            <div class="form-group">
+                <label class="custom-form-label" [translate]="'ENGAGEMENT.DESCRIPTION'"></label>
+                <input type="text" class="form-control" name="description" [(ngModel)]="description" #name="ngModel" required />
+            </div>
+
+        </div>
+        <div class="modal-footer">
+            <div class="form-group text-right">
+                <button class="btn btn-secondary btn-small mr-2" type="button" (click)="d('Cross click');" [translate]="'FORM.ACTION.CANCEL'"></button>
+                <button type="submit" [disabled]="!f.form.valid" class="btn btn-success btn-small" (click)="c('Save click');" [translate]="'FORM.ACTION.SAVE'"></button>
+            </div>
+        </div>
+    </form>
+</ng-template>

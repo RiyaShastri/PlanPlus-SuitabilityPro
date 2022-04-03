@@ -1,0 +1,81 @@
+<div class="panel mt-lg-0">
+    <div class="d-flex flex-wrap panel-header mb-xl-3 mb-3">
+        <h4>{{'ADVISOR.DASHBOARD.WORKFLOW_TILE.TITLE' | translate}}</h4>
+    </div>
+
+    <app-common-drop-down [itemList]="timePeriodList" [defaultSelected]="selectedtimePeriod" dropDownLabel="Period"
+        (OnSelect)="getFilterWorkflow($event)"></app-common-drop-down>
+    <div class="panel-body workflow-box">
+        <div class="row" *ngIf="workflowSummary">
+            <div class="col-12 col-md-8">
+                <table class="table mt-3">
+                    <tbody>
+                        <tr>
+                            <td width="150">
+                                <span class="square mr-2" [style.background-color]="chartColours[0]"></span>
+                                <span
+                                    class="fw-700">{{'ADVISOR.DASHBOARD.WORKFLOW_TILE.IN_PROGRESS' | translate}}</span>
+                            </td>
+                            <td class="text-right fw-400">{{(workflowSummary.inProgress/currentTotal) |
+                                    percent : '0.0-0'}}</td>
+                            <td class="text-right">{{ workflowSummary.inProgress}}</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span class="square mr-2" [style.background-color]="chartColours[1]"></span>
+                                <span
+                                    class="fw-700">{{'ADVISOR.DASHBOARD.WORKFLOW_TILE.UNDER_REVIEW' | translate}}</span>
+                            </td>
+                            <td class="text-right fw-400"> {{(workflowSummary.underReview/currentTotal)|
+                                    percent : '0.0-0' }}</td>
+                            <td class="text-right"> {{ workflowSummary.underReview}} </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span class="square mr-2" [style.background-color]="chartColours[2]"></span>
+                                <span class="fw-700">{{'ADVISOR.DASHBOARD.WORKFLOW_TILE.COMPLETED' | translate}}</span>
+                            </td>
+                            <td class="text-right fw-400"> {{(workflowSummary.completed/currentTotal)|
+                                    percent : '0.0-0' }} </td>
+                            <td class="text-right"> {{ workflowSummary.completed}} </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span class="square mr-2" [style.background-color]="chartColours[3]"></span>
+                                <span class="fw-700">{{'ADVISOR.DASHBOARD.WORKFLOW_TILE.SHARED' | translate}}</span>
+                            </td>
+                            <td class="text-right fw-400"> {{(workflowSummary.shared/currentTotal)|
+                                    percent : '0.0-0'}} </td>
+                            <td class="text-right"> {{ workflowSummary.shared}} </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span class="square mr-2" [style.background-color]="chartColours[4]"></span>
+                                <span class="fw-700">{{'ADVISOR.DASHBOARD.WORKFLOW_TILE.MONITORING' | translate}}</span>
+                            </td>
+                            <td class="text-right fw-400"> {{(workflowSummary.monitoring/currentTotal)|
+                                    percent : '0.0-0'}}</td>
+                            <td class="text-right"> {{ workflowSummary.monitoring}} </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-12 col-md-4 mt-xl-0 mt-lg-0 mt-md-0 mt-sm-4 mt-4">
+                <div id="chartWorkFlow" style="height:187px"></div>
+            </div>
+        </div>
+        <ng-container *ngIf="!workflowSummary">
+            <div class="row">
+                <div class="col-12">
+                    <table class="table mt-3">
+                        <tr>
+                            <td colspan="5" class="no-record text-center">
+                                <i class="ion-ios-alert mr-2"></i>{{'NO_RESULTS' | translate}}
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </ng-container>
+    </div>
+</div>

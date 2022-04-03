@@ -1,0 +1,128 @@
+<div class="panel pb-0" [ngClass]="{ 'mt-0' : clientId }">
+
+    <div class="d-flex flex-wrap panel-header mb-2">
+        <h4 [translate]="'ADVISOR.DASHBOARD.COLLABORATION_TILE.TITLE'"></h4>
+        <ng-container *ngIf="!collaborationsData">
+            <i aria-hidden="true" class="fa fa-spinner fa-pulse loader-icon"></i>
+        </ng-container>
+        <div class="d-flex ml-auto" *ngIf="!clientId && collaborations && collabDetailsExist">
+            <ng-template #pendingCallout>
+                {{ 'ADVISOR.DASHBOARD.COLLABORATION_TILE.PENDING_INDICATOR' | translate : {noOfPending: collaborations['totalPending']} }}
+            </ng-template>
+            <span class="initials btn-circle-orange ml-2 cursor-p" [ngbTooltip]="pendingCallout" placement="bottom"
+                triggers="click" #pending="ngbTooltip" (click)="inconsistent.close();">
+                {{collaborations['totalPending']}}
+            </span>
+            <ng-template #inconsistentCallout>
+                {{ 'ADVISOR.DASHBOARD.COLLABORATION_TILE.INCONSISTENT_INDICATOR' | translate : {noOfInconsistent: collaborations['totalInconsistent']} }}
+            </ng-template>
+            <span class="initials btn-circle-red ml-2 cursor-p" [ngbTooltip]="inconsistentCallout" placement="bottom"
+                triggers="click" #inconsistent="ngbTooltip" (click)="pending.close();">
+                {{collaborations['totalInconsistent']}}
+            </span>
+        </div>
+    </div>
+
+    <div class="panel-body">
+        <table class="table" *ngIf="collaborationsData">
+            <thead>
+                <tr>
+                    <th colspan="2">
+                        <app-common-drop-down *ngIf="!clientId" [itemList]="filterOptions" [defaultSelected]="selectedFilter"
+                            dropDownLabel="{{ 'PORTFOLIOS.VIEW_DROPDOWN' | translate }}"
+                            (OnSelect)="getFilterCollaboration($event)"></app-common-drop-down>
+                    </th>
+                    <th class="text-center hidden-xs-down" [translate]="'CUSTOM.STATUS'"></th>
+                    <th class="text-center" [style.width.px]="50" [translate]="'CUSTOM.ACTIONS'"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <ng-container *ngIf="collaborationsData && collaborationsData.length > 0">
+                    <tr *ngFor="let collab of collaborationsData; let i = index;">
+                      <ng-container *ngIf="(accessRights['RISKTOLERCLIENT'] && accessRights['RISKTOLERCLIENT']['accessLevel'] > 0 && COLLABORATION_DESC_TYPES.RISK === collab['collabType']) || (accessRights['DOCSHARE']['accessLevel'] > 0 && COLLABORATION_DESC_TYPES.VALUE === collab['collabType'])">
+                        <td *ngIf="!clientId">{{collab['firstName']}} {{collab['lastName']}}</td>
+                        <td *ngIf="clientId">
+                            <span class="collab-text-truncate" [appNoOverflowTooltip]="collab['firstName'] + ' ' + collab['lastName']" placement="bottom" triggers="manual">{{collab['firstName']}} {{collab['lastName']}}</span>
+                        </td>
+                        <td class="fw-400">
+                            {{('SSID_LABELS.' + collab['collabId']) | translate}}
+                        </td>
+                        <td valign="middle" class="text-center hidden-xs-down">
+                                <div class="circle" [ngClass]="{ 'bg-green' : collab['complete'] === true && collab['invited'] === true,
+                                'bg-red' : collab['inconsistent'] === true && collab['invited'] === true,
+                                'bg-orange': collab['complete'] === false && collab['invited'] === true,
+                                'bg-blank': collab['invited'] === false}">
+                            </div>
+                        </td>
+                        <td class="text-center">
+                            <div class="dropdown-relative">
+                                <button type="button" class="btn-floating" (click)="changeCollaborationAction(i)">
+                                    <span class="ion-md-more"></span>
+                                </button>
+                                <div [id]="'dropdownCollaborationAction'+i"
+                                    class="dropdown-collaboration-action dropdown-floating hide-ele">
+                                    <ul class="floating-dropdown">
+                                        <li *ngIf="collab['pending'] === true && COLLABORATION_DESC_TYPES.VALUE !== collab['collabType']" (click)="changeCollaborationAction(i)">
+                                            <a (click)="sendReminder(collab)" class="action-list">
+                                                <i class="ion-md-notifications action-list"></i>
+                                                <span [translate]="'CUSTOM.SEND_REMINDER'" class="action-list"></span>
+                                            </a>
+                                        </li>
+                                        <li *ngIf="collab['pending'] === false || COLLABORATION_DESC_TYPES.VALUE === collab['collabType']"
+                                         class="disable-link">
+                                            <a class="action-list">
+                                                <i class="ion-md-notifications action-list"></i>
+                                                <span [translate]="'CUSTOM.SEND_REMINDER'" class="action-list"></span>
+                                            </a>
+                                        </li>
+                                        <li *ngIf="collab['inconsistent'] === true && COLLABORATION_DESC_TYPES.VALUE !== collab['collabType']"
+                                            (click)="changeCollaborationAction(i)">
+                                            <a (click)="unlockAndReset(collab['clientId'])" class="action-list">
+                                                <i class="ion-ios-unlock action-list"></i>
+                                                <span [translate]="'CUSTOM.UNLOCK_RESET'" class="action-list"></span>
+                                            </a>
+                                        </li>
+                                        <li *ngIf="collab['inconsistent'] === false" class="disable-link">
+                                            <a class="action-list">
+                                                <i class="ion-ios-unlock action-list"></i>
+                                                <span [translate]="'CUSTOM.UNLOCK_RESET'" class="action-list"></span>
+                                            </a>
+                                        </li>
+                                        <li *ngIf="collab['invited'] === true"
+                                            (click)="changeCollaborationAction(i)">
+                                            <a (click)="removeAccess(collab['clientId'], collab['collabId'])" class="action-list">
+                                                <i class="ion-md-link action-list"></i>
+                                                <span [translate]="'CUSTOM.REMOVE_ACCESS'" class="action-list"></span>
+                                            </a>
+                                        </li>
+                                        <li *ngIf="collab['invited'] === false" class="disable-link">
+                                            <a class="action-list">
+                                                <i class="ion-md-link action-list"></i>
+                                                <span [translate]="'CUSTOM.REMOVE_ACCESS'" class="action-list"></span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </td>
+                      </ng-container>
+                    </tr>
+                </ng-container>
+                <ng-container
+                    *ngIf="!collabDetailsExist || !collaborationsData || (collaborationsData && collaborationsData.length === 0)">
+                    <tr>
+                        <td colspan="4" class="no-record text-center">
+                            <i class="ion-ios-alert mr-2"></i>{{'NO_RESULTS' | translate}}
+                        </td>
+                    </tr>
+                </ng-container>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="panel-footer" *ngIf="!clientId && collaborations && collaborations['totalRecords']">
+        <app-pagination [pageChangingNum]="changePage" [PageSize]="pageSize" [TotalItem]="collaborations['totalRecords']"
+            (OnPageChange)="getPageFilterCollaboration($event)"></app-pagination>
+    </div>
+
+</div>

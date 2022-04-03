@@ -1,0 +1,75 @@
+.retained-earning-table .border-none {
+    border-bottom: 0!important;
+}
+
+.income-distribution-tooltip {
+    width: 90px;
+    display: inline-block;
+}
+
+.distribution-wrapper span {
+    font-size: 14px;
+    color: #39414A;
+    font-weight: 400;
+}
+
+.table-row {
+    align-items: center;
+    border-bottom: 1px solid #ccc;
+    display: flex;
+    height: 50px;
+    padding: 0 10px;
+}
+
+.table-header span {
+    color: #788588;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.left-side {
+    max-width: 250px;
+    flex: 0 0 250px;
+}
+
+.left-side .retainedDescription {
+    flex-grow: 1;
+}
+
+.left-side .retainedAmount {
+    width: 80px;
+    text-align: right;
+}
+
+.middle-side {
+    flex: 0 0 calc(100% - 250px);
+    overflow-x: auto;
+}
+
+.middle-side .table-row {
+    display: table;
+    width: 100%;
+}
+
+.middle-side .table-row .value-wrapper {
+    /* display: table-cell; */
+    /* padding: 0 5px;*/
+    margin: 0 5px;
+    min-width: 100px;
+    text-align: right;
+    vertical-align: middle;
+    width: 100px;
+}
+
+
+
+.table-row-wrapper {
+    display: flex;
+    align-items: center;
+    height: inherit;
+    margin-top: -1px;
+}
+
+.total-text-bold {
+    font-weight: bold !important;
+}

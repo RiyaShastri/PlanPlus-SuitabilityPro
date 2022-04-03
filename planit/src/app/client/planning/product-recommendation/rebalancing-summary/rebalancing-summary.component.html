@@ -1,0 +1,187 @@
+<div class="row">
+    <div class="col-12 col-lg-4 prod-dropdown" *ngIf="portfolioTypes.length > 1">
+        <app-common-drop-down [itemList]="portfolioTypes" [defaultSelected]="selectedPortfolio" dropDownLabel="" (OnSelect)="getSelectedPortfolio($event)"></app-common-drop-down>
+    </div>
+    <div class="col-12 col-lg-4 prod-dropdown" *ngIf="currencies && selectedCurrency">
+        <div ngbDropdown class="dropdown-common">
+            <a class="text-uppercase" id="dropdownBasic1" ngbDropdownToggle>
+                <span class="pr-1 selected-text">{{selectedCurrency.description}}</span>
+                <i class="ion-md-arrow-dropdown"></i>
+            </a>
+            <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+                <ul>
+                    <li *ngFor="let currency of currencies">
+                        <a [ngClass]="{active : selectedCurrency.isoCode === currency.isoCode}" class="dropdown-item" (click)="getSelectedCurrency(currency)">
+                            <span>{{currency.description}}</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 col-lg-4 text-right" *ngIf="selectedPortfolio.id !== 'ALLPORTFOLIO' && investmentStrategy">
+        <div class="dropdown">{{'PRODUCT_RECOMM.TITLE.INVESTMENT_STRATEGY' | translate}}: {{investmentStrategy.porttype}}</div>
+    </div>
+    <div class="col-12">
+        <hr>
+    </div>
+    <div class="col-12">
+        <div class="row">
+            <table class="table retirement-table" *ngIf="selectedCurrency">
+                <thead>
+                    <tr>
+                        <th>&nbsp;</th>
+                        <th colspan="6" class="text-center hidden-sm-down" [translate]="'PRODUCT_RECOMM.TABLE.YOUR_RECOMMENDATION'"></th>
+                        <th colspan="4" class="text-center hidden-xs-down hidden-md-up" [translate]="'PRODUCT_RECOMM.TABLE.YOUR_RECOMMENDATION'"></th>
+                        <th colspan="2" class="text-center hidden-sm-up hidden-lg-up" [translate]="'PRODUCT_RECOMM.TABLE.YOUR_RECOMMENDATION'"></th>
+                        <th class="hidden-xs-down">&nbsp;</th>
+                    </tr>
+                    <tr>
+                        <th>&nbsp;</th>
+                        <th colspan="2" class="text-right pr-3" [translate]="'PRODUCT_RECOMM.TABLE.CURRENT_ALLOCATION'"></th>
+                        <th colspan="2" class="text-right pr-3 hidden-sm-down" [translate]="'PRODUCT_RECOMM.TABLE.MODEL_WEIGHTING'"></th>
+                        <th colspan="2" class="text-right pr-3 hidden-xs-down green-color" [translate]="'PRODUCT_RECOMM.TABLE.YOUR_WEIGHTING'"></th>
+                        <th class="text-right hidden-xs-down" [translate]="'PRODUCT_RECOMM.TABLE.VARIANCE'"></th>
+                    </tr>
+                    <tr>
+                        <th [translate]="'PRODUCT_RECOMM.TABLE.ASSET_CLASS'"></th>
+                        <th colspan="2">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center" width="50%" [translate]="'PRODUCT_RECOMM.TABLE.AMOUNT'"></th>
+                                        <th class="text-right pr-3" width="50%" [translate]="'PRODUCT_RECOMM.TABLE.PERCENT'"></th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </th>
+                        <th colspan="2" class="hidden-sm-down">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center" width="50%" [translate]="'PRODUCT_RECOMM.TABLE.AMOUNT'"></th>
+                                        <th class="text-right pr-3" width="50%" [translate]="'PRODUCT_RECOMM.TABLE.PERCENT'"></th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </th>
+                        <th colspan="2" class="hidden-xs-down">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center" width="50%" [translate]="'PRODUCT_RECOMM.TABLE.AMOUNT'"></th>
+                                        <th class="text-right pr-3" width="50%" [translate]="'PRODUCT_RECOMM.TABLE.PERCENT'"></th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </th>
+                        <th class="hidden-xs-down">&nbsp;</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr *ngFor="let rSummary of rebalancingSummaries; let i = index;">
+                        <td class="fontsize-lg fw-700">{{rSummary.assetClass}}</td>
+                        <td colspan="2">
+                            <table class="table">
+                                <tbody>
+                                    <tr>
+                                        <td class="text-center" width="50%">
+                                            {{rSummary.currentAllocation.amount | currency:clientData['currencyCode'] :'symbol-narrow':'1.0-0'}}
+                                        </td>
+                                        <td class="text-right pr-3 fw-400" width="50%">
+                                            {{rSummary.currentAllocation.percent / 100 | percent:'0.1-1'}}
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                        <td colspan="2" class="hidden-sm-down">
+                            <table class="table">
+                                <tbody>
+                                    <tr>
+                                        <td class="text-center" width="50%">
+                                            {{rSummary.modelWeighting.amount | currency:clientData['currencyCode'] :'symbol-narrow':'1.0-0'}}
+                                        </td>
+                                        <td class="text-right pr-3 fw-400" width="50%">
+                                            {{rSummary.modelWeighting.percent / 100 | percent:'0.1-1'}}
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                        <td colspan="2" class="hidden-xs-down">
+                            <table class="table">
+                                <tbody>
+                                    <tr>
+                                        <td class="text-center green-color" width="50%">
+                                            {{rSummary.yourWeighting.amount | currency:clientData['currencyCode'] :'symbol-narrow':'1.0-0'}}
+                                        </td>
+                                        <td class="text-right pr-3 fw-400 green-color" width="50%">
+                                            {{rSummary.yourWeighting.percent / 100 | percent}}
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                        <td class="text-right pr-0 hidden-xs-down" [ngClass]="{'red-color': rSummary.yourWeighting.amount - rSummary.currentAllocation.amount < 0}">
+                                <span class="mr--4" *ngIf="rSummary.yourWeighting.amount - rSummary.currentAllocation.amount > 0">+</span>
+                            {{(rSummary.yourWeighting.amount - rSummary.currentAllocation.amount) | currency:clientData['currencyCode'] :'symbol-narrow':'1.0-0'}}
+                        </td>
+                    </tr>
+                </tbody>
+
+                <tfoot>
+                    <tr>
+                        <td class="fw-700" [translate]="'PRODUCT_RECOMM.TABLE.TOTAL_ACCOUNTS'"></td>
+                        <td colspan="2">
+                            <table class="table">
+                                <tfoot>
+                                    <tr>
+                                        <td class="text-center fw-700" width="50%" *ngIf="totalCurrentAllocation">
+                                            {{totalCurrentAllocation | currency:clientData['currencyCode'] :'symbol-narrow':'1.0-0'}}
+                                        </td>
+                                        <td class="text-right pr-3 fw-700" width="50%">&nbsp;</td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </td>
+                        <td colspan="2" class="hidden-sm-down">
+                            <table class="table">
+                                <tfoot>
+                                    <tr>
+                                        <td class="text-center fw-700" width="50%" *ngIf="totalModelWeighting">
+                                            {{totalModelWeighting | currency:clientData['currencyCode'] :'symbol-narrow':'1.0-0'}}
+                                        </td>
+                                        <td class="text-right pr-3 fw-700" width="50%">&nbsp;</td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </td>
+                        <td colspan="2" class="hidden-xs-down">
+                            <table class="table">
+                                <tfoot>
+                                    <tr>
+                                        <td class="text-center green-color fw-700" width="50%" *ngIf="totalYourWeighting">
+                                            {{totalYourWeighting | currency:clientData['currencyCode'] :'symbol-narrow':'1.0-0'}}
+                                        </td>
+                                        <td class="text-right pr-3 fw-700 green-color" width="50%">&nbsp;</td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </td>
+                        <td class="text-right pr-0 hidden-xs-down" [ngClass]="{'red-color': totalYourWeighting - totalCurrentAllocation < 0}">
+                            <span class="mr--4" *ngIf="totalYourWeighting - totalCurrentAllocation > 0">+</span>
+                            {{(totalYourWeighting - totalCurrentAllocation) | currency:clientData['currencyCode'] :'symbol-narrow':'1.0-0'}}
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+
+    <div class="col-12">
+        <hr class="mt-0">
+    </div>
+
+</div>

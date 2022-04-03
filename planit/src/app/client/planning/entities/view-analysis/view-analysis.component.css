@@ -1,0 +1,16 @@
+.total_row td {
+    background-color: #eee;
+    font-weight: bold !important;
+}
+
+@media(max-width:991px) {
+    .longTermDesc {
+        width: 45% !important;
+    }
+}
+
+@media(max-width:575px) {
+    .longTermDesc {
+        width: 25% !important;
+    }
+}

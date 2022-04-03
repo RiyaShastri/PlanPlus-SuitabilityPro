@@ -1,0 +1,31 @@
+<div class="side-form">
+    <form name="form" (ngSubmit)="f.form.valid && renameDocument()" #f="ngForm" novalidate>
+        <div class="box">
+            <div class="box-header">
+                <span class="sidebar_title" [translate]="'DOCUMENT.RENAME_DOCUMENT'"></span>
+                <span (click)="back(); closeButtonDisable=true" class="sidebar_action_icon ion-md-close-circle float-right"></span>
+            </div>
+
+            <div class="box-body">
+                <div class="form-group">
+                    <label class="custom-form-label" [translate]="'FORM.OLD_DOCUMENT_NAME'"> </label>
+                    <p class="pl-3" *ngIf="document">
+                        {{document.documentName}}
+                    </p>
+                </div>
+
+                <div class="form-group" [ngClass]="{'has-error': !new_document.valid && (new_document.dirty || new_document.touched || f.submitted)}">
+                    <label class=custom-form-label [translate]="'FORM.NEW_DOCUMENT_NAME'"></label>
+                    <input type="text" class="form-control" name="new_document" [(ngModel)]="newDocumentName" #new_document="ngModel" required myNoSpaces />
+                </div>
+            </div>
+
+            <div class="box-footer">
+                <div class="form-group text-right mb-0">
+                    <button (click)="back(); closeButtonDisable=true" type="button" class="btn btn-small btn-secondary btn-fixwidth mr-2" [disabled]="closeButtonDisable">{{ 'FORM.ACTION.CANCEL' | translate }}</button>
+                    <button [disabled]="!f.form.valid" class="btn btn-small btn-success">{{ 'FORM.ACTION.SAVE_CHANGES' | translate }}</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

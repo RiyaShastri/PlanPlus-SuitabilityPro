@@ -1,0 +1,115 @@
+<h5>
+    <span *ngIf="type == 'current'" [translate]="'PORTFOLIO_ALLOCATION.CURRENT'" class="graph-upper-lable"></span>
+
+    <span *ngIf="type == 'target'" [translate]="'PORTFOLIO_ALLOCATION.TARGET'" class="graph-upper-lable"></span>
+
+    <span>
+        <span *ngIf="type == 'implemented'" [translate]="'PORTFOLIO_ALLOCATION.IMPLEMENTED'" class="graph-upper-lable"></span>
+        <ng-container *ngIf="type == 'implemented' && portfolioId=='AllPortfolios' && warningsExist ">
+            <span class="ion-ios-alert" [ngbTooltip]="keyCurrentWarning" #currentWarning="ngbTooltip" triggers="manual" placement="bottom"
+                (click)="currentWarning.open()"></span>
+            <ng-template #keyCurrentWarning>
+                <p>{{'PORTFOLIO_ALLOCATION.WARNING.IMPLEMENTATION_WARNING_FOR_ALL' | translate }}</p>
+
+                <p class="text-right m-0 p-0">
+                    <button class="btn btn-secondary btn-small m-0" (click)="currentWarning.close()" [translate]="'PORTFOLIO_ALLOCATION.WARNING.CLOSE'"></button>
+                </p>
+            </ng-template>
+        </ng-container>
+    </span>
+    <ng-container *ngIf="(!summaryExist || summaryData == null) && portfolioId!='AllPortfolios'">
+        <span class="ion-ios-alert" [ngbTooltip]="keyCurrentWarning" #currentWarning="ngbTooltip" triggers="manual" placement="bottom"
+            (click)="currentWarning.open()"></span>
+        <ng-template #keyCurrentWarning>
+            <p>{{'PORTFOLIO_ALLOCATION.WARNING.IMPLEMENTATION_WARNING' | translate }}</p>
+
+            <p class="text-right m-0 p-0">
+                <button class="btn btn-secondary btn-small m-0" (click)="currentWarning.close()" [translate]="'PORTFOLIO_ALLOCATION.WARNING.CLOSE'"></button>
+            </p>
+        </ng-template>
+    </ng-container>
+</h5>
+
+
+<div *ngIf="summaryExist && summaryData !== null" id="chart_{{type}}" style="height:195px; max-width: 175px; width: 100%; display: inline-block;"></div>
+<div *ngIf="!summaryExist || summaryData == null" class="no-record text-center position-relative" style="height:195px; max-width: 175px; width: 100%; display: inline-block;">
+    <p class="no_data_graph">
+        <i class="ion-ios-alert mr-2"></i>{{'NO_RESULTS' | translate}}</p>
+</div>
+<div class="allocationsdata-box">
+    <table class="table current-table current-table-w-range">
+        <thead>
+            <tr>
+                <th *ngIf="type == 'current'" class="text-left pl-15" [translate]="'PORTFOLIO_ALLOCATION.CURRENT'"></th>
+                <th *ngIf="type == 'target'" class="text-left pl-15" [translate]="'PORTFOLIO_ALLOCATION.TARGET'"></th>
+                <th *ngIf="type == 'implemented'" class="text-left pl-15" [translate]="'PORTFOLIO_ALLOCATION.IMPLEMENTED'"></th>
+                <th class="hidden-sm-down" *ngIf="selectedViewBy.id == 3"></th>
+                <th class="text-right hidden-xs-down" colSpan="{{selectedViewBy.id == 2 || selectedViewBy.id == 4 ? '3' : selectedViewBy.id == 3 ? '2' : ''}}">
+                    <h4>
+                        <a *ngIf="summaryExist && accessRights['POB01']['accessLevel'] === 3" routerLink="{{analyticsRoute}}" class="fs-12" [ngClass]="{'fs-sm-10': (selectedViewBy.id == 5 || selectedViewBy.id == 6 || selectedViewBy.id == 7)}">
+                            <i class="action_icon ion-ios-pulse"></i>
+                            <span [translate]="'PORTFOLIO.ACTION.ANALYTICS'"></span>
+                        </a>
+                        <a *ngIf="!summaryExist || accessRights['POB01']['accessLevel'] !== 3" [ngClass]="{'fs-sm-10': (selectedViewBy.id == 5 || selectedViewBy.id == 6 || selectedViewBy.id == 7)}"
+                            class="fs-12 disabled-link">
+                            <i class="action_icon ion-ios-pulse"></i>
+                            <span [translate]="'PORTFOLIO.ACTION.ANALYTICS'"></span>
+                        </a>
+                    </h4>
+                </th>
+            </tr>
+            <tr>
+                <th width="15%" class="text-center" *ngIf="selectedViewBy.id == 2 || selectedViewBy.id == 3 || selectedViewBy.id == 4" [translate]="'PORTFOLIO_ALLOCATION.MIN'"></th>
+                <th width="25%" [ngClass]="{
+                            'text-left pl-15': (selectedViewBy.id != 2 || selectedViewBy.id != 3 || selectedViewBy.id != 4), 
+                            'text-center': (selectedViewBy.id == 2 || selectedViewBy.id == 3 || selectedViewBy.id == 4)}">%</th>
+                <th width="45%" *ngIf="selectedViewBy.id != 3" [ngClass]="{
+                            'text-right': (selectedViewBy.id != 2 || selectedViewBy.id != 4), 
+                            'text-center': (selectedViewBy.id == 2 || selectedViewBy.id == 4), 
+                            'hidden-xs-down': selectedViewBy.id != 1}" [translate]="'PORTFOLIO_ALLOCATION.TABLE.AMOUNT'"></th>
+                <th width="15%" [ngClass]="{
+                            'text-right pr-15': (selectedViewBy.id == 2 || selectedViewBy.id == 3 || selectedViewBy.id == 4)}"
+                    *ngIf="selectedViewBy.id == 2 || selectedViewBy.id == 3 || selectedViewBy.id == 4" [translate]="'PORTFOLIO_ALLOCATION.MAX'">
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let allocation of allocationsData; let i = index">
+                <td width="15%" class="blue-bg" [ngClass]="{'text-right pr-15': selectedViewBy.id == 2 || selectedViewBy.id == 3 || selectedViewBy.id == 4}"
+                    *ngIf="selectedViewBy.id == 2 || selectedViewBy.id == 3 || selectedViewBy.id == 4">
+                    {{allocation[type + 'MinPolicy'] | number:'1.1-2'}}%</td>
+                <td width="25%" [ngClass]="{
+                            'text-left pl-15': selectedViewBy.id != 2 || selectedViewBy.id != 3 || selectedViewBy.id != 4, 
+                            'text-center': selectedViewBy.id == 2 || selectedViewBy.id == 3 || selectedViewBy.id == 4}">
+                    {{allocation[type + 'Percent'] | number:'1.1-2'}}%</td>
+                <td width="45%" class="fw-400 pr-0" *ngIf="selectedViewBy.id != 3" [ngClass]="{
+                            'text-right': (selectedViewBy.id != 2  || selectedViewBy.id != 4), 
+                            'text-center': (selectedViewBy.id == 2 || selectedViewBy.id == 4), 
+                            'hidden-xs-down': selectedViewBy.id != 1}">
+                    {{allocation[type + 'Amount'] | currency:clientData['currencyCode'] :'symbol-narrow':'1.0-0'}}</td>
+                <td width="15%" class="blue-bg" [ngClass]="{
+                            'text-right pr-15': (selectedViewBy.id == 2 || selectedViewBy.id == 3 || selectedViewBy.id == 4)}"
+                    *ngIf="selectedViewBy.id == 2 || selectedViewBy.id == 3 || selectedViewBy.id == 4">
+                    {{allocation[type + 'MaxPolicy'] | number:'1.1-2'}}%</td>
+            </tr>
+            <tr>
+                <td width="15%" class="border-bottom-0 pb-0" [ngClass]="{'text-right pr-15': selectedViewBy.id == 2 || selectedViewBy.id == 3 || selectedViewBy.id == 4}"
+                    *ngIf="selectedViewBy.id == 2 || selectedViewBy.id == 3 || selectedViewBy.id == 4"></td>
+                <td width="25%" class="fw-700 border-bottom-0 pb-0" [ngClass]="{
+                            'text-left pl-15': selectedViewBy.id != 2 || selectedViewBy.id != 3 || selectedViewBy.id != 4, 
+                            'text-center': selectedViewBy.id == 2 || selectedViewBy.id == 3 || selectedViewBy.id == 4}">
+                    {{totalPercent | number:'1.1-2'}}%
+                </td>
+                <td width="45%" class="fw-700 border-bottom-0 pb-0" *ngIf="selectedViewBy.id != 3" [ngClass]="{
+                            'text-right': (selectedViewBy.id != 2 || selectedViewBy.id != 4), 
+                            'text-center': (selectedViewBy.id == 2 || selectedViewBy.id == 4), 
+                            'hidden-xs-down': selectedViewBy.id != 1}">
+                    {{totalAmount|currency:clientData['currencyCode'] :'symbol-narrow':'1.0-0'}}
+                </td>
+                <td width="15%" class="border-bottom-0 pb-0" [ngClass]="{
+                            'text-right pr-15': (selectedViewBy.id == 2 || selectedViewBy.id == 3 || selectedViewBy.id == 4)}"
+                    *ngIf="selectedViewBy.id == 2 || selectedViewBy.id == 3 || selectedViewBy.id == 4"></td>
+            </tr>
+        </tbody>
+    </table>
+</div>

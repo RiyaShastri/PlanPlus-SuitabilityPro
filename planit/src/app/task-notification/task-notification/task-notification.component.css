@@ -1,0 +1,116 @@
+.notification-bg {
+    background: #fff;
+    min-height: 100%;
+}
+
+.table>tbody>tr>td {
+    vertical-align: middle;
+}
+
+.notification-bg .form-group .custom-form-label {
+    line-height: 40px;
+}
+
+.cancle-display {
+    cursor: unset;
+    opacity: 0.5;
+}
+
+tr td p i {
+    font-size: 22px;
+    line-height: 18px;
+}
+
+.tooltip-inner {
+    min-width: 125px;
+}
+
+.txt_lbl,
+.value_lbl {
+    display: inline-block;
+    vertical-align: top;
+}
+
+.red-dot-indicator,
+.orange-dot-indicator {
+    display: block;
+    margin: 0 auto;
+}
+
+.text-nowrap-custom {
+    white-space: normal !important;
+    word-break: break-word;
+}
+
+.text-truncate-custom {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+@media(max-width:992px) {
+    .table td:last-child {
+        width: 5%;
+    }
+}
+
+@media(max-width: 844px) {
+    .pl-sm-15px {
+        padding-left: 15px !important;
+        padding-right: 0;
+    }
+}
+
+@media(max-width: 575px) {
+    .text-sm-left {
+        text-align: left !important;
+    }
+    .text-nowrap {
+        white-space: nowrap;
+    }
+    .hidden-xs-custom {
+        display: none !important;
+    }
+    .table th {
+        font-size: 12px;
+        vertical-align: middle;
+    }
+    .ellipsis-client{
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+        width: 75px !important;
+        margin-left: 15px !important;
+    }
+    .th-fixed-width .ellipsis-client{
+        width: 40px !important;
+        margin-left: 5px !important;
+        text-overflow: unset;
+        word-break: normal;
+        white-space: normal;
+        
+    }
+    .ellipsis-taskType,.ellipsis-dueDate{
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+        width: 50px !important;
+        display: inline-block;
+        margin-top: 5px;
+    }
+    .ellipsis-dueDate{
+        width: 15px !important;
+    }
+    th.th-fixed-width {
+        width: 30%;
+    }
+
+}
+
+@media(max-width: 375px) {
+    .notification-bg  .ellipsis-client{
+        width: 40px !important;
+        margin-left: 5px !important;
+    }
+    
+}

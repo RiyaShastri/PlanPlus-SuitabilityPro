@@ -1,0 +1,66 @@
+<div class="implementation-questions side-form">
+    <form name="form" (ngSubmit)="f.form.valid && saveResponse(f);saveDisabled = true;" #f="ngForm" novalidate>
+        <div class="box">
+            <div class="box-header">
+                <span class="sidebar_title" [translate]="'CUSTOM.IMPLEMENTATION_QUESTIONS'"></span>
+                <span (click)="back(); closeButtonDisable = true"
+                    class="sidebar_action_icon ion-md-close-circle float-right"></span>
+            </div>
+            <div class="box-body"
+                *ngIf="questions && questions['sectionDetails'] && questions['sectionDetails'].length > 0">
+                <div class="implement-question-box">
+                    <div class="subheader d-flex">
+                        <h5 class="fs-16 fw-700" [translate]="'CUSTOM.IMPLEMENTATION_QUESTIONS'"></h5>
+                        <a (click)="toggleExpand()" class="ml-auto" *ngIf="questions.sectionDetails.length > 1">
+                            <span *ngIf="!expandAll" [translate]="'ACCORDIAN.EXPAND_ALL'"></span>
+                            <span *ngIf="expandAll" [translate]="'ACCORDIAN.COLLAPSE_ALL'"></span>
+                            <i [ngClass]="{'ion-ios-arrow-down' : !expandAll, 'ion-ios-arrow-up': expandAll}"></i>
+                        </a>
+                    </div>
+                    <p-accordion [multiple]="true" (onOpen)="onTabOpen($event)" (onClose)="onTabOpen($event)">
+                        <section class="subheader" *ngFor="let section of questions.sectionDetails;let i = index;">
+                            <p-accordionTab [selected]="section.expand">
+                                <p-header class="accordion-header">
+                                    <span class="fs-14 fw-600">{{section.sectionTitle}}</span>
+                                </p-header>
+                                <div class="ques-options" *ngFor="let question of section.questions; let j = index;">
+                                    <span class="fs-14 d-block mb-15">{{question.text}}</span>
+                                    <div class="form-group mb-1" *ngFor="let option of question.options;let k = index;">
+                                        <ng-container *ngIf="!question.multipleSelect">
+                                            <p-radioButton name="sect_{{section.id}}_ques_{{question.id}}"
+                                                value="{{option.id}}" [(ngModel)]="question.answersId"
+                                                (onClick)="makeSelection(question, k)" label="{{option.text}}"
+                                                #sect_{{section.id}}_ques_{{question.id}}="ngModel" binary="true"
+                                                required labelStyleClass="fs-14">
+                                            </p-radioButton>
+                                        </ng-container>
+                                        <ng-container *ngIf="question.multipleSelect">
+                                            <p-checkbox name="sect_{{section.id}}_ques_{{question.id}}"
+                                                value="{{option.selected}}" label="{{option.text}}"
+                                                [(ngModel)]="option.selected" binary="true" inputId="ny"></p-checkbox>
+                                        </ng-container>
+                                    </div>
+                                </div>
+                            </p-accordionTab>
+                        </section>
+                    </p-accordion>
+                </div>
+            </div>
+            <div class="box-footer">
+                <div class="form-group">
+                    <p-checkbox [disabled]="forceUpdateReviewDate" [(ngModel)]="questions['questionsReviewed']"
+                        label="{{'FORM.UPDATE_REVIEW_DATE' | translate}}" binary="true" name="reviewDate" required>
+                    </p-checkbox>
+                </div>
+                <div class="form-group text-right">
+                    <button (click)="back();closeButtonDisable = true" type="button"
+                        class="btn btn-small btn-secondary mr-2" [translate]="'FORM.ACTION.CANCEL'"
+                        [disabled]="closeButtonDisable"></button>
+                    <button value="submit" class="btn btn-success btn-small mr-3"
+                        [disabled]="!f.form.valid || saveDisabled || !questions['questionsReviewed']"
+                        [translate]="'FORM.ACTION.SAVE'"></button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

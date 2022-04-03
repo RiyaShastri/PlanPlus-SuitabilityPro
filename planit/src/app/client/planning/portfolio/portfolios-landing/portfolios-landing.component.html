@@ -1,0 +1,404 @@
+<div class="bg-white pt-4 pb-4" *ngIf="portfoliosData">
+    <div class="container">
+        <div class="row">
+            <div class="col-5">
+                <h4>
+                    <a [routerLink]="['/client',clientId,'planning']" [translate]="'BREADCRUMB.PLANNING'"></a> /
+                </h4>
+                <h1 class="d-inline-block fw-500" [translate]="'PORTFOLIOS.TITLE'"></h1>
+            </div>
+            <div class="col-7 d-flex flex-wrap justify-content-end">
+                <!-- <div class="mt-auto pr-3">
+                    <i class="ion-md-arrow-dropleft-circle mr-4"></i>
+                    <i class="ion-md-arrow-dropright-circle"></i>
+                </div> -->
+                <div class="mt-auto">
+                    <app-planning-module-drop-down class="dropdown-right" [clientId]="clientId">
+                    </app-planning-module-drop-down>
+                </div>
+            </div>
+            <div class="col-12">
+                <hr />
+            </div>
+            <div class="col-12" *ngIf="accessRights['POADD']['accessLevel'] === 3">
+                <a class="btn-add" [routerLink]="['add-portfolio']">
+                    <i class="ion-md-add-circle"></i>
+                    <span class="ml-1" [translate]="'PORTFOLIOS.ACTIONS.ADD_PORTFOLIO'"></span>
+                </a>
+            </div>
+            <div class="col-12">
+                <hr>
+            </div>
+
+            <!-- ------------------------------------- Portfolio Table ------------------------------------- -->
+            <div class="col-12">
+                <app-portfolio-list-html limit='' [isTile]='false' [clientId]="clientId"></app-portfolio-list-html>
+            </div>
+        </div>
+    </div>
+    <!-- ------------------------------------- Allocation Table ------------------------------------- -->
+    <div class="container" *ngIf="portfoliosData.length > 0">
+        <div class="row">
+            <div class="col-12 mt-4 mb-4 allocation-box">
+                <div class="row">
+                    <div class="col-12 col-lg-3 col-md-4">
+                        <h3 class="fw-800" [translate]="'PORTFOLIO_ALLOCATION.TITLE'"> </h3>
+                    </div>
+                    <div class="col-12 col-lg-9 col-md-8 d-flex" *ngIf="portfoliosDropDownArr">
+                        <div class="d-flex flex-wrap mt-md-0 mt-sm-4 mt-4 dropdown-right">
+                            <div ngbDropdown
+                                class="dropdown-common dropdown-multiline mr-auto mt-0 dropdown-right-mobile-fix">
+                                <a class="d-flex align-items-center dropdown-selected-text" id="dropdownBasic1"
+                                    ngbDropdownToggle *ngIf="selectedPortfolio">
+                                    <div id="on-mouseover-tooltip" class="text-truncate fixed-width-text"
+                                        [appNoOverflowTooltip]="selectedPortfolio.name" placement="top">
+                                        {{selectedPortfolio.name}}</div>
+                                    <i class="ion-md-arrow-dropdown"></i>
+                                </a>
+                                <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+                                    <ul *ngIf='portfoliosDropDownArr'>
+                                        <li *ngFor="let item of portfoliosDropDownArr">
+                                            <a [ngClass]="{active : selectedPortfolio.id == item.id}"
+                                                class="dropdown-item"
+                                                (click)="selectedPortfolio=item; getAllocationData();">
+                                                {{item.name}}
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <span *ngIf="noAllocationData == true">
+                            <ng-template #noDataWarning>
+                                <p>{{error}}</p>
+                                <p class="text-right m-0 p-0">
+                                    <button class="btn btn-secondary btn-small m-0" (click)="warning.close()"
+                                        [translate]="'RISK_RESULTS_PAGE.WARNING.CLOSE'"></button>
+                                </p>
+                            </ng-template>
+                            <span class="ion-ios-alert" [ngbTooltip]="noDataWarning" #warning="ngbTooltip"
+                                triggers="manual" placement="bottom" (click)="warning.open()"></span>
+                        </span>
+                    </div>
+                    <div class="col-12">
+                        <hr />
+                    </div>
+                    <div class="col-12">
+                        <div class="row">
+                            <div class=" pt-2 col-sm-6 col-12">
+                                <app-common-drop-down [itemList]="viewBy" [defaultSelected]="selectedViewBy"
+                                    dropDownLabel="{{'PORTFOLIOS.VIEW_DROPDOWN' | translate}}"
+                                    (OnSelect)="changeView($event)"></app-common-drop-down>
+                            </div>
+                            <div class="pt-2 col-sm-6 col-12  asset-class-dropdown">
+                                <app-common-drop-down [itemList]="classesOptions" [defaultSelected]="selectedClass"
+                                    dropDownLabel="{{'PORTFOLIOS.ASSET_CLASSES_DROPDOWN' | translate}}"
+                                    (OnSelect)="changeAssets($event)"></app-common-drop-down>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-4" *ngIf="allocationsData">
+            <div class="text-left col-4" [ngClass]="{
+                'col-sm-6 col-lg-5' : selectedViewBy.id == allocationViewBy.CURRENT.id || selectedViewBy.id == allocationViewBy.CURRENT_POLICY_RANGE.id || selectedViewBy.id == allocationViewBy.TARGET_POLICY_RANGE.id || selectedViewBy.id == allocationViewBy.IMPLEMENTED_POLICY_RANGE.id,
+                'col-md-4' : selectedViewBy.id == allocationViewBy.CURRENT_POLICY_RANGE.id || selectedViewBy.id == allocationViewBy.IMPLEMENTED_POLICY_RANGE.id,
+                'col-sm-4' : selectedViewBy.id == allocationViewBy.CURRENT_VS_TARGET.id || selectedViewBy.id == allocationViewBy.CURRENT_VS_IMPLEMENTED.id || selectedViewBy.id == allocationViewBy.TARGET_VS_IMPLEMENTED.id,
+                'col-sm-5': selectedViewBy.id == allocationViewBy.CURRENT.id || selectedViewBy.id == allocationViewBy.CURRENT_POLICY_RANGE.id || selectedViewBy.id == allocationViewBy.TARGET_POLICY_RANGE.id}">
+                <div class="allocationsdata-box mt-225">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th colspan="4" class="text-left"
+                                    [translate]="'PORTFOLIO_ALLOCATION.TABLE.ASSET_CLASS'"></th>
+                            </tr>
+                            <tr>
+                                <th class="text-left" [translate]="'PORTFOLIO_ALLOCATION.TABLE.CLASS'"></th>
+                                <th class="text-right  hidden-xs-down"
+                                    [translate]="'PORTFOLIO_ALLOCATION.TABLE.RETURN'"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let allocation of allocationsData; let i = index">
+                                <td class="text-left">
+                                    <span class="square asset_indicator" [style.background]="graphColors[i]"></span>
+                                    <!-- <span class="asset_lbl">{{ ('SSID_LABELS.' + allocation.ssid) | translate }}</span> -->
+                                    <span class="asset_lbl text-truncate"
+                                        [appNoOverflowTooltip]=" ('SSID_LABELS.' + allocation.ssid) | translate "
+                                        triggers="manual"
+                                        placement="bottom">{{ ('SSID_LABELS.' + allocation.ssid) | translate }}</span>
+                                </td>
+                                <td class="text-right fw-400 hidden-xs-down">{{ allocation.rateOfReturn | number :
+                                    '1.1-1'}}%</td>
+                                <!-- <td class="text-right fw-400 hidden-xs-down">{{ allocation.rateOfReturn.toFixed(2)}}%</td> -->
+                            </tr>
+                            <tr>
+                                <td class="text-right fw-700 border-bottom-0 pb-0" colspan="2"
+                                    [translate]="'PORTFOLIOS.TOTAL'"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <ng-container *ngFor="let type of selectedViewBy.list">
+                <div class="text-center" [ngClass]="{
+                        'col-8 col-sm-6': (selectedViewBy.id == allocationViewBy.CURRENT.id || selectedViewBy.id == allocationViewBy.CURRENT_POLICY_RANGE.id || selectedViewBy.id == allocationViewBy.IMPLEMENTED_POLICY_RANGE.id || selectedViewBy.id == allocationViewBy.TARGET_POLICY_RANGE.id),
+                        'col-lg-5': selectedViewBy.id == allocationViewBy.CURRENT.id || selectedViewBy.id == allocationViewBy.CURRENT_POLICY_RANGE.id || selectedViewBy.id == allocationViewBy.IMPLEMENTED_POLICY_RANGE.id,
+                        'col-lg-6 offset-lg-1': selectedViewBy.id == allocationViewBy.TARGET_POLICY_RANGE.id,
+                        'col-4 col-lg-3': (selectedViewBy.id == allocationViewBy.CURRENT_VS_TARGET.id || selectedViewBy.id == allocationViewBy.CURRENT_VS_IMPLEMENTED.id || selectedViewBy.id == allocationViewBy.TARGET_VS_IMPLEMENTED.id),
+                        'offset-lg-2': selectedViewBy.id == allocationViewBy.CURRENT.id}" *ngIf="allocationsData.length > 0">
+                    <app-portfolio-allocation [warningsExist]="warningsExist" [graphColors]="graphColors"
+                        [clientId]="clientId" [type]="type" [allocationsData]="allocationsData"
+                        [summaryData]="summary[type]" [selectedViewBy]="selectedViewBy"
+                        [portfolioId]="selectedPortfolio.id" [totalInvested]="selectedPortfolio.totalInvested">
+                    </app-portfolio-allocation>
+                </div>
+            </ng-container>
+
+            <div class="col-lg-1 text-center hidden-md-down"
+                [ngClass]="{'col-lg-2': (selectedViewBy.id == allocationViewBy.CURRENT_VS_TARGET.id || selectedViewBy.id == allocationViewBy.CURRENT_VS_IMPLEMENTED.id || selectedViewBy.id == allocationViewBy.TARGET_VS_IMPLEMENTED.id)}"
+                *ngIf="selectedViewBy.id == allocationViewBy.CURRENT_VS_TARGET.id || selectedViewBy.id == allocationViewBy.CURRENT_VS_IMPLEMENTED.id || selectedViewBy.id == allocationViewBy.TARGET_VS_IMPLEMENTED.id">
+                <div class="allocationsdata-box mt-225">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th class="text-right" [translate]="'PORTFOLIO_ALLOCATION.TABLE.VARIANCE'"></th>
+                            </tr>
+                            <tr>
+                                <th class="text-right" [translate]="'PORTFOLIO_ALLOCATION.TABLE.AMOUNT'"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let allocation of allocationsData; let i = index">
+                                <td class="text-right pr-0"
+                                    [ngClass]="{'orange-text': allocation.currentAmount - allocation.targetAmount < 0}"
+                                    *ngIf="selectedViewBy.id == allocationViewBy.CURRENT_VS_TARGET.id">
+                                    {{makePositive(allocation.currentAmount -
+                                    allocation.targetAmount) | currency:clientData['currencyCode']:'symbol-narrow':'1.0-0'}}
+                                </td>
+                                <td class="text-right pr-0"
+                                    [ngClass]="{'orange-text': allocation.currentAmount - allocation.implementedAmount < 0}"
+                                    *ngIf="selectedViewBy.id == allocationViewBy.CURRENT_VS_IMPLEMENTED.id">
+                                    {{makePositive(allocation.currentAmount -
+                                    allocation.implementedAmount) | currency:clientData['currencyCode']:'symbol-narrow':'1.0-0'}}
+                                </td>
+                                <td class="text-right pr-0"
+                                    [ngClass]="{'orange-text': allocation.targetAmount - allocation.implementedAmount < 0}"
+                                    *ngIf="selectedViewBy.id == allocationViewBy.TARGET_VS_IMPLEMENTED.id">
+                                    {{makePositive(allocation.targetAmount -
+                                    allocation.implementedAmount) | currency:clientData['currencyCode']:'symbol-narrow':'1.0-0'}}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="text-center hidden-sm-down"
+                [ngClass]="{'col-md-2 col-lg-2': selectedViewBy.id == allocationViewBy.CURRENT_POLICY_RANGE.id || selectedViewBy.id == allocationViewBy.IMPLEMENTED_POLICY_RANGE.id}"
+                *ngIf="selectedViewBy.id == allocationViewBy.CURRENT_POLICY_RANGE.id || selectedViewBy.id == allocationViewBy.IMPLEMENTED_POLICY_RANGE.id">
+                <div class="allocationsdata-box mt-225">
+                    <table class="table" width="500px">
+                        <thead>
+                            <tr>
+                                <th class="text-left" [translate]="'PORTFOLIO_ALLOCATION.TABLE.OUT_OF_RANGE'"></th>
+                            </tr>
+                            <tr>
+                                <th class="text-right" [translate]="'PORTFOLIO_ALLOCATION.TABLE.AMOUNT'"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let allocation of allocationsData; let i = index">
+                                <td class="text-right pr-0"
+                                    [ngClass]="{'orange-text': allocation.currentOutOfRange < 0}"
+                                    *ngIf="selectedViewBy.id == allocationViewBy.CURRENT_POLICY_RANGE.id">
+                                    <span *ngIf="allocation.currentOutOfRange !== 0">
+                                        {{makePositive(allocation.currentOutOfRange) |
+                                        currency:clientData['currencyCode']:'symbol-narrow':'1.0-0'}}
+                                    </span>
+                                    <span *ngIf="allocation.currentOutOfRange == 0">-</span>
+                                </td>
+                                <td class="text-right pr-0"
+                                    [ngClass]="{'orange-text': allocation.implementedOutOfRange < 0}"
+                                    *ngIf="selectedViewBy.id == allocationViewBy.IMPLEMENTED_POLICY_RANGE.id">
+                                    <span *ngIf="allocation.implementedOutOfRange !== 0">
+                                        {{makePositive(allocation.implementedOutOfRange) |
+                                        currency:clientData['currencyCode']:'symbol-narrow':'1.0-0'}}
+                                    </span>
+                                    <span *ngIf="allocation.implementedOutOfRange == 0">-</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div col-12>
+            <hr>
+        </div>
+
+        <!-- ------------------------------------ More Details section --------------------------------------------- -->
+
+        <div id="moreDetails" [ngbCollapse]="isCollapsed">
+            <div class="row mt-4" *ngIf="allocationsData">
+                <div class="text-left col-4 pr-0" [ngClass]="{
+                    'col-sm-6 col-lg-5' : selectedViewBy.id == allocationViewBy.CURRENT.id || selectedViewBy.id == allocationViewBy.CURRENT_POLICY_RANGE.id || selectedViewBy.id == allocationViewBy.TARGET_POLICY_RANGE.id || selectedViewBy.id == allocationViewBy.IMPLEMENTED_POLICY_RANGE.id,
+                    'col-md-4' : selectedViewBy.id == allocationViewBy.CURRENT_POLICY_RANGE.id || selectedViewBy.id == allocationViewBy.IMPLEMENTED_POLICY_RANGE.id,
+                    'col-sm-4' : selectedViewBy.id == allocationViewBy.CURRENT_VS_TARGET.id || selectedViewBy.id == allocationViewBy.CURRENT_VS_IMPLEMENTED.id || selectedViewBy.id == allocationViewBy.TARGET_VS_IMPLEMENTED.id,
+                    'col-sm-5': selectedViewBy.id == allocationViewBy.CURRENT.id || selectedViewBy.id == allocationViewBy.CURRENT_POLICY_RANGE.id || selectedViewBy.id == allocationViewBy.TARGET_POLICY_RANGE.id}">
+                    <div class="allocationsdata-box more-details">
+                        <table class="table">
+                            <tbody>
+                                <tr>
+                                    <td class="border-0 pt-1 pb-1" [translate]="'PORTFOLIO_ALLOCATION.TABLE.RETURN'">
+                                    </td>
+
+                                </tr>
+                                <tr>
+                                    <td class="border-0 pt-1 pb-1" [translate]="'PORTFOLIO_ALLOCATION.TABLE.RISK'"></td>
+                                </tr>
+                                <tr>
+                                    <td class="border-0 pt-1 pb-1"
+                                        [translate]="'PORTFOLIO_ALLOCATION.TABLE.SHARPE_RATIO'"></td>
+
+                                </tr>
+                                <tr>
+                                    <td class="border-0 pt-1 pb-1 border-bottom-0"
+                                        [translate]="'PORTFOLIO_ALLOCATION.TABLE.FEES_COSTS'"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <ng-container *ngFor="let type of selectedViewBy.list">
+                    <div class="text-center" [ngClass]="{
+                        'col-8 col-sm-6': (selectedViewBy.id == allocationViewBy.CURRENT.id || selectedViewBy.id == allocationViewBy.CURRENT_POLICY_RANGE.id || selectedViewBy.id == allocationViewBy.IMPLEMENTED_POLICY_RANGE.id || selectedViewBy.id == allocationViewBy.TARGET_POLICY_RANGE.id),
+                        'col-lg-5': selectedViewBy.id == allocationViewBy.CURRENT.id || selectedViewBy.id == allocationViewBy.CURRENT_POLICY_RANGE.id || selectedViewBy.id == allocationViewBy.IMPLEMENTED_POLICY_RANGE.id,
+                        'col-lg-6 offset-lg-1': selectedViewBy.id == allocationViewBy.TARGET_POLICY_RANGE.id,
+                        'col-4 col-lg-3': (selectedViewBy.id == allocationViewBy.CURRENT_VS_TARGET.id || selectedViewBy.id == allocationViewBy.CURRENT_VS_IMPLEMENTED.id || selectedViewBy.id == allocationViewBy.TARGET_VS_IMPLEMENTED.id),
+                        'offset-lg-2': selectedViewBy.id == allocationViewBy.CURRENT.id}">
+                        <div class="allocationsdata-box more-details">
+                            <table class="table current-table current-table-w-range">
+                                <tbody>
+                                    <tr *ngFor="let key of moreDetailsArr">
+                                        <td class="border-0 pt-1 pb-1" width="15%"
+                                            [ngClass]="{
+                                            'text-right pr-15': selectedViewBy.id == allocationViewBy.CURRENT_POLICY_RANGE.id || selectedViewBy.id == allocationViewBy.TARGET_POLICY_RANGE.id || selectedViewBy.id == allocationViewBy.IMPLEMENTED_POLICY_RANGE.id}"
+                                            *ngIf="selectedViewBy.id == allocationViewBy.CURRENT_POLICY_RANGE.id || selectedViewBy.id == allocationViewBy.TARGET_POLICY_RANGE.id || selectedViewBy.id == allocationViewBy.IMPLEMENTED_POLICY_RANGE.id">
+                                            &nbsp;</td>
+                                        <td class="border-0 pt-1 pb-1" width="25%"
+                                            [ngClass]="{
+                                            'text-left pl-15' : selectedViewBy.id !=2 || selectedViewBy.id != 3 || selectedViewBy.id != 4, 
+                                            'text-center': selectedViewBy.id == allocationViewBy.CURRENT_POLICY_RANGE.id || selectedViewBy.id == allocationViewBy.TARGET_POLICY_RANGE.id || selectedViewBy.id == allocationViewBy.IMPLEMENTED_POLICY_RANGE.id}">
+                                            {{(summary[type] !== null ? summary[type][key] : 0) | number : '1.1-1'}}%
+                                        </td>
+                                        <td width="45%"
+                                            [ngClass]="{
+                                            'text-right ': (selectedViewBy.id == allocationViewBy.CURRENT.id || selectedViewBy.id == allocationViewBy.CURRENT_VS_TARGET.id || selectedViewBy.id == allocationViewBy.CURRENT_VS_IMPLEMENTED.id || selectedViewBy.id == allocationViewBy.TARGET_VS_IMPLEMENTED.id), 
+                                            'text-center': selectedViewBy.id == allocationViewBy.CURRENT_POLICY_RANGE.id || selectedViewBy.id == allocationViewBy.TARGET_POLICY_RANGE.id || selectedViewBy.id == allocationViewBy.IMPLEMENTED_POLICY_RANGE.id, 
+                                            'hidden-sm-down': selectedViewBy.id == allocationViewBy.CURRENT_POLICY_RANGE.id || selectedViewBy.id == allocationViewBy.IMPLEMENTED_POLICY_RANGE.id || selectedViewBy.id == allocationViewBy.CURRENT_VS_TARGET.id || selectedViewBy.id == allocationViewBy.CURRENT_VS_IMPLEMENTED.id}"
+                                            class="fw-400 pr-0 border-0 pt-1 pb-1">&nbsp;</td>
+                                        <td class="border-0 pt-1 pb-1" width="15%"
+                                            [ngClass]="{'text-right pr-15': selectedViewBy.id == allocationViewBy.CURRENT_POLICY_RANGE.id || selectedViewBy.id == allocationViewBy.TARGET_POLICY_RANGE.id || selectedViewBy.id == allocationViewBy.IMPLEMENTED_POLICY_RANGE.id}"
+                                            *ngIf="selectedViewBy.id == allocationViewBy.CURRENT_POLICY_RANGE.id || selectedViewBy.id == allocationViewBy.TARGET_POLICY_RANGE.id || selectedViewBy.id == allocationViewBy.IMPLEMENTED_POLICY_RANGE.id">
+                                            &nbsp;</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </ng-container>
+
+                <div class="text-center hidden-sm-down"
+                    *ngIf="selectedViewBy.id == allocationViewBy.CURRENT_POLICY_RANGE.id || selectedViewBy.id == allocationViewBy.IMPLEMENTED_POLICY_RANGE.id || selectedViewBy.id == allocationViewBy.CURRENT_VS_TARGET.id || selectedViewBy.id == allocationViewBy.CURRENT_VS_IMPLEMENTED.id || selectedViewBy.id == allocationViewBy.TARGET_VS_IMPLEMENTED.id">
+                    <div class="
+                     more-details">
+                        <table class="table empty-table">
+                            <tr *ngFor="let key of moreDetailsArr">
+                                <td class="border-0 pt-1 pb-1">&nbsp;</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div class="col-12 mt-3">
+                    <h1 class="fs-20 fw-700" [translate]="'PORTFOLIO_ALLOCATION.INVESTMENT_DETAILS.HEADING'"></h1>
+                </div>
+            </div>
+            <div class="row mt-3" *ngIf="allocationsData">
+                <div class="text-left col-4 pr-0" [ngClass]="{
+                    'col-sm-6 col-lg-5' : selectedViewBy.id == allocationViewBy.CURRENT.id || selectedViewBy.id == allocationViewBy.CURRENT_POLICY_RANGE.id || selectedViewBy.id == allocationViewBy.TARGET_POLICY_RANGE.id || selectedViewBy.id == allocationViewBy.IMPLEMENTED_POLICY_RANGE.id,
+                    'col-md-4' : selectedViewBy.id == allocationViewBy.CURRENT_POLICY_RANGE.id || selectedViewBy.id == allocationViewBy.IMPLEMENTED_POLICY_RANGE.id,
+                    'col-sm-4' : selectedViewBy.id == allocationViewBy.CURRENT_VS_TARGET.id || selectedViewBy.id == allocationViewBy.CURRENT_VS_IMPLEMENTED.id || selectedViewBy.id == allocationViewBy.TARGET_VS_IMPLEMENTED.id,
+                    'col-sm-5': selectedViewBy.id == allocationViewBy.CURRENT.id || selectedViewBy.id == allocationViewBy.CURRENT_POLICY_RANGE.id || selectedViewBy.id == allocationViewBy.TARGET_POLICY_RANGE.id}">
+                    <div class="allocationsdata-box more-details">
+                        <table class="table">
+                            <tbody>
+                                <tr *ngFor="let item of investmentSummary">
+                                    <td><span class="allocationsdata-box-text">{{ item.id }}</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <ng-container *ngFor="let type of selectedViewBy.list">
+                    <div class="text-center" [ngClass]="{
+                        'col-8 col-sm-6': (selectedViewBy.id == allocationViewBy.CURRENT.id || selectedViewBy.id == allocationViewBy.CURRENT_POLICY_RANGE.id || selectedViewBy.id == allocationViewBy.IMPLEMENTED_POLICY_RANGE.id || selectedViewBy.id == allocationViewBy.TARGET_POLICY_RANGE.id),
+                        'col-lg-5': selectedViewBy.id == allocationViewBy.CURRENT.id || selectedViewBy.id == allocationViewBy.CURRENT_POLICY_RANGE.id || selectedViewBy.id == allocationViewBy.IMPLEMENTED_POLICY_RANGE.id,
+                        'col-lg-6 offset-lg-1': selectedViewBy.id == allocationViewBy.TARGET_POLICY_RANGE.id,
+                        'col-4 col-lg-3': (selectedViewBy.id == allocationViewBy.CURRENT_VS_TARGET.id || selectedViewBy.id == allocationViewBy.CURRENT_VS_IMPLEMENTED.id || selectedViewBy.id == allocationViewBy.TARGET_VS_IMPLEMENTED.id),
+                        'offset-lg-0': selectedViewBy.id == allocationViewBy.CURRENT_POLICY_RANGE.id,
+                        'offset-lg-2': selectedViewBy.id == allocationViewBy.CURRENT.id}">
+                        <div class="allocationsdata-box more-details">
+                            <table class="table current-table current-table-w-range">
+                                <tbody>
+                                    <tr class="td-before" *ngFor="let item of investmentSummary">
+                                        <td width="15%"
+                                            [ngClass]="{
+                                                'text-right pr-15': selectedViewBy.id == allocationViewBy.CURRENT_POLICY_RANGE.id || selectedViewBy.id == allocationViewBy.TARGET_POLICY_RANGE.id || selectedViewBy.id == allocationViewBy.IMPLEMENTED_POLICY_RANGE.id}"
+                                            *ngIf="selectedViewBy.id == allocationViewBy.CURRENT_POLICY_RANGE.id || selectedViewBy.id == allocationViewBy.TARGET_POLICY_RANGE.id || selectedViewBy.id == allocationViewBy.IMPLEMENTED_POLICY_RANGE.id">
+                                            &nbsp;</td>
+                                        <td width="25%"
+                                            [ngClass]="{
+                                                'text-left pl-15' : selectedViewBy.id !=2 || selectedViewBy.id != 3 || selectedViewBy.id != 4, 
+                                                'text-center': selectedViewBy.id == allocationViewBy.CURRENT_POLICY_RANGE.id || selectedViewBy.id == allocationViewBy.TARGET_POLICY_RANGE.id || selectedViewBy.id == allocationViewBy.IMPLEMENTED_POLICY_RANGE.id}">
+                                            {{item[type+'Percent'] | number : '1.1-1'}}%</td>
+                                        <td width="45%"
+                                            [ngClass]="{
+                                                'text-right ': (selectedViewBy.id == allocationViewBy.CURRENT.id || selectedViewBy.id == allocationViewBy.CURRENT_VS_TARGET.id || selectedViewBy.id == allocationViewBy.CURRENT_VS_IMPLEMENTED.id || selectedViewBy.id == allocationViewBy.TARGET_VS_IMPLEMENTED.id), 
+                                                'text-center': selectedViewBy.id == allocationViewBy.CURRENT_POLICY_RANGE.id || selectedViewBy.id == allocationViewBy.TARGET_POLICY_RANGE.id || selectedViewBy.id == allocationViewBy.IMPLEMENTED_POLICY_RANGE.id, 
+                                                'hidden-sm-down': selectedViewBy.id == allocationViewBy.CURRENT_POLICY_RANGE.id || selectedViewBy.id == allocationViewBy.IMPLEMENTED_POLICY_RANGE.id || selectedViewBy.id == allocationViewBy.CURRENT_VS_TARGET.id || selectedViewBy.id == allocationViewBy.CURRENT_VS_IMPLEMENTED.id}"
+                                            class="fw-400 pr-0">&nbsp;</td>
+                                        <td width="15%"
+                                            [ngClass]="{'text-right pr-15': selectedViewBy.id == allocationViewBy.CURRENT_POLICY_RANGE.id || selectedViewBy.id == allocationViewBy.TARGET_POLICY_RANGE.id || selectedViewBy.id == allocationViewBy.IMPLEMENTED_POLICY_RANGE.id}"
+                                            *ngIf="selectedViewBy.id == allocationViewBy.CURRENT_POLICY_RANGE.id || selectedViewBy.id == allocationViewBy.TARGET_POLICY_RANGE.id || selectedViewBy.id == allocationViewBy.IMPLEMENTED_POLICY_RANGE.id">
+                                            &nbsp;</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </ng-container>
+                <div class="text-center hidden-sm-down"
+                    *ngIf="selectedViewBy.id == allocationViewBy.CURRENT_POLICY_RANGE.id || selectedViewBy.id == allocationViewBy.IMPLEMENTED_POLICY_RANGE.id || selectedViewBy.id == allocationViewBy.CURRENT_VS_TARGET.id || selectedViewBy.id == allocationViewBy.CURRENT_VS_IMPLEMENTED.id || selectedViewBy.id == allocationViewBy.TARGET_VS_IMPLEMENTED.id">
+                    <div class="allocationsdata-box more-details">
+                        <table class="table empty-table">
+                            <tr *ngFor="let item of investmentSummary">
+                                <td class="text-right border-0">&nbsp;</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12" *ngIf = "accessRights['CMAINCDIST']['accessLevel'] > 0 ">
+            <a href="javascript:void(0)" class="moredetail-button" (click)="isCollapsed = !isCollapsed"
+                [attr.aria-expanded]="!isCollapsed" aria-controls="collapseExample">{{ isCollapsed === false? 'Less
+                detail': 'More detail' }}</a>
+        </div>
+        <ng-template #Elseblock>N/A</ng-template>
+    </div>
+</div>
+<div class="view-side-form">
+    <router-outlet></router-outlet>
+</div>

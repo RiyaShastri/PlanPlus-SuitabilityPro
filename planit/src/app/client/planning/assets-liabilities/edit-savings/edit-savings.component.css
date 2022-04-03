@@ -1,0 +1,82 @@
+.savings-edit-bg .form-small h3 {padding: 0 75px 0 0; font-size: 18px;}
+.savings-edit-bg .form-small .form-group {position: relative; padding: 0 0 0 30%;}
+.savings-edit-bg .form-small .form-group .custom-form-label {padding: 0 75px 0 0;}
+.savings-edit-bg .form-small .form-group .form-control {width: calc(100% - 75px);}
+.savings-edit-bg .form-small .form-group span {position: absolute; top: 24px; right: 0px; line-height: 40px; width: 75px;}
+.savings-edit-bg .form-small .form-group p {width: calc(100% - 75px); margin: 0px; line-height: 40px;}
+.savings-edit-bg .form-small .sidebar_action_icon {
+    padding-right: 75px;
+    color: #567;
+    cursor: pointer;
+    text-transform: uppercase;
+    font-size: 13px;
+    line-height: 1;
+}
+.savings-edit-bg .form-small .sidebar_action_icon::before {
+    font-size: 18px;
+}
+
+.check-form-group {width: calc(100% - 30px); float: left; margin-right: 7px;}
+
+.delete-link, .delete-link span{
+    line-height: 26px;
+    text-transform: uppercase;
+}
+.delete-link{width: auto;}
+.delete-link span ,.delete-link i{
+    display: inline-block;
+    vertical-align: middle;
+    float: none;
+}
+
+.initials {
+    width: 30px !important;
+    height: 30px !important;
+    line-height: 30px !important;
+    font-size: 14px !important;
+    font-weight: 600 !important;
+}
+.owner-with-age:after{
+    content: " ";
+    display: table;
+    clear: both;
+}
+.owner-with-age .initials{
+    float: left;
+}
+.owner-with-age .owner-age{
+    float: right;
+    width: 50%;
+    text-align: right;
+}
+.savings-edit-bg .form-group .owner-with-age .owner-age input.form-control{
+    width: 100%;
+}
+.owner-with-age {
+    margin-bottom: 5px;
+    margin-right: 75px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #ddd;
+}
+
+
+
+/* responsive */
+
+@media (max-width: 1199px) {
+  .savings-edit-bg .form-small .form-group {padding: 0px;}
+  .savings-edit-bg .form-small .form-group span {font-size: 13px; width: 60px;}
+  .savings-edit-bg .form-small .form-group .form-control {width: calc(100% - 60px);}
+  .savings-edit-bg .form-small .form-group .custom-form-label {padding: 0 60px 0 0;}
+  .savings-edit-bg .form-small .form-group p {width: calc(100% - 60px);}
+  .savings-edit-bg .form-small .sidebar_action_icon {padding-right: 60px;}
+}
+
+@media (max-width: 992px) {
+}
+
+@media (max-width: 767px) {
+}
+
+@media (max-width: 575px) {
+}

@@ -1,0 +1,70 @@
+.debt-consolidation .calulater-inner-wrap h4.debt-consolidation-title,
+.debt-consolidation .table>thead>tr>th {
+    color: #788588;
+}
+
+.debt-consolidation .dropdown-floating {
+    right: 11px;
+}
+
+table.analysis-c-p-table th, table.analysis-c-p-table td {
+    padding-left: 6px !important;
+}
+
+@media (min-width: 1200px) and (max-width: 1300px) {
+    td.analysis-c-p-resposive-label {
+        padding-right: 7px !important;
+    }
+}
+
+@media(max-width: 1199px) {
+    .debt-consolidation table.analysis-c-p-table {
+        max-width: 100%;
+        width: 100%
+    }
+}
+
+@media(max-width:1024px) {
+    .debt-consolidation .calulater-inner-wrap .row {
+        margin-bottom: 15px;
+    }
+}
+
+@media(max-width:992px) {
+    td.text-right.analysis-resposive-label {
+        padding-right: 15px;
+    }
+
+}
+
+@media(max-width:990px) {
+    .custome-table-responsive {
+        overflow-x: auto;
+        overflow-y: visible !important;
+    }
+
+    td.analysis-c-p-resposive-label {
+        line-height: 41px;
+    }
+}
+
+@media(max-width:575px) {
+    .debt-consolidation .calulater-inner-wrap .row {
+        margin-bottom: 8px;
+    }
+
+    td.analysis-c-p-resposive-label {
+        padding-right: 8px !important;
+    }
+
+    td.analysis-c-p-resposive-label span {
+        font-size: 12px !important;
+    }
+}
+
+@media(max-width: 375px) {
+    .debt-consolidation .table.analysis-c-p-table>thead>th {
+        padding: 11px 4px;
+        font-size: 12px;
+    }
+}

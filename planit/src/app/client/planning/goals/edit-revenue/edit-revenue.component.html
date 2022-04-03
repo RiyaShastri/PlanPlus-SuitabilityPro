@@ -1,0 +1,732 @@
+<div class="bg-white pt-4 pb-4 savings-edit-bg">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 col-12">
+                <h4>
+                    <a [routerLink]="['/client', clientId, 'planning']" [translate]="'BREADCRUMB.PLANNING'"></a> /
+                    <a *ngIf="!goalId " [routerLink]="['/client', clientId, 'planning', 'goals', 'revenues', revenueId, 'edit-revenue']"
+                        [translate]="'BREADCRUMB.PENSIONS_REVENUES'"></a>
+                    <a *ngIf="goalId" [routerLink]="['/client', clientId, 'planning', 'goals', goalId, 'revenues', revenueId, 'edit-revenue']"
+                        [translate]="'BREADCRUMB.PENSIONS_REVENUES'"></a>
+                </h4>
+                <h1 class="d-sm-inline-block d-block fw-500" *ngIf="allRevenueList && revenueDescription">
+                    <div ngbDropdown class="dropdown-common m-0">
+                        <a id="revenuesDropdown" ngbDropdownToggle>
+                            {{revenueDescription}}
+                            <i class="ion-md-arrow-dropdown fs-18"></i>
+                        </a>
+                        <div ngbDropdownMenu aria-labelledby="revenuesDropdown">
+                            <ul>
+                                <li *ngFor="let revenue of allRevenueList">
+                                    <a class="dropdown-item" [ngClass]="{ 'active' : revenueId === revenue.id}" (click)="changeRevenue(revenue.id, revenue.description)">
+                                        <span></span>{{revenue.description}}
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </h1>
+            </div>
+            <div class="col-md-4 col-12 text-right dropdown-right">
+                <div class="d-inline-block nextprive-box mr-lg-5 mr-3">
+                    <i class="ion-md-arrow-dropleft-circle mr-4"></i>
+                    <i class="ion-md-arrow-dropright-circle"></i>
+                </div>
+                <app-planning-module-drop-down class="dropdown-right" [clientId]="clientId"></app-planning-module-drop-down>
+            </div>
+            <div class="col-12">
+                <hr>
+            </div>
+            <div class="col-12">
+                <ul class="nav nav-tabs d-if" role="tablist">
+                    <li class="nav-item">
+                        <a [routerLink]="['/client', clientId, 'planning', 'goals','summary']" class="nav-link p-lr-40"
+                            routerLinkActive="active" [translate]="'GOALS.DETAILS.TITLE'"></a>
+                    </li>
+                    <li class="nav-item mb-0" *ngIf="accessRights['SAV01']['accessLevel'] > 0">
+                        <a [routerLink]="['/client', clientId, 'planning', 'goals', 'savings']" class="nav-link p-lr-40"
+                            routerLinkActive="active" [translate]="'GOALS.SAVINGS.TITLE'"></a>
+                    </li>
+                    <li class="nav-item mb-0" *ngIf="!goalId">
+                        <a [routerLink]="['/client', clientId, 'planning', 'goals', 'revenues', revenueId, 'edit-revenue']"
+                            class="nav-link p-lr-40 active" [translate]="'GOALS.REVENUES.TITLE'"></a>
+                    </li>
+                    <li class="nav-item mb-0" *ngIf="goalId">
+                        <a [routerLink]="['/client', clientId, 'planning', 'goals', goalId, 'revenues', revenueId, 'edit-revenue']"
+                            class="nav-link p-lr-40 active" [translate]="'GOALS.REVENUES.TITLE'"></a>
+                    </li>
+                    <li class="nav-item mb-0" *ngIf="goalId">
+                		<a [routerLink]="['/client', clientId, 'planning', 'goals', goalId, 'analysis']"
+                             class="nav-link p-lr-40" routerLinkActive="active" [translate]="'PLANNING_SUMMARY.ANALYSIS.TITLE'"></a>
+                    </li>
+                    <li class="nav-item mb-0" *ngIf="!goalId && revenue['associatedGoal']">
+                		<a [routerLink]="['/client', clientId, 'planning', 'goals', revenue['associatedGoal']['key'], 'analysis']"
+                             class="nav-link p-lr-40" routerLinkActive="active" [translate]="'PLANNING_SUMMARY.ANALYSIS.TITLE'"></a>
+                    </li>
+                </ul>
+                <div class="pull-right">
+                    <a href="javascript:void(0)" (click)="deleteRevenue()" class="delete-link mt-3 mt-sm-1  mt-md-1">
+                        <i class="ion-md-close-circle"></i>
+                        <span [translate]="'REVENUES.ACTION.DELETE_PENSION'"></span>
+                    </a>
+                </div>
+            </div>
+            <div class="col-12">
+                <hr>
+            </div>
+            <!-- <app-goal-details-header [clientId]="clientId" currentPage="revenues" [allRevenuesData]="allRevenueList" [revenueId]="revenueId" (switchGoal)="changeRevenue($event)"></app-goal-details-header> -->
+        </div>
+        <div *ngIf="familyMembers && ownerList && currencies && goalsList && revenue">
+            <form name="form" (ngSubmit)="updateRevenue(f) && f.form.valid" #f="ngForm" novalidate>
+                <div class="d-md-flex">
+                    <div class="col-md-4 col-12">
+                        <div class="form-group">
+                            <label class="custom-form-label" [translate]="'REVENUES.TYPE'"></label>
+                            <div class="form-fixed-value" *ngIf="revenuesList && revenuesList['revenueCategory'] && revenue['category']">
+                                {{(revenuesList['revenueCategory'] === 10) ?
+                                revenuesList['govBenefits'][0].govtBenefitDescription : currentRevenue['description']}}
+                            </div>
+                        </div>
+                        <div class="form-group mt-2-custom">
+                            <label class="custom-form-label" [translate]="'FORM.OWNERSHIP'"></label>
+                            <table class="table ownership-table">
+                                <tbody *ngIf="familyMembers">
+                                    <tr *ngFor="let member of familyMembers; let i = index;">
+                                        <ng-container *ngIf="member.relation === PERSON_RELATION.CLIENT1 || member.relation === PERSON_RELATION.CLIENT2">
+                                            <td>
+                                                <div class="form-check d-flex form-check-w-auto">
+                                                    <p-radioButton name="member_rdb" label="" value="{{member.relation}}"
+                                                        [(ngModel)]="revenue['ownership']" inputId="opt{{i}}" styleClass="mb-2"
+                                                        [disabled]="revenuesList['revenueCategory'] === 10"></p-radioButton>
+                                                </div>
+                                                <div>
+                                                    <span *ngIf="!member.avatar" class="initials mr-2" [ngClass]="member.btnColor">{{
+                                                        member.firstName[0]}}{{member.lastName[0]}}</span>
+                                                    <img class="initials bg-transparent" height="50" *ngIf="member.avatar" [src]="member.avatar" (error)="member.avatar = null"/>
+                                                    <span class="fw-400">{{member.firstName}} {{member.lastName}}</span>
+                                                </div>
+                                            </td>
+                                        </ng-container>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="form-group mt-4" [ngClass]="{'has-error': !description.valid && (description.dirty || description.touched || f.submitted) }">
+                            <label class="custom-form-label" [translate]="'REVENUES.DESCRIPTION'"></label>
+                            <input type="text" class="form-control" name="description" [(ngModel)]="revenue['description']"
+                                   (ngModelChange)="enableSaveButton()" myNoSpaces #description="ngModel" required />
+                        </div>
+                        <div class="form-group mt-4" *ngIf="revenue['category'] && revenue['category'] == 'Other revenue' && revenuesList['revenueType'] && (revenuesList['revenueType'] === '11' || revenuesList['revenueType'] === '4')"
+                            [ngClass]="{'has-error': !linkAccount.valid && (linkAccount.dirty || linkAccount.touched || f.submitted) }">
+                            <label class="custom-form-label" [translate]="'PORTFOLIO.DETAIL.LINKED_ACCOUNTS'"></label>
+                            <p-dropdown placeholder="Select account" [options]="accountList" optionLabel="description"
+                                name="linkAccount" [(ngModel)]="revenue['linkAccount']" #linkAccount="ngModel"
+                                [disabled]="!accountList && accountList.length === 0" required></p-dropdown>
+                        </div>
+                    </div>
+                    <div class="mb-4 mt-5 pt-2 hidden-md-up"></div>
+                    <div class="col-md-4 col-12">
+                        <div *ngIf="revenue['category'] && revenue['category'] == 'Government pension'">
+                            <div class="form-group" [ngClass]="{'has-error': !calcMethod.valid && (calcMethod.dirty || calcMethod.touched || f.submitted) }">
+                                <label class="custom-form-label" [translate]="'REVENUES.CALCULATION_METHOD'"></label>
+                                <p-dropdown placeholder="Select calculation method" [options]="filterCalculationMethod"
+                                    optionLabel="description" name="calcMethod" [(ngModel)]="revenue['calculationMethod']"
+                                    (ngModelChange)="calculationOption(revenue['calculationMethod'])" #calcMethod="ngModel"
+                                    required></p-dropdown>
+                            </div>
+                            <div class="row" *ngIf="revenue['calculationMethod'] && revenue['calculationMethod'].id === 3">
+                                <div class="form-group col-6" [ngClass]="{'has-error': !monthlyAmount.valid && (monthlyAmount.dirty || monthlyAmount.touched || f.submitted) }">
+                                    <label class="custom-form-label" [translate]="'REVENUES.MONTHLY_AMOUNT'"></label>
+                                    <input type="text" class="form-control text-right" name="monthlyAmount" placeholder="{{currencyMask['prefix']}}0.00"
+                                        [(ngModel)]="revenue['monthlyAmount']" [textMask]="{mask: currencyMask}" appNumeric
+                                        (ngModelChange)="calculateMaxAndEstimated(revenue['monthlyAmount'] ,revenue['calculationMethod'], revenue['startAgeList'])"
+                                        myNoSpaces #monthlyAmount="ngModel" required />
+                                </div>
+                            </div>
+                            <div class="row" *ngIf="revenue['calculationMethod'] && revenue['calculationMethod'].id === 1">
+                                <div class="form-group col-6" [ngClass]="{'has-error': !currentAnnualIncome.valid && (currentAnnualIncome.dirty || currentAnnualIncome.touched || f.submitted) }">
+                                    <label class="custom-form-label" [translate]="'REVENUES.CURRENT_ANNUAL_INCOME'"></label>
+                                    <input type="text" class="form-control text-right" name="currentAnnualIncome"
+                                        placeholder="{{currencyMask['prefix']}}0.00" [(ngModel)]="revenue['currentIncome']"
+                                        (ngModelChange)="calculateAnnualIncome(revenue['currentIncome'], revenue['contibutionPeriod'] ,revenuesList['govBenefits'][0].govtBenefitId, revenue['startAgeList'])"
+                                        [textMask]="{mask: currencyMask}" appNumeric
+                                        #currentAnnualIncome="ngModel" required />
+                                </div>
+                                <div class="form-group col-6" [ngClass]="{'has-error': !contributoryPeriod.valid && (contributoryPeriod.dirty || contributoryPeriod.touched || f.submitted) }">
+                                    <label class="custom-form-label" [translate]="'REVENUES.CONTRIBUTORY_PERIOD'"></label>
+                                    <input type="text" class="form-control text-right" name="contributoryPeriod"
+                                        [(ngModel)]="revenue['contibutionPeriod']" myNoSpaces
+                                        (ngModelChange)="calculateContributionPeriod(revenue['contibutionPeriod'], revenue['currentIncome'] ,revenuesList['govBenefits'][0].govtBenefitId, revenue['startAgeList'])"
+                                        #contributoryPeriod="ngModel" required />
+                                </div>
+                            </div>
+                            <div class="row" *ngIf="revenue['calculationMethod'] && revenue['calculationMethod'].id === 2">
+                                <div class="form-group col-6" [ngClass]="{'has-error': !percentage.valid && (percentage.dirty || percentage.touched || f.submitted) }">
+                                    <label class="custom-form-label" [translate]="'REVENUES.PERCENTAGE'"></label>
+                                    <input type="text" class="form-control text-right" name="percentage" placeholder="0%"
+                                    [customMax]="100" [(ngModel)]="revenue['percentage']" #percentage="ngModel"
+                                    myNoSpaces required [textMask]="{mask: percentMask}" appNumeric
+                                    (ngModelChange)="calculateMaxAndEstimated(revenue['percentage'] ,revenue['calculationMethod'], revenue['startAgeList'])" />
+                                </div>
+                            </div>
+                            <div class="row" *ngIf="revenue['calculationMethod'] && revenue['calculationMethod'].id === 4">
+                                <div class="form-group col-12" [ngClass]="{'has-error': !residency.valid && (residency.dirty || residency.touched || f.submitted) }">
+                                    <label class="custom-form-label" [translate]="'REVENUES.RESIDENCY_AT_AGE'"
+                                        [translateParams]="{age: revenue['startAge']}"></label>
+                                    <p-dropdown placeholder="Select residency" [options]="residencyOptions" optionLabel="description"
+                                        name="residency" [(ngModel)]="revenue['residency']" #residency="ngModel"
+                                        required (ngModelChange)="calculateMaxAndEstimated(revenue['residency'] ,revenue['calculationMethod'], revenue['startAgeList'])"></p-dropdown>
+                                </div>
+                            </div>
+                            <div class="row pt-3">
+                                <div class="form-group pb-0 mb-0" [ngClass]="revenue['calculationMethod'] && revenue['calculationMethod'].id === 1 ? 'col-4' : 'col-6'">
+                                    <label class="custom-form-label pb-0 mb-0" [translate]="'REVENUES.MAXIMUM_BENEFIT'"></label>
+                                    <div class="form-fixed-value">
+                                        {{maximumBenefit | currency:
+                                        this.clientData['currencyCode']:'symbol-narrow':'1.0-0'}}
+                                    </div>
+                                </div>
+                                <div *ngIf="revenue['calculationMethod'] && revenue['calculationMethod'].id == 1"
+                                    class="form-group col-4 pb-0 mb-0">
+                                    <label class="custom-form-label pb-0 mb-0" [translate]="'REVENUES.CALCULATED_PERCENT'"></label>
+                                    <div class="form-fixed-value col-4">
+                                        {{calculatedPercent}}%
+                                    </div>
+                                </div>
+                                <div class="form-group pb-0 mb-0" [ngClass]="revenue['calculationMethod'] && revenue['calculationMethod'].id === 1 ? 'col-4' : 'col-6'">
+                                    <label class="custom-form-label pb-0 mb-0" [translate]="'REVENUES.ESTIMATED_BENEFIT'"></label>
+                                    <div class="form-fixed-value">
+                                        {{estimatedBenefit |
+                                        currency:this.clientData['currencyCode']:'symbol-narrow':'1.0-0'}}
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div *ngIf="revenue['category'] && revenue['category'] == 'Other revenue'">
+                            <div class="form-group" [ngClass]="{'has-error': !amountPerYear.valid && (amountPerYear.dirty || amountPerYear.touched || f.submitted) }">
+                                <label class="custom-form-label" [translate]="'REVENUES.AMOUNT_PER_YEAR'"></label>
+                                <input type="text" class="form-control text-right" name="amountPerYear" placeholder="{{currencyMask['prefix']}}0.00"
+                                [(ngModel)]="revenue['amount']" myNoSpaces #amountPerYear="ngModel"
+                                required [textMask]="{mask: currencyMask}" appNumeric (ngModelChange)="checkValues('amountPerYear')"/>
+                            </div>
+                            <div class="row">
+                                <div class="col-6">
+                                    <div class="form-group form-group-custom" [ngClass]="{'has-error': !startDate.valid && (startDate.dirty || startDate.touched || f.submitted) }">
+                                        <label class="custom-form-label" [translate]="'REVENUES.START_AGE'"></label>
+                                        <p-dropdown placeholder="Select Start Date Type" [options]="startDateTypes"
+                                            optionLabel="description" name="startDate" [(ngModel)]="revenue['startDateType']"
+                                            #startDate="ngModel" required (onChange)="checkValues('start')"></p-dropdown>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <div class="form-group" *ngIf="revenue['startDateType'] && revenue['startDateType'].id == 0
+                                            && (!revenue['endDateType'] || revenue['endDateType'].id !== 2)">
+                                                <label class="custom-form-label" [translate]="'REVENUES.YEAR'"></label>
+                                                <div class="form-fixed-value">
+                                                <!--
+                                                    {{owner['retireYear']}}
+                                                    {{revenue['associatedGoal'].goalStartYear}}
+                                                -->
+
+                                                    <div class="form-fixed-value">
+                                                            <ng-container *ngIf="owner.relation === PERSON_RELATION.CLIENT1; then clientRetireYear else spouseRetireYear"></ng-container>
+                                                        </div>
+                                                        <ng-template #clientRetireYear>
+                                                            {{this.familyMembers[0]['retireYear']}}
+                                                        </ng-template>
+                                                        <ng-template #spouseRetireYear>
+                                                            {{this.familyMembers[1]['retireYear']}}
+                                                        </ng-template>
+                                                </div>
+                                            </div>
+                                            <div class="form-group" *ngIf="revenue['startDateType'] && revenue['startDateType'].id == 0
+                                            && revenue['endDateType'] && revenue['endDateType'].id == 2">
+                                                <label class="custom-form-label" [translate]="'REVENUES.YEAR'"></label>
+                                                <div class="form-fixed-value">
+                                                <!--
+                                                    {{owner['retireYear'] - 1}}
+                                                    {{revenue['associatedGoal'].goalStartYear - 1}}
+                                                -->
+
+                                                    <div class="form-fixed-value">
+                                                            <ng-container *ngIf="owner.relation === PERSON_RELATION.CLIENT1; then clientRetireYear else spouseRetireYear"></ng-container>
+                                                        </div>
+                                                        <ng-template #clientRetireYear>
+                                                            {{this.familyMembers[0]['retireYear']}}
+                                                        </ng-template>
+                                                        <ng-template #spouseRetireYear>
+                                                            {{this.familyMembers[1]['retireYear']}}
+                                                        </ng-template>
+                                                </div>
+                                            </div>
+                                            <div class="form-group" *ngIf="revenue['startDateType'] && (revenue['startDateType'].id == 1 || revenue['startDateType'].id == 2)"
+                                                [ngClass]="{'has-error': (startYear.dirty || startYear.touched) && !isCorrect}">
+                                                <label class="custom-form-label" [translate]="'REVENUES.YEAR'"></label>
+                                                <input type="text" class="form-control" name="startYear" pattern="([1-9][0-9]{3})"
+                                                    [customMin]="owner['birthYear']" (keyup)="changeAge(revenue['startYear'], 'start')"
+                                                    [(ngModel)]="revenue['startYear']" myNoSpaces #startYear="ngModel"
+                                                    required />
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="form-group" *ngIf="revenue['startDateType'] && revenue['startDateType'].id == 0
+                                            && (!revenue['endDateType'] || revenue['endDateType'].id !== 2)">
+                                                <label class="custom-form-label" [translate]="'REVENUES.AGE'"></label>
+                                                <div class="form-fixed-value">
+                                                <!--
+                                                    {{owner['retireAge']}}
+                                                    {{this.revenue['associatedGoal']['tier1ClientStartAge']}}
+                                                -->
+
+                                                    <div class="form-fixed-value">
+                                                            <ng-container *ngIf="owner.relation === PERSON_RELATION.CLIENT1; then clientRetireAge else spouseRetireAge"></ng-container>
+                                                        </div>
+                                                        <ng-template #clientRetireAge>
+                                                            {{this.familyMembers[0]['retireAge']}}
+                                                        </ng-template>
+                                                        <ng-template #spouseRetireAge>
+                                                            {{this.familyMembers[1]['retireAge']}}
+                                                        </ng-template>
+
+                                                </div>
+                                            </div>
+                                            <div class="form-group" *ngIf="revenue['startDateType'] && revenue['startDateType'].id == 0
+                                            && revenue['endDateType'] && revenue['endDateType'].id == 2">
+                                                <label class="custom-form-label" [translate]="'REVENUES.AGE'"></label>
+                                                <div class="form-fixed-value">
+                                                <!--
+                                                    {{owner['retireAge'] - 1}}
+                                                    {{this.revenue['associatedGoal']['tier1ClientStartAge'] - 1}}
+                                                -->
+
+                                                    <div class="form-fixed-value">
+                                                            <ng-container *ngIf="owner.relation === PERSON_RELATION.CLIENT1; then clientRetireAge else spouseRetireAge"></ng-container>
+                                                        </div>
+                                                        <ng-template #clientRetireAge>
+                                                            {{this.familyMembers[0]['retireAge']}}
+                                                        </ng-template>
+                                                        <ng-template #spouseRetireAge>
+                                                            {{this.familyMembers[1]['retireAge']}}
+                                                        </ng-template>
+                                                </div>
+                                            </div>
+                                            <div class="form-group" *ngIf="revenue['startDateType'] && ( revenue['startDateType'].id == 1 || revenue['startDateType'].id == 2)"
+                                                [ngClass]="{'has-error': (startAge.dirty || startAge.touched) && !isCorrect }">
+                                                <label class="custom-form-label" [translate]="'REVENUES.AGE'"></label>
+                                                <input type="text" class="form-control" name="startAge" pattern="([1-9][0-9])"
+                                                    (keyup)="changeYear(revenue['startAge'], 'start')" [(ngModel)]="revenue['startAge']"
+                                                    myNoSpaces #startAge="ngModel" required />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="form-group form-group-custom" [ngClass]="{'has-error': !endDate.valid && (endDate.dirty || endDate.touched || f.submitted) }">
+                                        <label class="custom-form-label" [translate]="'REVENUES.END_AGE'"></label>
+                                        <p-dropdown placeholder="Select End Age" [options]="endDateTypes" optionLabel="description"
+                                            name="endDate" [(ngModel)]="revenue['endDateType']" #endDate="ngModel"
+                                            required (onChange)="checkValues('end');"></p-dropdown>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <div class="form-group" *ngIf="revenue['endDateType'] && revenue['endDateType'].id == 0">
+                                                <label class="custom-form-label" [translate]="'REVENUES.YEAR'"></label>
+                                                <div class="form-fixed-value">
+                                                    <ng-container *ngIf="owner.relation === PERSON_RELATION.CLIENT1; then clientMortalityYear else spouseMortalityYear"></ng-container>
+                                                </div>
+                                                <ng-template #clientMortalityYear>
+                                                    {{this.familyMembers[0]['horizonYear']}}
+                                                </ng-template>
+                                                <ng-template #spouseMortalityYear>
+                                                    {{this.familyMembers[1]['horizonYear']}}
+                                                </ng-template>
+                                            </div>
+                                            <div class="form-group" *ngIf="revenue['endDateType'] && (revenue['endDateType'].id == 1 || revenue['endDateType'].id == 4)"
+                                                [ngClass]="{'has-error': (endYear.dirty || endYear.touched) && !isCorrect }">
+                                                <label class="custom-form-label" [translate]="'REVENUES.YEAR'"></label>
+                                                <input type="text" class="form-control" name="endYear" pattern="([1-9][0-9]{3})"
+                                                    [customMin]="owner['birthYear']" (keyup)="changeAge(revenue['endYear'], 'end')"
+                                                    [(ngModel)]="revenue['endYear']" myNoSpaces #endYear="ngModel"
+                                                    required />
+                                            </div>
+                                            <div class="form-group" *ngIf="revenue['endDateType'] && revenue['endDateType'].id == 2">
+                                                <label class="custom-form-label" [translate]="'REVENUES.YEAR'"></label>
+                                                <div class="form-fixed-value">
+                                                <!--
+                                                    {{owner['retireYear'] - 1}}
+                                                    {{revenue['associatedGoal'].goalStartYear - 1}}
+                                                -->
+                                                <div class="form-fixed-value">
+                                                    <ng-container *ngIf="owner.relation === PERSON_RELATION.CLIENT1; then clientRetireYear else spouseRetireYear"></ng-container>
+                                                </div>
+                                                <ng-template #clientRetireYear>
+                                                    {{this.familyMembers[0]['retireYear']}}
+                                                </ng-template>
+                                                <ng-template #spouseRetireYear>
+                                                    {{this.familyMembers[1]['retireYear']}}
+                                                </ng-template>
+                                                </div>
+                                            </div>
+                                            <div class="form-group" *ngIf="revenue['endDateType'] && revenue['endDateType'].id == 3">
+                                                <label class="custom-form-label" [translate]="'REVENUES.YEAR'"></label>
+                                                <div class="form-fixed-value">
+                                                <!--
+                                                    {{owner['retireYear']}} -->
+                                                    {{revenue['startYear']}}
+
+
+
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="form-group" *ngIf="revenue['endDateType'] && revenue['endDateType'].id == 0">
+                                                <label class="custom-form-label" [translate]="'REVENUES.AGE'"></label>
+                                                <div class="form-fixed-value">
+                                                        <ng-container *ngIf="owner.relation === PERSON_RELATION.CLIENT1; then clientAge else spouseAge"></ng-container>
+                                                    </div>
+                                                    <ng-template #clientAge>
+                                                        {{this.familyMembers[0]['horizonAge']}}
+                                                    </ng-template>
+                                                    <ng-template #spouseAge>
+                                                        {{this.familyMembers[1]['horizonAge']}}
+                                                    </ng-template>
+                                            </div>
+                                            <div class="form-group" *ngIf="revenue['endDateType'] && (revenue['endDateType'].id == 1 || revenue['endDateType'].id == 4)"
+                                                [ngClass]="{'has-error': (endAge.dirty || endAge.touched) && !isCorrect }">
+                                                <label class="custom-form-label" [translate]="'REVENUES.AGE'"></label>
+                                                <input type="text" class="form-control" name="endAge" pattern="([1-9][0-9])"
+                                                    (keyup)="changeYear(revenue['endAge'], 'end')" [(ngModel)]="revenue['endAge']"
+                                                    myNoSpaces #endAge="ngModel" required />
+                                            </div>
+                                            <div class="form-group" *ngIf="revenue['endDateType'] && revenue['endDateType'].id == 2">
+                                                <label class="custom-form-label" [translate]="'REVENUES.AGE'"></label>
+                                                <div class="form-fixed-value">
+                                               	<!--
+                                                    {{owner['retireAge'] - 1}}
+                                                    {{this.revenue['associatedGoal']['tier1ClientStartAge'] - 1}}
+                                                -->
+
+                                                    <div class="form-fixed-value">
+                                                        <ng-container *ngIf="owner.relation === PERSON_RELATION.CLIENT1; then clientRetireAge else spouseRetireAge"></ng-container>
+                                                    </div>
+                                                    <ng-template #clientRetireAge>
+                                                        {{this.familyMembers[0]['retireAge']}}
+                                                    </ng-template>
+                                                    <ng-template #spouseRetireAge>
+                                                        {{this.familyMembers[1]['retireAge']}}
+                                                    </ng-template>
+                                                </div>
+                                            </div>
+                                            <div class="form-group" *ngIf="revenue['endDateType'] && revenue['endDateType'].id == 3">
+                                                <label class="custom-form-label" [translate]="'REVENUES.AGE'"></label>
+                                                <div class="form-fixed-value">
+                                                <!--
+                                                    {{owner['retireAge']}}
+                                                -->
+                                                	{{revenue['startAge']}}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-4 mt-5 hidden-md-up"></div>
+                    <div class="col-md-4 col-12">
+                        <div class="row" *ngIf="revenue['category'] && revenue['category'] == 'Government pension'">
+                            <div class="col-6">
+                                <div class="form-group" [ngClass]="{'has-error': !startAge.valid && (startAge.dirty || startAge.touched || f.submitted) }">
+                                    <label class="custom-form-label" [translate]="'REVENUES.START'"></label>
+                                    <p-dropdown placeholder="Select start age" [options]="revenue['ownership'] === 1 ? clientAgeList : spouseAgeList"
+                                        optionLabel="age" name="startAge" [(ngModel)]="revenue['startAgeList']"
+                                        (ngModelChange)="changeYear($event, 'startDropdown', revenue['startAgeList']); chageStartYearDrop(revenue['startAgeList'])"
+                                        #startAge="ngModel" required></p-dropdown>
+                                </div>
+                                <div class="row">
+                                    <div class="col-6">
+                                        <div class="form-group">
+                                            <label class="custom-form-label" [translate]="'REVENUES.YEAR'"></label>
+                                            <div class="form-fixed-value">
+                                                {{revenue['startYear']}}
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="form-group">
+                                            <label class="custom-form-label" [translate]="'REVENUES.AGE'"></label>
+                                            <div class="form-fixed-value" *ngIf="revenue['startAge']">
+                                                {{revenue['startAge']}}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label class="custom-form-label" [translate]="'REVENUES.END'"></label>
+                                    <div class="form-fixed-value end-year-fix-height">
+                                        {{ 'REVENUES.END_AT_MORTALITY' | translate }}
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-6">
+                                        <div class="form-group">
+                                            <label class="custom-form-label" [translate]="'REVENUES.YEAR'"></label>
+                                            <div class="form-fixed-value">
+
+                                                <!--{{revenue['associatedGoal'].goalEndYear}}-->
+                                                <div class="form-fixed-value">
+                                                    <ng-container *ngIf="owner.relation === PERSON_RELATION.CLIENT1; then clientMortalityYear else spouseMortalityYear"></ng-container>
+                                                </div>
+                                                <ng-template #clientMortalityYear>
+                                                    {{this.familyMembers[0]['horizonYear']}}
+                                                </ng-template>
+                                                <ng-template #spouseMortalityYear>
+                                                    {{this.familyMembers[1]['horizonYear']}}
+                                                </ng-template>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="form-group">
+                                            <label class="custom-form-label" [translate]="'REVENUES.AGE'"></label>
+                                            <div class="form-fixed-value">
+                                                <!--{{revenue['associatedGoal'].goalEndYear - owner['birthYear']}}-->
+
+                                                <div class="form-fixed-value">
+                                                    <ng-container *ngIf="owner.relation === PERSON_RELATION.CLIENT1; then clientAge else spouseAge"></ng-container>
+                                                </div>
+                                                <ng-template #clientAge>
+                                                    {{this.familyMembers[0]['horizonAge']}}
+                                                </ng-template>
+                                                <ng-template #spouseAge>
+                                                    {{this.familyMembers[1]['horizonAge']}}
+                                                </ng-template>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-6">
+                                <label class=custom-form-label [translate]="'REVENUES.INDEX_PRIOR_START'"></label>
+                                <span *ngIf="!indexPrChecked">
+                                    <!-- {{revenue['indexRatePr']}}% -->
+                                    {{defaultIndex | number : '1.2-2'}}%
+                                </span>
+                                <div *ngIf="indexPrChecked" class="check-form-group check-form-group-100 d-inline-block"
+                                    [ngClass]="{'has-error': !indexRatePr.valid && (indexRatePr.dirty || indexRatePr.touched || f.submitted) }">
+                                    <input type="text" [style.width.px]="100" class="form-control text-right" name="indexRatePr"
+                                    [customMax]="100" [(ngModel)]="revenue['indexRatePr']"
+                                    #indexRatePr="ngModel" myNoSpaces required [textMask]="{mask: percentMask2}" appNumeric (ngModelChange)="checkValues('indexRatePr')"/>
+                                </div>
+                                <p-checkbox class="ml-3" name="indexPrCheck" [(ngModel)]="indexPrChecked"  (ngModelChange)="enableSaveButton()" binary="true"></p-checkbox>
+                            </div>
+                            <div class="form-group col-6">
+                                <label class=custom-form-label [translate]="'REVENUES.INDEX_FROM_START'"></label>
+                                <span *ngIf="!indexFrChecked">
+                                    <!-- {{revenue['indexRateFr']}}% -->
+                                    {{defaultIndex | number : '1.2-2'}}%
+                                </span>
+                                <div *ngIf="indexFrChecked" class="check-form-group check-form-group-100 d-inline-block"
+                                    [ngClass]="{'has-error': !indexRateFr.valid && (indexRateFr.dirty || indexRateFr.touched || f.submitted) }">
+                                    <input type="text" [style.width.px]="100" class="form-control text-right" name="indexRateFr"
+                                    [customMax]="15" [(ngModel)]="revenue['indexRateFr']" myNoSpaces
+                                    #indexRateFr="ngModel" required [textMask]="{mask: percentMask2}" appNumeric (ngModelChange)="checkValues('indexRateFr')"/>
+                                </div>
+                                <p-checkbox class="ml-3" name="indexFrCheck" [(ngModel)]="indexFrChecked"  (ngModelChange)="enableSaveButton()" binary="true"></p-checkbox>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="form-group" *ngIf="revenue['category'] && revenue['category'] == 'Government pension'">
+                                    <label class="custom-form-label" [translate]="'REVENUES.TAXABLE_PORTION'"></label>
+                                    <div class="form-fixed-value text-center">
+                                        {{revenue['percentTax']}}%
+                                    </div>
+                                </div>
+                                <div class="form-group" *ngIf="revenue['category'] && revenue['category'] == 'Other revenue'"
+                                    [ngClass]="{'has-error': !taxablePr.valid && (taxablePr.dirty || taxablePr.touched || f.submitted) }">
+                                    <label class="custom-form-label" [translate]="'REVENUES.TAXABLE_PORTION'"></label>
+                                    <!-- <input type="text" class="form-control text-right" name="taxablePr" [textMask]="{mask: percentMask}" appNumeric [customMax]="100" [(ngModel)]="revenue['taxablePr']" #taxablePr="ngModel"
+                                        required /> -->
+                                    <p-dropdown class="d-inline-block" [style.width.px]="200" placeholder="Select a texable type"
+                                        [options]="texableOption" optionLabel="description" name="taxablePr"
+                                        [(ngModel)]="revenue['taxablePr']" #taxablePr="ngModel" required (ngModelChange)="checkValues('taxablePr')"></p-dropdown>
+                                    <input type="text" [style.width.px]="100" *ngIf="revenue['taxablePr'] && revenue['taxablePr'].id === 2"
+                                        class="form-control text-right d-inline-block" name="percentTax" [customMax]="99" [(ngModel)]="revenue['percentTax']"
+                                        myNoSpaces #percentTax="ngModel" required [textMask]="{mask: percentMask}" appNumeric (ngModelChange)="checkValues('percentTax')"/>
+                                </div>
+                            </div>
+                            <div class="form-group col-6" *ngIf="revenue['category'] && revenue['category'] == 'Other revenue' && revenuesList['revenueType'] && (revenuesList['revenueType'] === '6')"
+                                [ngClass]="{'has-error': !increment.valid && (increment.dirty || increment.touched || f.submitted) }">
+                                <label class="custom-form-label" [translate]="'REVENUES.INCREASE_DEFERRED'"></label>
+                                <input type="text" class="form-control text-right" name="increment"
+                                    [customMax]="100" [(ngModel)]="revenue['modelVal']"
+                                    #increment="ngModel" [textMask]="{mask: percentMask1}" appNumeric (ngModelChange)="checkValues('increment')"/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-12" *ngIf="revenue['category'] && revenue['category'] == 'Government pension'">
+                                <label class="custom-form-label" [translate]="'REVENUES.CURRENCY'"></label>
+                                <div class="form-fixed-value" *ngIf="revenue['currency']">
+                                    {{revenue['currency'].description}}
+                                </div>
+                            </div>
+                            <div class="form-group col-12" *ngIf="revenue['category'] && revenue['category'] == 'Other revenue'"
+                                [ngClass]="{'has-error': !currency.valid && (currency.dirty || currency.touched || f.submitted) }">
+                                <label class="custom-form-label" [translate]="'REVENUES.CURRENCY'"></label>
+                                <p-dropdown placeholder="Select currency" [options]="currencies" optionLabel="description"
+                                    name="currency" [(ngModel)]="revenue['currency']" #currency="ngModel" required (ngModelChange)="checkValues('currency')"></p-dropdown>
+
+                            </div>
+                        </div>
+
+
+
+
+
+                        <!-- The following section should only show for ProPlanner user and for Private Pensions only -->
+                        <div class="row" *ngIf="accessRights['WEB42']['accessLevel'] > 0 && revenue['isPrivatePension']">
+                            <div class="form-group col-3">
+                                <p-radioButton name="pord" label="" value="1"
+                                    [(ngModel)]="revenue['pord']" styleClass="mb-2">
+                                </p-radioButton>
+                                <label class="custom-form-label" [translate]="'REVENUES.PERCENT'"></label>
+                            </div>
+                            <div class="form-group col-3">
+                                <p-radioButton name="pord" label="" value="2"
+                                [(ngModel)]="revenue['pord']" styleClass="mb-2">
+                                </p-radioButton>
+                                <label class="custom-form-label" [translate]="'REVENUES.AMOUNT'"></label> 
+                            </div>
+                        </div>
+
+                        <!-- The following 2 sections should only show for ProPlanner + and a private pension -->
+                        <div class="row" *ngIf="accessRights['DDINF']['accessLevel'] > 0 && revenue['isPrivatePension']">
+                            <div class="form-group col-6" *ngIf="revenue['pord'] === 1"
+                                [ngClass]="{'has-error': !pct_on_death.valid && (pct_on_death.dirty || pct_on_death.touched || f.submitted) }">
+                                <label class="custom-form-label" [translate]="'REVENUES.PCT_ON_DEATH'"></label>
+                                <input type="text" class="form-control text-right" name="pct_on_death"
+                                    [customMax]="100" [(ngModel)]="revenue['percentOnDeath']"
+                                    #pct_on_death="ngModel" [textMask]="{mask: percentMask1}" appNumeric (ngModelChange)="checkValues('pct_on_death')"/>
+                            </div>
+                            <div class="form-group col-6" *ngIf="revenue['pord'] === 2">
+                                <label class="custom-form-label" [translate]="'REVENUES.PCT_ON_MORT'"></label>
+                                {{revenue['percentOnDeath'] | number : '1.2-2'}}%
+                            </div>
+
+                            <div class="form-group col-6"  *ngIf="revenue['pord'] === 1">
+                                <label class="custom-form-label" [translate]="'REVENUES.AMT_ON_DEATH'"></label>
+                                {{revenue['deathAmount'] | currency:clientData['currencyCode']:'symbol-narrow':'1.0-0'}}
+                            </div>
+                            <div class="form-group col-6"  *ngIf="revenue['pord'] === 2"
+                                [ngClass]="{'has-error': !amt_on_death.valid && (amt_on_death.dirty || amt_on_death.touched || f.submitted) }">
+                                <label class="custom-form-label" [translate]="'REVENUES.AMT_ON_DEATH'"></label>
+                                <input type="text" class="form-control text-right" name="amt_on_death" placeholder="{{currencyMask['prefix']}}0.00"
+                                [(ngModel)]="revenue['deathAmount']" myNoSpaces #amt_on_death="ngModel"
+                                [textMask]="{mask: currencyMask}" appNumeric (ngModelChange)="checkValues('amt_on_death')"/>
+                            </div>
+                        </div>
+                        
+                        <div class="row" *ngIf="accessRights['DDINF']['accessLevel'] > 0 && revenue['isPrivatePension']">
+                            <div class="form-group col-6" *ngIf="revenue['pord'] === 1"
+                                [ngClass]="{'has-error': !pct_on_disab.valid && (pct_on_disab.dirty || pct_on_disab.touched || f.submitted) }">
+                                <label class="custom-form-label" [translate]="'REVENUES.PCT_ON_DISAB'"></label>
+                                <input type="text" class="form-control text-right" name="pct_on_disab"
+                                    [customMax]="100" [(ngModel)]="revenue['percentOnDisability']"
+                                    #pct_on_disab="ngModel" [textMask]="{mask: percentMask1}" appNumeric (ngModelChange)="checkValues('pct_on_mort')"/>
+                            </div>
+                            <div class="form-group col-6" *ngIf="revenue['pord'] === 2">
+                                <label class="custom-form-label" [translate]="'REVENUES.PCT_ON_DISAB'"></label>
+                                {{revenue['percentOnDisability'] | number : '1.2-2'}}%
+                            </div>
+
+                            <div class="form-group col-6"  *ngIf="revenue['pord'] === 1">
+                                <label class="custom-form-label" [translate]="'REVENUES.AMT_ON_DISAB'"></label>
+                                {{revenue['disabilityAmount'] | currency:clientData['currencyCode']:'symbol-narrow':'1.0-0'}}
+                            </div>
+                            <div class="form-group col-6"  *ngIf="revenue['pord'] === 2"
+                                [ngClass]="{'has-error': !amt_on_disab.valid && (amt_on_disab.dirty || amt_on_disab.touched || f.submitted) }">
+                                <label class="custom-form-label" [translate]="'REVENUES.AMT_ON_DISAB'"></label>
+                                <input type="text" class="form-control text-right" name="amt_on_disab" placeholder="{{currencyMask['prefix']}}0.00"
+                                [(ngModel)]="revenue['disabilityAmount']" myNoSpaces #amt_on_disab="ngModel"
+                                [textMask]="{mask: currencyMask}" appNumeric (ngModelChange)="checkValues('amt_on_disab')"/>
+                            </div>
+                        </div>
+        
+                        
+
+
+
+
+                        <div class="row" *ngIf="accessRights['WEB42']['accessLevel'] > 0 && revenue['isPrivatePension']">
+
+                            <div class="form-group col-6" *ngIf="revenue['pord'] === 1"
+                                [ngClass]="{'has-error': !pct_on_mort.valid && (pct_on_mort.dirty || pct_on_mort.touched || f.submitted) }">
+                                <label class="custom-form-label" [translate]="'REVENUES.PCT_ON_MORT'"></label>
+                                <input type="text" class="form-control text-right" name="pct_on_mort"
+                                    [customMax]="100" [(ngModel)]="revenue['percentOnMortality']"
+                                    #pct_on_mort="ngModel" [textMask]="{mask: percentMask1}" appNumeric (ngModelChange)="checkValues('pct_on_mort')"/>
+                            </div>
+                            <div class="form-group col-6" *ngIf="revenue['pord'] === 2">
+                                <label class="custom-form-label" [translate]="'REVENUES.PCT_ON_MORT'"></label>
+                                {{revenue['percentOnMortality'] | number : '1.2-2'}}%
+                            </div>
+
+                            <div class="form-group col-6"  *ngIf="revenue['pord'] === 1">
+                                <label class="custom-form-label" [translate]="'REVENUES.AMT_ON_MORT'"></label>
+                                {{revenue['mortalityAmount'] | currency:clientData['currencyCode']:'symbol-narrow':'1.0-0'}}
+                            </div>
+                            <div class="form-group col-6"  *ngIf="revenue['pord'] === 2"
+                                [ngClass]="{'has-error': !amt_on_mort.valid && (amt_on_mort.dirty || amt_on_mort.touched || f.submitted) }">
+                                <label class="custom-form-label" [translate]="'REVENUES.AMT_ON_MORT'"></label>
+                                <input type="text" class="form-control text-right" name="amt_on_mort" placeholder="{{currencyMask['prefix']}}0.00"
+                                [(ngModel)]="revenue['mortalityAmount']" myNoSpaces #amt_on_mort="ngModel"
+                                [textMask]="{mask: currencyMask}" appNumeric (ngModelChange)="checkValues('amt_on_mort')"/>
+                            </div>
+                        </div>
+
+
+
+
+
+
+                        <div class="row">
+                            <div *ngIf="goalsList.length>1" class="form-group col-12" [ngClass]="{'has-error': !associatedGoal.valid && (associatedGoal.dirty || associatedGoal.touched || f.submitted) }">
+                                <label class="custom-form-label" [translate]="'REVENUES.ASSOCIATED_GOAL'"></label>
+                                <p-dropdown placeholder="Select goal" [options]="goalsList" optionLabel="description"
+                                    name="associatedGoal" [(ngModel)]="revenue['associatedGoal']" #associatedGoal="ngModel"
+                                    required></p-dropdown>
+                            </div>
+                            <div class="form-group col-12" *ngIf="goalsList.length === 1">
+                                <label class="custom-form-label" [translate]="'REVENUES.ASSOCIATED_GOAL'"></label>
+                                <div class="form-fixed-value" *ngIf="revenue['associatedGoal']">
+                                    {{revenue['associatedGoal'].description}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12 col-12 mt-3">
+                        <div class="form-group text-right">
+                            <button type="button" class="btn btn-secondary btn-small" [translate]="'FORM.ACTION.CANCEL'"
+                                (click)="back()"></button>
+                            <button [disabled]="f.form.invalid || !isCorrect || saveDisabled" type="submit" class="btn btn-success btn-small"
+                                [translate]="'FORM.ACTION.SAVE'"></button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,645 @@
+<div class="side-form side-form-large side-form-full-width">
+    <form name="form" #f="ngForm">
+        <div class="box">
+            <div class="box-header">
+                <span class="sidebar_title">{{ 'CALCULATOR.CALCULATORS_TITLE' | translate }}</span>
+                <span (click)="back()" class="sidebar_action_icon ion-md-close-circle float-right"></span>
+            </div>
+            <div class="box-body">
+                <div class="debt-consolidation calculator-wrap calculator-table-alignment-wrapper">
+                    <div class="row">
+                        <div class="col-12">
+                            <app-calculator-header [clientId]="clientId" currentCalculator="loan-calculator"></app-calculator-header>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="form-group d-flex d-inline-block drop-down-wrap mb-3">
+                                <button type="button" class="m-0 align-content-center btn btn-small btn-secondary mr-2" (click)="refreshData()" [translate]="'CALCULATOR.LOAD'"></button>
+                                <span class="pt-2 align-content-center ml-auto save-date-wrap">{{ 'CALCULATOR.DATE_SAVED' | translate }} N/A</span>
+                            </div>
+                        </div>
+                        <div class="col-12" *ngIf="debtCalculatorData['errorsPayload'] && debtCalculatorData['errorsPayload'].length > 0">
+                            <p *ngFor="let error of debtCalculatorData['errorsPayload']" class="text-error mb-1"> {{error}} </p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="calulater-inner-wrap mb-15">
+                                <h4 class="debt-consolidation-title fw-600">{{ 'CALCULATOR.DEBT_CONSOLIDATION.HOME_AND_MORTGAGE_DETAILS' | translate }}</h4>
+                                <div class="row" *ngIf="paymentFrequency.length > 0 && interestType.length > 0">
+                                    <div class="col-12 col-sm-4 col-xl-5">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <div class="row align-items-center">
+                                                    <div class="col-6 col-sm-6 col-xl-6">
+                                                        <div class="form-group mb-0">
+                                                            <span class="align-content-center">{{ 'CALCULATOR.DEBT_CONSOLIDATION.APPROXIMATE_VALUE_OF_YOUR_HOME'
+                                                                | translate }}</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-6 col-sm-6 col-xl-6">
+                                                        <div class="form-group">
+                                                            <input type="text" class="form-control text-center" name="approximateValue" [(ngModel)]="debtCalculatorData['mortgageValueNum']" [textMask]="{mask: currencyMask}" (input)="calculateData()" appNumeric />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row align-items-center">
+                                                    <div class="col-6 col-sm-6 col-xl-6">
+                                                        <div class="form-group mb-0">
+                                                            <span class="align-content-center">{{ 'CALCULATOR.DEBT_CONSOLIDATION.MORTGAGE_BALCNCE' | translate
+                                                                }}
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-6 col-sm-6 col-xl-6">
+                                                        <div class="form-group">
+                                                            <input type="text" class="form-control text-center" name="mortageBalance" [(ngModel)]="debtCalculatorData['balanceNum']" [textMask]="{mask: currencyMask}" (input)="calculateData()" appNumeric />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row align-items-center">
+                                                    <div class="col-6 col-sm-6 col-xl-6">
+                                                        <div class="form-group mb-0">
+                                                            <span class="align-content-center">{{ 'CALCULATOR.DEBT_CONSOLIDATION.INTEREST_TYPE' | translate
+                                                                }}
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-6 col-sm-6 col-xl-6">
+                                                        <div class="form-group">
+                                                            <p-dropdown [options]="interestType" name="interest" [(ngModel)]="selectedInterestType" #interest="ngModel" optionLabel="description" placeholder="{{ 'CALCULATOR.DEBT_CONSOLIDATION.INTEREST_TYPE_PLACEHOLDER' | translate}}" (onChange)="calculateData()"></p-dropdown>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row align-items-center">
+                                                    <div class="col-6 col-sm-6 col-xl-6">
+                                                        <div class="row align-items-center mb-0">
+                                                            <div class="col-6 col-sm-7 col-xl-7">
+                                                                <div class="form-group mb-0">
+                                                                    <span *ngIf="selectedInterestType && selectedInterestType['id'] !== INTEREST_TYPES['FIXED']" class="align-content-center">{{ 'CALCULATOR.DEBT_CONSOLIDATION.PRIME_OF' | translate }} {{debtCalculatorData['primeRateNum']}}%+</span>
+                                                                    <span *ngIf="selectedInterestType && selectedInterestType['id'] === INTEREST_TYPES['FIXED']" class="align-content-center">{{ 'CALCULATOR.DEBT_CONSOLIDATION.INTEREST_RATE' | translate }}</span>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-6 col-sm-5 col-xl-5" *ngIf="selectedInterestType && selectedInterestType['id'] !== INTEREST_TYPES['FIXED']">
+                                                                <div class="form-group" [ngClass]="{'has-error' : f.submitted && !interestPrimeRate.valid}">
+                                                                    <input type="text" class="form-control text-center" name="interestPrimeRate" [(ngModel)]="debtCalculatorData['mortgageRateNum']" #interestPrimeRate="ngModel" [customMin]="0" [customMax]="100" (ngModelChange)="countTotalResultRate(true, false)" [textMask]="{mask: percentMask}"
+                                                                        appNumeric (input)="calculateData()" required />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-6 col-sm-6 col-xl-6">
+                                                        <div class="form-group text-center" *ngIf="selectedInterestType && selectedInterestType['id'] !== INTEREST_TYPES['FIXED']">
+                                                            <span>{{debtCalculatorData['totalInterestRate']}}%</span>
+                                                        </div>
+                                                        <div *ngIf="selectedInterestType && selectedInterestType['id'] == INTEREST_TYPES['FIXED']" class="form-group" [ngClass]="{'has-error' : f.submitted && !interestRate.valid}">
+                                                            <input type="text" class="form-control text-center" name="interestRate" [(ngModel)]="debtCalculatorData['mortgageRateNum']" #interestRate="ngModel" [textMask]="{mask: percentMask}" appNumeric (ngModelChange)="countTotalResultRate(true, false)" (input)="calculateData()"
+                                                                required/>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row align-items-center">
+                                                    <div class="col-6 col-sm-6 col-xl-6">
+                                                        <div class="form-group mb-0">
+                                                            <span class="align-content-center">{{ 'CALCULATOR.DEBT_CONSOLIDATION.BORROWING_LIMIT' | translate
+                                                                }} ({{debtCalculatorData['borrowingLimitNum']}}%)</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-6 col-sm-6 col-xl-6">
+                                                        <div class="form-group text-center">
+                                                            <span class="align-content-center">{{debtCalculatorData['borrowingLimitAmount'] | currency:clientData['currencyCode']:'symbol-narrow':'1.0-0'}}</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-sm-4 col-xl-4">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <div class="row align-items-center">
+                                                    <div class="col-6 col-sm-6 col-xl-6">
+                                                        <div class="form-group mb-0">
+                                                            <span class="align-content-center">{{ 'CALCULATOR.DEBT_CONSOLIDATION.PAYMENT_AMOUNT' | translate
+                                                                }}
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-6 col-sm-6 col-xl-6">
+                                                        <div class="form-group">
+                                                            <input type="text" class="form-control text-center" name="paymentAmount" [(ngModel)]="debtCalculatorData['paymentAmtNum']" #paymentAmount="ngModel" [textMask]="{mask: currencyMask1}" appNumeric (input)="calculateData()" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row align-items-center">
+                                                    <div class="col-6 col-sm-6 col-xl-6">
+                                                        <div class="form-group mb-0">
+                                                            <span class="align-content-center">{{ 'CALCULATOR.DEBT_CONSOLIDATION.PAYMENT_FREQUENCY' | translate
+                                                                }}
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-6 col-sm-6 col-xl-6">
+                                                        <div class="form-group">
+                                                            <p-dropdown [options]="paymentFrequency" name="paymentFreq" [(ngModel)]="selectedPaymentFrequency" #paymentFreq="ngModel" optionLabel="frequency" placeholder="{{ 'CALCULATOR.DEBT_CONSOLIDATION.PAYMENT_FREQUENCY_PLACEHOLDER' | translate}}" (onChange)="calculateData()"></p-dropdown>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row align-items-center">
+                                                    <div class="col-6 col-sm-6 col-xl-6">
+                                                        <div class="form-group mb-0">
+                                                            <span class="align-content-center">{{ 'CALCULATOR.DEBT_CONSOLIDATION.PENALTY_COST' | translate
+                                                                }}
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-6 col-sm-6 col-xl-6">
+                                                        <div class="form-group">
+                                                            <input type="text" class="form-control text-center" name="panaltycost" [(ngModel)]="debtCalculatorData['penaltyNum']" #panaltycost="ngModel" [textMask]="{mask: currencyMask1}" appNumeric (input)="calculateData()" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row align-items-center">
+                                                    <div class="col-6 col-sm-6 col-xl-6">
+                                                        <div class="form-group mb-0">
+                                                            <span class="align-content-center">{{ 'CALCULATOR.DEBT_CONSOLIDATION.AMORTIZATION' | translate
+                                                                }} </span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-6 col-sm-6 col-xl-6">
+                                                        <div class="form-group text-center">
+                                                            <span>{{ debtCalculatorData['mortgageCurTotTimeNum']}} {{'CALCULATOR.YEARS' | translate}}</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-sm-4 col-xl-3">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <div class="row align-items-center">
+                                                    <div class="col-6 col-sm-6 col-xl-6">
+                                                        <div class="form-group mb-0">
+                                                            <span class="align-content-center">{{ 'CALCULATOR.DEBT_CONSOLIDATION.PRIME_RATE' | translate }}
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-6 col-sm-6 col-xl-6">
+                                                        <div class="form-group" [ngClass]="{'has-error' : f.submitted && !primeRate.valid}">
+                                                            <input type="text" class="form-control text-center" name="primeRate" [(ngModel)]="debtCalculatorData['primeRateNum']" #primeRate="ngModel" [customMin]="0" [customMax]="100" (ngModelChange)="countTotalResultRate(true, true)" [textMask]="{mask: percentMask}"
+                                                                appNumeric (input)="calculateData()" required />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="calulater-inner-wrap mb-15">
+                                <h4 class="debt-consolidation-title fw-600">{{ 'CALCULATOR.DEBT_CONSOLIDATION.LOANS_AND_CREDIT_CARDS' | translate }}
+                                </h4>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <a class="btn-add align-middle" href="javascript:void(0)" (click)="addLoan();">
+                                            <i class="ion-md-add-circle"></i>
+                                            <span class="ml-1">{{ 'CALCULATOR.DEBT_CONSOLIDATION.ADD_A_LOAN' | translate }} </span>
+                                        </a>
+                                        <button type="button" class="m-0 align-content-center btn btn-small btn-secondary ml-3 mr-2" (click)="loadLoans(content)" [translate]="'CALCULATOR.DEBT_CONSOLIDATION.LOAD_LOAN'"></button>
+                                    </div>
+                                </div>
+                                <div class="row" *ngIf="loanList.length > 0">
+                                    <div class="col-12">
+                                        <div class="custome-table-responsive">
+                                            <table class="table table-borderless">
+                                                <thead>
+                                                    <tr>
+                                                        <th width="9%" class="fs-14 border-top-0">{{ 'CALCULATOR.DEBT_CONSOLIDATION.LOAN_TYPE' | translate }}
+                                                        </th>
+                                                        <th width="12%" class="fs-14 border-top-0">{{ 'CALCULATOR.DEBT_CONSOLIDATION.LOAN_BALANCE' | translate }}
+                                                        </th>
+                                                        <th width="15%" class="fs-14 border-top-0">{{ 'CALCULATOR.DEBT_CONSOLIDATION.INTEREST_TYPE' | translate }}</th>
+                                                        <th width="10%" class="fs-14 border-top-0">{{ 'CALCULATOR.DEBT_CONSOLIDATION.PRIME_PLUS' | translate }} </th>
+                                                        <th width="12%" class="fs-14 border-top-0">{{ 'CALCULATOR.DEBT_CONSOLIDATION.INTEREST_RATE' | translate }}
+                                                        </th>
+                                                        <th width="12%" class="fs-14 border-top-0">{{ 'CALCULATOR.DEBT_CONSOLIDATION.PAYMENT_AMOUNT' | translate }}
+                                                        </th>
+                                                        <th width="15%" class="fs-14 border-top-0">{{ 'CALCULATOR.DEBT_CONSOLIDATION.FREQUENCY' | translate }} </th>
+                                                        <th width="10%" class="hidden-sm-down text-center fs-14 border-top-0">{{ 'CALCULATOR.DEBT_CONSOLIDATION.AMORTIZATION' | translate }}</th>
+                                                        <th width="5%" class="border-top-0">&nbsp;</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <ng-container *ngFor="let data of loanList; index as i">
+                                                        <tr>
+                                                            <td width="9%">
+                                                                <div class="form-group mr-1" style="width: 200px">
+                                                                    <p-dropdown [options]="loanTypes" name="loanType{{i}}" [(ngModel)]="data['selctedLoanType']" #loanType="ngModel" required optionLabel="descr" placeholder="{{ 'CALCULATOR.DEBT_CONSOLIDATION.LOAN_TYPE_PLACEHOLDER' | translate}}" (onChange)="calculateData()"></p-dropdown>
+                                                                </div>
+                                                            </td>
+                                                            <td width="12%">
+                                                                <div class="form-group mr-1">
+                                                                    <input type="text" class="form-control text-center" name="loanBalance{{i}}" [(ngModel)]="data['outstandingBalanceNum']" #loanBalance="ngModel" [textMask]="{mask: currencyMask}" appNumeric (input)="calculateData()" />
+                                                                </div>
+                                                            </td>
+                                                            <td width="15%">
+                                                                <div class="form-group mr-1 loanInterestTypeDropdown">
+                                                                    <p-dropdown [options]="interestType" name="interest{{i}}" [(ngModel)]="data['selectedInterestType']" #interest="ngModel" optionLabel="description" placeholder="{{ 'CALCULATOR.DEBT_CONSOLIDATION.INTEREST_TYPE_PLACEHOLDER' | translate}}" (onChange)="calculateData()"></p-dropdown>
+                                                                </div>
+                                                            </td>
+                                                            <td width="10%" [ngClass]="{'text-center': data['selectedInterestType'] && data['selectedInterestType']['id'] === INTEREST_TYPES.FIXED}">
+                                                                <div *ngIf="data['selectedInterestType'] && data['selectedInterestType']['id'] !== INTEREST_TYPES.FIXED" class="form-group mr-1" [ngClass]="{'has-error' : f.submitted && !primePlus.valid}">
+                                                                    <input type="text" class="form-control text-center" name="primePlus{{i}}" [(ngModel)]="data['primePlusNum']" #primePlus="ngModel" [customMin]="0" [customMax]="100" [textMask]="{mask: percentMask}" appNumeric (input)="calculateData()" required />
+                                                                </div>
+                                                                <span *ngIf="data['selectedInterestType'] && data['selectedInterestType']['id'] === INTEREST_TYPES.FIXED">N/A</span>
+                                                            </td>
+                                                            <td width="12%" [ngClass]="{'text-center': data['selectedInterestType'] && data['selectedInterestType']['id'] !== INTEREST_TYPES.FIXED}">
+                                                                <div *ngIf="data['selectedInterestType'] && data['selectedInterestType']['id'] === INTEREST_TYPES.FIXED" class="form-group mr-1" [ngClass]="{'has-error' : f.submitted && !interestRate.valid}">
+                                                                    <input type="text" class="form-control text-center" name="interestRate{{i}}" [(ngModel)]="data['interestRateNum']" #interestRate="ngModel" [customMin]="0" [customMax]="100" [textMask]="{mask: percentMask}" appNumeric (input)="calculateData()" required
+                                                                    />
+                                                                </div>
+                                                                <span *ngIf="data['selectedInterestType'] && data['selectedInterestType']['id'] !== INTEREST_TYPES.FIXED">{{debtCalculatorData['primeRateNum']}}%</span>
+                                                            </td>
+                                                            <td width="12%">
+                                                                <div class="form-group mr-1">
+                                                                    <input type="text" class="form-control text-center" name="paymentAmount{{i}}" [(ngModel)]="data['paymentAmountNum']" #paymentAmount="ngModel" [textMask]="{mask: currencyMask1}" appNumeric (input)="calculateData()" />
+                                                                </div>
+                                                            </td>
+                                                            <td width="15%">
+                                                                <div class="form-group mr-1">
+                                                                    <p-dropdown [options]="paymentFrequency" name="paymentFreq{{i}}" [(ngModel)]="data['selectedPaymentFrequency']" #paymentFreq="ngModel" optionLabel="frequency" placeholder="{{ 'CALCULATOR.DEBT_CONSOLIDATION.PAYMENT_FREQUENCY_PLACEHOLDER' | translate}}"
+                                                                        (onChange)="calculateData()"></p-dropdown>
+                                                                </div>
+                                                            </td>
+                                                            <td class="hidden-sm-down text-center" width="10%">
+                                                                <span>{{ data['loanPaidOffIn']}} {{'CALCULATOR.MONTHS' | translate}}</span>
+                                                            </td>
+                                                            <td width="5%">
+                                                                <div class="dropdown-relative ">
+                                                                    <button type="button" class="btn-floating" (click)="changeAction(i)">
+                                                                        <span class="ion-md-more"></span>
+                                                                    </button>
+                                                                    <div [id]="'dropdownDebtConsolidation'+ i" class="dropdown-portfolio-action dropdown-floating hide-ele">
+                                                                        <ul class="floating-dropdown">
+                                                                            <li>
+                                                                                <a (click)="changeAction(i); setPrimaryLoan(data)" class="action-list">
+                                                                                    <i class="ion-md-link action-list"></i>
+                                                                                    <span class="action-list">{{ 'CALCULATOR.DEBT_CONSOLIDATION.MAKE_PRIMARY'
+                                                                                        | translate }} </span>
+                                                                                </a>
+                                                                            </li>
+                                                                            <li class="delete-btn">
+                                                                                <a (click)="deleteLoan(data);changeAction(i)" class="action-list">
+                                                                                    <i class="ion-md-close-circle action-list"></i>
+                                                                                    <span class="action-list">{{ 'CALCULATOR.DEBT_CONSOLIDATION.DELETE_LOAN'
+                                                                                        | translate }} </span>
+                                                                                </a>
+                                                                            </li>
+                                                                        </ul>
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    </ng-container>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="calulater-inner-wrap mb-15">
+                                <h4 class="debt-consolidation-title fw-600">{{ 'CALCULATOR.DEBT_CONSOLIDATION.ANALYSIS' | translate }} </h4>
+                                <div class="row mb-4">
+                                    <div class="col-12 col-sm-6 col-md-4 col-xl-4">
+                                        <div class="form-group radio-wrap">
+                                            <p-radioButton name="analysis" label="" [value]="LOAN_TYPES['VARIABLE_RATE_LOAN']" [(ngModel)]="loanType" (ngModelChange)="calculateData()"></p-radioButton>
+                                            <label class="radio-inline">{{ 'CALCULATOR.DEBT_CONSOLIDATION.VARIABLE_RATE_LOAN' | translate }} </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-sm-6 col-md-3 col-xl-4">
+                                        <div class="form-group radio-wrap">
+                                            <p-radioButton name="analysis" label="" [value]="LOAN_TYPES['FIXED_RATE_LOAN']" [(ngModel)]="loanType" (ngModelChange)="calculateData()"></p-radioButton>
+                                            <label class="radio-inline">{{ 'CALCULATOR.DEBT_CONSOLIDATION.FIXED_RATE_LOAN' | translate }}
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-sm-12 col-md-5 col-xl-4">
+                                        <div class="form-group radio-wrap">
+                                            <p-radioButton name="analysis" label="" [value]="LOAN_TYPES['FIXED_AND_VARIABLE_COMBINED']" [(ngModel)]="loanType" (ngModelChange)="calculateData()"></p-radioButton>
+                                            <label class="radio-inline">{{ 'CALCULATOR.DEBT_CONSOLIDATION.FIXED_AND_VARIABLE_COMBINED' | translate }}
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12 col-lg-6">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <div class="row align-items-center">
+                                                    <div class="col-6 col-sm-8 col-xl-8">
+                                                        <div class="form-group mb-0">
+                                                            <span class="align-content-center">{{ 'CALCULATOR.DEBT_CONSOLIDATION.CONSOLIDATED_LOAN_AMOUNT'
+                                                                | translate }} </span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-6 col-sm-4 col-xl-4">
+                                                        <div class="form-group text-center">
+                                                            <span>{{debtCalculatorData['consLoanAmountNum'] | currency:clientData['currencyCode']:'symbol-narrow':'1.0-0'}}</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row align-items-center">
+                                                    <div class="col-6 col-sm-8 col-xl-8">
+                                                        <div class="form-group mb-0">
+                                                            <span class="align-content-center">{{ 'CALCULATOR.DEBT_CONSOLIDATION.LESS_LUMP_SUM_PAYMENT_TODAY'
+                                                                | translate }}</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-6 col-sm-4 col-xl-4">
+                                                        <div class="form-group">
+                                                            <input type="text" class="form-control text-center" name="lumpSumPayment" [(ngModel)]="debtCalculatorData['todayPaymentsNum']" #lumpSumPayment="ngModel" [textMask]="{mask: currencyMask}" appNumeric (input)="calculateData()" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row align-items-center">
+                                                    <div class="col-6 col-sm-8 col-xl-8">
+                                                        <div class="form-group mb-0">
+                                                            <span class="align-content-center">{{ 'CALCULATOR.DEBT_CONSOLIDATION.NEW_LOAN_AMOUNT' | translate
+                                                                }} </span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-6 col-sm-4 col-xl-4">
+                                                        <div class="form-group text-center">
+                                                            <span>{{debtCalculatorData['newLoanAmount'] | currency:clientData['currencyCode']:'symbol-narrow':'1.0-0'}}</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row align-items-center" *ngIf="loanType === LOAN_TYPES['FIXED_AND_VARIABLE_COMBINED']">
+                                                    <div class="col-6 col-sm-8 col-xl-8">
+                                                        <div class="form-group mb-0">
+                                                            <span class="align-content-center">{{ 'CALCULATOR.DEBT_CONSOLIDATION.FIXED_RATE_PORTION_OF_LOAN' | translate
+                                                                }} </span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-6 col-sm-4 col-xl-4">
+                                                        <div class="form-group text-center">
+                                                            <input type="text" class="form-control text-center" name="fixedRateLoanPortionNum" [(ngModel)]="debtCalculatorData['fixedRateLoanPortionNum']" #fixedRateLoanPortionNum="ngModel" [textMask]="{mask: currencyMask1}" appNumeric (input)="calculateData()" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row align-items-center" *ngIf="loanType === LOAN_TYPES['FIXED_AND_VARIABLE_COMBINED']">
+                                                    <div class="col-6 col-sm-8 col-xl-8">
+                                                        <div class="form-group mb-0">
+                                                            <span class="align-content-center">{{ 'CALCULATOR.DEBT_CONSOLIDATION.NEW_INTEREST_RATE_FOR_FIXED_RATE_LOAN' | translate
+                                                                }} </span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-6 col-sm-4 col-xl-4">
+                                                        <div class="form-group text-center" [ngClass]="{'has-error' : f.submitted && !newInterestRateNum.valid}">
+                                                            <input type="text" class="form-control text-center" name="newInterestRateNum" [(ngModel)]="debtCalculatorData['newInterestRateNum']" #newInterestRateNum="ngModel" [customMin]="0" [customMax]="100" [textMask]="{mask: percentMask}" appNumeric (input)="calculateData()"
+                                                                required />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row align-items-center" *ngIf="loanType === LOAN_TYPES['FIXED_AND_VARIABLE_COMBINED']">
+                                                    <div class="col-6 col-sm-8 col-xl-8">
+                                                        <div class="form-group mb-0">
+                                                            <span class="align-content-center">{{ 'CALCULATOR.DEBT_CONSOLIDATION.VARIABLE_RATE_PORTION_OF_LOAN' | translate
+                                                                }} </span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-6 col-sm-4 col-xl-4">
+                                                        <div class="form-group text-center">
+                                                            <span>{{debtCalculatorData['variableRatePortion'] | currency:clientData['currencyCode']:'symbol-narrow':'1.0-0'}}</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row align-items-center">
+                                                    <div class="col-6 col-sm-8 col-xl-8">
+                                                        <div class="row align-items-center mb-0">
+                                                            <div class="col-6 col-sm-7 col-xl-7">
+                                                                <div class="form-group mb-0">
+                                                                    <span *ngIf="loanType !== LOAN_TYPES['FIXED_RATE_LOAN']" class="align-content-center">{{ 'CALCULATOR.DEBT_CONSOLIDATION.PRIME_OF' | translate }} {{debtCalculatorData['primeRateNum']}}%+</span>
+                                                                    <span *ngIf="loanType === LOAN_TYPES['FIXED_RATE_LOAN']" class="align-content-center">{{ 'CALCULATOR.DEBT_CONSOLIDATION.INTEREST_RATE' | translate }}</span>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-6 col-sm-5 col-xl-5" *ngIf="loanType !== LOAN_TYPES['FIXED_RATE_LOAN']">
+                                                                <div class="form-group" [ngClass]="{'has-error' : f.submitted && !primeOfPrimeRate.valid}">
+                                                                    <input type="text" class="form-control text-center" name="primeOfPrimeRate" [(ngModel)]="debtCalculatorData['resultRateNum']" #primeOfPrimeRate="ngModel" [customMin]="0" [customMax]="100" (ngModelChange)="countTotalResultRate(false, true)" [textMask]="{mask: percentMask}"
+                                                                        appNumeric (input)="calculateData()" required />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-6 col-sm-4 col-xl-4">
+                                                        <div class="form-group text-center" *ngIf="loanType !== LOAN_TYPES['FIXED_RATE_LOAN']">
+                                                            <span>{{debtCalculatorData['totalResultRate']}}%</span>
+                                                        </div>
+                                                        <div class="form-group" *ngIf="loanType === LOAN_TYPES['FIXED_RATE_LOAN']">
+                                                            <div class="form-group" [ngClass]="{'has-error' : f.submitted && !primeOfPrimeRate.valid}">
+                                                                <input type="text" class="form-control text-center" name="primeOfPrimeRate" [(ngModel)]="debtCalculatorData['resultRateNum']" #primeOfPrimeRate="ngModel" [customMin]="0" [customMax]="100" (ngModelChange)="countTotalResultRate(false, true)" [textMask]="{mask: percentMask}"
+                                                                    appNumeric (input)="calculateData()" required />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row align-items-center">
+                                                    <div class="col-6 col-sm-8 col-xl-8">
+                                                        <div class="form-group mb-0">
+                                                            <span class="align-content-center">{{ 'CALCULATOR.DEBT_CONSOLIDATION.CURRENT_PAYMENT_AMOUNT' |
+                                                                translate }} </span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-6 col-sm-4 col-xl-4">
+                                                        <div class="form-group text-center">
+                                                            <span>{{debtCalculatorData['totMonthlyPay'] | currency:clientData['currencyCode']:'symbol-narrow':'1.0-0'}}</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row align-items-center">
+                                                    <div class="col-6 col-sm-8 col-xl-8">
+                                                        <div class="form-group mb-0">
+                                                            <span class="align-content-center">{{ 'CALCULATOR.DEBT_CONSOLIDATION.PROPOSED_PAYMENT_AMOUNT' |
+                                                                translate }} </span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-6 col-sm-4 col-xl-4">
+                                                        <div class="form-group">
+                                                            <input type="text" class="form-control text-center" name="proposedPayment" [(ngModel)]="debtCalculatorData['propPayAmountNum']" #proposedPayment="ngModel" [textMask]="{mask: currencyMask}" (input)="calculateData()" appNumeric />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row align-items-center">
+                                                    <div class="col-6 col-sm-8 col-xl-8">
+                                                        <div class="form-group mb-0">
+                                                            <span class="align-content-center" *ngIf="debtCalculatorData['propPayAmountNum'] == 0 || debtCalculatorData['propPayAmountNum'] < debtCalculatorData['totMonthlyPay']">
+                                                                {{ 'CALCULATOR.DEBT_CONSOLIDATION.REDUCTION_IN_MONTHLY_PAYMENTS' |translate }}
+                                                            </span>
+                                                            <span class="align-content-center" *ngIf="debtCalculatorData['propPayAmountNum'] > debtCalculatorData['totMonthlyPay']">
+                                                                {{ 'CALCULATOR.DEBT_CONSOLIDATION.INCREASE_IN_MONTHLY_PAYMENTS' |translate }}
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-6 col-sm-4 col-xl-4">
+                                                        <div class="form-group text-center">
+                                                            <span>{{debtCalculatorData['monthlyPayReduction'] | currency:clientData['currencyCode']:'symbol-narrow':'1.0-0'}}</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row align-items-center">
+                                                    <div class="col-6 col-sm-8 col-xl-8">
+                                                        <div class="form-group mb-0">
+                                                            <span class="align-content-center">{{ 'CALCULATOR.DEBT_CONSOLIDATION.TOTAL_INTEREST_SAVINGS' |translate
+                                                                }}
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-6 col-sm-4 col-xl-4">
+                                                        <div class="form-group text-center">
+                                                            <span>{{debtCalculatorData['totalInterestSavingsNum'] | currency:clientData['currencyCode']:'symbol-narrow':'1.0-0'}}</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row align-items-center">
+                                                    <div class="col-6 col-sm-8 col-xl-8">
+                                                        <div class="form-group mb-0">
+                                                            <span class="align-content-center">{{ 'CALCULATOR.DEBT_CONSOLIDATION.DEBT_FREE_IN' |translate }}
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-6 col-sm-4 col-xl-4">
+                                                        <div class="form-group text-center">
+                                                            <span>{{debtCalculatorData['yearsToDebtFreeNum']}} {{ 'CALCULATOR.YEARS' | translate }}</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 col-lg-6">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <div class="table-responsive">
+                                                    <table class="table analysis-c-p-table">
+                                                        <thead>
+                                                            <tr>
+                                                                <th class="border-0">&nbsp;</th>
+                                                                <th class="fs-14">{{ 'CALCULATOR.DEBT_CONSOLIDATION.TOTAL_PAYMENTS' |translate }}
+                                                                </th>
+                                                                <th class="fs-14">{{ 'CALCULATOR.DEBT_CONSOLIDATION.TOTAL_INTEREST' |translate }}
+                                                                </th>
+                                                                <th class="fs-14">{{ 'CALCULATOR.DEBT_CONSOLIDATION.TOTAL_TIME' |translate }}
+                                                                </th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td class="d-flex align-items-center analysis-c-p-resposive-label">
+                                                                    <span class="square asset_indicator mt-0" [style.background]="'#f78182'"></span>
+                                                                    <span class="pl-1">{{ 'CALCULATOR.DEBT_CONSOLIDATION.CURRENT' |translate }}</span>
+                                                                </td>
+                                                                <td>{{debtCalculatorData['resultCurTotPayNum'] | currency:clientData['currencyCode']:'symbol-narrow':'1.0-0'}}</td>
+                                                                <td>{{debtCalculatorData['resultCurTotIntNum'] | currency:clientData['currencyCode']:'symbol-narrow':'1.0-0' }}
+                                                                </td>
+                                                                <td>{{debtCalculatorData['resultCurTotTimeNum']}} {{'CALCULATOR.YEARS'| translate }}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="d-flex align-items-center analysis-c-p-resposive-label">
+                                                                    <span class="square asset_indicator mt-0" [style.background]="'#b5e61d'"></span>
+                                                                    <span class="pl-1">{{ 'CALCULATOR.DEBT_CONSOLIDATION.PROPOSED' |translate }}</span>
+                                                                </td>
+                                                                <td class="under-line">{{debtCalculatorData['resultPropTotPayNum'] | currency:clientData['currencyCode']:'symbol-narrow':'1.0-0'}}</td>
+                                                                <td class="under-line">{{debtCalculatorData['resultPropTotIntNum'] | currency:clientData['currencyCode']:'symbol-narrow':'1.0-0' }}
+                                                                </td>
+                                                                <td class="under-line">{{debtCalculatorData['resultPropTotTimeNum']}} {{'CALCULATOR.YEARS' | translate}}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>&nbsp;</td>
+                                                                <td colspan="2" class="text-right analysis-resposive-label">{{ 'CALCULATOR.DEBT_CONSOLIDATION.IMPROVEMENT' |translate }} </td>
+                                                                <td>
+                                                                    <span class="ml-2">{{analysisImprovement}} {{'CALCULATOR.YEARS' | translate }}</span>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div id="resultGraph" style="height:400px; width:100%; display: inline-block;margin-left: 0px;margin-right: 0px;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="box-footer button-responsive">
+                <div class="form-group text-right">
+                    <button type="button" class="btn btn-small btn-primary btn-fixwidth btn-report mr-2" (click)="generateReport()">{{ 'CALCULATOR.REPORT' | translate }}</button>
+                    <button type="button" (click)="back()" class="btn btn-small btn-secondary btn-fixwidth mr-2">{{'FORM.ACTION.CANCEL' | translate }}</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<ng-template #content let-d="dismiss">
+    <form name="loadLoanForm" #loadLoanForm="ngForm">
+        <div class="modal-header pl-3">
+            <span class="modal-title  modal-overflow-title" id="modal-basic-title"></span>
+            <span class="sidebar_action_icon ion-md-close-circle pr-1" (click)="d('Cross click')">
+            </span>
+        </div>
+    
+        <div class="modal-body asset-classes-modal">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th class="text-left" >&nbsp;</th>
+                        <th class="text-left" >&nbsp;</th>
+                        <th class="text-left" >{{'CALCULATOR.DEBT_CONSOLIDATION.LOAN_DESCRIPTION' | translate}}</th>
+                        <th class="text-left" >{{'CALCULATOR.DEBT_CONSOLIDATION.LONA_AMOUNT' | translate}}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <ng-container *ngIf="loadLoanList.length > 0">
+                        <tr *ngFor="let loan of loadLoanList; index as i">
+                            <td>
+                                <div class="form-group mb-0" *ngIf="loan.loanType === MORTAGE_TYPE;else noData">
+                                    <p-radioButton name="primaryLoan" label="" [value]="loan.loanId" [(ngModel)]="primaryLoadLoan" (onClick)="changeLoadLoan(loan.loanId)"></p-radioButton>
+                                </div>
+                                <ng-template #noData>
+                                    <span>&nbsp;</span>
+                                </ng-template>
+                            </td>
+                            <td>
+                                <div class="form-group mb-0">
+                                    <p-checkbox name="selectLoan{{i}}" [(ngModel)]="loan.debCon" binary="true" [disabled]="loan['checkDiabled']"></p-checkbox>
+                                </div>
+                            </td>
+                            <td>{{loan.description}}</td>
+                            <td>{{loan.loanAmount | currency:clientData['currencyCode']:'symbol-narrow':'1.0-0'}}</td>
+                        </tr>
+                    </ng-container>
+                    <ng-container *ngIf="loadLoanList.length === 0">
+                        <tr>
+                            <td colspan="4" class="no-record text-center">
+                                <i class="ion-ios-alert mr-2"></i>{{'NO_RESULTS' | translate}}
+                            </td>
+                        </tr>
+                    </ng-container>
+                </tbody>
+            </table>
+        </div>
+        <div class="modal-footer">
+            <button type="button" (click)="saveLoadLoan()" class="btn btn-small btn-success mr-2">{{ 'FORM.ACTION.SAVE' | translate }}</button>
+            <button type="button" (click)="d('Cross click')" class="btn btn-small btn-secondary mr-2">{{'FORM.ACTION.CANCEL' | translate }}</button>
+        </div>
+    </form>
+</ng-template>
+<ng-container *ngIf="isCalculatorReportSidePanelOpen">
+    <app-calculator-report-side-panel (closePanelEvent)="closePanel()" [calculatorData]="reportObject" [clientId]="clientId" type="debt-consodlidation"></app-calculator-report-side-panel>
+</ng-container>
+<router-outlet></router-outlet>

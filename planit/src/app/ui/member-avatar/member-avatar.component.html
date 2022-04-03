@@ -1,0 +1,4 @@
+<span [class]="avatarClass" *ngIf="!avatarUrl">
+    {{initials}}
+</span>
+<img [ngClass]="avatarClass" class="bg-transparent" [src]="avatarUrl" alt="" *ngIf="avatarUrl" (error)="avatarUrl = null">

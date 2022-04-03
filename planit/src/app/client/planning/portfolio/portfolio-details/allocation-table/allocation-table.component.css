@@ -1,0 +1,29 @@
+.back-color-min-max {
+    background-color: #ccddee;
+}
+
+.elep-green-color {
+    float: right;
+    width: 20px;
+    height: 20px;
+    background: #88aa33;
+    border-radius: 50%;
+    line-height: 20px;
+    text-align: center;
+    color: #fff;
+    font-size: 20px;
+}
+
+.sky-color {
+    background: #e3e8ed;
+}
+
+table thead tr.heading-color {
+    /* border-top: 1px solid #dee2e6; */
+    margin-top: 5px;
+}
+
+table tbody tr:last-child td {
+    border-bottom: 1px solid #dee2e6 !important;
+    padding-bottom: 14px 0 !important;
+}

@@ -1,0 +1,64 @@
+<div class="add-client side-form">
+    <form name="form" #f="ngForm" novalidate>
+        <div class="box">
+            <div class="box-header">
+                <span *ngIf="!isEdit" class="sidebar_title" [translate]="'SETTINGS.PREFERRED_SOLUTION.SOLUTION_FAMILY.ADD_SOLUTION_FAMILY'"></span>
+                <span *ngIf="isEdit" class="sidebar_title" [translate]="'SETTINGS.PREFERRED_SOLUTION.EDIT_SOLUTION_FAMILY'"></span>
+                <span (click)="back(); closeButtonDisable = true" class="sidebar_action_icon ion-md-close-circle float-right"></span>
+            </div>
+
+            <div class="box-body">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="form-group">
+                            <label class="custom-form-label" [translate]="'SETTINGS.PREFERRED_SOLUTION.SOLUTION_FAMILY.SOLUTION_FAMILY_DESCRIPTION'">
+                            </label>
+                            <input type="text" class="form-control" name="solFamilyName" [(ngModel)]="familyName"
+                                #solFamilyName="ngModel" required />
+                        </div>
+                    </div>
+                    <div class="col-12" *ngIf="jurisdictionsLengthFlag">
+                        <div class="form-group">
+                            <label class="custom-form-label" [translate]="'SETTINGS.PREFERRED_SOLUTION.SOLUTION_FAMILY.COUNTRY'"></label>
+                            <p-dropdown [options]="countries" name="countryList" [(ngModel)]="country" #countryList="ngModel"
+                                required optionLabel="country" placeholder="Select Country"></p-dropdown>
+                        </div>
+                    </div>
+                    <div class="col-12" *ngIf="regionArray">
+                        <div class="form-group">
+                            <label class="custom-form-label" [translate]="'SETTINGS.PREFERRED_SOLUTION.SOLUTION_FAMILY.REGION'"></label>
+                            <div class="tree-select-custom">
+                                <tree-select name="regionList" idField="regionCode" [multiple]="false" [allowFilter]="false"
+                                    [items]="regionArray" placeholder="Select a region" textField="regionName"
+                                    childrenField="childRegions" [(ngModel)]="region" #regionList="ngModel"
+                                    [allowParentSelection]="true" expandMode="All" required class=""></tree-select>
+                                <div class="tree-select-custom-caret-down">
+                                    <span class="fa fa-fw fa-caret-down"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="box-footer">
+                <div class="form-group text-right">
+                    <button (click)="back(); closeButtonDisable = true" type="button" class="btn btn-small btn-secondary btn-fixwidth mr-2"
+                        [translate]="'FORM.ACTION.CANCEL'" [disabled]="closeButtonDisable"></button>
+                    <button type="button" [disabled]="f.form.invalid || saveDisable" class="btn btn-small btn-success pl-4 pr-4"
+                        [translate]="'FORM.ACTION.SAVE'" (click)="saveFamily();saveDisable = true;"></button>
+
+                    <!-- <div class="btn-group btn-save btn-custom-split" ngbDropdown role="group" placement="top-right" aria-label="Button group with nested dropdown">
+                        <button [disabled]="f.form.invalid" class="btn btn-small btn-success dropdown-toggle-split"
+                            ngbDropdownToggle></button>
+                        <div class="dropdown-menu btn-dropDown-top" ngbDropdownMenu>
+                            <button class="dropdown-item" (click)="saveFamily()" [translate]="'FORM.ACTION.SAVE'"></button>
+                            <button class="dropdown-item" (click)="saveFamily(1)">Save and translate</button>
+                        </div>
+                    </div> -->
+
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

@@ -1,0 +1,150 @@
+.document-bg .document-box {
+    background: #f5f6f7;
+    border-radius: 20px;
+    box-shadow: 0 5px 5px rgba(0, 0, 0, 0.1);
+    margin-right: 30px;
+    padding: 20px;
+}
+
+.document-bg .document-box span {
+    display: block;
+    font-size: 11px;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: #273c52;
+    margin: 0 0 10px 0px;
+    line-height: 1;
+}
+
+.document-bg .document-box i {
+    font-size: 22px;
+    color: #82a628;
+}
+
+.filter-main .filter-box {
+    font-size: 11px;
+    color: #556677;
+    font-weight: bold;
+}
+
+.filter-main .sort-box {
+    font-size: 11px;
+    color: #556677;
+    font-weight: bold;
+    padding: 0 0 0 15px;
+    position: relative;
+}
+
+.filter-main .sort-box i {
+    position: absolute;
+    left: 0px;
+    top: -5px;
+}
+
+.filter-main .sort-box i:before {
+    line-height: 1;
+}
+
+.document-table.table thead tr th {
+    font-size: 12px;
+}
+
+.document-table.table .document-title {
+    font-size: 15px;
+    color: #345;
+    font-weight: 700;
+    padding: 12px 0;
+}
+
+.document-table.table .new {
+    color: #c60000;
+    font-weight: 700;
+    text-transform: uppercase;
+    padding: 0 0 0 5px;
+    font-size: 14px;
+}
+
+.document-table.table .no-document {
+    color: #789;
+    text-transform: uppercase;
+    font-size: 18px;
+    font-weight: 700;
+    padding: 9px 0;
+}
+
+.view-side-form {
+    position: relative;
+    z-index: 9;
+}
+
+.no-document i {
+    font-size: inherit;
+    line-height: inherit;
+    width: 27px;
+    height: auto;
+    display: inline-block;
+    background: #789;
+    color: #fff;
+    border-radius: 50%;
+}
+
+.document-table.table thead tr th.doc-title,
+.document-table.table tbody tr td.doc-title {
+    width: 30%;
+}
+.document-table.table thead tr th.doc-status,
+.document-table.table tbody tr td.doc-status {
+    width: 15%;
+}
+
+.dropdown-status-action .floating-dropdown li {
+    text-transform: none !important;
+}
+
+
+/* responsive */
+
+@media (max-width: 992px) {
+    .document-bg .document-box {
+        padding: 15px;
+        margin-right: 20px;
+    }
+    .document-bg .document-box:last-child {
+        margin-right: 0;
+    }
+    .document-table.table thead tr th.doc-title,
+    .document-table.table tbody tr td.doc-title {
+        width: 40%;
+    }
+    .document-table.table thead tr th.doc-status,
+    .document-table.table tbody tr td.doc-status {
+        width: 25%;
+    }
+}
+
+@media (max-width: 767px) {
+    .document-bg .document-box {
+        /* flex: 0 0 48%; */
+        margin-bottom: 20px;
+        max-width: 170px;
+    }
+}
+
+@media (max-width: 575px) {
+    .document-bg .document-box {
+        /* flex: 0 0 70%; */
+        /* width: 70%; */
+        display: inline-block;
+    }
+    .filter-main .filter-box {
+        margin-bottom: 10px;
+        flex: 0 0 100%;
+    }
+    .filter-main .sort-box {
+        flex: 0 0 100%;
+    }
+    .document-table.table thead tr th.doc-title,
+    .document-table.table tbody tr td.doc-title {
+        width: 70%;
+    }
+}

@@ -1,0 +1,125 @@
+<div class="panel pb-0">
+    <div class="panel-body">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th class="pt-0">
+                        <h4 [translate]="'CUSTOM.GOALS'"></h4>
+                    </th>
+                    <th class="pt-0" [translate]="'CUSTOM.YEAR'"></th>
+                    <th class="pt-0 hidden-xs-down" [translate]="'CUSTOM.START_DATE'"></th>
+                    <th class="pt-0 text-left hidden-sm-down" [translate]="'CUSTOM.END_DATE'"></th>
+                    <th class="pt-0 text-left hidden-sm-down" [translate]="'CUSTOM.FUNDED_BY'"></th>
+<!--                     <th class="pt-0 text-left hidden-sm-down" [translate]="'CUSTOM.PLANTRAC_STATUS'"
+                        *ngIf="accessRights['PLANTRAC']['accessLevel'] > 0"></th> -->
+                    <th class="pt-0 text-center" [translate]="'CUSTOM.ACTIONS'" width="50"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <ng-container *ngIf="allPortfolios && data && data.length > 0">
+                    <tr *ngFor="let goal of data; let i = index;">
+                        <td>
+                            <span class="ellipsis-text" [appNoOverflowTooltip]="goal.description" triggers="manual"
+                                placement="bottom">{{goal.description}}</span>
+                        </td>
+                        <td class="fw-400">
+                            {{goal.amountPerYear | currency:clientData['currencyCode']:'symbol-narrow':'1.0-0'}}</td>
+                        <td class="hidden-xs-down">{{goal.goalStartYear}}</td>
+                        <td class="text-left hidden-sm-down">{{goal.goalTier1EndYear}}</td>
+                        <td class="text-left hidden-sm-down">
+                            <span *ngIf="goal.linkedPortfolios.length > 1" class="d-flex">
+                                {{ 'GOALS.MULTIPLE' | translate }}
+                                <span [ngbTooltip]="multipleGoals" #multiple="ngbTooltip" placement="bottom"
+                                    triggers="click"
+                                    class="ion-md-more-horizontal action-ellipses-icon-color pt-1 pl-1"></span>
+                            </span>
+                            <ng-template #multipleGoals>
+                                <ng-container *ngFor="let funded of goal.linkedPortfolios; let i = index">
+                                    <p>{{allPortfolios[funded]}}</p>
+                                </ng-container>
+                            </ng-template>
+                            <span *ngIf="goal.linkedPortfolios.length == 1" class="d-flex">
+                                {{allPortfolios[goal.linkedPortfolios[0]]}}
+                            </span>
+                        </td>
+<!--                         <td class="text-left hidden-sm-down" *ngIf="accessRights['PLANTRAC']['accessLevel'] > 0">
+                            <div class="circle bg-green mr-2"></div>{{ 'GOALS.ON_TRACK' | translate }}
+                        </td> -->
+                        <td class="text-center" width="50">
+                            <div class="dropdown-relative">
+                                <button type="button" class="btn-floating" (click)="changeGoalAction(i)">
+                                    <span class="ion-md-more"></span>
+                                </button>
+                                <div [id]="'dropdownGoalAction'+i"
+                                    class="dropdown-goal-action dropdown-floating hide-ele">
+                                    <ul class="floating-dropdown">
+                                        <li>
+                                            <a class="action-list"
+                                                [routerLink]="['/client', clientId, 'planning','goals', goal.key, 'edit-goal']">
+                                                <i class="ion-md-create action-list"></i>
+                                                <span class="action-list"> {{'GOALS.SUMMARY.EDIT_GOAL' | translate}}
+                                                </span>
+                                            </a>
+                                        </li>
+                                        <li (click)="changeGoalAction(i)" *ngxPermissionsOnly="'ADVISOR'">
+                                            <a class="action-list" [routerLink]="['link-portfolios-to-goals']">
+                                                <i class="ion-md-link action-list"></i>
+                                                <span class="action-list" [translate]="'GOALS.SUMMARY.LINK_PORTFOLIOS_TO_GOALS'"></span>
+                                            </a>
+                                        </li>
+                                        <li *ngIf="accessRights['SAV01']['accessLevel'] > 0">
+                                            <a class="action-list"
+                                                [routerLink]="['/client', clientId, 'planning', 'goals', goal.key, 'savings']">
+                                                <i class="ion-ios-eye action-list"></i>
+                                                <span class="action-list">{{'GOALS.SUMMARY.VIEW_SAVINGS' | translate}}</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a class="action-list"
+                                                [routerLink]="['/client', clientId, 'planning','goals', goal.key, 'revenues']">
+                                                <i class="ion-ios-eye action-list"></i>
+                                                <span class="action-list">{{'GOALS.SUMMARY.VIEW_REVENUES' | translate}}</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a class="action-list"
+                                                [routerLink]="['/client', clientId, 'planning','goals', goal.key, 'analysis']">
+                                                <i class="ion-ios-eye action-list"></i>
+                                                <span class="action-list">{{'GOALS.SUMMARY.VIEW_ANALYSIS' | translate}}</span>
+                                            </a>
+                                        </li>
+
+                                        <!-- <li *ngIf="accessRights['PLANTRAC']['accessLevel'] > 0">
+                                            <a class="action-list"
+                                                [routerLink]="['/client', clientId, 'planning','goals', goal.key, 'plantrac']">
+                                                <i class="fa fa-line-chart action-list"></i>
+                                                <span class="action-list">{{'GOALS.SUMMARY.PLANTRAC' | translate}}</span>
+                                            </a>
+                                        </li> -->
+                                        <li class="delete-btn" (click)="delete(goal.key)">
+                                            <a class="action-list" [routerLink]="">
+                                                <i class="ion-md-close-circle action-list"></i>
+                                                <span class="action-list">{{'GOALS.SUMMARY.DELETE_GOAL' | translate}}</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </ng-container>
+                <ng-container *ngIf="data && data.length === 0">
+                    <tr>
+                        <td colspan="7" class="no-record text-center">
+                            <i class="ion-ios-alert mr-2"></i>{{'NO_RESULTS' | translate}}
+                        </td>
+                    </tr>
+                </ng-container>
+            </tbody>
+        </table>
+    </div>
+    <div class="d-flex flex-wrap panel-footer">
+        <a [routerLink]="['/client',clientId,'planning','goals','summary']" class="btn btn-link ion-md-arrow-dropright pb-0"
+            [translate]="'CUSTOM.VIEW_MORE'"></a>
+    </div>
+</div>

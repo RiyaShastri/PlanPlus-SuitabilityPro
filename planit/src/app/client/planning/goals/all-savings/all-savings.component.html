@@ -1,0 +1,49 @@
+<div class="bg-white pt-4 pb-4">
+    <div class="container">
+        <app-goals-header [currentPage]="'savings'" [clientId]="clientId"></app-goals-header>
+        <div class="row">
+            <div class="col-12">
+                <div class="d-flex mb-2">
+                    <a routerLink="add-savings" class="btn-add">
+                        <i class="ion-md-add-circle"></i>
+                        <span [translate]="'ASSETS_SUMMARY.ACTION.ADD_SAVINGS'"></span>
+                    </a>
+                    <span *ngIf="accessRights['SCENARIOACCESS']['accessLevel'] > 0" class="dropdown-common mt-1 sort-dropdown ml-auto">
+                        <app-common-drop-down class="dropdown-right" [itemList]="scenarioObject" [defaultSelected]="selectedScenario" dropDownLabel=""
+                            (OnSelect)="onSelectScenario($event)"></app-common-drop-down>
+                    </span>
+                </div>
+                
+                <div class="d-flex flex-wrap pb-2 hidden-xs-down">
+
+                    <div class="sort-dropdown ml-0">
+                        <app-common-drop-down [itemList]="viewBy" [defaultSelected]="selectedViewBy" dropDownLabel="{{'VIEW_BY_DROPDOWN' | translate}}"
+                            (OnSelect)="displayViewBy($event)"></app-common-drop-down>
+                    </div>
+                    <div class="sort-box ml-auto">
+                        <app-common-drop-down [itemList]="groupBy" [defaultSelected]="selectedGroupBy" dropDownLabel="{{'GROUP_BY_DROPDOWN' | translate}}"
+                            (OnSelect)="displayGroupBy($event)"></app-common-drop-down>
+                    </div>
+                    <div class="sort-box ml-auto">
+                        <i class="ion-md-funnel"></i>
+                        <div class="sort-dropdown">
+                            <app-common-drop-down class="dropdown-right" [itemList]="sortBy" [defaultSelected]="selectedSortBy" dropDownLabel="{{'SORT_BY_DROPDOWN' | translate}}"
+                                (OnSelect)="sorting($event)"></app-common-drop-down>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="col-12">
+                <hr class="mt-0">
+            </div>
+
+            <div class="col-12" *ngIf="!noSavings">
+                <app-savings-list-html [clientId]="clientId" i_id="" [type]="'goal'" [allSavings]="allSavings" [selectedViewBy]="selectedViewBy" [selectedGroupBy]="selectedGroupBy"></app-savings-list-html>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="view-side-form">
+    <router-outlet></router-outlet>
+</div>

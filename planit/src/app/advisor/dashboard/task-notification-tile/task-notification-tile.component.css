@@ -1,0 +1,6 @@
+.panel .panel-body .table td {
+    max-width: 0;
+    /* overflow: hidden; */
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}

@@ -1,0 +1,41 @@
+<div class="bg-white" *ngIf="accessRights['CLTYP']['accessLevel'] > 0">
+    <form name="form" (ngSubmit)="f.form.valid" #f="ngForm" novalidate>
+        <div class="row">
+            <div class="col-md-6 pr-md-0" *ngIf="engagementDetails">
+                <div class="card mb-3  rounded-0 mr-md-2">
+                    <div class="card-body">
+                        <app-advisor-info [advisorInfo]="engagementDetails['advisorInfo']" [clientId]="clientId"
+                            [dateFormat]="dateFormat" [displayDateFormat]="displayDateFormat"
+                            [workGroupList]="workGroupList" [regionList]="regionList" [isEditable]="isEditable">
+                        </app-advisor-info>
+                    </div>
+                </div>
+
+                <div class="card mt-3 rounded-0 mr-md-2">
+                    <div class="card-body">
+                        <app-client-info [clientInfo]="engagementDetails['clientInfo']" [dateFormat]="dateFormat"
+                            [displayDateFormat]="displayDateFormat" [isEditable]="isEditable"></app-client-info>
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="accessRights['SERVICELVL']['accessLevel'] > 0" class="col-md-6 pl-md-0 mt-3  mt-md-0 mt-lg-0 pl-md-0">
+                <app-service-level-info [isEditable]="isEditable"></app-service-level-info>
+            </div>
+
+        
+        </div>
+        <div class="row" *ngIf="isEditable">
+            <div class="col-12">
+                <hr />
+            </div>
+        </div>
+        <div class="row" *ngIf="isEditable">
+            <div class="col-12 form-group text-right mb-0">
+                <button type="button" (click)="changeEditable()" class="btn btn-secondary mr-2 mb-0"
+                    [translate]="'FORM.ACTION.CANCEL'"></button>
+                <button type="button" class="btn btn-success mb-0" [translate]="'FORM.ACTION.SAVE_CHANGES'"
+                    (click)="submitData()" [disabled]="saveDisable"></button>
+            </div>
+        </div>
+    </form>
+</div>

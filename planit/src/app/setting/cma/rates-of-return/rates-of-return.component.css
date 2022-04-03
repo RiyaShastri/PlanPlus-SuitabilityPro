@@ -1,0 +1,59 @@
+.rates-of-return .form-group .form-control{
+    /* font-family: 'Montserrat', sans-serif !important; */
+    font-size: 15px !important;
+}
+
+/* .rates-of-return td {
+    padding-bottom: 0px;
+} */
+
+.mt--10px{
+    margin-top: -10px !important;
+}
+.form-group .form-check span {
+    flex: 0 0 25%;
+}
+.rates-of-return.table>thead>tr>th,.rates-of-return.table>tbody>tr>td{    padding: 15px 0 15px 15px; vertical-align: middle;}
+.notes-input-control{min-width: 500px;}
+@media(max-width: 992px) {
+    .form-group .form-check span {
+        flex: 0 0 50%;
+    }
+    .cma-acceptance{text-align: left;}
+}
+
+@media(min-width: 992px) {
+    .edit-button-responsive {
+        max-width: 16.666667% !important;
+    }
+}
+@media(min-width: 768px) {
+    .edit-button-responsive {
+        max-width: 33.333333% !important;
+    }
+}
+
+@media(max-width: 575px) {
+    .legend-width {
+        width: 100% !important;
+    }
+
+    .form-group .form-check span {
+        flex: 1;
+    }
+
+}
+
+.custom-rate-input {
+    height: 30px; width: 40%;
+}
+
+@media(max-width: 480px) {
+    .custom-rate-input {
+        width: 60%;
+    }
+}
+
+.text-wrap{
+  white-space: normal !important;
+}

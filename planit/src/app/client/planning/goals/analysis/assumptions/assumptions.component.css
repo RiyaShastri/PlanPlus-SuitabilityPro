@@ -1,0 +1,66 @@
+:host {
+    background:#fff;
+    position: fixed;
+    left: auto;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 30%;
+    min-width: 250px;
+    z-index: 100; 
+}
+
+.table.goal-analysis th {
+    border-top: 0;
+    border-bottom: 0;
+}
+
+h1 .dropdown-common > a {
+    font-size: 18px !important;
+    font-weight: 600 !important;
+}
+.dropdown-common .dropdown-menu ul li a span {
+    font-weight: normal !important;
+}
+
+.accordion-wrapper .ui-accordion .ui-accordion-header {
+    margin: 0px 1rem;
+    border-top: 1px solid #ddd; 
+    border-bottom: 1px solid #ddd;
+    border-right: 0px;
+    border-left: 0px;
+}
+.accordion-wrapper{
+    margin-top: 10px;
+    border-top: 1px solid #ddd;
+}
+                
+table.goal-analysis {margin-top: -1px;}
+
+.notes-textarea-wrapper textarea{
+    resize: none;
+    height: auto;
+}
+.form-group .custom-form-label.color-black{
+    color: #212529;
+}
+.same-width-label{
+    display: inline-block;
+    width: 135px;
+}
+@media(max-width: 575px){
+    .side-form-full-width{
+        min-width: 100%;
+        max-width: 100%;
+    }
+    .row-label{
+        font-size: 14px;
+    }
+    .same-width-label{
+        width: 118px;
+    }
+    .table.goal-analysis th{
+        font-size: 12px;
+    }
+   
+}

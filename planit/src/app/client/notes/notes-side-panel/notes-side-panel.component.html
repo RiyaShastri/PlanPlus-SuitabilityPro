@@ -1,0 +1,157 @@
+<div class="side-form">
+    <form name="form" #f="ngForm" novalidate>
+        <div class="box">
+            <div class="box-header">
+                <span class="sidebar_title" [translate]="'NOTES.NOTES_TITLE'"></span>
+                <span (click)="back(); closeButtonDisable = true" class="sidebar_action_icon ion-md-close-circle"></span>
+            </div>
+            <br />
+            <div class="box-body">
+                <div *ngIf="editable" class="form-group"
+                    [ngClass]="{ 'has-error': !noteType.valid && (noteType.dirty || f.submitted)}">
+                    <label class="custom-form-label" [translate]="'NOTES.TYPE'"></label>
+                    <p-dropdown placeholder="{{ 'FORM.PLACEHOLDER.SELECT_NOTE_TYPE' | translate }}" [options]="noteTypes"
+                        optionLabel="description" name="noteType" [(ngModel)]="noteDetails['noteId']"
+                        #noteType="ngModel" (onChange)="changeNoteType()" required>
+                    </p-dropdown>
+                </div>
+                <div *ngIf="!editable" class="form-group">
+                    <label class="custom-form-label" [translate]="'NOTES.TYPE'"></label>
+                    <span class="form-fixed-value">{{noteTypesObject[noteDetails['noteTypeSsid']]}}</span>
+                </div>
+                <div class="row ui-fluid">
+                    <div class="col-sm-6">
+                        <div *ngIf="editable" class="form-group"
+                            [ngClass]="{ 'has-error': (!date.valid || invalidFromDate) && (date.dirty || date.touched || f.submitted)}">
+                            <label class="custom-form-label">{{ 'NOTES.DATE' | translate }}</label>
+                            <p-calendar [showIcon]="true" [maxDate]="maxDate" [monthNavigator]="true" required='true'
+                                [yearNavigator]="true" [yearRange]="yearRange" name="date"
+                                [(ngModel)]="noteDetails['date']" #date="ngModel" [dateFormat]="dateFormat"
+                                (onSelect)="validateDate()" (onInput)="validateDate()"></p-calendar>
+                            <p class="text-error" *ngIf="invalidDate == true" [translate]="'FORM.FUTURE_DATE_ERROR'">
+                            </p>
+                        </div>
+                        <div *ngIf="!editable" class="form-group">
+                            <label class="custom-form-label">{{ 'NOTES.DATE' | translate }}</label>
+                            <span class="form-fixed-value">{{noteDetails['date']}}</span>
+                        </div>
+                    </div>
+                    <div class="col-6 pl-2">
+                        <div *ngIf="editable" class="form-group"
+                            [ngClass]="{ 'has-error': (!time.valid || invalidToDate) && (time.dirty || time.touched || f.submitted)}">
+                            <label class="custom-form-label">{{ 'NOTES.TIME' | translate }}</label>
+                            <p-calendar [showIcon]="true" required='true' name="time" [(ngModel)]="noteDetails['time']"
+                                #time="ngModel" (onSelect)="validateTime()" (onInput)="validateTime()"
+                                [hourFormat]="hourFormat" [timeOnly]="true"></p-calendar>
+                            <p class="text-error" *ngIf="invalidTime == true" [translate]="'FORM.FUTURE_TIME_ERROR'">
+                            </p>
+                        </div>
+                        <div *ngIf="!editable" class="form-group">
+                            <label class="custom-form-label">{{ 'NOTES.TIME' | translate }}</label>
+                            <span class="form-fixed-value">{{noteDetails['hours']}}:{{noteDetails['min'] | number:'2.0-0'}}
+                                {{noteDetails['block'] == 0 ? 'am' : 'pm'}}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="custom-form-label" [translate]="'NOTES.EDIT_BY'"></label>
+                    <span class="form-fixed-value" *ngIf="!editable">
+                        {{noteDetails['advisorFirstname']}} {{noteDetails['advisorLastname']}}
+                    </span>
+                    <span class="form-fixed-value" *ngIf="editable">
+                        {{advisorDetails['firstName']}} {{advisorDetails['surname']}}
+                    </span>
+                </div>
+                <div *ngIf="editable" class="form-group notes-textarea-wrapper"
+                    [ngClass]="{ 'has-error': !note.valid && (note.dirty || f.submitted)}">
+                    <label class="custom-form-label" [translate]="'NOTES.NOTE'"></label>
+                    <textarea type="text" name="note" class="form-control" cols="30" rows="5"
+                        [(ngModel)]="noteDetails['note']" #note="ngModel" required></textarea>
+                </div>
+                <div *ngIf="!editable" class="form-group notes-textarea-wrapper">
+                    <label class="custom-form-label" [translate]="'NOTES.NOTE'"></label>
+                    <span class="form-fixed-value">{{noteDetails['note']}}</span>
+                </div>
+                <ng-container *ngFor="let newField of noteDetails['noteSupps']; index as i;">
+                    <div class="form-group notes-textarea-wrapper"
+                        *ngIf="newField['fieldType'] == noteFieldType.NOTE_FIELD_N_TYPE">
+                        <label
+                            class="custom-form-label">{{('SSID_LABELS.' + newField['suppNoteId']) | translate}}</label>
+                        <textarea type="text" [name]="newField['suppNoteId']" class="form-control" cols="30" rows="5"
+                            [(ngModel)]="newField['value']" #{{newField.suppNoteId}}="ngModel"
+                            *ngIf="editable"></textarea>
+                        <p *ngIf="!editable">{{newField['value']}}</p>
+                    </div>
+                    <div class="form-group form-check align-radio"
+                        *ngIf="newField['fieldType'] == noteFieldType.NOTE_FIELD_C_TYPE">
+                        <div class="row">
+                            <div class="col-7 d-flex align-content-center">
+                                <label
+                                    class="custom-form-label d-flex align-items-center pr-2">{{('SSID_LABELS.' + newField['suppNoteId']) | translate}}</label>
+                            </div>
+                            <div class="col-5 d-flex justify-content-end">
+                                <p-radioButton value="1" class="mr-2" [name]="newField['suppNoteId']"
+                                    [(ngModel)]="newField['value']" #{{newField.suppNoteId}}="ngModel"
+                                    label="{{ 'RADIOBUTTON.LABELS.YES' | translate }}" [disabled]="!editable">
+                                </p-radioButton>
+                                <p-radioButton value="0" [name]="newField['suppNoteId']" [(ngModel)]="newField['value']"
+                                    #{{newField.suppNoteId}}="ngModel" label="{{ 'RADIOBUTTON.LABELS.NO' | translate}}"
+                                    [disabled]="!editable">
+                                </p-radioButton>
+                            </div>
+                            <!-- <div class="col-5 d-flex justify-content-end">
+                                <span class="mb-2"
+                                *ngIf="!editable">{{newField['value'] == 1 ? ('RADIOBUTTON.LABELS.YES' | translate) : ('RADIOBUTTON.LABELS.NO' | translate)}}</span>
+                            </div> -->
+                        </div>
+                    </div>
+                    <div class="form-group" *ngIf="newField['fieldType'] == noteFieldType.NOTE_FIELD_T_TYPE">
+                        <label
+                            class="custom-form-label d-inline-block">{{('SSID_LABELS.' + newField['suppNoteId']) | translate}}</label>
+                        <p-checkbox class="pull-right" [name]="newField['suppNoteId']" [(ngModel)]="newField['value']"
+                            #{{newField.suppNoteId}}="ngModel" binary="true" [disabled]="!editable"></p-checkbox>
+                    </div>
+                </ng-container>
+                <div class="row ui-fluid mt-5 pt-1 border-top" *ngIf="!editable">
+                    <div class="col-6">
+                        <a [routerLink]="['/client', clientId, 'search-notes']" class="btn-add search-button">
+                            <i class="ion-ios-search"></i>
+                            <span [translate]="'NOTES.SEARCH'"></span>
+                        </a>
+                    </div>
+                    <div class="col-6 text-right">
+                        <a [routerLink]="['/client', clientId, 'add-note']" class="btn-add">
+                            <i class="ion-md-add-circle"></i>
+                            <span [translate]="'NOTES.ADD_A_NOTE'"></span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="box-footer">
+                <div class="form-group text-right pt-2">
+                    <button class="btn btn-secondary btn-small mr-2" type="button"
+                        (click)="back(); closeButtonDisable = true" [translate]="'FORM.ACTION.CANCEL'"
+                        [disabled]="closeButtonDisable"></button>
+                    <ng-container *ngIf="editable">
+                        <button [disabled]="!f.form.valid || saveDisable || invalidDate || invalidTime" type="button"
+                            class="btn btn-small btn-success" (click)="saveNote(1, f); saveDisable = true"
+                            [translate]="'FORM.ACTION.SAVE'"></button>
+                        <div class="btn-group btn-save btn-custom-split" ngbDropdown role="group" placement="top-right"
+                            aria-label="Button group with nested dropdown">
+                            <button [disabled]="!f.form.valid || saveDisable || invalidDate || invalidTime"
+                                class="btn btn-small btn-success dropdown-toggle-split" ngbDropdownToggle></button>
+                            <div class="dropdown-menu btn-dropDown-top" ngbDropdownMenu>
+                                <button class="dropdown-item" (click)="saveNote(1, f); saveDisable = true"
+                                    [translate]="'FORM.ACTION.SAVE'"></button>
+                                <button class="dropdown-item" (click)="saveNote(2, f); saveDisable = true"
+                                    [translate]="'FORM.ACTION.SAVE/ADD_NOTE'"></button>
+                                <button class="dropdown-item" (click)="saveNote(3, f); saveDisable = true"
+                                    [translate]="'FORM.ACTION.SAVE/SEARCH'"></button>
+                            </div>
+                        </div>
+                    </ng-container>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

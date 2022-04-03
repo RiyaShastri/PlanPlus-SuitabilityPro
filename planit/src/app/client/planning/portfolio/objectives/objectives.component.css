@@ -1,0 +1,19 @@
+.icon-edits {width: 20px; position: relative; top: -4px;}
+.icon-edits i {display: block; width: 20px; height: 20px; text-align: center; border: 0px; background: #8dac35;}
+.icon-edits i:before {display: block; line-height: 20px; font-size: 12px;  color: #fff;}
+
+.nextprive-box i {display: inline-flex;}
+.nextprive-box i:before { color: #778899; font-size: 24px; line-height: 1; }
+
+.risk-toler-top {margin: 0 0 0 1.5rem; position: relative; top: -4px;}
+.risk-toler-top h6 {display: inline-flex; line-height: 26px; font-size: 13px;}
+
+.expandall-text {font-size: 11px; color: #556677; font-weight: 700; text-transform: uppercase;}
+.expandall-text i {line-height: 1;}
+.expandall-text i:before {font-size: 20px; line-height: 18px; display: block;}
+
+.socially-box .form-group .form-check {float: none; width: 100%; font-size: 14px; color: #818181; line-height: 20px; font-weight: 400; display: flex;}
+.socially-box .form-group .form-check span {line-height: 20px !important;}
+
+.objectives-checkbox .form-check {width: 100%;}
+.time-horizone-dropdown { margin: 0px; padding: 0px;}

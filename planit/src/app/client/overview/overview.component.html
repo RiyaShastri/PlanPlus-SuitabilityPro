@@ -1,0 +1,60 @@
+<div class="overview-main">
+    <div class="container">
+        <div id="client_overview">
+            <div class="row">
+                <div class="col-md col-sm-12">
+                    <app-family-tile class="d-flex h-100 strech-panel" [clientId]="clientId"></app-family-tile>
+                </div>
+                <div class="col-md col-sm-12" *ngIf="accessRights['COLLAB']['accessLevel'] > 0">
+                  <app-collaboration-center-tile class="d-flex h-100 strech-panel" [clientId]="clientId"></app-collaboration-center-tile>
+                </div>
+                <div class="col-md col-sm-12" *ngIf="accessRights['WEB07']['accessLevel'] >= 1">
+                    <app-document-tile class="d-flex h-100 strech-panel" [clientId]="clientId"></app-document-tile>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg col-md-12" *ngIf="accessRights['RISKTOLERCLIENT']['accessLevel'] > 0">
+                    <app-risk-tile class="d-flex h-100 strech-panel" [clientId]="clientId"></app-risk-tile>
+                </div>
+                <div class="col-lg col-md-12" *ngIf="accessRights['SCH01']['accessLevel'] >= 1">
+                    <app-task-tile class="d-flex h-100 strech-panel" [clientId]="clientId"></app-task-tile>
+                </div>
+            </div>
+            <ng-container *ngIf="accessRights['CLIVALUES']['accessLevel'] > 0 || accessRights['HMOGL']['accessLevel'] > 0" >
+                <div class="row">
+                    <div class="col-lg col-md-12" *ngIf="accessRights['CLIVALUES']['accessLevel'] > 0">
+                        <app-values-tile class="d-flex h-100 strech-panel" [clientId]="clientId"></app-values-tile>
+                    </div>
+                    <div class="col-lg col-md-12" *ngIf="accessRights['HMOGL']['accessLevel'] > 0">
+                        <app-priorities-tile class="d-flex h-100 strech-panel" [clientId]="clientId"></app-priorities-tile>
+                    </div>
+                </div>
+            </ng-container>
+
+            <div class="row" *ngIf="accessRights['CLI02']['accessLevel'] > 0">
+                <div class="col-12">
+                    <app-goal-tile [clientId]="clientId"></app-goal-tile>
+                </div>
+            </div>
+            <div class="row" *ngIf="accessRights['NETWORTHTILE']['accessLevel'] > 0 || accessRights['INVESTTILE']['accessLevel'] > 0">
+                <div class="col-md col-sm-12">
+                    <app-net-worth-tile class="d-flex h-100 strech-panel" *ngIf="accessRights['NETWORTHTILE']['accessLevel'] > 0" [clientId]="clientId"></app-net-worth-tile>
+                </div>
+                <div class="col-md col-sm-12">
+                    <app-investments-tile class="d-flex h-100 strech-panel" *ngIf="accessRights['INVESTTILE']['accessLevel'] > 0" [clientId]="clientId"></app-investments-tile>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12" *ngIf="accessRights['POB01']['accessLevel'] >= 1">
+                    <app-portfolio-tile [clientId]="clientId"></app-portfolio-tile>
+                </div>
+                <div class="col-12">
+                    <app-allocation-tile [clientId]="clientId"></app-allocation-tile>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="view-side-form">
+    <router-outlet></router-outlet>
+</div>

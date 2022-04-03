@@ -1,0 +1,20 @@
+.critical-illness-cal .critical-illness-cal-title,
+.critical-illness-cal .table>tbody>tr>td b {
+    color: #788588;
+}
+
+.critical-illness-cal .table>tbody>tr>td { 
+    padding: 8px 0;
+}
+
+.critical-illness-cal.form-group .ui-dropdown {
+    height: 32px;
+}
+
+.form-group .ui-dropdown label.ui-dropdown-label {
+    height: 30px;
+}
+
+.ui-dropdown-trigger-icon.pi-caret-down::before {
+    line-height: 30px;
+}

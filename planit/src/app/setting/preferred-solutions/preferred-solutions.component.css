@@ -1,0 +1,335 @@
+#chartdiv {
+    width: 100%;
+    height: 140px;
+    max-width: 735px;
+}
+
+.graph-label {
+    font-size: 14px;
+    color: #788588;
+    font-weight: bold;
+    margin-left: 10px;
+}
+
+.indicator {
+    z-index: 1;
+    width: 5px;
+    bottom: 24px;
+    height: 45px;
+    background: #000;
+    position: absolute;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    transform: translateX(calc(-50% - 1px));
+}
+
+.slider-contain>div {
+    display: inline-block;
+    text-align: center;
+    font-size: 14px;
+    color: #556677;
+    font-weight: 600;
+}
+
+.initials {
+    bottom: 16px;
+}
+
+.indicator {
+    display: none;
+}
+
+.break-word {
+    word-wrap: break-word
+}
+
+.investment-policies-graph .slider-contain {
+    margin-bottom: -25px;
+    margin-left: 15px;
+}
+
+.dropdown-relative .dropdown-floating {
+    width: 15rem !important;
+}
+
+/* accordion */
+
+.differences-box .expandall-box {
+    padding: 0 8.3% 0 0;
+    flex: 0 0 74%;
+}
+
+.differences-box .expandall-box span {
+    max-width: inherit;
+    text-align: center;
+    flex: 0 0 17%;
+    font-size: 11px;
+    text-transform: uppercase;
+    color: #778899;
+    font-weight: 400;
+    font-family: 'Montserrat', sans-serif;
+    padding: 17px 0px 0;
+}
+
+.differences-box .expandall-box span small {
+    display: block;
+    font-size: 11px;
+    text-transform: capitalize;
+    font-weight: 600;
+}
+
+.differences-box .expandall-box .expandall-text {
+    flex: 0 0 auto;
+    padding: 0px;
+    color: #556677;
+    max-width: inherit;
+}
+
+.differences-box .expandall-box .ui-button-icon-only {
+    max-width: 95px;
+    flex: 0 0 auto;
+    border: 0px;
+    background: none;
+    width: auto;
+    padding: 0px 15px 0 0;
+    display: flex;
+    color: #556677;
+    font-size: 11px;
+    text-transform: uppercase;
+    font-weight: 600;
+    margin-left: auto;
+}
+
+.th-pr-10 {
+    padding-right: 10px !important;
+}
+
+.elep-green-color {
+    color: #88AA33;
+}
+
+.add-solution-row {
+    bottom: 0;
+}
+
+.suppressed-gray-out {
+    cursor: not-allowed;
+    opacity: 0.3;
+}
+
+.scroll-header {
+    background-color: #fff;
+    z-index: 3;
+    width: 100%;
+    transition: 0.2s;
+    left: 0;
+}
+
+.fixed-scroll-header-container {
+    max-width: 1500px;
+    margin: 0 auto;
+}
+
+.fixed-scroll-header {
+    padding-right: 22px;
+    padding-left: 22px;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+}
+
+.solutions-wrapper-height {
+    max-height: calc(100vh - 320px);
+    overflow: hidden;
+    overflow-y: auto;
+    margin-bottom: 50px;
+    height: 100vh;
+}
+.disable-link i,
+.disable-link span {
+    color: #ced8e2 !important;
+}
+
+.floating-dropdown li.disable-link,
+.floating-dropdown li.disable-link span,
+.floating-dropdown li.disable-link i {
+    cursor: not-allowed !important;
+}
+
+
+.investment-policies-graph {
+    margin-right: 12px;
+}
+
+/* responsive */
+
+
+@media(max-width: 1600px) {
+    .investment-policies-graph {
+        margin-right: 12px;
+    }
+}
+@media(max-width: 1300px) {
+    .investment-policies-graph {
+        margin-right: 10px;
+    }
+}
+
+@media (max-width: 1199px) {
+    .differences-box .expandall-box span {
+        flex: 0 0 16.5%;
+        max-width: 16.5%;
+    }
+}
+
+@media only screen and (min-width: 990px) and (max-width: 1179px),
+only screen and (min-width: 768px) and (max-width: 867px) {
+    #chartdiv {
+        height: 175px;
+    }
+}
+
+@media (min-width: 1024px) {
+    table.inner-solution-table tbody tr td.chart-wrapper > div{
+        margin-left: 20px;
+    }
+}
+
+@media (max-width: 1024px) {
+    table.inner-solution-table tbody tr td.chart-wrapper > div {
+        margin-left: 15px !important;
+    }
+    .investment-policies-graph {
+        margin-right: 0px !important;
+    }
+    table.inner-solution-table tbody tr td.solution-chart {
+       padding-right: 8px;
+    }
+}
+
+@media (max-width: 992px) {
+    .differences-box .expandall-box {
+        padding: 0px;
+        flex: 0 0 65%;
+    }
+    .differences-box .expandall-box span {
+        flex: 0 0 15.5%;
+        max-width: 15.5%;
+    }
+    .differences-box .expandall-box .ui-button-icon-only {
+        margin-left: auto;
+        padding: 0 10px 0 0;
+    }
+    .investment-policies-graph {
+        margin-right: 0px !important;
+    }
+}
+
+@media (max-width: 991px){
+    table.inner-solution-table , table.inner-solution-table tbody , table.inner-solution-table tbody tr, table.inner-solution-table tbody tr td{
+        display: block;
+        width: 100% !important;
+    }
+    table.inner-solution-table tbody > tr{
+        position: relative;
+    }
+    table.inner-solution-table tbody tr td.solution-chart {
+        display: inline-block;
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 55px !important;
+        padding-right: 18px;
+        margin-right: 22px;
+        border-bottom: none !important;
+    }
+
+    .solutions-wrapper table.inner-solution-table tbody tr td.hidden-md-down {
+        display: none !important;
+    }
+    table.inner-solution-table tbody tr td.chart-wrapper > div{
+        margin-left: 0px !important;
+        margin-right: 0px;
+    }
+    .investment-policies-graph {
+        margin-right: 10px;
+    }
+    .investment-policies-graph  #chartdiv {
+        max-width: 100%;
+    }
+    table.inner-solution-table tbody tr td.finametrica-image {
+        position: absolute;
+        top: 0;
+        width: 100px !important;
+        right: 90px;
+        border: none !important;
+    }
+
+    .solutions-wrapper table.solution-parent-table thead tr:first-child th:first-child{padding-left: 12px;}
+    .solutions-wrapper table.solution-parent-table thead tr:first-child th:last-child{padding-right:16px !important}
+    .solutions-wrapper table.solution-parent-table thead tr:first-child th.action-header{position: relative;left: 14px;}
+
+    .solutions-wrapper table.solution-parent-table tbody tr td:first-child{padding-left: 12px;}
+    .solutions-wrapper table.solution-parent-table tbody tr td:last-child{padding-right: 18px;}
+
+    .fixed-scroll-header-container .sort-box {
+        padding-left: 23px;
+    }
+    .investment-policies-graph span.graph-label {
+        padding-left: 5px;
+    }
+}
+@media (max-width: 767px) {
+    .differences-box .expandall-box {
+        flex: 0 0 100%;
+        max-width: 100%;
+        padding: 0 0 0 30px;
+    }
+    .differences-box .expandall-box span {
+        flex: 0 0 16.2%;
+        max-width: 16.2%;
+    }
+}
+
+@media(max-width: 584px) {
+    #chartdiv {
+        height: 175px;
+    }
+}
+
+@media (max-width: 575px) {
+    .differences-box .expandall-box span {
+        font-size: 8px;
+        padding: 12px 0px 0;
+        flex: 0 0 18%;
+        max-width: 18%;
+    }
+    .differences-box .expandall-box span small {
+        font-size: 8px;
+    }
+    .differences-box .expandall-box .ui-button-icon-only {
+        flex: 0 0 18px;
+        padding: 0px;
+    }
+    .subtitle.fs-18 {
+        font-size: 14px !important;
+    }
+    .table h3.fs-20 {
+        font-size: 16px !important;
+    }
+}
+
+@media(max-width: 448px) {
+    #chartdiv {
+        height: 200px;
+    }
+}
+@media(min-width:385px) {
+    .suitability-range-label {
+        margin-left: 35px;
+    }
+}
+
+@-moz-document url-prefix() {
+    .investment-policies-graph {
+        margin-right: 8px;
+    }
+} 

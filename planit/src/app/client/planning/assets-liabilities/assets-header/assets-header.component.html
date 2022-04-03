@@ -1,0 +1,67 @@
+<div class="row">
+    <div class="col-lg-8 col-md-8 col-sm-12">
+        <h4 class="mb-1">
+            <a [routerLink]="['/client', clientId, 'planning']" [translate]="'BREADCRUMB.PLANNING'"></a> /
+            <a [routerLink]="['/client', clientId, 'planning', 'assets-liabilities']"
+                [translate]="'BREADCRUMB.ASSETS_LIABILITIES'"></a> /
+        </h4>
+        <h1 class="d-sm-inline-block d-block fw-500" *ngIf="accountsData && accountName">
+            <div ngbDropdown class="dropdown-common dropdown-multiline m-0" *ngIf="accountsData">
+                <a id="accountsDropdown" class="d-flex align-items-center" ngbDropdownToggle>
+                    <div id="on-mouseover-tooltip" class="text-truncate fixed-width-text" [appNoOverflowTooltip]="accountName">
+                        {{accountName}}
+                    </div>
+                    <i class="ion-md-arrow-dropdown fs-18 ml-2"></i>
+                </a>
+                <div ngbDropdownMenu aria-labelledby="accountsDropdown">
+                    <ul>
+                        <li *ngFor="let account of accountsData">
+                            <a class="dropdown-item" [ngClass]="{ 'active' : accountId === account.id }"
+                                (click)="changeAccount(account.id)">
+                                {{account.description}}
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </h1>
+    </div>
+    <div class="col-lg-4 col-md-4 col-sm-12 text-right">
+        <app-planning-module-drop-down class="dropdown-right" [clientId]="clientId"></app-planning-module-drop-down>
+    </div>
+    <div class="col-12">
+        <hr>
+    </div>
+    <div class="col-12">
+        <ul class="nav nav-tabs d-if" role="tablist">
+            <li class="nav-item">
+                <a [routerLink]="['/client', clientId, 'planning', 'assets-liabilities', accountId, 'edit-account']"
+                    class="nav-link p-lr-40" [ngClass]="{ 'active' : currentPage === 'details' }"
+                    [translate]="'GOALS.DETAILS.TITLE'"></a>
+            </li>
+            <li class="nav-item">
+                <a [routerLink]="['/client', clientId, 'planning', 'assets-liabilities', accountId, 'holding-account']"
+                    class="nav-link p-lr-40" [ngClass]="{ 'active' : currentPage === 'holdings' }"
+                    [translate]="'ASSETS_SUMMARY.ASSETS_HEADER.HOLDINGS'"></a>
+            </li>
+            <li class="nav-item">
+                <a [routerLink]="['/client', clientId, 'planning', 'assets-liabilities', accountId, 'savings']"
+                    class="nav-link p-lr-40" [ngClass]="{ 'active' : currentPage === 'savings' }"
+                    [translate]="'ASSETS_SUMMARY.ASSETS_HEADER.SAVINGS'"></a>
+            </li>
+        </ul>
+        <div class="pull-right">
+            <a (click)="deleteAccount()" class="delete-link" *ngIf="!selectedAccount['readOnly']">
+                <i class="ion-md-close-circle"></i>
+                <span [translate]="'ASSETS_SUMMARY.ACTION.DELETE_ACCOUNT'"></span>
+            </a>
+            <a class="delete-link disable-link" *ngIf="selectedAccount['readOnly']">
+                <i class="ion-md-close-circle"></i>
+                <span [translate]="'ASSETS_SUMMARY.ACTION.DELETE_ACCOUNT'"></span>
+            </a>
+        </div>
+    </div>
+    <div class="col-12">
+        <hr>
+    </div>
+</div>

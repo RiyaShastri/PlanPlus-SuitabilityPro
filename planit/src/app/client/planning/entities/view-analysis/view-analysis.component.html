@@ -1,0 +1,664 @@
+<div class="bg-white pt-4 pb-4">
+    <div class="container">
+        <app-entities-header [clientId]="clientId" currentPage="analysis" [entityId]="entityId"
+            (switchEntity)="changeEntity($event)" (switchScenario)="changeScenario($event)"></app-entities-header>
+        <h3 class="fs-18 fw-700">
+            {{ 'GENERATE_REPORT.ENTITY_REPORT_TYPE.SUMMARY_REPORT' | translate }}
+            <i *ngIf="apiCalled !== totalApiCalls" aria-hidden="true" class="fa fa-spinner fa-pulse loader-icon"></i>
+        </h3>
+        <div class="row">
+            <div class="col-12 col-md-6 mt-4">
+                <div class="panel p-0 m-0 h-100">
+                    <div class="panel-body">
+                        <table class="table analysis_table entity_table">
+                            <thead>
+                                <tr>
+                                    <th width="40%">
+                                        <span
+                                            class="entity-text-truncate">{{ 'ENTITY.ENTITY_DETAILS' | translate }}</span>
+                                    </th>
+                                    <th width="60%">&nbsp;</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td width="40%">
+                                        <span class="entity-text-truncate">{{ 'ENTITY.DESCRIPTION' | translate }}</span>
+                                    </td>
+                                    <td width="60%" class="text-right">
+                                        <span class="entity-text-truncate"
+                                            [appNoOverflowTooltip]="entityDetail['description']" triggers="manual"
+                                            placement="bottom">
+                                            {{entityDetail['description']}}
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="40%">
+                                        <span
+                                            class="entity-text-truncate">{{ 'ENTITY.CURRENT_FAIR_MARKET_VALUE' | translate }}</span>
+                                    </td>
+                                    <td width="60%" class="text-right">
+                                        <span>
+                                            {{entityDetail['fmv'] | currency:clientData['currencyCode'] : 'symbol-narrow':'1.0-0'}}
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="40%">
+                                        <span
+                                            class="entity-text-truncate">{{ 'ENTITY.ACB_OF_INVESTMENTS' | translate }}</span>
+                                    </td>
+                                    <td width="60%" class="text-right">
+                                        <span>
+                                            {{entityDetail['acb'] | currency:clientData['currencyCode'] : 'symbol-narrow':'1.0-0'}}
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="40%">
+                                        <span class="entity-text-truncate">{{ 'ENTITY.TYPE' | translate }}</span>
+                                    </td>
+                                    <td width="60%" class="text-right">
+                                        <span>
+                                            {{entityDetail['entityTypeDescription']}}
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="40%">
+                                        <span
+                                            class="entity-text-truncate">{{ 'ENTITY.RELATED_CORPORATION' | translate }}</span>
+                                    </td>
+                                    <td width="60%" class="text-right">
+                                        <span>
+                                            {{ entityDetail['relCorp'] ? CORPORATION_OPTIONS.YES : CORPORATION_OPTIONS.NO }}
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr *ngIf="entityDetail['relCorp']">
+                                    <td width="40%">
+                                        <span class="entity-text-truncate">{{ 'ENTITY.DESCRIPTION' | translate }}</span>
+                                    </td>
+                                    <td width="60%" class="text-right">
+                                        <span class="entity-text-truncate"
+                                            [appNoOverflowTooltip]="entityDetail['relCorpDesc']" triggers="manual"
+                                            placement="bottom">
+                                            {{entityDetail['relCorpDesc']}}
+                                        </span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-md-6 mt-4">
+                <div class="panel p-0 m-0 h-100">
+                    <div class="panel-body">
+                        <table class="table analysis_table entity_table">
+                            <thead>
+                                <tr>
+                                    <th width="50%" class="text-left">
+                                        <span
+                                            class="entity-text-truncate">{{ 'ENTITY.GENERAL_ASSUMPTIONS' |translate }}</span>
+                                    </th>
+                                    <th width="25%" class="text-right">
+                                        <span class="entity-text-truncate">{{ 'ENTITY.FEDERAL' |translate }}</span>
+                                    </th>
+                                    <th width="25%" class="text-right">
+                                        <span class="entity-text-truncate">{{ 'ENTITY.PROVINCIAL' |translate }}</span>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <ng-container
+                                    *ngIf="generalAssumption['entityAssumptions'] && generalAssumption['entityAssumptions'].length > 0">
+                                    <tr *ngFor="let data of generalAssumption['entityAssumptions']">
+                                        <ng-container *ngIf="data['federal'] !== null || data['provincial'] !== null">
+                                            <td width="50%" class="entity-tooltip-wrap">
+                                                <span class="d-block text-truncate entity-text-truncate"
+                                                    [appNoOverflowTooltip]="'ENTITY.SSID.' + data['ssid'] | translate"
+                                                    triggers="manual"
+                                                    placement="bottom">{{ ('ENTITY.SSID.' + data['ssid']) | translate}}</span>
+                                            </td>
+                                            <td width="25%" class="text-right">
+                                                <span *ngIf="data['federal'] !== null">
+                                                    {{data['federal'] | currency:clientData['currencyCode'] : 'symbol-narrow':'1.0-0'}}
+                                                </span>
+                                            </td>
+                                            <td width="25%" class="text-right">
+                                                <span *ngIf="data['provincial'] !== null">
+                                                    {{data['provincial'] | currency:clientData['currencyCode'] : 'symbol-narrow':'1.0-0'}}
+                                                </span>
+                                            </td>
+                                        </ng-container>
+                                    </tr>
+                                </ng-container>
+                                <ng-container
+                                    *ngIf="generalAssumption['entityAssumptions'] && generalAssumption['entityAssumptions'].length === 0">
+                                    <tr>
+                                        <td colspan="2" class="no-record text-center">
+                                            <i class="ion-ios-alert mr-2"></i>{{'NO_RESULTS' | translate}}
+                                        </td>
+                                    </tr>
+                                </ng-container>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12 col-md-6 mt-4">
+                <div class="panel p-0 m-0 h-100">
+                    <div class="panel-body">
+                        <table class="table analysis_table entity_table">
+                            <thead>
+                                <tr>
+                                    <th width="50%" class="text-left">
+                                        <span class="entity-text-truncate">{{ 'ENTITY.TAX_RATES' | translate }}</span>
+                                    </th>
+                                    <th width="25%" class="text-right">
+                                        <span class="entity-text-truncate">{{ 'ENTITY.FEDERAL' | translate }}</span>
+                                    </th>
+                                    <th width="25%" class="text-right">
+                                        <span class="entity-text-truncate">{{ 'ENTITY.PROVINCIAL' | translate }}</span>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <ng-container
+                                    *ngIf="generalAssumption['taxAssumptions'] && generalAssumption['taxAssumptions'].length > 0">
+                                    <tr *ngFor="let data of generalAssumption['taxAssumptions']">
+                                        <ng-container *ngIf="data['federal'] !== null || data['provincial'] !== null">
+                                            <td width="50%" class="entity-tooltip-wrap">
+                                                <span class="d-block text-truncate entity-text-truncate"
+                                                    [appNoOverflowTooltip]="(data['ssid'] === SSID['CLAWBACKFACTOR']) ? ('ENTITY.SSID.' + data['ssid'] | translate) + '' + (currency) : ('ENTITY.SSID.' + data['ssid'] | translate)"
+                                                    triggers="manual"
+                                                    placement="bottom">{{ ('ENTITY.SSID.' + data['ssid']) | translate}}
+                                                    {{ (data['ssid'] === SSID['CLAWBACKFACTOR']) ? currency
+                                                                            : '' }}</span>
+                                            </td>
+                                            <td width="25%" class="text-right">
+                                                <ng-container *ngIf="data['federal'] !== null">
+                                                    <span *ngIf="data['currency']">{{ data['federal'] | currency:clientData['currencyCode']
+                                                                                : 'symbol-narrow':'1.0-2'}}</span>
+                                                    <span
+                                                        *ngIf="!data['currency']">{{ (data['federal'] * 100) | number: '1.2-2'}}%</span>
+                                                </ng-container>
+                                            </td>
+                                            <td width="25%" class="text-right">
+                                                <ng-container *ngIf="data['provincial'] !== null">
+                                                    <span *ngIf="data['currency']">{{ data['provincial'] | currency:clientData['currencyCode']
+                                                                                : 'symbol-narrow':'1.0-2'}}</span>
+                                                    <span
+                                                        *ngIf="!data['currency']">{{ (data['provincial'] * 100) | number: '1.2-2'}}%</span>
+                                                </ng-container>
+                                            </td>
+                                        </ng-container>
+                                    </tr>
+                                </ng-container>
+                                <ng-container
+                                    *ngIf="generalAssumption['taxAssumptions'] && generalAssumption['taxAssumptions'].length === 0">
+                                    <tr>
+                                        <td colspan="2" class="no-record text-center">
+                                            <i class="ion-ios-alert mr-2"></i>{{'NO_RESULTS' | translate}}
+                                        </td>
+                                    </tr>
+                                </ng-container>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-6 mt-4">
+                <div class="panel p-0 m-0 h-100">
+                    <div class="panel-body">
+                        <table class="table analysis_table entity_table">
+                            <thead>
+                                <tr>
+                                    <th colspan="3" width="100%">
+                                        <span
+                                            class="entity-text-truncate">{{"ENTITY.ANALYSIS.RATE_OF_RETURN_DISTRIBUTION" | translate }}</span>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <ng-container *ngIf="investmentRiskReturn && investmentRiskReturn.length > 0">
+                                    <tr *ngFor="let item of investmentRiskReturn">
+                                        <td width="50%">{{item.description | translate}}</td>
+                                        <td width="25%" class="text-right">
+                                            <span>
+                                                {{ item.distributionValue | number: '1.2-2'}}%
+                                            </span>
+                                        </td>
+                                        <td width="25%" class="text-right">
+                                            <span>
+                                                {{ item.distributionRisk | number: '1.2-2'}}%
+                                            </span>
+                                        </td>
+                                    </tr>
+                                    <tr class="total_row">
+                                        <td width="50%">{{ 'ENTITY.ANALYSIS.TOTAL_RETURN' | translate}}</td>
+                                        <td width="25%" class="text-right">&nbsp;</td>
+                                        <td width="25%" class="text-right">
+                                            <span>
+                                                {{ totalInvestmentReturn | number: '1.2-2'}}%
+                                            </span>
+                                        </td>
+                                    </tr>
+
+                                </ng-container>
+                                <ng-container *ngIf="investmentRiskReturn && investmentRiskReturn.length === 0">
+                                    <tr>
+                                        <td colspan="2" class="no-record text-center">
+                                            <i class="ion-ios-alert mr-2"></i>{{'NO_RESULTS' | translate}}
+                                        </td>
+                                    </tr>
+                                </ng-container>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12 mt-4">
+                <div class="panel p-0 m-0 h-100">
+                    <div class="panel-body">
+                        <table class="table analysis_table entity_table">
+                            <thead>
+                                <tr>
+                                    <th width="30%">{{ 'ENTITY.ANALYSIS.SHARE_STRUCTURE' | translate }}</th>
+                                    <th width="10%" class="text-center">{{ 'ENTITY.ROLE' | translate }}</th>
+                                    <ng-container *ngIf="ownershipTable.length > 0">
+                                        <th width="{{60/ownershipTable[0]['shares'].length}}%" class="text-right"
+                                            *ngFor="let share of ownershipTable[0]['shares']">
+                                            <span class="entity-text-truncate"
+                                                [appNoOverflowTooltip]="share.shareClassDesc" triggers="manual"
+                                                placement="bottom">
+                                                {{ share.shareClassDesc }}
+                                            </span>
+                                        </th>
+                                    </ng-container>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <ng-container *ngIf="ownershipTable && ownershipTable.length > 0">
+                                    <tr *ngFor="let ownershipRow of ownershipTable">
+                                        <td width="30%">
+                                            <span class="entity-text-truncate"
+                                                [appNoOverflowTooltip]="ownershipRow.ownerName" triggers="manual"
+                                                placement="bottom">
+                                                {{ ownershipRow.ownerName }}
+                                            </span>
+                                        </td>
+                                        <td width="10%" class="text-center">
+                                            <span class="clientStatus hidden-xs-down">
+                                                {{ (ownershipRow['ownerRole'] === SHARE_TYPE['OTHER_ROLE']) ? SHARE_TYPE['OTHER'] : roles[ownershipRow['ownerRole']]}}
+                                            </span>
+                                        </td>
+                                        <ng-container *ngIf="ownershipRow['shares'].length > 0">
+                                            <td width="{{60/ownershipRow['shares'].length}}%" class="text-right"
+                                                *ngFor="let ownerShare of ownershipRow['shares']">
+                                                <span class="entity-text-truncate"
+                                                    [appNoOverflowTooltip]="ownerShare.ownerOwnedPercentage | number : '0.0-0'" triggers="manual"
+                                                    placement="bottom">
+                                                    {{ ownerShare.ownerOwnedPercentage | number : '0.0-0' }}%
+                                                </span>
+                                            </td>
+                                        </ng-container>
+                                    </tr>
+                                </ng-container>
+                                <ng-container *ngIf="ownershipTable && ownershipTable.length === 0">
+                                    <tr>
+                                        <td colspan="2" class="no-record text-center">
+                                            <i class="ion-ios-alert mr-2"></i>{{'NO_RESULTS' | translate}}
+                                        </td>
+                                    </tr>
+                                </ng-container>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12 col-md-6 mt-4">
+                <div class="panel p-0 m-0 h-100">
+                    <div class="panel-body">
+                        <table class="table analysis_table entity_table">
+                            <thead>
+                                <tr>
+                                    <th width="50%" class="text-left">
+                                        <span
+                                            class="entity-text-truncate">{{ 'ENTITY.ANALYSIS.CURR_YEAR_INCOME' | translate }}</span>
+                                    </th>
+                                    <th width="25%" class="text-right ">
+                                        <span class="entity-text-truncate">{{ 'ENTITY.FEDERAL' | translate }}</span>
+                                    </th>
+                                    <th width="25%" class="text-right">
+                                        <span class="entity-text-truncate">{{ 'ENTITY.PROVINCIAL' | translate }}</span>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <ng-container *ngIf="currentYearIncomeData && currentYearIncomeData.length > 0">
+                                    <tr *ngFor="let income of currentYearIncomeData">
+                                        <td width="50%">
+                                            <span
+                                                [ngClass]="{'total-text-bold': income['ssid'] === SSID['NET_CORPORATE_INCOME']}"
+                                                [appNoOverflowTooltip]="'ENTITY.SSID.' + income['ssid'] | translate"
+                                                class="text-truncate income-distribution-tooltip entity-text-truncate"
+                                                triggers="manual"
+                                                placement="bottom">{{ 'ENTITY.SSID.' + income['ssid'] | translate}}</span>
+                                        </td>
+                                        <td class="text-right" width="25%">
+                                            <span
+                                                [ngClass]="{'fw-600': income['ssid'] == SSID['NET_CORPORATE_INCOME'] && income['federal'] !== null}">
+                                                {{income['federal'] | currency:clientData['currencyCode'] : 'symbol-narrow':'1.0-0'}}
+                                            </span>
+                                        </td>
+                                        <td class="text-right" width="25%">
+                                            <span>
+                                                {{income['provincial'] | currency:clientData['currencyCode'] : 'symbol-narrow':'1.0-0'}}
+                                            </span>
+                                        </td>
+                                    </tr>
+                                </ng-container>
+                                <ng-container *ngIf="currentYearIncomeData && currentYearIncomeData.length === 0">
+                                    <tr>
+                                        <td colspan="2" class="no-record text-center">
+                                            <i class="ion-ios-alert mr-2"></i>{{'NO_RESULTS' | translate}}
+                                        </td>
+                                    </tr>
+                                </ng-container>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-6 mt-4">
+                <div class="panel p-0 m-0 h-100">
+                    <div class="panel-body">
+                        <table class="table analysis_table entity_table">
+                            <thead>
+                                <tr>
+                                    <th colspan="2" width="100%">
+                                        <span
+                                            class="entity-text-truncate">{{ "ENTITY.ANALYSIS.CURR_YEAR_DISTRIBUTION" | translate }}</span>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <ng-container *ngIf="currentYearDistributions && currentYearDistributions.length > 0">
+                                    <tr *ngFor="let distribution of currentYearDistributions;">
+                                        <td width="50%">
+                                            <span class="entity-text-truncate"
+                                                [appNoOverflowTooltip]="distribution.description" triggers="manual"
+                                                placement="bottom">{{distribution.description}}</span>
+                                        </td>
+                                        <td class="text-right" width="50%">
+                                            <span
+                                                class="entity-text-truncate">{{ 'ENTITY.SOURCE_TYPE.' + sources[distribution['orderId']]['ssid'] | translate }}</span>
+                                        </td>
+                                    </tr>
+                                </ng-container>
+                                <ng-container *ngIf="currentYearDistributions && currentYearDistributions.length === 0">
+                                    <tr>
+                                        <td colspan="2" class="no-record text-center">
+                                            <i class="ion-ios-alert mr-2"></i>{{'NO_RESULTS' | translate}}
+                                        </td>
+                                    </tr>
+                                </ng-container>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12 mt-4">
+                <div class="panel p-0 m-0 h-100">
+                    <div class="panel-body">
+                        <table class="table analysis_table entity_table">
+                            <thead>
+                                <tr>
+                                    <th width="30%">{{ 'ENTITY.RETAINED_EARNINGS' | translate }}</th>
+                                    <th width="10%" class="text-right">{{ 'ENTITY.AMOUNT' | translate }}</th>
+                                    <ng-container *ngIf="retainedEarningsOwners.length > 0">
+                                        <th class="text-right" width="{{60/retainedEarningsOwners.length}}%"
+                                            *ngFor="let owner of retainedEarningsOwners">
+                                            <span class="entity-text-truncate" [appNoOverflowTooltip]="owner.personName"
+                                                triggers="manual" placement="bottom">
+                                                {{ owner.personName }}
+                                            </span>
+                                        </th>
+                                    </ng-container>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <ng-container *ngIf="retainedEarnings && retainedEarnings.length > 0">
+                                    <tr *ngFor="let retainedEarning of retainedEarnings" [ngClass]="{'total_row': retainedEarning.isTotalRow}">
+                                        <td width="30%">
+                                            <span class="entity-text-truncate"
+                                                [appNoOverflowTooltip]="'ENTITY.SSID.' + retainedEarning.ssid | translate"
+                                                triggers="manual" placement="bottom">
+                                                {{ 'ENTITY.SSID.' + retainedEarning.ssid | translate }}
+                                            </span>
+                                        </td>
+                                        <td width="10%" class="text-right">
+                                            <span class="">
+                                                {{ retainedEarning['value'] | currency:clientData['currencyCode'] : 'symbol-narrow':'1.0-0' }}
+                                            </span>
+                                        </td>
+                                        <ng-container *ngIf="retainedEarning['ownerData'].length > 0">
+                                            <td class="text-right" width="{{60/retainedEarning['ownerData'].length}}%"
+                                                *ngFor="let ownerData of retainedEarning['ownerData']">
+                                                <span class="entity-text-truncate"
+                                                    [appNoOverflowTooltip]="(ownerData.value != '') ? (ownerData.value | currency:clientData['currencyCode'] : 'symbol-narrow':'1.0-0' ) : ''"
+                                                    triggers="manual" placement="bottom">
+                                                    {{ (ownerData.value != '') ? (ownerData.value | currency:clientData['currencyCode'] : 'symbol-narrow':'1.0-0' ) : '' }}
+                                                </span>
+                                            </td>
+                                        </ng-container>
+                                    </tr>
+                                </ng-container>
+                                <ng-container *ngIf="retainedEarnings && retainedEarnings.length === 0">
+                                    <tr>
+                                        <td colspan="2" class="no-record text-center">
+                                            <i class="ion-ios-alert mr-2"></i>{{'NO_RESULTS' | translate}}
+                                        </td>
+                                    </tr>
+                                </ng-container>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12 mt-4">
+                <div class="panel p-0 m-0 h-100">
+                    <div class="panel-body">
+                        <table class="table analysis_table entity_table">
+                            <thead>
+                                <tr>
+                                    <th width="60%" class="longTermDesc">
+                                        <span
+                                            class="entity-text-truncate">{{'ENTITY.ANALYSIS.LONG_TERM_INCOME' | translate }}</span>
+                                    </th>
+                                    <th width="10%" class="text-right" [translate]="'ENTITY.AMOUNT'"></th>
+                                    <th width="7%" class="text-right hidden-xs-down" [translate]="'ENTITY.START'"></th>
+                                    <th width="7%" class="text-right hidden-xs-down" [translate]="'ENTITY.END'"></th>
+                                    <th width="8%" class="text-right">
+                                        <span class="index-rate-header entity-text-truncate"
+                                            [appNoOverflowTooltip]="'ENTITY.INDEX_RATE_PRIOR_TO_START' | translate"
+                                            triggers="manual" placement="bottom">
+                                            {{'ENTITY.INDEX_RATE_PRIOR_TO_START' | translate}}</span>
+                                    </th>
+                                    <th width="8%" class="text-right">
+                                        <span class="index-rate-header entity-text-truncate"
+                                            [appNoOverflowTooltip]="'ENTITY.INDEX_RATE_FROM_START' | translate"
+                                            triggers="manual" placement="bottom">
+                                            {{'ENTITY.INDEX_RATE_FROM_START' | translate }}</span>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <ng-container *ngIf="longTermIncome && longTermIncome.length > 0;">
+                                    <tr *ngFor="let income of longTermIncome">
+                                        <td width="60%" class="longTermDesc">
+                                            <span
+                                                [appNoOverflowTooltip]="(income.ssid) ? ('ENTITY.REVENUE_TYPE.' + income.ssid | translate) : income.description"
+                                                class="text-truncate long-term-income-tooltip entity-text-truncate"
+                                                triggers="manual"
+                                                placement="bottom">{{ (income.ssid) ? ('ENTITY.REVENUE_TYPE.' + income.ssid | translate) : income.description }}</span>
+                                        </td>
+                                        <td width="10%" class="text-right">
+                                            {{income.amount | currency:clientData['currencyCode'] : 'symbol-narrow':'1.0-0' }}
+                                        </td>
+                                        <td width="7%" class="text-right hidden-xs-down">
+                                            {{income.startyear}}
+                                        </td>
+                                        <td width="7%" class="text-right hidden-xs-down">
+                                            {{income.endyear}}
+                                        </td>
+                                        <td width="8%" class="text-right">
+                                            {{income.indexToStart | number : '1.1-2'}}%
+                                        </td>
+                                        <td width="8%" class="text-right">
+                                            {{income.indexFromStart | number : '1.1-2'}}%
+                                        </td>
+                                    </tr>
+
+                                </ng-container>
+                                <ng-container *ngIf="longTermIncome && longTermIncome.length === 0">
+                                    <tr>
+                                        <td colspan="2" class="no-record text-center">
+                                            <i class="ion-ios-alert mr-2"></i>{{'NO_RESULTS' | translate}}
+                                        </td>
+                                    </tr>
+                                </ng-container>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12 mt-4">
+                <div class="panel p-0 m-0 h-100">
+                    <div class="panel-body">
+                        <table class="table analysis_table entity_table">
+                            <thead>
+                                <tr>
+                                    <th width="25%">
+                                        <span
+                                            class="entity-text-truncate">{{ 'ENTITY.ANALYSIS.LONG_TERM_DISTRIBUTIONS' | translate }}</span>
+                                    </th>
+                                    <th width="20%" class="hidden-xs-down">
+                                        <span class="entity-text-truncate">{{ 'ENTITY.GOAL' | translate }}</span>
+                                    </th>
+                                    <th width="15%" class="hidden-md-down">
+                                        <span class="entity-text-truncate">{{ 'ENTITY.SOURCE' | translate }}</span>
+                                    </th>
+                                    <th width="10%" class="text-right">
+                                        <span class="entity-text-truncate">{{ 'ENTITY.AMOUNT' | translate }}</span>
+                                    </th>
+                                    <th width="7%" class="text-right hidden-xs-down">
+                                        <span class="entity-text-truncate">{{ 'ENTITY.START' | translate }}</span>
+                                    </th>
+                                    <th width="7%" class="text-right hidden-xs-down">
+                                        <span class="entity-text-truncate">{{ 'ENTITY.END' | translate }}</span>
+                                    </th>
+                                    <th width="8%" class="text-right">
+                                        <span class="index-rate-header entity-text-truncate"
+                                            [appNoOverflowTooltip]="'ENTITY.INDEX_RATE_PRIOR_TO_START' | translate"
+                                            triggers="manual" placement="bottom">
+                                            {{'ENTITY.INDEX_RATE_PRIOR_TO_START' | translate}}</span>
+                                    </th>
+                                    <th width="8%" class="text-right">
+                                        <span class="index-rate-header entity-text-truncate"
+                                            [appNoOverflowTooltip]="'ENTITY.INDEX_RATE_FROM_START' | translate"
+                                            triggers="manual" placement="bottom">
+                                            {{'ENTITY.INDEX_RATE_FROM_START' | translate }}</span>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <ng-container *ngIf="longTermWithdrawals && longTermWithdrawals.length > 0">
+                                    <ng-container *ngFor="let distribution of longTermWithdrawals;let i = index; let last = last">
+                                        <ng-container *ngFor="let shareOwner of distribution['shareOwnerGoaltoFundList'];let ownerIndex = index">
+                                                <ng-container *ngIf="(distribution['source']['id'] === 3 && distribution['defaultRecord'] && ownerIndex === 0) || (distribution['source']['id'] !== 3)">
+                                                <tr>
+                                                    <td width="20%">
+                                                        <span [appNoOverflowTooltip]="(distribution['source']['id'] === 3 && distribution['defaultRecord']) ? ('ENTITY.SSID.' + distribution.ssid | translate) : distribution.description"
+                                                            class="text-truncate long-term-income-tooltip entity-text-truncate"
+                                                            triggers="manual"
+                                                            placement="bottom">
+                                                            {{ (distribution['source']['id'] === 3 && distribution['defaultRecord']) ? ('ENTITY.SSID.' + distribution.ssid | translate) : distribution.description }}
+                                                        </span>
+                                                    </td>
+                                                    <td width="15%" class="hidden-xs-down">
+                                                        <span
+                                                            [appNoOverflowTooltip]="shareOwner['fundedGoalDescription'] || 'N/A'"
+                                                            class="text-truncate long-term-income-tooltip entity-text-truncate"
+                                                            triggers="manual" placement="bottom">
+                                                            {{shareOwner['fundedGoalDescription'] || 'N/A'}}
+                                                        </span>
+                                                    </td>
+                                                    <td width="15%" class="hidden-md-down">
+                                                        <span
+                                                            [appNoOverflowTooltip]="distribution.source && distribution.source['description'] ? distribution.source['description'] : 'N/A'"
+                                                            class="text-truncate long-term-income-tooltip entity-text-truncate"
+                                                            triggers="manual" placement="bottom">
+                                                            {{distribution.source && distribution.source['description'] ? distribution.source['description'] : 'N/A'}}
+                                                        </span>
+                                                    </td>
+                                                    <td width="10%" class="text-right">
+                                                        {{ ((distribution['source']['id'] === 3 && distribution['defaultRecord']) ? distribution.amount : ((distribution.amount * shareOwner.percentage)/100)) | currency:clientData['currencyCode'] : 'symbol-narrow':'1.0-0' }}
+                                                    </td>
+                                                    <td width="7%" class=" text-right hidden-xs-down">
+                                                        {{distribution.startyear}}
+                                                    </td>
+                                                    <td width="7%" class=" text-right hidden-xs-down">
+                                                        {{distribution.endyear}}
+                                                    </td>
+                                                    <td width="8%" class="text-right">
+                                                        {{distribution.indexToStart | number : '1.1-2'}}%
+                                                    </td>
+                                                    <td width="8%" class="text-right">
+                                                        {{distribution.indexFromStart | number : '1.1-2'}}%
+                                                    </td>
+                                                </tr>
+                                            </ng-container>
+                                        </ng-container>
+                                    </ng-container>
+                                </ng-container>
+                                <ng-container
+                                    *ngIf="!longTermWithdrawals || (longTermWithdrawals && longTermWithdrawals.length == 0)">
+                                    <tr>
+                                        <td colspan="9" class="no-record text-center">
+                                            <i class="ion-ios-alert mr-2"></i>{{'NO_RESULTS' | translate}}
+                                        </td>
+                                    </tr>
+                                </ng-container>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

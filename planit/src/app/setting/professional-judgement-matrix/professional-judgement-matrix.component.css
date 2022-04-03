@@ -1,0 +1,162 @@
+legend.custom-form-label {
+    width: 40%
+}
+
+fieldset.form-group .form-check {
+    width: 60%;
+}
+
+.form-group .form-check span {
+    flex: 0 0 50%;
+}
+
+.custom-border {
+    border: 1px solid #567;
+    width: 96%;
+    margin-left: 13px;
+}
+
+.custom-border::before {
+    content: '|';
+    float: left;
+    margin-top: -5px;
+    font-weight: 800;
+    margin-left: -4px;
+}
+
+.custom-border::after {
+    content: '|';
+    float: right;
+    margin-top: -5px;
+    font-weight: 800;
+    margin-right: -4px;
+}
+
+.custom-border-p::before {
+    content: '|';
+    float: left;
+    margin-top: -5px;
+    font-weight: 800;
+    margin-left: -4px;
+}
+
+.pjm-footer {
+    padding: 10px;
+    background: white;
+    vertical-align: middle;
+}
+
+.pjm-footer div {
+    display: inline-block;
+}
+
+.btn-add {
+    font-size: 12px;
+    font-weight: normal;
+}
+
+.score-range-custom-graph-wrapper {
+    padding: 0 20px 0 15px;
+}
+
+.score-range-custom-graph {
+    display: block;
+    width: 100%;
+    border-top: 1px solid;
+    position: relative;
+    height: 30px;
+}
+
+.score-range-custom-graph .indicator {
+    width: 50px;
+    display: block;
+    position: absolute;
+    left: calc(10% - 25px);
+    padding-top: 10px;
+    font-size: 11px;
+    text-align: center;
+    font-family: Verdana;
+    color: #212529;
+}
+
+.score-range-custom-graph .indicator:before {
+    content: "";
+    position: absolute;
+    height: 5px;
+    width: 1px;
+    background: black;
+    left: 25px;
+    top: -1px;
+}
+
+#chartdiv {
+    width: 100%;
+    height: 125px;
+}
+
+.graph-label {
+    font-size: 14px;
+    color: #788588;
+    font-weight: bold;
+    margin-left: 10px;
+}
+
+.slider-contain>div {
+    display: inline-block;
+    text-align: center;
+    font-size: 14px;
+    color: #556677;
+    font-weight: 600;
+}
+
+tree-select[ng-reflect-is-disabled='true']+.tree-select-custom-caret-down {
+    opacity: 0.35;
+}
+
+.investment-policies-graph .slider-contain {
+    margin-bottom: -25px;
+    margin-left: 15px;
+}
+
+.investment-policies-graph .slider-contain>div {
+    margin-left: -4px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.break-word {
+    word-wrap: break-word
+}
+
+.pjm-fixheight-wrapper {
+    max-height: calc(100vh - 320px);
+    overflow: hidden;
+    overflow-y: auto;
+    margin-bottom: 50px;
+    height: 100vh;
+    width: 100%;
+}
+
+@media only screen and (min-width: 869px) and (max-width: 1197px),
+only screen and (min-width: 584px) and (max-width: 867px) {
+    #chartdiv {
+        height: 145px;
+    }
+}
+
+@media(max-width: 584px) {
+    #chartdiv {
+        height: 175px;
+    }
+}
+
+@media(max-width: 448px) {
+    #chartdiv {
+        height: 200px;
+    }
+}
+
+.custom-no-border {
+    border: 0;
+    box-shadow: none;
+}

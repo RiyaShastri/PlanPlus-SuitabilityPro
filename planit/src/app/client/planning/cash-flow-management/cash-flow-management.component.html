@@ -1,0 +1,431 @@
+<div class="bg-white pt-4 pb-4">
+    <div class="container cash-flow-management-wrapper">
+        <div class="row">
+            <div class="col-5">
+                <h4>
+                    <a [routerLink]="['/client',clientId,'planning']" [translate]="'BREADCRUMB.PLANNING'"></a> /
+                </h4>
+                <h1 class="d-inline-block fw-500" [translate]="'PLANNING_SUMMARY.CASH_FLOW_MANAGEMENT.TITLE'"></h1>
+            </div>
+            <div class="col-7 d-flex flex-wrap justify-content-end">
+                <div class="mt-auto">
+                    <app-planning-module-drop-down class="dropdown-right" [clientId]="clientId">
+                    </app-planning-module-drop-down>
+                </div>
+            </div>
+            <div class="col-12" *ngIf="cashFlowData">
+                <hr class="my-1" />
+                <p class="d-flex m-0">
+                    <a class="btn-add cursor-p" (click)="isAddCustom = true">
+                        <i class="ion-md-add-circle"></i>
+                        <span [translate]="'CASH_FLOW_MANAGEMENT.ADD_CASH_FLOW_ITEM'"></span>
+                    </a>
+                </p>
+                <hr class="mt-1 mb-2" />
+            </div>
+        </div>
+
+        <ng-container *ngIf="dataLoaded; else showLoader">
+            <form name="form" #f="ngForm" novalidate *ngIf="cashFlowData && cashFlowDetails.length > 0">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="header-body">
+                            <div class="row">
+                                <div class="col-3 col-sm-6">
+                                    <div class="form-group m-0">
+                                        <p-checkbox class="mr-2" name="monthly" labelStyleClass="header-body-checkbox"
+                                            [(ngModel)]="cashFlowData['monthly']" binary="true"
+                                            label="{{'CASH_FLOW_MANAGEMENT.MONTHLY' | translate}}"
+                                            (onChange)="changeMonthly()">
+                                        </p-checkbox>
+                                        <p-checkbox name="auto" labelStyleClass="header-body-checkbox"
+                                            [(ngModel)]="cashFlowData['autoReInvest']" binary="true"
+                                            label="{{'CASH_FLOW_MANAGEMENT.AUTO_REINVEST_INCOME' | translate}}"
+                                            (onChange)="onChangeCalculate()">
+                                        </p-checkbox>
+                                    </div>
+                                </div>
+                                <div class="col-9 col-sm-6">
+                                    <div class="row">
+                                        <div *ngIf="client1" [ngClass]="client2 ? 'col-4' : 'col-6'"
+                                            class="d-inline-block text-right">
+                                            <img class="initials bg-transparent mr-2" height="50"
+                                                *ngIf="client1['avatar']" [src]="client1['avatar']"
+                                                (error)="client1['avatar'] = null" />
+                                            <span *ngIf="!client1['avatar']" class="initials client mr-2 cursor-p">
+                                                {{client1['btnInitials']}}
+                                            </span>
+                                            <span class="va-middle">{{client1['firstName']}}</span>
+                                        </div>
+                                        <div class="col-4 d-inline-block text-right" *ngIf="client2">
+                                            <img class="initials bg-transparent mr-2" height="50"
+                                                *ngIf="client2['avatar']" [src]="client2['avatar']"
+                                                (error)="client2['avatar'] = null" />
+                                            <span *ngIf="!client2['avatar']" class="initials client mr-2 cursor-p">
+                                                {{client2['btnInitials']}}
+                                            </span>
+                                            <span class="va-middle">{{client2['firstName']}}</span>
+                                        </div>
+                                        <div [ngClass]="client2 ? 'col-4' : 'col-6'">
+                                            <span class="float-right fw-700 chartContainer margin-right-15"
+                                                [translate]="'CASH_FLOW_MANAGEMENT.TOTAL'"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <hr class="my-2" />
+                    </div>
+
+                    <ng-container *ngFor="let type of cashFlowDetails; index as mi">
+                        <div class="col-12">
+                            <hr class="mt-4 mb-2" />
+                            <div class="tbl-header">
+                                <div class="row fw-700 chartContainer">
+                                    <div class="col-8 col-sm-6">
+                                        <div class="row">
+                                            <div class="col-5 col-sm-7 expensest-title text-uppercase">
+                                                {{type['title'] | translate}}
+                                            </div>
+                                            <div class="col-4 col-sm-4" *ngIf="type.showExpenses">
+                                                <span class="expenses-text"
+                                                    [translate]="'CASH_FLOW_MANAGEMENT.PERCENT_OF_EXPENSES'"></span>
+                                            </div>
+                                            <div class="col-3 col-sm-1" *ngIf="type.allowJoint && client2">
+                                                <span class="expenses-text"
+                                                    [translate]="'CASH_FLOW_MANAGEMENT.JOINT'"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-4 col-sm-6">
+                                        <div class="pull-right d-flex">
+                                            <a (click)="expandState(mi)" class="ml-auto">
+                                                <span class="expandall-text" *ngIf="!type['allExpanded']"
+                                                    [translate]="'ACCORDIAN.EXPAND_ALL'"></span>
+                                                <span class="expandall-text" *ngIf="type['allExpanded']"
+                                                    [translate]="'ACCORDIAN.COLLAPSE_ALL'"></span>
+                                                <i
+                                                    [ngClass]="{'ion-ios-arrow-down' : !type['allExpanded'], 'ion-ios-arrow-up': type['allExpanded']}"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr class="mt-2 mb-0" />
+                        </div>
+                        <div class="col-12">
+                            <ng-container *ngFor="let category of type['categories']; index as i;">
+                                <div class="main-layout-body">
+                                    <div class="row mt-2 fw-400 chartContainer fs-14">
+                                        <div class="col-3 col-sm-6">
+                                            <div class="row">
+                                                <div class="col-12 col-sm-7">
+                                                    <span>{{('SSID_LABELS.CASH_FLOWS.' + category['categoryName'] | translate)}}</span>
+                                                </div>
+                                                <div class="col-12 col-sm-4" *ngIf="category.expenseCategory">
+                                                    <div class="progress-container d-inline-block">
+                                                        <span class="progressbar text-right"
+                                                            [style.width]="category.width + 'px'"
+                                                            [style.padding-left]="category.expensePercent + '%'">
+                                                            <span
+                                                                class="margin-left-15">{{category['expensePercent'] !== null ? (category['expensePercent'] | percent: '1.0-0') : 0}}</span>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-9 col-sm-6">
+                                            <div class="row">
+                                                <div [ngClass]="client2 ? 'col-4' : 'col-6'">
+                                                    <div class="form-group m-0"
+                                                        *ngIf="category.editable && category['misc']"
+                                                        [ngClass]="{ 'has-error': !clientTotal.valid && (clientTotal.dirty || clientTotal.touched || f.submitted)}">
+                                                        <input type="text"
+                                                            class="form-control d-inline-block text-right float-right h-25 w-75"
+                                                            name="clientTotal_{{category.category}}"
+                                                            [(ngModel)]="category['misc']['clientAmount']"
+                                                            #clientTotal="ngModel" [textMask]="{mask: currencyMask}"
+                                                            appNumeric required (keyup)="onChangeCalculate()" />
+                                                    </div>
+                                                    <div class="form-group m-0"
+                                                        *ngIf="category.editable && !category['misc']"
+                                                        [ngClass]="{ 'has-error': !clientTotal.valid && (clientTotal.dirty || clientTotal.touched || f.submitted)}">
+                                                        <input type="text"
+                                                            class="form-control d-inline-block text-right float-right h-25 w-75"
+                                                            name="clientTotal_{{category.category}}"
+                                                            [(ngModel)]="category.clientTotal" #clientTotal="ngModel"
+                                                            [textMask]="{mask: currencyMask}" appNumeric required
+                                                            (keyup)="onChangeCalculate()" />
+                                                    </div>
+                                                    <span class="float-right"
+                                                        *ngIf="!category.editable">{{category.clientTotal | currency:clientData['currencyCode'] : 'symbol-narrow':'1.0-0'}}</span>
+                                                </div>
+                                                <div class="col-4" *ngIf="client2">
+                                                    <div class="form-group m-0"
+                                                        *ngIf="category.editable && category['misc']"
+                                                        [ngClass]="{ 'has-error': !spouseTotal.valid && (spouseTotal.dirty || spouseTotal.touched || f.submitted)}">
+                                                        <input type="text"
+                                                            class="form-control d-inline-block text-right float-right h-25 w-75"
+                                                            name="spouseTotal_{{category.category}}"
+                                                            [(ngModel)]="category['misc']['spouseAmount']"
+                                                            #spouseTotal="ngModel" [textMask]="{mask: currencyMask}"
+                                                            appNumeric required (keyup)="onChangeCalculate()" />
+                                                    </div>
+                                                    <div class="form-group m-0"
+                                                        *ngIf="category.editable && !category['misc']"
+                                                        [ngClass]="{ 'has-error': !spouseTotal.valid && (spouseTotal.dirty || spouseTotal.touched || f.submitted)}">
+                                                        <input type="text"
+                                                            class="form-control d-inline-block text-right float-right h-25 w-75"
+                                                            name="spouseTotal_{{category.category}}"
+                                                            [(ngModel)]="category.spouseTotal" #spouseTotal="ngModel"
+                                                            [textMask]="{mask: currencyMask}" appNumeric required
+                                                            (keyup)="onChangeCalculate()" />
+                                                    </div>
+                                                    <span class="float-right"
+                                                        *ngIf="!category.editable">{{category.spouseTotal | currency:clientData['currencyCode'] : 'symbol-narrow':'1.0-0'}}</span>
+                                                </div>
+                                                <div [ngClass]="client2 ? 'col-4' : 'col-6'">
+                                                    <span class="float-right">
+                                                        <span>{{category.total | currency:clientData['currencyCode'] : 'symbol-narrow':'1.0-0'}}</span>
+                                                        <a (click)="category.categoryExpanded = !category.categoryExpanded"
+                                                            class="ml-auto">
+                                                            <i
+                                                                [ngClass]="{'ion-ios-arrow-down' : !category.categoryExpanded, 'ion-ios-arrow-up': category.categoryExpanded}"></i>
+                                                        </a>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <ng-container
+                                        *ngFor="let cashflow of category.cashflows; index as j; let last = last">
+                                        <div class="row inner-background" [hidden]="!category.categoryExpanded"
+                                            [ngClass]="{'mb-4': last}">
+                                            <div class="col-12">
+                                                <div class="row mt-2 fw-400 chartContainer fs-14">
+                                                    <div class="col-3 col-sm-6">
+                                                        <div class="row">
+                                                            <div class="col-12 col-sm-7">
+                                                                <span class="margin-left-15"
+                                                                    *ngIf="!cashflow.editable"><span
+                                                                        *ngIf="cashflow.hasTaxImpact">*</span>
+                                                                    {{ (!cashflow.plainDesc) ? ('SSID_LABELS.CASH_FLOWS.' + cashflow.desc | translate) : cashflow.desc }}
+                                                                </span>
+                                                                <div class="form-group m-0" *ngIf="cashflow.editable"
+                                                                    [ngClass]="{ 'has-error': !cashFlowDesc.valid && (cashFlowDesc.dirty || cashFlowDesc.touched || f.submitted)}">
+                                                                    <span *ngIf="cashflow.hasTaxImpact">*</span>
+                                                                    <input class="form-control d-inline-block h-25 w-75"
+                                                                        name="cashFlowDesc_{{category.category}}_{{i+j}}"
+                                                                        [(ngModel)]="cashflow.desc"
+                                                                        #cashFlowDesc="ngModel" required />
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-12 col-sm-4">
+
+                                                            </div>
+                                                            <div class="col-1">
+                                                                <div class="form-group m-0 cashflow-joint-checkbox"
+                                                                    *ngIf="cashflow.allowJoint && client2">
+                                                                    <p-checkbox
+                                                                        name="joint_{{category.category}}_{{i+j}}"
+                                                                        [(ngModel)]="cashflow.joint" binary="true"
+                                                                        (onChange)="changeJoint(cashflow)">
+                                                                    </p-checkbox>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-9 col-sm-6">
+                                                        <div class="row">
+                                                            <div [ngClass]="client2 ? 'col-4' : 'col-6'">
+                                                                <div class="form-group m-0"
+                                                                    *ngIf="!cashflow.readOnly && cashflow.clientOwned !== 0"
+                                                                    [ngClass]="{ 'has-error': !client1.valid && (client1.dirty || client1.touched || f.submitted)}">
+                                                                    <input type="text"
+                                                                        class="form-control d-inline-block text-right float-right h-25 w-75"
+                                                                        name="clientAmount_{{cashflow.id}}"
+                                                                        [(ngModel)]="cashflow.clientAmount"
+                                                                        #client1="ngModel"
+                                                                        [textMask]="{mask: currencyMask}" appNumeric
+                                                                        (keyup)="onChangeCalculate()" />
+                                                                </div>
+                                                                <span class="float-right"
+                                                                    *ngIf="cashflow.readOnly">{{cashflow.clientAmount | currency:clientData['currencyCode'] : 'symbol-narrow':'1.0-0'}}</span>
+                                                            </div>
+                                                            <div class="col-4" *ngIf="client2">
+                                                                <div
+                                                                    *ngIf="!cashflow.joint && cashflow.spouseOwned !== 0">
+                                                                    <div class="form-group m-0"
+                                                                        *ngIf="!cashflow.spouseReadOnly"
+                                                                        [ngClass]="{ 'has-error': !client2.valid && (client2.dirty || client2.touched || f.submitted)}">
+                                                                        <input type="text"
+                                                                            class="form-control d-inline-block text-right float-right h-25 w-75"
+                                                                            name="spouseAmount_{{cashflow.id}}"
+                                                                            [(ngModel)]="cashflow.spouseAmount"
+                                                                            #client2="ngModel"
+                                                                            [textMask]="{mask: currencyMask}" appNumeric
+                                                                            (keyup)="onChangeCalculate()" />
+                                                                    </div>
+                                                                    <span class="float-right"
+                                                                        *ngIf="cashflow.spouseReadOnly">{{cashflow.spouseAmount | currency:clientData['currencyCode'] : 'symbol-narrow':'1.0-0'}}</span>
+                                                                </div>
+                                                            </div>
+                                                            <div [ngClass]="client2 ? 'col-4' : 'col-6'">
+                                                                <span
+                                                                    class="float-right margin-right-15 currency-lineheight">
+                                                                    <span>{{cashflow.total | currency:clientData['currencyCode'] : 'symbol-narrow':'1.0-0'}}</span>
+                                                                    <a *ngIf="cashflow.id.length > 4"
+                                                                        (click)="deleteCashFlowItem(cashflow.id)">
+                                                                        <i class="ion-md-close-circle"></i>
+                                                                    </a>
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </ng-container>
+                                </div>
+                            </ng-container>
+                            <hr class="my-2" />
+                        </div>
+                        <div class="col-12">
+                            <div class="footer-body">
+                                <div class="row fw-700 chartContainer">
+                                    <div class="col-3 col-sm-6">
+                                        <div class="row">
+                                            <div class="col-12 col-sm-7">
+                                                <span>{{type['totalTitle'] | translate}}</span>
+                                            </div>
+                                            <div class="col-12 col-sm-4">
+                                                <span *ngIf="type['showExpenses'] == true"
+                                                    class="currency-lineheight margin-left-15">{{type.totalExpenses | percent: '1.0-0'}}
+                                                </span>
+                                                <span *ngIf="type['showExpenses'] == false"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-9 col-sm-6">
+                                        <div class="row">
+                                            <div [ngClass]="client2 ? 'col-4' : 'col-6'">
+                                                <span
+                                                    class="float-right currency-lineheight">{{type.clientTotal | currency:clientData['currencyCode'] : 'symbol-narrow':'1.0-0'}}
+                                                </span>
+                                            </div>
+                                            <div class="col-4" *ngIf="client2">
+                                                <span
+                                                    class="float-right currency-lineheight">{{type.spouseTotal | currency:clientData['currencyCode'] : 'symbol-narrow':'1.0-0'}}
+                                                </span>
+                                            </div>
+                                            <div [ngClass]="client2 ? 'col-4' : 'col-6'">
+                                                <span
+                                                    class="float-right margin-right-15 currency-lineheight">{{type.total | currency:clientData['currencyCode'] : 'symbol-narrow':'1.0-0'}}
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr class="mt-2 mb-0" />
+                        </div>
+                    </ng-container>
+                    <div class="col-12">
+                        <div class="footer-body">
+                            <div class="row fw-700 chartContainer">
+                                <div class="col-3 col-sm-6">
+                                    <div class="row">
+                                        <div class="col-12 col-sm-7">
+                                            <span [translate]="'CASH_FLOW_MANAGEMENT.TOTAL_EXPENSES'"></span>
+                                        </div>
+                                        <div class="col-12 col-sm-4">
+                                            <span
+                                                class="currency-lineheight margin-left-15">{{totalExpenses['totalExpenses'] | percent: '1.0-0'}}
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-9 col-sm-6">
+                                    <div class="row">
+                                        <div [ngClass]="client2 ? 'col-4' : 'col-6'">
+                                            <span
+                                                class="float-right currency-lineheight">{{totalExpenses['clientTotal'] | currency:clientData['currencyCode'] : 'symbol-narrow':'1.0-0'}}
+                                            </span>
+                                        </div>
+                                        <div class="col-4" *ngIf="client2">
+                                            <span
+                                                class="float-right currency-lineheight">{{totalExpenses['spouseTotal']  | currency:clientData['currencyCode'] : 'symbol-narrow':'1.0-0'}}
+                                            </span>
+                                        </div>
+                                        <div [ngClass]="client2 ? 'col-4' : 'col-6'">
+                                            <span
+                                                class="float-right margin-right-15 currency-lineheight">{{totalExpenses['total']  | currency:clientData['currencyCode'] : 'symbol-narrow':'1.0-0'}}
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <hr class="mt-2 mb-0" />
+                    </div>
+                    <hr class="mt-2 mb-0" />
+                    <div class="col-12">
+                        <div class="footer-body">
+                            <div class="row fw-700 chartContainer">
+                                <div class="col-3 col-sm-6">
+                                    <div class="row">
+                                        <div class="col-12 col-sm-7">
+                                            <span [translate]="'CASH_FLOW_MANAGEMENT.CASH_FLOW_SURPLUS_DEFICIT'"></span>
+                                        </div>
+                                        <div class="col-12 col-sm-4">
+                                            <span class="currency-lineheight margin-left-15"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-9 col-sm-6">
+                                    <div class="row">
+                                        <div [ngClass]="client2 ? 'col-4' : 'col-6'">
+                                            <span class="float-right currency-lineheight"></span>
+                                        </div>
+                                        <div class="col-4" *ngIf="client2">
+                                            <span class="float-right currency-lineheight"></span>
+                                        </div>
+                                        <div [ngClass]="client2 ? 'col-4' : 'col-6'">
+                                            <span
+                                                class="float-right margin-right-15 currency-lineheight">{{cashFlowData['surplusDeficit'] | currency:clientData['currencyCode'] : 'symbol-narrow':'1.0-0'}}
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <hr class="mt-2 mb-0" />
+                    </div>
+                    <hr class="mt-2 mb-0" />
+                    <div class="col-12" *ngIf="showGraph">
+                        <div id="chartdiv"></div>
+                    </div>
+                </div>
+                <div class="row" [ngClass]="{'mt-2': showGraph, 'mt-5': !showGraph}">
+                    <div class="col-12">
+                        <div class="form-group text-right">
+                            <button type="button" class="btn btn-secondary btn-fixwidth mr-2" (click)="cancelChanges()">
+                                {{'FORM.ACTION.CANCEL' | translate }}
+                            </button>
+                            <button type="button" class="btn btn-success" (click)="saveDisable = true; updateCasFlow();"
+                                [disabled]="saveDisable || f.form.invalid">{{ 'FORM.ACTION.SAVE_CHANGES' | translate }}</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </ng-container>
+
+        <ng-template #showLoader>
+            <i *ngIf="!dataLoaded" aria-hidden="true" class="fa fa-spinner fa-pulse loader-icon"></i>
+        </ng-template>
+    </div>
+</div>
+<ng-container *ngIf="isAddCustom">
+    <app-add-custom-cash-flow (closePanelEvent)="closePanel()" [currencyPrefix]="currencyPrefix" [clientId]="clientId"
+        [categories]="cashFlowData['categories']"></app-add-custom-cash-flow>
+</ng-container>

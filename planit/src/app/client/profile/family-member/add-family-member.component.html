@@ -1,0 +1,157 @@
+<div class="side-form add-family-member-side-form">
+    <form name="form" (ngSubmit)="f.form.valid" #f="ngForm" novalidate>
+        <div class="box">
+            <div class="box-header">
+                <span class="sidebar_title">
+                    {{ editBeneficiary === true ? ('ESTATE_PLANING.EDIT_BENEFICIARY' | translate)  
+                : otherBeneficiary == true ? ('ESTATE_PLANING.NEW_BENEFICIARY' | translate) : ('ADD_FAMILY_MEMBER.TITLE' | translate) }}
+                </span>
+                <span (click)="closeButtonDisable = true; back();"
+                    class="sidebar_action_icon ion-md-close-circle float-right">
+                </span>
+            </div>
+
+            <div class="box-body" *ngIf="familyRelation && familyRelation.length > 0">
+
+                <div class="form-group center">
+                    <app-image-upload maxFiles="1" maxSize="2" iconClass="ion-ios-person" [existingFile]="isAvatar"
+                        [isFileselected]="isFileUploded" (fileSelected)="uploadImage($event)"></app-image-upload>
+                </div>
+                <div class="form-group" *ngIf="!addSpouse || otherBeneficiary"
+                    [ngClass]="{ 'has-error': (isFormSubmitted || relation.dirty || relation.touched) && !relation.valid }">
+                    <label class="custom-form-label">{{ 'FORM.CLIENT_STATUS' | translate }}</label>
+                    <p-dropdown [options]="familyRelation" name="relation" (onChange)="setGender(model.relation)"
+                        [(ngModel)]="model.relation" placeholder="{{ 'FORM.SELECT_STATUS' | translate }}"
+                        #relation="ngModel" required optionLabel="name"></p-dropdown>
+                </div>
+                <div class="form-group" *ngIf="addSpouse && !otherBeneficiary">
+                    <label class="custom-form-label">{{ 'FORM.CLIENT_STATUS' | translate }}</label>
+                    <label class="">{{('ADVISOR.CLIENT2' | translate)}}</label>
+                </div>
+                <div class="row">
+                    <div
+                        [ngClass]="(!otherBeneficiary && model.relation && model.relation.id == PERSON_RELATION.CLIENT2) ? 'col-10' : 'col-12'">
+                        <div class="form-group"
+                            [ngClass]="{ 'has-error': (isFormSubmitted || firstName.dirty || firstName.touched) && !firstName.valid }">
+                            <label
+                                class="custom-form-label">{{ (otherBeneficiary && model.relation && model.relation.id == OTHER_BENEFICIARY_RELATION.CHARITY) ? 
+                                ('ESTATE_PLANING.ADD_BENEFICIARY_FORM.NAME_OF_CHARITY' | translate) : ('FORM.FIRST_NAME' | translate) }}</label>
+                            <input type="text" class="form-control" name="firstName" [(ngModel)]="model.firstName"
+                                #firstName="ngModel" pattern="^[a-zA-Z][\w\d\s\-]*" required />
+                        </div>
+                    </div>
+                    <div class="col-2 pl-0" *ngIf="!otherBeneficiary && model.relation && model.relation.id == PERSON_RELATION.CLIENT2">
+                        <div class="form-group">
+                            <label class="custom-form-label" [translate]="'FORM.INITIALS'"></label>
+                            <input type="text" class="form-control" name="initials" [(ngModel)]="model.initials"
+                                #initials="ngModel" />
+                        </div>
+                    </div>
+                </div>
+                <div class="row"
+                    *ngIf="!otherBeneficiary || (otherBeneficiary && model.relation && model.relation.id !== OTHER_BENEFICIARY_RELATION.CHARITY) || !model.relation">
+                    <div
+                        [ngClass]="(!otherBeneficiary && model.relation && model.relation.id == PERSON_RELATION.CLIENT2) ? 'col-10' : 'col-12'">
+                        <div class="form-group"
+                            [ngClass]="{ 'has-error': (isFormSubmitted || lastName.dirty || lastName.touched) && !lastName.valid}">
+                            <label class=custom-form-label>{{ 'FORM.LAST_NAME' | translate }}</label>
+                            <input type="text" class="form-control" name="lastName" [(ngModel)]="model.lastName"
+                                #lastName="ngModel" pattern="^[a-zA-Z][\w\d\s\-]*" required />
+                        </div>
+                    </div>
+                    <div class="col-2 pl-0" *ngIf="!otherBeneficiary && model.relation && model.relation.id == PERSON_RELATION.CLIENT2">
+                        <div class="form-group">
+                            <label class="custom-form-label" [translate]="'FORM.RETIRED'"></label>
+                            <p-checkbox name="retired" [(ngModel)]="model.retired" binary="true" #retired="ngModel">
+                            </p-checkbox>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <fieldset class="form-group">
+                        <legend class=custom-form-label>{{ 'FORM.GENDER' | translate }}</legend>
+                        <div class="form-check d-flex" [ngClass]="{ 'has-error': isFormSubmitted && !gender.valid }">
+                            <span>
+                                <p-radioButton
+                                    [disabled]="isGenderDisable || (otherBeneficiary && model.relation && model.relation.id === OTHER_BENEFICIARY_RELATION.CHARITY)"
+                                    name="gender" value="M" [(ngModel)]="model.gender" #gender="ngModel" required>
+                                </p-radioButton>
+                                M
+                            </span>
+                            <span>
+                                <p-radioButton name="gender"
+                                    [disabled]="isGenderDisable || (otherBeneficiary && model.relation && model.relation.id === OTHER_BENEFICIARY_RELATION.CHARITY)"
+                                    class="disabled" value="F" [(ngModel)]="model.gender" #gender="ngModel" required>
+                                </p-radioButton>
+                                F
+                            </span>
+                        </div>
+                    </fieldset>
+                </div>
+                <div class="row ui-fluid">
+                    <div class="col-10">
+                        <div class="form-group"
+                            [ngClass]="{ 'has-error': (isFormSubmitted || birthDate.dirty || birthDate.touched) && (!birthDate.valid || invalidBirthdate || invalidYear) }">
+                            <label class="custom-form-label">{{ 'FORM.DATE_OF_BIRTH' | translate }}</label>
+                            <p-calendar (onSelect)="calculateAge(model.birthDate)"
+                                (onInput)="calculateAge(model.birthDate)" [showIcon]="true" [maxDate]="maxDate"
+                                [monthNavigator]="true" [yearNavigator]="true" [yearRange]="yearRange" name="birthDate"
+                                [(ngModel)]="model.birthDate" #birthDate="ngModel" [dateFormat]="dateFormat"
+                                [required]="!otherBeneficiary"
+                                [disabled]="otherBeneficiary && model.relation && model.relation.id === OTHER_BENEFICIARY_RELATION.CHARITY"></p-calendar>
+                            <p class="text-error" *ngIf="invalidBirthdate == true" [translate]="'FORM.INVALID_DATE'">
+                            </p>
+                            <p class="text-error" *ngIf="invalidYear == true" [translate]="'FORM.INVALID_BIRTHYEAR'"
+                                [translateParams]="{'minYear': minYear}">
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-2 pl-0">
+                        <div class="form-group">
+                            <label class="custom-form-label">{{ 'FORM.AGE' | translate }}</label>
+                            <input type="age" class="form-control" name="age" [(ngModel)]="model.familyMemberAge"
+                                #age="ngModel" disabled />
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group"
+                    [ngClass]="{ 'has-error': !email.valid && (isFormSubmitted || email.dirty || email.touched)}"
+                    *ngIf="!otherBeneficiary && model.relation && model.relation.id == PERSON_RELATION.CLIENT2">
+                    <label class="custom-form-label">{{ 'FORM.EMAIL' | translate }}</label>
+                    <input type="email" class="form-control" name="email" [(ngModel)]="model.email" #email="ngModel"
+                        pattern="^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$" />
+                </div>
+                <div class="form-group d-flex" *ngIf="otherBeneficiary">
+                    <label
+                        class="custom-form-label mb-0 mr-3">{{'ESTATE_PLANING.ADD_BENEFICIARY_FORM.DISABLED' | translate}}</label>
+                    <p-checkbox name="beneficiary_disabled" [(ngModel)]="model.beneficiaryDisabled" binary="true"
+                        styleClass="d-flex" [disabled]="otherBeneficiary && model.relation && model.relation.id === OTHER_BENEFICIARY_RELATION.CHARITY">
+                    </p-checkbox>
+                </div>
+            </div>
+            <div class="box-footer">
+                <div class="form-group">
+                    <button (click)="closeButtonDisable = true; back();" type="button"
+                        class="btn btn-small btn-secondary btn-fixwidth mr-2" [translate]="'FORM.ACTION.CANCEL'"
+                        [disabled]="closeButtonDisable"></button>
+                    <button (click)="register(f, 1)" type="submit" [disabled]="loading || !f.form.valid"
+                        class="btn btn-small btn-success"
+                        [translate]="otherBeneficiary ? 'FORM.ACTION.SAVE' : 'ADD_FAMILY_MEMBER.SAVE_FAMILY_MEMBER'"></button>
+                    <div *ngIf="!otherBeneficiary" class="btn-group btn-save btn-custom-split" ngbDropdown role="group"
+                        placement="top-right" aria-label="Button group with nested dropdown">
+                        <button [disabled]="loading || !f.form.valid"
+                            class="btn btn-small btn-success dropdown-toggle-split" ngbDropdownToggle></button>
+                        <div class="dropdown-menu btn-dropDown-top" ngbDropdownMenu>
+                            <button class="dropdown-item" (click)="register(f, 1);"
+                                [translate]="'ADD_FAMILY_MEMBER.SAVE_FAMILY_MEMBER'"></button>
+                            <button class="dropdown-item" (click)="register(f, 2);"
+                                [translate]="'FORM.ACTION.SAVE/ADD_FAMILY_MEMBER'"></button>
+                        </div>
+                    </div>
+                    <img *ngIf="loading"
+                        src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

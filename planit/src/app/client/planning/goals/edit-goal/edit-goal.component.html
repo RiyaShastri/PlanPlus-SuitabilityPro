@@ -1,0 +1,211 @@
+<div class="bg-white pt-4 pb-4 savings-edit-bg">
+    <form name="form" (ngSubmit)="f.form.valid && saveGoal()" #f="ngForm" novalidate>
+        <div class="container" *ngIf="(goal | json) !== '{}' && goal['goalType']">
+            <div class="row">
+                <div class="col-12">
+                    <app-goal-details-header [clientId]="clientId" [scenarioType]="goal['scenario']" currentPage="details" [goalId]="goalId"
+                        (switchGoal)="changeGoal($event)"></app-goal-details-header>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <div>
+                        <a href="javascript:void(0);" *ngIf="goal['goalType']['goaltype'] === GOAL_TYPE.RETIREMENT"
+                            class="btn-add" (click)="addTier()">
+                            <i class="ion-android-add-circle"></i>
+                            <span>{{'EDIT_GOAL.ADD_TIER' | translate}}</span>
+                        </a>
+                        <span *ngIf="accessRights['SCENARIOACCESS']['accessLevel'] > 0" class="float-right disabled-drop-label">{{scenario}}</span>
+                        <div class="d-flex align-content-between justify-content-between">
+                            <div class="sort-box ml-1">
+                                <i class="ion-md-funnel"></i>
+                                <div class="dropdown-common mt-1 sort-dropdown">
+                                    <app-common-drop-down [itemList]="viewBy" [defaultSelected]="selectedViewBy"
+                                        dropDownLabel="VIEW BY" (OnSelect)="sorting($event)"></app-common-drop-down>
+                                </div>
+                            </div>
+                            <a routerLink="retirement-assumption" [queryParams]="{ returnUrl: this.router.url }" *ngIf="goal['goalType']['goaltype'] === GOAL_TYPE.RETIREMENT"
+                                class="btn-add edit-assumption-btn">
+                                <i class="ion-md-create"></i>
+                                <span>{{'EDIT_GOAL.EDIT_ASSUMPTIONS' | translate}}</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <hr>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3 col-sm-6 col-12">
+                    <div class="form-group">
+                        <label class="custom-form-label">{{'EDIT_GOAL.GOAL_TYPE' | translate}}</label>
+                        <span>{{goal['goalType']['description']}}</span>
+                    </div>
+                    <div class="form-group">
+                        <label class="custom-form-label">{{'EDIT_GOAL.GOAL_NAME' | translate}}</label>
+                        <input type="text" class="form-control" name="goalName" [(ngModel)]="goal['description']"
+                            #goalName="ngModel">
+                    </div>
+                    <div class="form-group">
+                        <label class="custom-form-label">{{'EDIT_GOAL.CURRENCY' | translate}}</label>
+                        <span>{{goal['currency']['description']}}</span>
+                    </div>
+                    <div class="form-group">
+                        <label class="custom-form-label">{{'EDIT_GOAL.INDEX' | translate}}</label>
+                        <span *ngIf="!goal['customIndex']" class="mr-4">{{goal['indexRate'] | number : '1.2-2'}}%</span>
+                        <input *ngIf="goal['customIndex']" min="0" max="100" type="text"
+                            pattern="^[0-9][0-9]*(.[0-9]{0,2})?$|^100$"
+                            class="text-right form-control w-25 d-inline-block" name="inflatationIn"
+                            [(ngModel)]="goal['indexRate']" #inflatationIn="ngModel" [textMask]="{mask: percentDecimalMask}" appNumeric>
+                        <div class="d-inline-block">
+                            <p-checkbox name="indexInflatation" [(ngModel)]="goal['customIndex']" (ngModelChange)="checkboxOnChange()" binary="true">
+                            </p-checkbox>
+                        </div>
+                    </div>
+                </div>
+                <ng-container *ngFor="let tier of tierList; index as i;">
+                    <div class="col-lg-3 col-md-4 col-6 col-sm-6 col-12 text-right tier-list-wrap">
+                        <div class="tier-intro-wrap">
+                            <h4 *ngIf="tierList.length > 1">{{tier.tierKey}}</h4>
+                            <div class="form-group mt-2">
+                                <label class="custom-form-label">{{'EDIT_GOAL.AMOUNT' | translate}}</label>
+                                <input type="text" class="form-control d-inline-block text-right" [style.width.px]="115"
+                                    name="amount{{i}}" [(ngModel)]="tier.data['amount']" #amount="ngModel" [textMask]="{mask: currencyMask}" appNumeric>
+                                <div class="ml-2 d-inline-block retirement-btn-wrap"
+                                    *ngIf="i === 0 && goal['goalType'].goaltype === GOAL_TYPE.EDUCATION">
+                                    <a routerLink="education-institution" class="text-icon-wrapper">
+                                        <i class="ion-ios-search"></i>
+                                    </a>
+                                </div>
+                                <!-- <div class="ml-2 d-inline-block retirement-btn-wrap" *ngIf="i === 0 && goal['goalType'].goaltype === GOAL_TYPE.RETIREMENT ">
+                                    <a routerLink="retirement-assumption" class="btn-add round-btn-with-icon">
+                                        <i class="ion-android-create"></i>
+                                    </a>
+                                </div> -->
+                            </div>
+                        </div>
+                        <div class="form-group mt-2 position-relative">
+                            <label
+                                class="custom-form-label custom-form-label-start-end">{{'EDIT_GOAL.START' | translate}}</label>
+                            <span
+                                *ngIf="selectedViewBy.name !== 'Year' ||tier.tierNumber === 1 && tierList.length !== 1">
+                                {{tier.data['startYear']}}
+                            </span>
+                            <div class="d-inline-block">
+                                <input
+                                    *ngIf="(tier.tierNumber !== 1 || tierList.length === 1 ) && selectedViewBy.name === 'Year' && goal['goalType'].goaltype !== GOAL_TYPE.RETIREMENT"
+                                    [style.width.px]="115" type="text" class="form-control text-right"
+                                    name="selectedstartYear_{{i}}" pattern="(?:19|20)[0-9]{2}"
+                                    [(ngModel)]="tier.data['startYear']" #selectedendYear="ngModel"
+                                    (ngModelChange)="changeStartYear($event, i)" required />
+                            </div>
+                            <div class="d-inline-block">
+                                <span class="ml-2" *ngIf="(tier.tierNumber !== 1 || tierList.length === 1 ) && selectedViewBy.name === 'Year' && goal['goalType'].goaltype === GOAL_TYPE.RETIREMENT">
+                                    {{ tier.data['startYear'] }}
+                                </span>
+                            </div>
+                            <div class="d-inline-block position-absolute clients-age-relative  align-center age-middel">
+                                <span class="ml-2" *ngIf="selectedViewBy.name === 'Year'">{{tier.data.clientStartAge}}
+                                    {{(tier.data.spouseStartAge !== 0 ) ? '/' + tier.data.spouseStartAge : '' }}
+                                </span>
+                            </div>
+                            <div *ngIf="selectedViewBy.name !== 'Year' && goal['goalType'].goaltype !== GOAL_TYPE.RETIREMENT" class="d-inline-block"
+                            	[style.width.px]="115">
+                                <input
+                                	*ngIf="((tier.tierNumber !== 1) || tierList.length === 1); else startreadonly"
+                                    [style.width.px]="115" type="text" class="form-control text-right"
+                                    pattern="([0-9]{2})" name="startAge_{{i}}" [(ngModel)]="tier.data.clientStartAge"
+                                    #startAge="ngModel" (ngModelChange)="changeAge($event, i, 'start_age')" required />
+                            </div>
+                            <div class="d-inline-block" pattern="([0-9]{2})" *ngIf="((tier.tierNumber !== 1) || tierList.length === 1) && selectedViewBy.name !== 'Year' && goal['goalType'].goaltype === GOAL_TYPE.RETIREMENT"
+                            	[style.width.px]="115">
+                            	<span>{{tier.data.clientStartAge}}</span>
+                            </div>
+                            <div *ngIf="selectedViewBy.name !== 'Year' && tier.data.spouseStartAge !== 0 "
+                                class="d-inline-block position-absolute clients-age-relative  align-center age-middel">
+                                <span>/ {{tier.data.spouseStartAge}}</span>
+                            </div>
+                        </div>
+                        <div class="form-group mt-2 position-relative">
+                            <label
+                                class="custom-form-label custom-form-label-start-end">{{'EDIT_GOAL.END' | translate}}
+                            </label>
+                            <span
+                                *ngIf="selectedViewBy.name !== 'Year'">
+                                {{tier.data['endYear']}}
+                            </span>
+                            <div class="d-inline-block">
+                                <input
+                                    *ngIf="selectedViewBy.name === 'Year' && ((goal['goalType'].goaltype === GOAL_TYPE.RETIREMENT && tierList.length > 1 && tier.tierNumber !== tierList.length) || goal['goalType'].goaltype !== GOAL_TYPE.RETIREMENT)"
+                                    [style.width.px]="115" type="text" class="form-control text-right"
+                                    name="selectedendYear_{{i}}" pattern="(?:19|20)[0-9]{2}"
+                                    [(ngModel)]="tier.data['endYear']" #selectedendYear="ngModel" required
+                                    (ngModelChange)="changeEndYear($event, i)" />
+                            </div>
+                            <div class="d-inline-block">
+                                <span class="ml-2" *ngIf="selectedViewBy.name === 'Year' && goal['goalType'].goaltype === GOAL_TYPE.RETIREMENT && tier.tierNumber === tierList.length">
+                                    {{ tier.data['endYear'] }}
+                                </span>
+                            </div>                            
+                            <div class="d-inline-block position-absolute  align-center clients-age-relative age-middel">
+                                <span class="ml-2" *ngIf="selectedViewBy.name === 'Year'">{{tier.data.clientEndAge}} {{(tier.data.spouseEndAge !== 0 ) ? '/' + tier.data.spouseEndAge
+                                    : '' }}</span>
+                            </div>
+                            <div *ngIf="selectedViewBy.name !== 'Year' && ((goal['goalType'].goaltype === GOAL_TYPE.RETIREMENT && tierList.length > 1 && tier.tierNumber !== tierList.length) || goal['goalType'].goaltype !== GOAL_TYPE.RETIREMENT)" class="d-inline-block"
+                                [style.width.px]=" (selectedViewBy.name !== 'Year' || (tier.tierNumber === tierList.length) && tierList.length !== 1) ? '115' : '0' ">
+                                <input [style.width.px]="115"
+                                    *ngIf="tier.tierNumber !== tierList.length || tierList.length === 1; else endReadonly"
+                                    type="text" class="form-control text-right" pattern="([0-9]{2})" name="endAge_{{i}}"
+                                    [(ngModel)]="tier.data.clientEndAge" #endAge="ngModel"
+                                    (ngModelChange)="changeAge($event, i, 'end_age')" required>
+                                <ng-template #endReadonly>
+                                    <span>{{tier.data.clientEndAge}}</span>
+                                </ng-template>
+                            </div>
+                            <div *ngIf="selectedViewBy.name !== 'Year' && goal['goalType'].goaltype === GOAL_TYPE.RETIREMENT && tier.tierNumber == tierList.length" class="d-inline-block"
+                          		[style.width.px]="115">
+                            	<span>{{tier.data.clientEndAge}}</span>
+                           	</div>
+                            <div *ngIf="selectedViewBy.name !== 'Year' &&  tier.data.spouseEndAge !== 0"
+                                class="d-inline-block position-absolute  clients-age-relative  align-center age-middel">
+                                <span>/ {{tier.data.spouseEndAge}}</span>
+                            </div>
+                            <p *ngIf="selectedViewBy.name !== 'Year' && ((tier.data.clientEndAge > 0 && tier.data.clientEndAge < tier.data.clientStartAge) || (tier.data.spouseEndAge > 0 && tier.data.spouseEndAge < tier.data.spouseStartAge))"
+                                class="text-danger" [translate]="'EDIT_SAVINGS.ERROR_2'"></p>
+                            <p *ngIf="selectedViewBy.name === 'Year' && ((tier.data.clientEndAge > 0 && tier.data.clientEndAge < tier.data.clientStartAge) || (tier.data.spouseEndAge > 0 && tier.data.spouseEndAge < tier.data.spouseStartAge))"
+                                class="text-danger" [translate]="'EDIT_SAVINGS.ERROR_1'"></p>
+                        </div>
+                        <div *ngIf="tier.tierNumber > 1 && tier.tierNumber == tierList.length">
+                            <a href="javascript:void(0)" (click)="deleteTier(i)" class="delete-link">
+                                <i class="ion-md-close-circle"></i>
+                                <span [translate]="'EDIT_SAVINGS.DELETE_TIER'"></span>
+                            </a>
+                        </div>
+                    </div>
+                </ng-container>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <hr />
+                </div>
+                <div class="col-6 text-left">
+                    <a class="btn-add round-btn-with-icon" [routerLink]="['link-portfolios-to-goals']">
+                        <i class="ion-md-link"></i>
+                        <span [translate]="'GOALS.SUMMARY.LINK_PORTFOLIOS_TO_GOALS'"></span>
+                    </a>
+                </div>
+                <div class="col-6 form-group text-right">
+                    <button type="button" class="btn btn-secondary btn-fixwidth mr-2"
+                        (click)="back(); closeButtonDisable = true"
+                        [disabled]="closeButtonDisable">{{ 'FORM.ACTION.CANCEL' | translate }}</button>
+                    <button type="submit" class="btn btn-success"
+                        [disabled]="disabled || saveDisabled">{{ 'FORM.ACTION.SAVE_CHANGES' | translate }}</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="view-side-form">
+    <router-outlet></router-outlet>
+</div>

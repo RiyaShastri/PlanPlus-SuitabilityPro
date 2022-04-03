@@ -1,0 +1,138 @@
+.image_wrapper {
+    padding: 0;
+}
+
+.portfolios-table.table tr td {
+    vertical-align: middle;
+}
+
+.portfolios-table.table .total-text {
+    padding-right: 33px;
+}
+
+.delete-btn.disable-link i,
+.delete-btn.disable-link span {
+    color: #ced8e2 !important;
+}
+
+.floating-dropdown li.delete-btn.disable-link,
+.floating-dropdown li.delete-btn.disable-link span,
+.floating-dropdown li.delete-btn.disable-link i {
+    cursor: not-allowed !important;
+}
+
+.small-text {
+    font-size: 14px;
+}
+
+.client-avatars .client-icon {
+    z-index: 1;
+}
+
+.client-avatars .client-icon + .client-icon {
+    margin-left: -4px;
+    z-index: 0;
+}
+.badge-wrapper-fixed{
+    width: 140px;
+}
+
+.text-ellipsis {
+    display: inline-block !important;
+    width: 90%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.portfolios-table{
+    table-layout: fixed;
+}
+
+
+
+@media (max-width: 1300px) {
+.badge-wrapper-fixed .badge-wrapper img{
+    width: 75%;
+    max-width: inherit;
+    height: 100%;
+}
+}
+
+@media (max-width: 1199px) {
+    .table td:last-child {
+        padding-right: 0px;
+    }
+    .portfolios-table.table h3 {
+        width: 100%;
+        font-size: 16px;
+    }
+}
+
+@media (max-width: 992px) {
+    .badge-wrapper-fixed .badge-wrapper img{
+        width: 65%;
+    }
+    }
+
+
+@media (max-width: 767px) {
+    .portfolios-table.table .total-text {
+        padding-right: 14%;
+    }
+}
+
+@media (max-width: 575px) {
+    .text-ellipsis {
+        width: 100px !important;
+        padding-right: 15px;
+    }
+    .portfolios-table.table .total-text {
+        padding-right: 15px;
+    }
+    .portfolios-table.table>thead>tr>th {
+        font-size: 12px;
+    }
+    .portfolios-table.table>thead>tr>th:nth-child(2),
+    .portfolios-table.table>tbody>tr>td:nth-child(2) {
+        text-align: center;
+    }
+    .portfolios-table.table>tbody>tr>td:nth-child(1) h3 {
+        font-size: 12px;
+    }
+}
+
+@media(max-width: 480px) {
+    .portfolios-table>thead>tr>th:first-child {
+        width: 60px;
+    }
+}
+
+@media (max-width: 380px) {
+    .badge-wrapper-fixed .badge-wrapper img{
+        width: 55%;
+    }
+    .portfolios-table>thead>tr>th:first-child {
+        width: 40px;
+    }
+    .table.overview-portfolio-list>thead>tr>th:nth-child(1) {
+        width: 40%;
+    }
+    .table.overview-portfolio-list>thead>tr>th:nth-child(2) {
+        width: 15%;
+    }
+    .table.overview-portfolio-list>thead>tr>th:nth-child(5) {
+        width: 25%;
+    }
+    .table.overview-portfolio-list>thead>tr>th:nth-child(7) {
+        width: 12%;
+    }
+    .table.overview-portfolio-list>thead>tr>th:nth-child(8) {
+        width: 8%;
+    }
+}
+@media (max-width: 320px) {
+    .portfolios-table>thead>tr>th:nth-child(2) {
+        width: 18px !important;
+    }
+}
+    

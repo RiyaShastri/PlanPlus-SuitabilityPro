@@ -1,0 +1,90 @@
+<div class="workgroup-tile-container">
+    <table class="table table-ellipsis" *ngIf="myWorkgroups && memberWorkgroups">
+        <thead>
+            <tr>
+                <th width="25%" [translate]="'FORM.NAME'"></th>
+                <th width="70%" class="hidden-sm-down" [translate]="'WORKGROUP.MEMBERS'"></th>
+                <th width="5%" [translate]="'TABLE.ACTIONS'"></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td colspan="3" class="pt-3 pb-3 fs-18 fw-600" [translate]="'WORKGROUP.MY_WORKGROUPS'"></td>
+            </tr>
+            <ng-container *ngIf="myWorkgroups.length === 0">
+                <tr>
+                    <td colspan="5" class="no-record text-center">
+                        <i class="ion-ios-alert mr-2"></i>{{'NO_RESULTS' | translate}}
+                    </td>
+                </tr>
+            </ng-container>
+            <tr *ngFor="let workgroup of myWorkgroups; let i = index;">
+                <td width="25%" class="fw-600 pl-3">
+                    <span class="truncate">
+                        <span class="ellipsis-text" style="max-width: 100%;" [appNoOverflowTooltip]="workgroup.description"
+                            triggers="manual" placement="bottom">{{ workgroup.description }}</span>
+                    </span>
+                </td>
+                <td width="70%" class="fw-400 ml-1 hidden-sm-down">
+                    <span class="ellipsis-text" style="max-width: 100%;" [appNoOverflowTooltip]="workgroup['memberList']"
+                        triggers="manual" placement="bottom">{{ workgroup['memberList'] }}</span>
+                </td>
+                <td width="5%" class="pr-0 text-center">
+                    <div class="dropdown-relative mr-0 pr-0">
+                        <button type="button" class="btn-floating" (click)="toggleActionMenu('dropdownWorkgroupAction', workgroup.groupId)">
+                            <span class="ion-md-more"></span>
+                        </button>
+                        <div [id]="'dropdownWorkgroupAction_'+workgroup.groupId" class="dropdown-workgroup-action dropdown-floating hide-ele">
+                            <ul class="floating-dropdown">
+                                <li (click)="toggleActionMenu('dropdownWorkgroupAction', workgroup.groupId)">
+                                    <a class="action-list" [routerLink]="['edit-workgroup', workgroup.groupId]">
+                                        <i class="ion-md-create action-list"></i>
+                                        <span class="action-list" [translate]="'WORKGROUP.ACTION.EDIT_WORKGROUP'"></span>
+                                    </a>
+                                </li>
+                                <li (click)="toggleActionMenu('dropdownWorkgroupAction', workgroup.groupId); deleteWorkgroup(workgroup.groupId);"
+                                    class="delete-btn">
+                                    <a class="action-list">
+                                        <i class="ion-md-close-circle action-list"></i>
+                                        <span class="action-list" [translate]="'WORKGROUP.ACTION.DELETE_WORKGROUP'"></span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="3" class="pt-3 pb-3 fs-18 fw-600" [translate]="'WORKGROUP.MEMBER_WORKGROUPS'"></td>
+            </tr>
+            <ng-container *ngIf="memberWorkgroups.length === 0 ">
+                <tr>
+                    <td colspan="5" class="no-record text-center">
+                        <i class="ion-ios-alert mr-2"></i>{{'NO_RESULTS' | translate}}
+                    </td>
+                </tr>
+            </ng-container>
+            <tr *ngFor="let workgroup of memberWorkgroups">
+                <td width="25%" class="fw-600 pl-3">
+                    <span class="truncate">
+                        <span class="ellipsis-text" style="max-width: 100%;" [appNoOverflowTooltip]="workgroup.description"
+                            triggers="manual" placement="bottom">{{ workgroup.description }}</span>
+                    </span>
+                </td>
+                <td width="70%" class="fw-400 ml-1 hidden-sm-down">
+                    <span class="ellipsis-text" style="max-width: 100%;" [appNoOverflowTooltip]="workgroup['memberList']"
+                        triggers="manual" placement="bottom">{{ workgroup['memberList'] }}</span>
+                </td>
+                <td width="5%" class="pr-0 text-center">
+                    <div class="cursor-p" [ngClass]="{'delete-btn' : workgroup.isMember == true, 'add-btn': workgroup.isMember == false}">
+                        <a (click)="joinOrLeaveWorkgroup(workgroup.groupId, workgroup.isMember)" class="custom-form-label">
+                            <i class="va-middle" [ngClass]="{'ion-md-close-circle' : workgroup.isMember == true, 'ion-md-checkmark-circle': workgroup.isMember == false}"></i>
+                            <span *ngIf="workgroup.isMember == true" class="fs-12 fw-600" [translate]="'WORKGROUP.ACTION.LEAVE'"></span>
+                            <span *ngIf="workgroup.isMember == false" class="fs-12 fw-600" [translate]="'WORKGROUP.ACTION.JOIN'"></span>
+                        </a>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

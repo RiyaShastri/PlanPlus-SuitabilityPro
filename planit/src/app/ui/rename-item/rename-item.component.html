@@ -1,0 +1,34 @@
+<div class="side-form">
+        <div class="box">
+            <div class="box-header">
+                <span *ngIf="type == 'document'" class="sidebar_title" [translate]="'DOCUMENT.RENAME_DOCUMENT'"></span>
+                <span *ngIf="type == 'portfolio'" class="sidebar_title" [translate]="'PORTFOLIOS.ACTIONS.RENAME_PORTFOLIO'"></span>
+                <span (click)="back(); closeButtonDisable = true" class="sidebar_action_icon ion-md-close-circle float-right"></span>
+            </div>
+    
+            <div class="box-body">
+                <form name="form" (ngSubmit)="f.form.valid && renameItem()" #f="ngForm" novalidate>
+    
+                    <div class="form-group">
+                        <label *ngIf="type == 'document'" class="custom-form-label" [translate]="'FORM.OLD_DOCUMENT_NAME'"> </label>
+                        <label *ngIf="type == 'portfolio'" class="custom-form-label" [translate]="'FORM.OLD_PORTFOLIO_NAME'"> </label>
+                        <p class="pl-3" *ngIf="portfolio">
+                            {{portfolio.description}}
+                        </p>
+                    </div>
+    
+                    <div class="form-group" [ngClass]="{'has-error': !newName.valid && (newName.dirty || newName.touched || f.submitted)}">
+                        <label  *ngIf="type == 'document'" class=custom-form-label [translate]="'FORM.NEW_DOCUMENT_NAME'"></label>
+                        <label *ngIf="type == 'portfolio'" class=custom-form-label [translate]="'FORM.NEW_PORTFOLIO_NAME'"></label>
+                        <input type="text" class="form-control" name="newName" [(ngModel)]="newDescription" #newName="ngModel" required myNoSpaces />
+                    </div>
+    
+                    <div class="form-group text-right">
+                        <button (click)="back(); closeButtonDisable = true" type="button" class="btn btn-small btn-secondary btn-fixwidth mr-2"
+                        [disabled]="closeButtonDisable">{{ 'FORM.ACTION.CANCEL' | translate }}</button>
+                        <button [disabled]="!f.form.valid" class="btn btn-small btn-success">{{ 'FORM.ACTION.SAVE_CHANGES' | translate }}</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>

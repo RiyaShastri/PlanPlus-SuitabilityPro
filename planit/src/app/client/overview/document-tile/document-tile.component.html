@@ -1,0 +1,41 @@
+<div class="panel mt-md-0 pb-0">
+    <div class="d-flex flex-wrap panel-header">
+        <h4 [translate]="'CLIENT_OVERVIEW.DOCUMENT_CENTER'"></h4>
+        <i *ngIf="!documentLoaded" aria-hidden="true" class="fa fa-spinner fa-pulse loader-icon"></i>
+    </div>
+
+    <div class="panel-body">
+        <table class="table table-ellipsis">
+            <thead>
+                <tr>
+                    <th>&nbsp;</th>
+                    <th class="text-center w-10" [translate]="'CUSTOM.STATUS'"></th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <ng-container *ngIf="documentLoaded && documents.length > 0">
+                    <tr *ngFor="let doc of documents">
+                        <td>
+                            <span *ngIf="doc !== undefined" class="d-il-block" [appNoOverflowTooltip]="doc.description" triggers="manual" placement="bottom">{{doc.documentName}}</span>
+                        </td>
+                        <td class="text-center w-10">
+                            <div *ngIf="statusData !== undefined && statusData[doc.status] !== undefined" class="circle {{statusData[doc.status]['color']}} m-0"></div>
+                        </td>
+                    </tr>
+                </ng-container>
+                <ng-container *ngIf="documentLoaded && documents.length == 0">
+                    <tr>
+                        <td colspan="2" class="no-record text-center">
+                            <i class="ion-ios-alert mr-2"></i>{{'NO_RESULTS' | translate}}
+                        </td>
+                    </tr>
+                </ng-container>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="panel-footer"  style="z-index:8" *ngIf="documents.length > 0">
+        <a [routerLink]="['/client',clientId,'document-centre']" class="btn btn-link ion-md-arrow-dropright" [translate]="'CUSTOM.VIEW_MORE'"></a>
+    </div>
+</div>

@@ -1,0 +1,50 @@
+<div class="panel pb-0">
+    <div class="d-flex flex-wrap panel-header mb-3">
+        <h4 [translate]="'ENGAGEMENT.VALUES'"></h4>
+        <i *ngIf="!isEngagementSummaryLoaded" aria-hidden="true" class="fa fa-spinner fa-pulse loader-icon"></i>
+    </div>
+
+    <div class="panel-body">
+        <table class="table table-ellipsis">
+            <tbody *ngIf="engagementSummary">
+                <ng-container *ngFor="let member of engagementSummary | slice:0:2; index as i;">
+                    <tr>
+                        <td class="py-2">
+                            <div class="avatar-box d-flex align-items-center va-middle">
+                                <span *ngIf="!member.avatar" class="initials client h-22px ">
+                                    <i class="ion-ios-person"></i>
+                                </span>
+                                <img *ngIf="member.avatar" [src]="member.avatar" class="client-icon initials" (error)="member.avatar = null">
+                                <span class="fw-600 client-name d-inline-block va-middle client-name-wrap" triggers="manual" placement="bottom"
+                                [appNoOverflowTooltip]="member.firstName + member.lastName">{{member.firstName}} {{member.lastName}}</span>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr *ngIf="member.values.length != 0">
+                        <td class="py-2">
+                            <div class="d-flex flex-wrap">
+                                <div class="card-wrapper" *ngFor="let memberValue of member.values">
+                                    <div class="card text-center">
+                                        <div class="card-body">
+                                            <h5 class="card-title fw-600 fs-16">{{memberValue.text}}</h5>
+                                            <p class="card-text">{{memberValue.details}}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <p class="text-right m-0 fs-12">
+                                <span [translate]="'ENGAGEMENT.LAST_COMPLETED'"></span> : {{member.lastCompletedDate !=
+                                null ? member.lastCompletedDate : '-'}}
+                            </p>
+                        </td>
+                    </tr>
+                </ng-container>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="panel-footer">
+        <a [routerLink]="['/client',clientId,'profile','engagement', 'summary']" class="btn btn-link ion-md-arrow-dropright"
+            [translate]="'CUSTOM.VIEW_MORE'"></a>
+    </div>
+</div>

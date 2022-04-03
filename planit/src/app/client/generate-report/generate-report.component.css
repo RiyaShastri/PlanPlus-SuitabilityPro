@@ -1,0 +1,45 @@
+:host {
+    background: #fff;
+    position: fixed;
+    left: auto;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 30%;
+    min-width: 250px;
+    z-index: 100;
+}
+
+.expand-button a {
+    font-size: 11px;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: #567;
+    font-weight: 700;
+    line-height: 2.5
+}
+
+.expand-button a span {
+    line-height: 30px;
+}
+
+.expand-button a i {
+    font-size: 20px;
+    color: #567;
+    margin-left: 10px;
+    float: right;
+    line-height: 30px;
+}
+
+/* .generate-report-form-check label{
+    font-family: 'Open Sans', sans-serif;
+    font-size: 14px;
+    color: #39414A;
+    font-weight: 400;
+    white-space: nowrap;
+    margin-bottom: 0;
+} */
+
+.form-group.generate-report-form-check.form-check {
+    margin-bottom: 5px !important;
+}

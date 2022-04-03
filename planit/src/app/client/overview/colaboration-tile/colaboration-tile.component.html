@@ -1,0 +1,79 @@
+<div class="panel mt-md-0">
+    <div class="d-flex flex-wrap panel-header">
+        <h4 [translate]="'CLIENT_OVERVIEW.COLLABORATION'"></h4>
+    </div>
+
+    <div class="panel-body">
+        <table class="table" *ngIf="collaborationData">
+            <thead>
+                <tr>
+                    <!-- <th width="200">&nbsp;</th>
+                    <th class="text-center">
+                        <app-member-avatar [initials]="client1.btnInitials"
+                            [relationClass]="client1.btnColor" avatarClass="initials" [avatarUrl]="client1.avatar">
+                        </app-member-avatar>
+                    </th>
+                    <th class="text-center" *ngIf="client2">
+                        <app-member-avatar [initials]="client2.btnInitials"
+                            [relationClass]="client2.btnColor" avatarClass="initials" [avatarUrl]="client2.avatar">
+                        </app-member-avatar>
+                    </th> -->
+                    <th colspan="2"></th>
+                    <th class="text-center hidden-xs-down" [translate]="'CUSTOM.STATUS'"></th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <ng-container *ngIf="collaborationData.length > 0">
+                    <tr *ngFor="let collab of collaborationData; let i = index;">
+                        <!-- <td width="200" class="fw-600" [translate]="'CLIENT_OVERVIEW.RISK_TOLERANCE'"></td>
+                    <td class="text-center">
+                        <div class="circle" [ngClass]="{ 'bg-green' : client1['riskTolerance']['complete'] === true, 
+                        'bg-red' : client1['riskTolerance']['inconsistent'] === true, 
+                        'bg-orange': client1['riskTolerance']['pending'] === true, 
+                        'bg-blank': client1['riskTolerance']['invited'] === false}">
+                        </div>
+                    </td>
+                    <td class="text-center" *ngIf="client2 && client2['riskTolerance']">
+                        <div class="circle" [ngClass]="{ 'bg-green' : client2['riskTolerance']['complete'] === true, 
+                        'bg-red' : client2['riskTolerance']['inconsistent'] === true, 
+                        'bg-orange': client2['riskTolerance']['pending'] === true, 
+                        'bg-blank': client2['riskTolerance']['invited'] === false}">
+                        </div>
+                    </td> -->
+                      <ng-container *ngIf="collab['type'].toUpperCase() !== 'DOCUMENT VAULT' || accessRights['DOCSHARE']['accessLevel'] > 0">
+                        <td>{{collab['firstName']}} {{collab['lastName']}}</td>
+                        <td class="fw-400">
+                            {{collab['type']}}
+                        </td>
+                        <td valign="middle" class="text-center">
+                            <div class="circle" [ngClass]="{ 'bg-green' : collab['complete'] === true, 
+                                'bg-red' : collab['inconsistent'] === true, 
+                                'bg-orange': collab['pending'] === true, 
+                                'bg-blank': collab['invited'] === false}">
+                            </div>
+                        </td>
+                      </ng-container>
+                    </tr>
+                </ng-container>
+                <!-- <tr>
+                    <td width="200" class="fw-600" [translate]="'CLIENT_OVERVIEW.DOCUMENT_VAULT'"></td>
+                    <td class="text-center">
+                        <div class="circle" [ngClass]="{ 'bg-green' : client1['docVault']['complete'] === true, 
+                        'bg-red' : client1['docVault']['inconsistent'] === true, 
+                        'bg-orange': client1['docVault']['pending'] === true, 
+                        'bg-blank': client1['docVault']['invited'] == false}">
+                        </div>
+                    </td>
+                    <td class="text-center" *ngIf="client2 && client2['docVault']">
+                        <div class="circle" [ngClass]="{ 'bg-green' : client2['docVault']['complete'] === true, 
+                        'bg-red' : client2['docVault']['inconsistent'] === true, 
+                        'bg-orange': client2['docVault']['pending'] === true, 
+                        'bg-blank': client2['docVault']['invited'] === false}">
+                        </div>
+                    </td>
+                </tr> -->
+            </tbody>
+        </table>
+    </div>
+</div>

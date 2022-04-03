@@ -1,0 +1,107 @@
+<div class="row">
+    <div class="col-12">
+        <table class="table entity-list-table entity_table">
+            <thead>
+                <tr>
+                    <th class="pr-2" width="25%" [translate]="'ENTITY.ENTITY_DESCRIPTION'"></th>
+                    <th class="pr-2 hidden-xs-down" width="25%" [translate]="'ENTITY.TYPE'"></th>
+                    <th class="pr-2" width="30%" [translate]="'ENTITY.GOALS_FUNDED'"></th>
+                    <th class="pr-2" width="15%" [translate]="'ENTITY.TOTAL_ASSETS'"></th>
+                    <th width="5%" *ngIf="isAllEntities" [ngClass]="isAllEntities ? 'pr-2' : 'pr-0'">&nbsp;</th>
+                </tr>
+            </thead>
+            <tbody>
+                <ng-container *ngIf="entitiesList && entitiesList.length > 0">
+                    <tr *ngFor="let entity of entitiesList; index as i;">
+                        <td width="25%" class="pr-2">
+                            <span class="d-block entity-text-truncate"
+                                [appNoOverflowTooltip]="entity['entityDescription']" triggers="manual"
+                                placement="bottom">{{ entity['entityDescription'] }}</span>
+                        </td>
+                        <td width="25%" class="pr-2 hidden-xs-down">{{entity['entityTypeDescription']}}</td>
+                        <td width="30%" class="pr-2">
+                            <ng-container
+                                *ngIf="entity['fundedGoals'] && entity['fundedGoals'].length > 0; else noData">
+                                <span *ngIf="entity['fundedGoals'].length>1" class="d-flex">
+                                    {{ 'GOALS.MULTIPLE' | translate }}
+                                    <span [ngbTooltip]="multipleGoals" #multiple="ngbTooltip" placement="bottom" triggers="click" class="ion-ios-more action-ellipses-icon-color pt-1 pl-1"></span>
+                                </span>
+                                <ng-template #multipleGoals>
+                                    <ng-container *ngFor="let goal of entity['fundedGoals'];">
+                                        <p>{{goal.goalDescription}}</p>
+                                    </ng-container>
+                                </ng-template>
+                                <span *ngIf="entity['fundedGoals'].length == 1" class="d-flex">
+                                    {{entity['fundedGoals'][0]['goalDescription'] | slice:0:15}}
+                                    <span *ngIf="entity['fundedGoals'][0]['goalDescription'].length>15" [ngbTooltip]="truncatedGoal" #t="ngbTooltip" placement="bottom"
+                                        triggers="click" class="ion-ios-more action-ellipses-icon-color pt-1 pl-1"></span>
+                                </span>
+                                <ng-template #truncatedGoal>
+                                    <p>{{entity['fundedGoals'][0]['goalDescription']}}</p>
+                                </ng-template>
+
+                            </ng-container>
+                            <ng-template #noData>N/A</ng-template>
+                        </td>
+                        <td width="15%" [ngClass]="isAllEntities ? 'pr-2' : 'pr-0'">
+                            {{entity['totalAssets'] | currency:clientData['currencyCode'] : 'symbol-narrow':'1.0-0'}}
+                        </td>
+                        <td *ngIf="isAllEntities" width="5%" class="text-center">
+                            <div class="dropdown-relative" [ngClass]="{'dropdown-up': (entitiesList.length > 2 && i >= (entitiesList.length - 2))}">
+                                <button type="button" class="btn-floating" (click)="changePersonalInfoAction(i)">
+                                    <span class="ion-md-more"></span>
+                                </button>
+                                <div [id]="'dropdownPersonalInfoAction'+i" class="dropdown-entities-action dropdown-floating hide-ele">
+                                    <ul class="floating-dropdown">
+                                        <li (click)="changePersonalInfoAction(i)">
+                                            <a class="action-list" [routerLink]="['/client', clientId, 'planning', 'entities', entity.entityId, 'investment-return-risk']">
+                                                <i class="ion-md-create action-list"></i>
+                                                <span class="action-list" [translate]="'ENTITY.ACTIONS.EDIT_INVESTMENT_RETURN_RISK'"></span>
+                                            </a>
+                                        </li>
+                                        <li (click)="changePersonalInfoAction(i)">
+                                            <a class="action-list" [routerLink]="['/client', clientId, 'planning', 'entities', entity.entityId, 'current-year-income-distributions']">
+                                                <i class="ion-md-create action-list"></i>
+                                                <span class="action-list" [translate]="'ENTITY.ACTIONS.EDIT_CURRENT_YEAR_INCOME_DISTRIBUTIONS'"></span>
+                                            </a>
+                                        </li>
+                                        <li (click)="changePersonalInfoAction(i)">
+                                            <a class="action-list" [routerLink]="['/client', clientId, 'planning', 'entities', entity.entityId, 'long-term-income-distributions']">
+                                                <i class="ion-md-create action-list"></i>
+                                                <span class="action-list" [translate]="'ENTITY.ACTIONS.EDIT_LONG_TERM_INCOME_DISTRIBUTIONS'"></span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a class="action-list" [routerLink]="['/client', clientId, 'planning', 'entities', entity.entityId, 'view-analysis']">
+                                                <i class="ion-ios-eye action-list"></i>
+                                                <span class="action-list" [translate]="'ENTITY.ACTIONS.VIEW_ANALYSIS'"></span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a class="action-list delete-btn" (click)="deleteEntity(entity.entityId,  entity['entityDescription'])">
+                                                <i class="ion-md-close-circle action-list"></i>
+                                                <span class="action-list" [translate]="'ENTITY.ACTIONS.DELETE_ENTITY'"></span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr class="entity-total-row" *ngIf="isAllEntities">
+                        <td colspan="3" class="text-right fw-600 pr-4" [translate]="'SETTINGS.INCOME_DISTRIBUTION.TOTAL'"></td>
+                        <td>{{totalAllAssets | currency:clientData['currencyCode'] : 'symbol-narrow':'1.0-0'}}</td>
+                        <td>&nbsp;</td>
+                    </tr>
+                </ng-container>
+                <ng-container *ngIf="!entitiesList || (entitiesList && entitiesList.length === 0)">
+                    <tr>
+                        <td colspan="5" class="no-record text-center">
+                            <i class="ion-ios-alert mr-2"></i>{{'NO_RESULTS' | translate}}
+                        </td>
+                    </tr>
+                </ng-container>
+            </tbody>
+        </table>
+    </div>
+</div>

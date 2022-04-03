@@ -1,0 +1,38 @@
+<div class="row mt-4">
+    <div class="col-md-8 col-12">
+        <h4 class="mb-1">
+            <a [routerLink]="['/settings']" [translate]="'BREADCRUMB.SETTINGS'"></a> /
+            <span *ngIf="currentPage == 'psd'">
+                <a [routerLink]="['/settings', 'preferred-solutions']"
+                    [translate]="'SETTINGS.PREFERRED_SOLUTIONS.TITLE'"></a>
+                /
+            </span>
+        </h4>
+        <h1 *ngIf="currentPage == 'cma'" class="d-inline-block fw-500" [translate]="'SETTINGS.CMA.TITLE'"></h1>
+        <h1 *ngIf="currentPage == 'pjm'" class="d-inline-block fw-500" [translate]="'SETTINGS.PJM.TITLE'"></h1>
+        <h1 *ngIf="currentPage == 'ps' || currentPage == 'psd'" class="d-inline-block fw-500"
+            [translate]="'SETTINGS.PREFERRED_SOLUTIONS.TITLE'"></h1>
+        <h1 *ngIf="currentPage == 'investor'" class="d-inline-block fw-500"
+            [translate]="'SETTINGS.INVESTMENT_POLICIES.TITLE'"></h1>
+    </div>
+    <div class="col-md-4 col-12" *ngIf="currentPage === 'pjm' || currentPage === 'investor'">
+        <span class="pull-right pt-5 fs-14"
+            *ngIf="lastUpdatedDate && lastUpdatedDate !== '' && lastUpdatedDate !== null && lastUpdatedDate !== undefined">
+            <span class="last-reviewed-label">
+                {{ 'SETTINGS.LAST_REVIEWED_ON' | translate }}:
+            </span>
+            {{lastUpdatedDate | date:dateFormat}}
+        </span>
+        <span class="pull-right pt-5 fs-14"
+            *ngIf="!lastUpdatedDate || lastUpdatedDate == '' || lastUpdatedDate == null || lastUpdatedDate == undefined">
+            <span class="last-reviewed-label">
+                {{ 'SETTINGS.LAST_REVIEWED_ON' | translate }}:
+            </span>
+            <span class="text-uppercase">{{'SETTINGS.NEEDS_REVEIW' | translate}}</span>
+        </span>
+    </div>
+    <div class="col-12">
+        <hr *ngIf="currentPage !== 'pjm'">
+        <hr class="my-0" *ngIf="currentPage === 'pjm'">
+    </div>
+</div>

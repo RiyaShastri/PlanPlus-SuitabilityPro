@@ -1,0 +1,27 @@
+.ion-ios-eye {
+    float: right;
+    width: 20px;
+    height: 20px;
+    background: #88aa33;
+    border-radius: 50%;
+    line-height: 20px;
+    text-align: center;
+    color: #fff;
+}
+
+table.plantac-analysis-tbl > tbody > tr.plantrac-detail-row > td {
+    padding-left: 0px;
+    padding: 4px 0;
+    border: none;
+}
+
+
+table.plantac-analysis-tbl > thead > tr > th {
+    padding-bottom: 0 !important;
+}
+
+@media (max-width: 575px) {
+	.table td:last-child {padding-right: 0;}
+    .table>thead>tr>th {font-size: 13px;padding: 0 6px 15px 6px;}
+    .amcharts-chart-div svg text tspan {font-size: 7px !important}
+}

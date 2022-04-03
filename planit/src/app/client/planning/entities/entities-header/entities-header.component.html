@@ -1,0 +1,78 @@
+<div class="row">
+    <div class="col-md-8 col-12">
+        <h4>
+            <a [routerLink]="['/client', clientId, 'planning']" [translate]="'BREADCRUMB.PLANNING'"></a> /
+            <a [routerLink]="['/client', clientId, 'planning', 'entities']"
+                [translate]="'PLANNING_SUMMARY.ENTITIES.TITLE'"></a> /
+        </h4>
+        <h1 class="d-sm-inline-block d-block fw-500" *ngIf="entitiesList && entityDescription">
+            <div ngbDropdown class="dropdown-common dropdown-multiline m-0">
+                <a id="goalsDropdown" ngbDropdownToggle class="d-flex align-items-center">
+                    <div class="text-truncate fixed-width-text" id="on-mouseover-tooltip"
+                        [appNoOverflowTooltip]="entityDescription">
+                        {{entityDescription}}
+                    </div>
+                    <i class="ion-md-arrow-dropdown fs-18 ml-2"></i>
+                </a>
+                <div ngbDropdownMenu aria-labelledby="goalsDropdown">
+                    <ul>
+                        <li *ngFor="let entity of entitiesList">
+                            <a class="dropdown-item" [ngClass]="{ 'active' : entityId === entity.entityId}"
+                                (click)="changeEntity(entity.entityId, entity.entityDescription)">
+                                {{entity.entityDescription}}
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </h1>
+    </div>
+    <div class="col-md-4 col-12 text-right dropdown-right">
+        <div class="d-inline-block nextprive-box mr-lg-5 mr-3">
+        </div>
+        <app-planning-module-drop-down class="dropdown-right" [clientId]="clientId"></app-planning-module-drop-down>
+    </div>
+    <div class="col-12">
+        <hr>
+    </div>
+    <div class="col-12">
+        <div class="row">
+            <div class="col-12 col-lg-10">
+                <ul class="nav nav-tabs" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link p-lr-40"
+                            [routerLink]="['/client', clientId, 'planning', 'entities', entityId, 'investment-return-risk']"
+                            [ngClass]="{ 'active' : currentPage === 'investment' }"
+                            [translate]="'ENTITY.HEADER.INVESTMENT_RETURN_RISK'"></a>
+                    </li>
+                    <li class="nav-item mb-0">
+                        <a class="nav-link p-lr-40"
+                            [routerLink]="['/client', clientId, 'planning', 'entities', entityId, 'current-year-income-distributions']"
+                            [ngClass]="{ 'active' : currentPage === 'currentYear' }"
+                            [translate]="'ENTITY.HEADER.CURRENT_YEAR_INCOME_DISTRIBUTIONS'"></a>
+                    </li>
+                    <li class="nav-item mb-0">
+                        <a class="nav-link p-lr-40"
+                            [routerLink]="['/client', clientId, 'planning', 'entities', entityId, 'long-term-income-distributions']"
+                            [ngClass]="{ 'active' : currentPage === 'longTerm' }"
+                            [translate]="'ENTITY.HEADER.LONG_TERM_INCOME_DISTRIBUTIONS'"></a>
+                    </li>
+                    <li class="nav-item mb-0">
+                        <a class="nav-link p-lr-40"
+                            [routerLink]="['/client', clientId, 'planning', 'entities', entityId, 'view-analysis']"
+                            [ngClass]="{ 'active' : currentPage === 'analysis'}"
+                            [translate]="'ENTITY.HEADER.ANALYSIS'"></a>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-12 col-lg-2 mt-2 mt-lg-0 text-right">
+                <app-common-drop-down class="dropdown-right" [itemList]="scenarios" [defaultSelected]="selectedScenario"
+                    (OnSelect)="changeScenario($event)">
+                </app-common-drop-down>
+            </div>
+        </div>
+    </div>
+    <div class="col-12">
+        <hr>
+    </div>
+</div>

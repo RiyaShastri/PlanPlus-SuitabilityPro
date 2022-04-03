@@ -1,0 +1,52 @@
+{
+    "SSID_LABELS": {
+        "A_ASSCAT042": "Cash",
+        "A_ASSCAT051": "Emerging Markets",
+        "A_ASSCAT043": "Municipal Bond",
+        "A_ASSCAT044": "Corporate Bond",
+        "A_ASSCAT045": "Government Bond",
+        "A_ASSCAT046": "International Fixed Income",
+        "A_ASSCAT047": "Global Property",
+        "A_ASSCAT048": "US Equity",
+        "A_ASSCAT049": "US Small Cap Equity",
+        "A_ASSCAT050": "International Equity",
+        "OBJECTIV002": "Retirement Lifestyle (After Tax)",
+        "ACCTYP_OTHER": "Other",
+        "ACCTYP_SHELTERED": "ROTH",
+        "ACCTYP_DEFERRED": "Qualified",
+        "ACCTYP_OPEN": "Open",
+        "ACCTYP_PERSONAL": "Personal Use",
+        "ACCTYP_BUSINESS": "Business Other",
+        "ACCTYP_CORPORATE": "Corporate"
+    },
+  "BENCHMARKS": {
+    "1": "US 182-Day T-Bill",
+    "2": "Bloomberg Barclays Municipal TR Index",
+    "3": "Bloomberg Barclays US Aggregate Bond TR Index",
+    "4": "Bloomberg Barclays US Government TR Index",
+    "5": "JPM GBI Global Traded TR Index",
+    "6": "NAREIT Equity REIT Total Return Index",
+    "7": "S&P 500 Total Return Index",
+    "8": "Russell 2000 Total Return Index",
+    "9": "MSCI EAFE Index",
+    "10": "MSCI Emerging Markets Index"
+  },
+  "BENCHNOTES": {
+    "1": "",
+    "2": "Data from 1980",
+    "3": "Proxy based on 10-year US Govt Bonds from 1972, Bloomberg Barclays US Aggregate Bond TR Index from 1976",
+    "4": "10-Year US Treasury Security from 1972, Bloomberg Barclays US Government TR Index from 1973",
+    "5": "Lehman composite from 1979, JPM GBI Global Traded TR Index from 1986",
+    "6": "",
+    "7": "",
+    "8": "Data from 1979",
+    "9": "",
+    "10": "Data from 1988"
+  },
+  "FORM": {
+        "PLACEHOLDER": {
+            "SELECT_A_PROVINCE": "Select a State"
+        },
+        "PROVINCE": "State"
+  }
+}

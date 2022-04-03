@@ -1,0 +1,660 @@
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <app-settings-header currentPage="psd"></app-settings-header>
+        </div>
+    </div>
+
+    <form class="mt-4" name="form" #f="ngForm" novalidate>
+        <div class="row" *ngIf="personalSolution || (isShowRegion && ! parentRegion)">
+            <div class="col-12" *ngIf="displayPrefrence['isView']">
+                <div class="pull-right">
+                    <button class="btn btn-small btn-success m-0" type="button" (click)="editSolution()"
+                        [translate]="'PORTFOLIO.ACTION.EDIT'"></button>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <div class="row">
+                    <div class="col-md-5">
+                        <div class="form-group">
+                            <label class="custom-form-label"
+                                [translate]="'SETTINGS.PREFERRED_SOLUTION.DETAILS.SOLUTION_NAME'"></label>
+                            <span *ngIf="displayPrefrence['isView']"
+                                class="field-value-txt">{{reqData['solutionName']}}</span>
+                            <div *ngIf="!displayPrefrence['isView']" class="input-group pr-40">
+                                <input type="text" class="form-control" name="solutionName" myNoSpaces
+                                    [(ngModel)]="reqData['solutionName']" aria-describedby="basic-addon2" required />
+                                <!-- <span *ngIf="allowTranslate" allowTranslate class="input-group-addon text-icon-wrapper"
+                                    id="basic-addon2" (click)="translateInput(reqData['solutionName'])">
+                                    <i class="ion-md-swap"></i>
+                                </span> -->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-5 offset-md-1">
+                        <div class="form-group">
+                            <label class="custom-form-label"
+                                [translate]="'SETTINGS.PREFERRED_SOLUTION.DETAILS.SOLUTION_FAMILY'"></label>
+                            <span *ngIf="displayPrefrence['isView'] && reqData['solutionFamilyObj']"
+                                class="field-value-txt">{{reqData['solutionFamilyObj']['solutionFamilyName']}}</span>
+                            <div class="form-group" *ngIf="!displayPrefrence['isView']">
+                                <p-dropdown [options]="solutionFamilyDetails" name="solutionFamily"
+                                    [(ngModel)]="reqData['solutionFamilyObj']" #solutionFamily="ngModel"
+                                    optionLabel="solutionFamilyName"
+                                    placeholder="{{ 'SETTINGS.PREFERRED_SOLUTION.DETAILS.SOLUTION_FAMILY_PLACEHOLDER' | translate}}">
+                                </p-dropdown>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="row">
+                    <div class="col-md-5">
+                        <div class="form-group">
+                            <label class="custom-form-label"
+                                [translate]="'SETTINGS.PREFERRED_SOLUTION.DETAILS.SOLUTION_INFORMATION'"></label>
+                            <span class="field-value-txt"
+                                *ngIf="displayPrefrence['isView']">{{reqData['solutionUrl']}}</span>
+                            <div *ngIf="!displayPrefrence['isView']" class="input-group pr-40">
+                                <input type="text" class="form-control" name="solutionUrl"
+                                    [(ngModel)]="reqData['solutionUrl']" aria-describedby="basic-addon2" />
+                                <!-- <span *ngIf="allowTranslate" allowTranslate class="input-group-addon text-icon-wrapper"
+                                    id="basic-addon2" (click)="translateInput(reqData['solutionUrl'])">
+                                    <i class="ion-md-swap"></i>
+                                </span> -->
+                            </div>
+                            <p class="text-right fs-12 fw-600" style="color: #778899;"
+                                *ngIf="!displayPrefrence['isAdd']">
+                                <span [translate]="'SETTINGS.PREFERRED_SOLUTION.DETAILS.LAST_UPDATED'"></span>
+                                {{reqData['lastUpdated'] ? (reqData['lastUpdated'] | date : datePipeFormat) : 'N/A'}}
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-md-5 offset-md-1">
+                        <div class="form-group">
+                            <label class="custom-form-label"
+                                [translate]="'SETTINGS.PREFERRED_SOLUTION.DETAILS.LAST_REVIEWED'"></label>
+                            <span class="field-value-txt"
+                                *ngIf="displayPrefrence['isView']">{{reqData['lastReviewed'] ? (reqData['lastReviewed'] | date : datePipeFormat) : 'N/A'}}</span>
+                            <div *ngIf="!displayPrefrence['isView']" class="input-group pr-40">
+                                <p-calendar [showIcon]="true" [maxDate]="maxDate" [yearRange]="yearRange"
+                                    [monthNavigator]="true" [yearNavigator]="true" name="lastReviewed"
+                                    [(ngModel)]="reqData['lastReviewed']" [dateFormat]="dateFormat">
+                                </p-calendar>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row" *ngIf="isShowRegion && accessRights['MAPPINGADMIN']['accessLevel'] ==3">
+                    <div class="col-md-5 offset-md-6">
+                        <div class="form-group ml-md-3 pl-3">
+                            <label *ngIf="!displayPrefrence['isView'] || reqData['mappedSolution']"
+                                class="custom-form-label"
+                                [translate]="'SETTINGS.PREFERRED_SOLUTION.FINAMETRICA_MAPPED_SOLUTION'"></label>
+                            <span *ngIf="!displayPrefrence['isView']" class="pr-40">
+                                <p-checkbox name="checkbox" [(ngModel)]="reqData['mappedSolution']" 
+                                    binary="true">
+                                </p-checkbox>
+                            </span>
+                            <span class="field-value-txt"
+                                *ngIf="reqData['mappedSolution'] && reqData[selectedTab]['okayHigh']"><img
+                                    width="80px"
+                                    [src]="'assets/images/mapping_seal/FinaMetrica_score-range-logo_' + reqData[selectedTab]['okayLow'] + '-' + reqData[selectedTab]['okayHigh'] + '.png'"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-4 fs-12 pr-md-3 pr-5">
+                        <div class="form-group mb-0">
+                            <label class="custom-form-label fw-600"
+                                [translate]="'SETTINGS.PREFERRED_SOLUTION.DETAILS.SUITABILITY_RANGE'"></label>
+                            <table class="table">
+                                <tr>
+                                    <td class="py-2">
+                                        <span
+                                            [translate]="'SETTINGS.PREFERRED_SOLUTION.DETAILS.CALCULATED_GROWTH'"></span>
+                                    </td>
+                                    <td class="text-right py-2">
+                                        <span
+                                            class="form-control-sm-value">{{reqData[selectedTab]['calculatedGrowth']}}%</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="py-2">
+                                        <span [translate]="'SETTINGS.PREFERRED_SOLUTION.DETAILS.MAXIMUM_GROWTH'"></span>
+                                        <span
+                                            *ngIf="(reqData[selectedTab]['calculatedGrowth'] > reqData[selectedTab]['defaultAppliedGrowth'] && !reqData[selectedTab]['overrideAppliedGrowth']) || (reqData[selectedTab]['calculatedGrowth'] > reqData[selectedTab]['appliedGrowth'] && reqData[selectedTab]['overrideAppliedGrowth'])">
+                                            <i class="ion-ios-alert fs-16" [ngbTooltip]="alertMessage"
+                                                placement="bottom" triggers="manual" #alert="ngbTooltip"
+                                                (click)="alert.open()"></i>
+                                            <ng-template #alertMessage>
+                                                <p class="font">
+                                                    {{ 'SETTINGS.PREFERRED_SOLUTION.DETAILS.MAX_GROWTH_ALERT' | translate }}
+                                                </p>
+                                                <p class="text-right m-0 p-0">
+                                                    <button class="btn btn-secondary btn-small m-0"
+                                                        (click)="alert.close()"
+                                                        [translate]="'FORM.ACTION.CLOSE'"></button>
+                                                </p>
+                                            </ng-template>
+                                        </span>
+                                    </td>
+                                    <td class="text-right py-2">
+                                        <div class="position-relative">
+                                            <span
+                                                *ngIf="!reqData[selectedTab]['overrideAppliedGrowth'] || displayPrefrence['isView']"
+                                                class="form-control-sm-value">
+                                                {{ reqData[selectedTab]['defaultAppliedGrowth'] }}%
+                                            </span>
+                                            <div *ngIf="reqData[selectedTab]['overrideAppliedGrowth'] && !displayPrefrence['isView']"
+                                                class="form-group form-group-sm mb-0 pull-right">
+                                                <input type="text" class="form-control form-control-sm fs-12 text-right"
+                                                    name="index" placeholder="0%" [textMask]="{mask: percentMask}"
+                                                    appNumeric [customMax]="100" [customMin]="0"
+                                                    [(ngModel)]="reqData[selectedTab]['appliedGrowth']" #index="ngModel"
+                                                    (keyup)="onChangeOfAppliedGrowth()" />
+                                            </div>
+                                            <span class="form-group mb-0 position-absolute max-groth-checkbox">
+                                                <p-checkbox [disabled]="displayPrefrence['isView']"
+                                                    (ngModelChange)="onChangeOfAppliedGrowth()" name="checkbox"
+                                                    [(ngModel)]="reqData[selectedTab]['overrideAppliedGrowth']"
+                                                    binary="true"></p-checkbox>
+                                            </span>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="col-md-8 pl-md-5 pl-3 pt-sm-4">
+                        <div class="investment-policies-graph">
+                            <span class="graph-label ff-Montserrat fw-500"
+                                [translate]="'SETTINGS.PREFERRED_SOLUTION.INVESTMENT_POLICIES'"></span>
+                            <div id="chartdiv"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row pt-3">
+                    <div class="col-md-4 fs-12 pr-md-3 pr-5">
+                        <div class="form-group">
+                            <fieldset class="form-group">
+                                <legend class=custom-form-label
+                                    [translate]="'SETTINGS.PREFERRED_SOLUTION.DETAILS.RANGE'">
+                                    : </legend>
+                                <div class="form-check d-flex">
+                                    <span>
+                                        <p-radioButton name="groupname" value="default"
+                                            [(ngModel)]="reqData[selectedTab]['selectedRangeType']"
+                                            (onClick)="onChangeOfAppliedGrowth();" #groupname="ngModel"
+                                            [disabled]="displayPrefrence['isView']"></p-radioButton>
+                                        <span [translate]="'SETTINGS.PREFERRED_SOLUTION.DETAILS.DEFAULT'"></span>
+                                    </span>
+                                    <span>
+                                        <p-radioButton name="groupname" value="custom"
+                                            [(ngModel)]="reqData[selectedTab]['selectedRangeType']" #groupname="ngModel"
+                                            (onClick)="updateOnClasses('input');"
+                                            [disabled]="displayPrefrence['isView']"></p-radioButton>
+                                        <span [translate]="'SETTINGS.PREFERRED_SOLUTION.DETAILS.CUSTOM'"></span>
+                                    </span>
+                                </div>
+                            </fieldset>
+                        </div>
+                        <div class="suitability-range-custom">
+                            <table class="table">
+                                <tbody>
+                                    <tr>
+                                        <td class="py-2" width="50%">
+                                            <span [translate]="'SETTINGS.PREFERRED_SOLUTION.DETAILS.OK_RANGE'"></span>
+                                        </td>
+                                        <td class="py-2 text-right pr-2 pr-2" width="25%">
+                                            <span class="form-control-sm-value"
+                                                *ngIf="reqData[selectedTab]['selectedRangeType'] === rangeOptions['DEFAULT']">
+                                                {{ (!displayPrefrence['isView']) ? reqData[selectedTab]['defaultOkRangeLow'] :
+                                                reqData[selectedTab]['okayLow'] }}
+                                            </span>
+                                            <div class="form-group mb-0 pull-right"
+                                                *ngIf="reqData[selectedTab]['selectedRangeType'] === rangeOptions['CUSTOM']">
+                                                <input type="text" class="form-control form-control-sm fs-12 text-right"
+                                                    placeholder="0" appNumeric [customMax]="100" [customMin]="0"
+                                                    [(ngModel)]="reqData[selectedTab]['inputOkRangeLow']"
+                                                    #index="ngModel" name="inputOkRangeLow"
+                                                    [disabled]="displayPrefrence['isView']"
+                                                    pattern="^[0-9][0-9]*(.[0-9]{0,2})?$|^100$"
+                                                    (blur)="updateOnClasses('input')" />
+                                            </div>
+                                        </td>
+                                        <td class="py-2 text-right pr-2 pr-2" width="25%">
+                                            <span class="form-control-sm-value"
+                                                *ngIf="reqData[selectedTab]['selectedRangeType'] === rangeOptions['DEFAULT']">
+                                                {{ (!displayPrefrence['isView']) ? reqData[selectedTab]['defaultOkRangeHigh'] :
+                                                reqData[selectedTab]['okayHigh'] }}
+                                            </span>
+                                            <div class="form-group mb-0 pull-right"
+                                                *ngIf="reqData[selectedTab]['selectedRangeType'] === rangeOptions['CUSTOM']">
+                                                <input type="text" class="form-control form-control-sm fs-12 text-right"
+                                                    placeholder="0" appNumeric [customMax]="100" [customMin]="0"
+                                                    [(ngModel)]="reqData[selectedTab]['inputOkRangeHigh']"
+                                                    #index="ngModel" name="inputOkRangeHigh"
+                                                    [disabled]="displayPrefrence['isView']"
+                                                    pattern="^[0-9][0-9]*(.[0-9]{0,2})?$|^100$"
+                                                    (blur)="updateOnClasses('input')" />
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="py-2" width="50%">
+                                            <span
+                                                [translate]="'SETTINGS.PREFERRED_SOLUTION.DETAILS.MARGINAL_RANGE'"></span>
+                                        </td>
+                                        <td class="py-2 text-right pr-2" width="25%">
+                                            <span class="form-control-sm-value"
+                                                *ngIf="reqData[selectedTab]['selectedRangeType'] === rangeOptions['DEFAULT']">
+                                                {{ (!displayPrefrence['isView']) ? reqData[selectedTab]['defaultMarginalRangeLow'] :
+                                                reqData[selectedTab]['marginalLow'] }}
+                                            </span>
+                                            <div class="form-group mb-0 pull-right"
+                                                *ngIf="reqData[selectedTab]['selectedRangeType'] === rangeOptions['CUSTOM']">
+                                                <input type="text" class="form-control form-control-sm fs-12 text-right"
+                                                    placeholder="0" appNumeric [customMax]="100" [customMin]="0"
+                                                    [(ngModel)]="reqData[selectedTab]['inputMarginalRangeLow']"
+                                                    #index="ngModel" name="inputMarginalRangeLow"
+                                                    [disabled]="displayPrefrence['isView']"
+                                                    pattern="^[0-9][0-9]*(.[0-9]{0,2})?$|^100$"
+                                                    (blur)="updateOnClasses('input')" />
+                                            </div>
+                                        </td>
+                                        <td class="py-2 text-right pr-2" width="25%">
+                                            <span class="form-control-sm-value"
+                                                *ngIf="reqData[selectedTab]['selectedRangeType'] === rangeOptions['DEFAULT']">
+                                                {{ (!displayPrefrence['isView']) ? reqData[selectedTab]['defaultMarginalRangeHigh'] :
+                                                reqData[selectedTab]['marginalHigh']
+                                                }}
+                                            </span>
+                                            <div class="form-group mb-0 pull-right"
+                                                *ngIf="reqData[selectedTab]['selectedRangeType'] === rangeOptions['CUSTOM']">
+                                                <input type="text" class="form-control form-control-sm fs-12 text-right"
+                                                    placeholder="0" appNumeric [customMax]="100" [customMin]="0"
+                                                    [(ngModel)]="reqData[selectedTab]['inputMarginalRangeHigh']"
+                                                    #index="ngModel" name="inputMarginalRangeHigh"
+                                                    [disabled]="displayPrefrence['isView']"
+                                                    pattern="^[0-9][0-9]*(.[0-9]{0,2})?$|^100$"
+                                                    (blur)="updateOnClasses('input')" />
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <span class="text-danger pull-right fw-600" *ngIf="graphError !== ''">{{graphError}}</span>
+                        </div>
+                    </div>
+                    <div class="col-md-8 pl-md-5 pl-3 pt-sm-4">
+                        <app-gantt-chart
+                            *ngIf="ganttChartDataProvider.length && (displayPrefrence['isView'] || displayPrefrence['isEdit'])"
+                            [uniqeId]="'app-gantt-chart'" [dataSet]="ganttChartDataProvider"></app-gantt-chart>
+                        <app-gantt-chart *ngIf="ganttChartDataProvider.length && (displayPrefrence['isAdd'])"
+                            [uniqeId]="'app-gantt-chart'" [dataSet]="ganttChartDataProvider"></app-gantt-chart>
+                    </div>
+                </div>
+                <div class="row mt-5">
+                    <div class="col-lg-6 col-md-6 col-sm-8 col-12">
+                        <ul class="nav nav-tabs" role="tablist">
+                            <li class="nav-item">
+                                <a [ngClass]="{ 'active' : selectedTab === advisorTypes['PROFILER'] }" data-toggle="tab"
+                                    (click)="switchUser(advisorTypes['PROFILER'])" class="nav-link"
+                                    [translate]="'SETTINGS.PREFERRED_SOLUTION.DETAILS.USER_LICENCE_TYPE.PROFILER'"></a>
+                            </li>
+
+                            <li class="nav-item" *ngIf="accessRights['PREFSOLTNTRACKER'] && accessRights['PREFSOLTNTRACKER']['accessLevel'] > 0">
+                                <a [ngClass]="{ 'active' : selectedTab === advisorTypes['PROTRACKER'] }"
+                                    class="nav-link" data-toggle="tab" (click)="switchUser(advisorTypes['PROTRACKER'])"
+                                    [translate]="'SETTINGS.PREFERRED_SOLUTION.DETAILS.USER_LICENCE_TYPE.PROTRACKER'"></a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <ng-container *ngIf="selectedTab === advisorTypes['PROTRACKER']">
+                    <div class="row">
+                        <div class="col-12">
+                            <hr class="mb-2" />
+                        </div>
+                        <div class="col-6">
+                            <p class="solution-products-heading mb-5"
+                                [translate]="'SETTINGS.PREFERRED_SOLUTION.DETAILS.PREFERRED_SOLUTION_PRODUCTS'"></p>
+                            <a *ngIf="!displayPrefrence['isView'] && (reqData[selectedTab]['solutionType'] !== solutionTypes.SINGLE_FUND_SOLUTION || (reqData[selectedTab]['solutionType'] === solutionTypes.SINGLE_FUND_SOLUTION && reqData[selectedTab]['products'].length === 0))"
+                                routerLink="product-search"
+                                [queryParams]="{ solutionType: reqData[selectedTab]['solutionType'], solutionFamily: reqData['solutionFamilyId'] }" class="btn-add">
+                                <i class="ion-md-add-circle"></i>
+                                <span [translate]="'SETTINGS.PREFERRED_SOLUTION.DETAILS.ADD_PRODUCT'"></span>
+                            </a>
+                            <a *ngIf="displayPrefrence['isView'] || (!displayPrefrence['isView'] && reqData[selectedTab]['solutionType'] === solutionTypes.SINGLE_FUND_SOLUTION && reqData[selectedTab]['products'].length > 0)"
+                                class="btn-add disabled-link">
+                                <i class="ion-md-add-circle"></i>
+                                <span [translate]="'SETTINGS.PREFERRED_SOLUTION.DETAILS.ADD_PRODUCT'"></span>
+                            </a>
+                        </div>
+                        <div class="col-2 text-right offset-md-2 pr-0">
+                            <span class="fs-14 fw-600"
+                                [translate]="'SETTINGS.PREFERRED_SOLUTION.DETAILS.SOLUTION_TYPE'"></span>
+                        </div>
+                        <div class="col-2 pr-0">
+                            <div class="form-group mb-0">
+                                <p-radioButton name="solutionType" labelStyleClass="fs-14 fw-500"
+                                    label="{{ 'SETTINGS.PREFERRED_SOLUTION.DETAILS.SOLUTION_TYPES.TAILORED_SOLUTION' | translate}}"
+                                    [value]="solutionTypes.TAILORED_SOLUTION" [(ngModel)]="selectedSolutionType"
+                                    (ngModelChange)="changeSolutionType()" [disabled]="displayPrefrence['isView']">
+                                </p-radioButton>
+                            </div>
+                            <div class="form-group mb-0">
+                                <p-radioButton name="solutionType" labelStyleClass="fs-14 fw-500"
+                                    label="{{ 'SETTINGS.PREFERRED_SOLUTION.DETAILS.SOLUTION_TYPES.FUND_OF_FUNDS_SOLUTION' | translate}}"
+                                    [value]="solutionTypes.FUND_OF_FUNDS_SOLUTION" [(ngModel)]="selectedSolutionType"
+                                    (ngModelChange)="changeSolutionType()" [disabled]="displayPrefrence['isView']">
+                                </p-radioButton>
+                            </div>
+                            <div class="form-group mb-0">
+                                <p-radioButton name="solutionType" labelStyleClass="fs-14 fw-500"
+                                    label="{{ 'SETTINGS.PREFERRED_SOLUTION.DETAILS.SOLUTION_TYPES.SINGLE_FUND_SOLUTION' | translate}}"
+                                    [value]="solutionTypes.SINGLE_FUND_SOLUTION" [(ngModel)]="selectedSolutionType"
+                                    (ngModelChange)="changeSolutionType()" [disabled]="displayPrefrence['isView']">
+                                </p-radioButton>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <hr />
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th width="25%"
+                                            [translate]="'SETTINGS.PREFERRED_SOLUTION.DETAILS.PRODUCT_TABLE.DESCRIPTION'">
+                                        </th>
+                                        <th width="15%"
+                                            [translate]="'SETTINGS.PREFERRED_SOLUTION.DETAILS.PRODUCT_TABLE.CODE'"></th>
+                                        <th width="20%" [translate]="'SETTINGS.PREFERRED_SOLUTION.DETAILS.PERCENTAGE'">
+                                        </th>
+                                        <th width="20%"
+                                            [translate]="'SETTINGS.PREFERRED_SOLUTION.DETAILS.PRODUCT_TABLE.CLASS'">
+                                        </th>
+                                        <th width="15%" [translate]="'SETTINGS.PREFERRED_SOLUTION.DETAILS.CURRENCY'">
+                                        </th>
+                                        <th width="5%">&nbsp;</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let product of reqData[selectedTab]['products']; index as prodIndex">
+                                        <td width="25%">{{product.productDescription}}</td>
+                                        <td width="15%">{{product.productCode}}</td>
+                                        <td width="20%">
+                                            <p class="cash-percentage mb-0" *ngIf="displayPrefrence['isView'] || 
+                                                reqData[selectedTab]['solutionType'] === solutionTypes.SINGLE_FUND_SOLUTION || 
+                                                prodIndex === 0">
+                                                {{product.percentage | number: '1.0-2'}}% </p>
+                                            <div *ngIf="!displayPrefrence['isView'] && 
+                                            reqData[selectedTab]['solutionType'] !== solutionTypes.SINGLE_FUND_SOLUTION && 
+                                            prodIndex !== 0" class="form-group mb-0"
+                                                [ngClass]="{'has-error': (!weight.valid || productTotal > 100) && (weight.dirty || weight.touched || f.submitted) }">
+                                                <input type="text" class="form-control text-right mw-80"
+                                                    name="weight_{{prodIndex}}" placeholder="0.00%"
+                                                    [textMask]="{mask: percentMask}" appNumeric [customMax]="100"
+                                                    [customMin]="0" [(ngModel)]="product.percentage"
+                                                    (keyup)="checkProductTotal()" #weight="ngModel" />
+                                            </div>
+                                        </td>
+                                        <td width="20%">{{('SSID_LABELS.' + product.assetClassName) | translate}}</td>
+                                        <td width="15%">{{product.currency}}</td>
+                                        <td width="5%">
+                                            <div class="dropdown-relative">
+                                                <button type="button" class="btn-floating"
+                                                    (click)="changeSolutionsAction(prodIndex)">
+                                                    <span class="ion-md-more"></span>
+                                                </button>
+                                                <div [id]="'dropdownSolutionsAction'+prodIndex"
+                                                    class="dropdown-solutions-action dropdown-floating hide-ele">
+                                                    <ul class="floating-dropdown">
+                                                        <li *ngIf="!displayPrefrence['isView']"
+                                                            (click)="changeSolutionsAction(prodIndex)">
+                                                            <a class="action-list"
+                                                                (click)="getProductInfo(product.productId)">
+                                                                <i class="ion-md-create action-list"></i>
+                                                                <span class="action-list"
+                                                                    [translate]="'SETTINGS.PREFERRED_SOLUTION.DETAILS.PRODUCT_TABLE.ACTIONS.PRODUCT_INFO'"></span>
+                                                            </a>
+                                                        </li>
+                                                        <li *ngIf="displayPrefrence['isView']"
+                                                            (click)="changeSolutionsAction(prodIndex)"
+                                                            class="disable-link">
+                                                            <a class="action-list">
+                                                                <i class="ion-md-create action-list"></i>
+                                                                <span class="action-list"
+                                                                    [translate]="'SETTINGS.PREFERRED_SOLUTION.DETAILS.PRODUCT_TABLE.ACTIONS.PRODUCT_INFO'"></span>
+                                                            </a>
+                                                        </li>
+                                                        <li *ngIf="!displayPrefrence['isView']"
+                                                            (click)="changeSolutionsAction(prodIndex)"
+                                                            class="delete-btn">
+                                                            <a class="action-list" (click)="deleteProduct(prodIndex)">
+                                                                <i class="ion-md-close-circle action-list"></i>
+                                                                <span class="action-list"
+                                                                    [translate]="'SETTINGS.PREFERRED_SOLUTION.DETAILS.PRODUCT_TABLE.ACTIONS.DELETE_PRODUCT'"></span>
+                                                            </a>
+                                                        </li>
+                                                        <li *ngIf="displayPrefrence['isView']"
+                                                            (click)="changeSolutionsAction(prodIndex)"
+                                                            class="delete-btn disable-link">
+                                                            <a class="action-list">
+                                                                <i class="ion-md-close-circle action-list"></i>
+                                                                <span class="action-list"
+                                                                    [translate]="'SETTINGS.PREFERRED_SOLUTION.DETAILS.PRODUCT_TABLE.ACTIONS.DELETE_PRODUCT'"></span>
+                                                            </a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <p *ngIf="reqData[selectedTab]['products'].length > 0 && productTotal !== 100"
+                                class="text-error"
+                                [translate]="'EDIT_CURRENT.ERROR_MESSAGE.TOTAL_MUST_BE_EQUAL_TO_100'"></p>
+                        </div>
+                    </div>
+                </ng-container>
+                <div class="col-lg-6 col-md-6 col-sm-8 col-12 hidden-md-up">
+                    <div class="chart-con w-100 align-self-center mt-5">
+                        <div *ngIf="solutionObj[selectedTab].totalAllocation > 0" id="chartdiv2" class="mt-15 mb-5 "
+                            style="height:200px; width: 200px; display: inline-block;"></div>
+                        <div *ngIf="solutionObj[selectedTab].totalAllocation == 0" class="no-record text-center position-relative"
+                            style="height:200px; width: 200px; display: inline-block;">
+                            <p class="no_data_graph"><i class="ion-ios-alert mr-2"></i><span
+                                    [translate]="'SETTINGS.PREFERRED_SOLUTION.DETAILS.NO_RESULT'"></span></p>
+                        </div>
+                        <div class="text-right">
+                            <a (click)="openAnalyticsSidePanel()" class="fs-12 text-icon-wrapper">
+                                <i class="action_icon ion-ios-pulse"></i>
+                                <span class="text-lbl icon-left ff-Montserrat" [translate]="'PORTFOLIO.ACTION.ANALYTICS'"></span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt-4" [ngClass]="{'mb-3': displayPrefrence['isView']}">
+                    <div class="col-md-4">
+                        <div class="form-group mb-0">
+                            <table class="table allocation-table">
+                                <thead>
+                                    <tr>
+                                        <th class="pl-0 pr-0"
+                                            [translate]="'SETTINGS.PREFERRED_SOLUTION.DETAILS.ASSET_ALLOCATION'"
+                                            colspan="2"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="secondary-header">
+                                        <td class="pl-0 pr-0" width="60%"
+                                            [translate]="'PORTFOLIO_ALLOCATION.TABLE.CLASS'"></td>
+                                        <td class="text-center" width="40%"
+                                            [translate]="'SETTINGS.PREFERRED_SOLUTION.DETAILS.PERCENTAGE'"></td>
+                                    </tr>
+                                    <ng-container
+                                        *ngIf="selectedTab === advisorTypes['PROFILER'] && reqData[selectedTab]['assetAllocations']">
+                                        <tr *ngFor="let item of reqData[selectedTab]['assetAllocations']; let i=index;">
+                                            <td class="pt-2 pb-2" width="60%">
+                                                <span class="square asset_indicator"
+                                                    [style.background]="graphColors[i]"></span>
+                                                <span
+                                                    class="asset_lbl">{{('SSID_LABELS.' + item.ssid) | translate}}</span>
+                                            </td>
+                                            <td class="pt-2 pb-2 text-center" width="40%"
+                                                *ngIf="!displayPrefrence['isView']">
+                                                <div class="form-group  mb-0 text-center" *ngIf="item.type !== 1"
+                                                    [ngClass]="{'has-error': allocationPercent.errors && !allocationPercent.valid}">
+                                                    <div class="fix-div-width">
+                                                        <input
+                                                            class="form-control d-inline-block text-right h-25 mw-80" min="0"
+                                                            max="100" name="allocationPercent{{i}}"
+                                                            #allocationPercent="ngModel"
+                                                            [textMask]="{mask: percentMask}" appNumeric
+                                                            pattern="^[0-9][0-9]*(.[0-9]{0,1})?$|^100$"
+                                                            [(ngModel)]="item.percentage" (keyup)="updateGraph()"
+                                                            required />
+                                                    </div>
+                                                </div>
+                                                <div class="mb-0 text-center" *ngIf="item.type === 1">
+                                                    <p class="cash-percentage mb-0 mx-auto"> 
+                                                        {{item.percentage | number : '1.0-1' }}%
+                                                    </p>
+                                                </div>
+                                            </td>
+                                            <td class="pt-2 pb-2 text-center" width="40%"
+                                                *ngIf="displayPrefrence['isView']">
+                                                <div class="mb-0 text-center">
+                                                    {{ (item.percentage) ? (item.percentage | number : '1.0-1') : 0 }}%
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </ng-container>
+
+                                    <ng-container
+                                        *ngIf="selectedTab === advisorTypes['PROTRACKER'] && reqData[selectedTab]['assetAllocations'] && reqData[selectedTab]['assetAllocations'].length > 0">
+                                        <tr *ngFor="let item of reqData[selectedTab]['assetAllocations']; let i=index;">
+                                            <td class="pt-2 pb-2" width="60%">
+                                                <span class="square asset_indicator"
+                                                    [style.background]="graphColors[i]"></span>
+                                                <span
+                                                    class="asset_lbl">{{('SSID_LABELS.' + item.ssid) | translate}}</span>
+                                            </td>
+                                            <td class="pt-2 pb-2 text-center" width="40%">
+                                                <div class="mb-0 text-center">
+                                                    {{ (item.percentage) ? (item.percentage | number : '1.0-1') : 0 }}%
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </ng-container>
+                                    <ng-container
+                                        *ngIf="selectedTab === advisorTypes['PROTRACKER'] && (!reqData[selectedTab]['assetAllocations'] || reqData[selectedTab]['assetAllocations'].length == 0)">
+                                        <tr>
+                                            <td colspan="2" class="no-record text-center">
+                                                <i class="ion-ios-alert mr-2"></i>{{'NO_RESULTS' | translate}}
+                                            </td>
+                                        </tr>
+                                    </ng-container>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div *ngIf="selectedTab === advisorTypes['PROFILER'] && solutionObj[selectedTab].totalAllocation !== 100 && !displayPrefrence['isView']"
+                            class="form-group mb-0 text-center has-error">
+                            <span class="text-error"
+                                [translate]="'EDIT_CURRENT.ERROR_MESSAGE.TOTAL_MUST_BE_EQUAL_TO_100'"></span>
+                        </div>
+                    </div>
+
+                    <div class="col-md-7 offset-md-1 text-center d-flex  align-items-end flex-column">
+                        <div class="chart-con w-100 align-self-center mt-5 hidden-sm-down">
+                            <div *ngIf="solutionObj[selectedTab].totalAllocation > 0" id="chartdiv1" class="mt-15 mb-5 "
+                                style="height:200px; width: 200px; display: inline-block;"></div>
+                            <div *ngIf="solutionObj[selectedTab].totalAllocation == 0"
+                                class="no-record text-center position-relative"
+                                style="height:200px; width: 200px; display: inline-block;">
+                                <p class="no_data_graph"><i class="ion-ios-alert mr-2"></i><span
+                                        [translate]="'SETTINGS.PREFERRED_SOLUTION.DETAILS.NO_RESULT'"></span></p>
+                            </div>
+                            <div class="text-right">
+                                <a (click)="openAnalyticsSidePanel()" class="fs-12 text-icon-wrapper">
+                                    <i class="action_icon ion-ios-pulse"></i>
+                                    <span class="text-lbl icon-left ff-Montserrat" [translate]="'PORTFOLIO.ACTION.ANALYTICS'"></span>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="chart-table-w mt-auto w-100">
+                            <table class="table allocation-table text-left" *ngIf="!displayPrefrence['isAdd']">
+                                <thead>
+                                    <tr>
+                                        <th class="pl-0 pr-0" colspan="2"
+                                            [translate]="'SETTINGS.PREFERRED_SOLUTION.DETAILS.CURRENCY_ALLOCATION'">
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody
+                                    *ngIf="reqData[selectedTab]['currencyAllocations'] && reqData[selectedTab]['currencyAllocations'].length > 0">
+                                    <tr class="secondary-header">
+                                        <td class="pl-0 pr-0" width="60%"
+                                            [translate]="'SETTINGS.PREFERRED_SOLUTION.DETAILS.CURRENCY'"></td>
+                                        <td class="text-center" width="40%"
+                                            [translate]="'SETTINGS.PREFERRED_SOLUTION.DETAILS.PERCENTAGE'"></td>
+                                    </tr>
+                                    <tr *ngFor="let currencyData of reqData[selectedTab]['currencyAllocations']">
+                                        <td class="pt-2 pb-2" width="60%">
+                                            <span>{{currencyData['currencyName']}}</span>
+                                        </td>
+                                        <td class="pt-2 pb-2 text-center" width="40%">
+                                            <div class="mb-0 text-center">
+                                                {{currencyData['percentage']}}
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                                <tbody
+                                    *ngIf="!reqData[selectedTab]['currencyAllocations'] || (reqData[selectedTab]['currencyAllocations'] && reqData[selectedTab]['currencyAllocations'].length === 0)">
+                                    <tr>
+                                        <td colspan="2" class="no-record text-center">
+                                            <i class="ion-ios-alert mr-2"></i>{{'NO_RESULTS' | translate}}
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" *ngIf="!displayPrefrence['isView']">
+                    <div class="col-12">
+                        <div class="form-group mt-3 mb-1 text-right">
+                            <button class="btn btn-secondary btn-small" type="button"
+                                [translate]="'SETTINGS.PREFERRED_SOLUTION.DETAILS.CANCEL'"
+                                (click)="revertHandler(); closeButtonDisable = true"
+                                [disabled]="closeButtonDisable"></button>
+                            <button
+                                [disabled]="f.form.invalid || (selectedTab === advisorTypes['PROFILER'] && solutionObj['profiler'].totalAllocation > 100) || graphError !== '' || (selectedTab === advisorTypes['PROTRACKER'] && reqData[this.selectedTab]['products'].length > 0 && productTotal !== 100) || saveDisable"
+                                class="btn btn-small btn-success mr-2" type="button"
+                                (click)="saveSolution();saveDisable = true"
+                                [translate]="'SETTINGS.PREFERRED_SOLUTION.DETAILS.SAVE'"
+                                *ngIf="displayPrefrence['isAdd'] || displayPrefrence['isEdit']"></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<ng-container *ngIf="isAnalyticsSidePanelOpen">
+    <app-analytics (closePanelEvent)="closePanel()" [solutionData]="reqData[selectedTab]" [graphColors]="graphColors"></app-analytics>
+</ng-container>
+<div class="view-side-form">
+    <router-outlet></router-outlet>
+</div>

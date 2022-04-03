@@ -1,0 +1,45 @@
+<div class="summary-main bg-white">
+    <div class="row no-gutters h-100">
+        <div class="col-12 col-md-6 col-lg-4 col-xl-3">
+            <div class="profile_summary">
+                <h1 class="profile_title" [translate]="'PROFILE_SUMMARY.PROFILE_SUMMARY_TITLE'"></h1>
+                <p class="profile_text" style="white-space: pre-line;" [translate]="'PROFILE_SUMMARY.PROFILE_SUMMARY_TEXT_1'"></p>
+                <p class="profile_text" [translate]="'PROFILE_SUMMARY.PROFILE_SUMMARY_TEXT_2'"></p>
+            </div>
+        </div>
+        <div class="col-12 col-md-6 col-lg-8 col-xl-9">
+            <div class="profile_actions" *ngIf='progressSummary'>
+                <div class="profile_action" [routerLink]="['/client',clientId,'profile','personal-info']">
+                    <span class="profile_icon" [ngClass]="{'complete_profile ion-ios-checkmark-empty': progressSummary['Personal Information'] == 100, 'zero_profile': progressSummary['Personal Information'] == 0, 'inprogress_profile': (progressSummary['Personal Information'] > 0 && progressSummary['Personal Information'] < 100)}"></span>
+                    <div class="content">
+                        <h5 [translate]="'SUMMARY.PERSONAL_INFO'"></h5>
+                        <p [translate]="'SUMMARY.PERSONAL_INFO_DESCRIPTION'"></p>
+                    </div>
+                    <a>
+                        <span class="action_icon ion-ios-arrow-forward"></span>
+                    </a>
+                </div>
+                <div class="profile_action" [routerLink]="engagementRoute" *ngIf="accessRights['ENG01']['accessLevel'] > 1">
+                    <span class="profile_icon" [ngClass]="{'complete_profile ion-ios-checkmark-empty': progressSummary['Engagement Information'] == 100, 'zero_profile': progressSummary['Engagement Information'] == 0, 'inprogress_profile': (progressSummary['Engagement Information'] > 0 && progressSummary['Engagement Information'] < 100) }"></span>
+                    <div class="content">
+                        <h5 [translate]="'SUMMARY.ENGAGEMENT'"></h5>
+                        <p [translate]="'SUMMARY.ENGAGEMENT_DESCRIPTION'"></p>
+                    </div>
+                    <a>
+                        <span class="action_icon ion-ios-arrow-forward"></span>
+                    </a>
+                </div>
+                <div class="profile_action" [routerLink]="['/client',clientId,'profile','risk-tolerance']" *ngIf="accessRights['RISKTOLERCLIENT']['accessLevel'] > 0">
+                    <span class="profile_icon" [ngClass]="{'complete_profile ion-ios-checkmark-empty': progressSummary['Risk Tolerance'] == 100, 'zero_profile': progressSummary['Risk Tolerance'] == 0, 'inprogress_profile': (progressSummary['Risk Tolerance'] > 0 && progressSummary['Risk Tolerance'] < 100)}"></span>
+                    <div class="content">
+                        <h5 [translate]="'SUMMARY.RISK_TOLERANCE_KYC'"></h5>
+                        <p [translate]="'SUMMARY.RISK_TOLERANCE_KYC_DESCRIPTION'"></p>
+                    </div>
+                    <a>
+                        <span class="action_icon ion-ios-arrow-forward"></span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

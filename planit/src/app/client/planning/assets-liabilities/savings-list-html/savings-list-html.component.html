@@ -1,0 +1,167 @@
+<div>
+    <table class="table savingsData-table">
+        <thead>
+            <tr>
+                <th width="5%" class="pt-0 text-left hidden-xs-down">&nbsp;</th>
+                <th width="20%" class="pt-0 text-left" [translate]="'SAVINGS.ACCOUNT_NAME'"></th>
+                <th width="10%" class="pt-0 text-left hidden-xs-down" [translate]="'SAVINGS.ACCOUNT_TYPE'"></th>
+
+                <th width="65%" class="pt-0 text-left">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th width="25%" *ngIf="selectedGroupBy.id === 2" class="p-0 text-left hidden-xs-down"
+                                    [translate]="'SAVINGS.GOAL'"></th>
+                                <th width="20%" class="p-0 text-right">
+                                    <span style="display: block;" [translate]="'SAVINGS.CLIENT_SAVINGS'"></span>
+                                </th>
+                                <th width="20%" class="p-0 text-right">
+                                    <span style="display: block;" [translate]="'SAVINGS.THIRD_PARTY_SAVINGS'"></span>
+                                </th>
+                                <th width="15%" class="p-0 text-right" [translate]="'SAVINGS.START'"></th>
+                                <th width="15%" class="p-0 text-right" [translate]="'SAVINGS.END'"></th>
+                                <th width="5%" class="p-0 text-center">&nbsp;</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <ng-container *ngIf="!noSavings && Ids.length > 0">
+                <ng-container *ngFor="let xid of Ids">
+                    <tr *ngIf="selectedGroupBy.id == 1 && i_id == '' ">
+                        <td colspan="6">
+                            <h3 [ngStyle]="{'display':xid == unallocated?'inline':''}">{{xid}}</h3>
+                            <span *ngIf="xid == unallocated">
+                                <ng-template #noDataWarning>
+                                    <p>{{ 'GOAL.WARNING.UNALLOCATED_SAVINGS' | translate}}</p>
+                                    <p class="text-right m-0 p-0">
+                                        <button class="btn btn-secondary btn-small m-0" (click)="warning.close()"
+                                            [translate]="'RISK_RESULTS_PAGE.WARNING.CLOSE'"></button>
+                                    </p>
+                                </ng-template>
+                                <span class="ion-ios-alert pl-1" [ngbTooltip]="noDataWarning" #warning="ngbTooltip" triggers="manual" placement="right"
+                                    (click)="warning.open()"></span>
+                            </span>
+                        </td>
+                    </tr>
+                    <tr *ngFor="let linkedAccountKey of savingsData[xid]['linkedAccountKeys']">
+                        <td width="5%" class="text-left hidden-xs-down">
+                            <span class="client-avatars" *ngFor="let owner of linkedAccountDetails[linkedAccountKey].ownersList">
+                                <span *ngIf="!owner['avatar']" class="initials client-icon" [ngClass]="{'spouse': owner.relation == PERSON_RELATION.CLIENT2, 'childs': owner.relation == PERSON_RELATION.SON || owner.relation == PERSON_RELATION.DAUGHTER}"
+                                   >{{owner.btnInitials}}</span>
+                                <img class="initials bg-transparent" height="50" *ngIf="owner['avatar']" [src]="owner['avatar']" (error)="owner.avatar = null" />
+                            </span>
+                        </td>
+                        <td width="20%" class="text-left">
+                            <span class="fw-400">{{linkedAccountDetails[linkedAccountKey].description}}</span>
+                        </td>
+                        <td width="10%" class="text-left hidden-xs-down">
+                            <div class="fw-400">{{linkedAccountDetails[linkedAccountKey].regulatoryType}}</div>
+                        </td>
+
+                        <td width="65%" class="text-left p-0">
+                            <table class="savings-goal-table" *ngFor="let saving of savingsData[xid][linkedAccountKey]; index as savingIndex; let last = last">
+                                <tbody>
+                                    <tr *ngFor="let tier of saving.tierPayloadList  ; index as tierindex">
+                                        <td *ngIf="selectedGroupBy.id === 2" width="30%" class="fw-400 hidden-xs-down">
+                                            <div *ngIf="saving.linkedGoalDescription && tierindex == 0"
+                                                [ngStyle]="{'display':saving.linkedGoalDescription == unallocated ?'inline':''}">
+                                                {{saving.linkedGoalDescription}}</div>
+                                            <span *ngIf="saving.linkedGoalDescription && saving.linkedGoalDescription === unallocated && tierindex === 0">
+                                                <ng-template #noDataWarning>
+                                                    <p>{{ 'GOAL.WARNING.UNALLOCATED_SAVINGS' | translate}}</p>
+                                                    <p class="text-right m-0 p-0">
+                                                        <button class="btn btn-secondary btn-small m-0" (click)="warning.close()"
+                                                            [translate]="'RISK_RESULTS_PAGE.WARNING.CLOSE'"></button>
+                                                    </p>
+                                                </ng-template>
+                                                <span class="ion-ios-alert pl-1" [ngbTooltip]="noDataWarning" #warning="ngbTooltip" triggers="manual"
+                                                    placement="right" (click)="warning.open()"></span>
+                                            </span>
+                                            <span *ngIf="tierindex > 0">&nbsp;</span>
+                                        </td>
+                                        <td width="15%" class="text-right">
+                                            <div class="fw-400">{{tier.savingsAmount |
+                                                currency:clientData['currencyCode'] : 'symbol-narrow':'1.0-0'}}</div>
+                                        </td>
+                                        <td width="20%" class="text-right">
+                                            <div class="fw-400">{{tier.thirdPartySavings > 0 ? (tier.thirdPartySavings
+                                                | currency:clientData['currencyCode'] : 'symbol-narrow':'1.0-0') :
+                                                '-' }}</div>
+                                        </td>
+                                        <td width="15%" class="text-right">
+                                            <span class="fw-400">
+                                                {{ (selectedViewBy.id==1) ? tier.startYear : (tier.spouseStartAge ?
+                                                tier.clientStartAge + '/' + tier.spouseStartAge :
+                                                tier.clientStartAge)}}
+                                            </span>
+                                        </td>
+                                        <td width="15%" class="text-right">
+                                            <span class="fw-400">
+                                                {{ (selectedViewBy.id==1) ? tier.endYear : (tier.spouseEndAge ?
+                                                tier.clientEndAge + '/' + tier.spouseEndAge : tier.clientEndAge)}}
+                                            </span>
+                                        </td>
+                                        <td width="5%" class="text-center">
+                                        <div class="dropdown-relative" [ngClass]="{'dropdown-up' : last || (savingsData[xid][linkedAccountKey].length - 2 < savingIndex + 1 )}" *ngIf="tierindex == 0">
+                                                <button type="button" class="btn-floating" (click)="toggleActionMenu('dropdownAssetsAction', saving.key)">
+                                                    <span class="ion-md-more"></span>
+                                                </button>
+                                                <div [id]="'dropdownAssetsAction_'+saving.key" class="dropdown-portfolio-action dropdown-floating hide-ele">
+                                                    <ul class="floating-dropdown">
+                                                        <li (click)="toggleActionMenu('dropdownAssetsAction', saving.key)"
+                                                            *ngIf="accessRights['SAV01']['accessLevel'] > 0" class="add-btn">
+                                                            <a class="action-list" [routerLink]="(type == 'account' && i_id) ? ['add-savings'] : [saving.linkedAccountKey, 'add-savings']">
+                                                                <i class="ion-md-add-circle action-list"></i>
+                                                                <span class="action-list" [translate]="'ASSETS_SUMMARY.ACTION.ADD_SAVINGS'"></span>
+                                                            </a>
+                                                        </li>
+                                                        <li (click)="toggleActionMenu('dropdownAssetsAction', saving.key)" *ngIf="saving.allowEdit && accessRights['SAV01']['accessLevel'] > 0">
+                                                            <a class="action-list" *ngIf="type === ASSETS_BREADCRUMB.ACCOUNT && accountId === '' " [routerLink]="['/client', this.clientId, 'planning', 'assets-liabilities-savings' , saving.key, 'edit-savings']">
+                                                                <i class="ion-md-create action-list"></i>
+                                                                <span class="action-list" [translate]="'ASSETS_SUMMARY.ACTION.EDIT_SAVINGS'"></span>
+                                                            </a>
+                                                            <a class="action-list" *ngIf="type === ASSETS_BREADCRUMB.ACCOUNT && accountId !== '' " [routerLink]="['/client', this.clientId, 'planning', 'assets-liabilities', accountId, 'savings' , saving.key, 'edit-savings']">
+                                                                <i class="ion-md-create action-list"></i>
+                                                                <span class="action-list" [translate]="'ASSETS_SUMMARY.ACTION.EDIT_SAVINGS'"></span>
+                                                            </a>
+                                                            <a class="action-list" *ngIf="type === ASSETS_BREADCRUMB.GOAL && goalId === '' " [routerLink]="['/client', this.clientId, 'planning', 'goals', 'savings', saving.key, 'edit-savings']">
+                                                                <i class="ion-md-create action-list"></i>
+                                                                <span class="action-list" [translate]="'ASSETS_SUMMARY.ACTION.EDIT_SAVINGS'"></span>
+                                                            </a>
+                                                            <a class="action-list" *ngIf="type === ASSETS_BREADCRUMB.GOAL && goalId !== '' " [routerLink]="['/client', this.clientId, 'planning', 'goals', goalId, 'savings', saving.key, 'edit-savings']">
+                                                                <i class="ion-md-create action-list"></i>
+                                                                <span class="action-list" [translate]="'ASSETS_SUMMARY.ACTION.EDIT_SAVINGS'"></span>
+                                                            </a>
+                                                        </li>
+                                                        <li *ngIf="saving.allowEdit" (click)="toggleActionMenu('dropdownAssetsAction', saving.key); delete(saving.key)"
+                                                            class="delete-btn">
+                                                            <a class="action-list">
+                                                                <i class="ion-md-close-circle action-list"></i>
+                                                                <span class="action-list" [translate]="'SAVINGS.ACTION.DELETE_SAVINGS'"></span>
+                                                            </a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <span *ngIf="tierindex > 0">&nbsp;</span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                </ng-container>
+            </ng-container>
+            <ng-container *ngIf="noSavings || Ids.length == 0">
+                <tr>
+                    <td colspan="7" class="no-record text-center">
+                        <i class="ion-ios-alert mr-2"></i>{{'NO_RESULTS' | translate}}
+                    </td>
+                </tr>
+            </ng-container>
+        </tbody>
+    </table>
+</div>

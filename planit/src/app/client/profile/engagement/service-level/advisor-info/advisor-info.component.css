@@ -1,0 +1,28 @@
+.equal-height{
+    min-height: 40px;
+    display: block;
+}
+.field-value{
+    border-radius: 0;
+    border: 1px solid transparent;
+    background-color: transparent;
+    outline: none;
+    color: #345;
+    font-family: "Open Sans";
+    font-weight: 400;
+    font-size: 14px;
+}
+
+.search-button i {
+    float: left;
+    width: 20px;
+    height: 20px;
+    background: #88aa33;
+    border-radius: 50%;
+    line-height: 20px;
+    text-align: center;
+    color: #fff;
+    font-size: 15px;
+    margin: 2px -1px 0 0;
+}
+

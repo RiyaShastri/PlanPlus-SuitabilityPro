@@ -1,0 +1,94 @@
+<!-- input file Put out of any ng if condtion  -->
+<input type="file" #fileInput [multiple]="(maxFiles != 1)" (click)="fileInput.value = null" (change)="showFilelected($event)" style="display:none" />
+<ng-container *ngFor="let file of fileList; let j = index">
+    <form name="form{{j}}" *ngIf="!file.isDocumentUploaded && !file.loading"
+        (ngSubmit)="f.form.valid && uploadDocument(j)" #f="ngForm" novalidate>
+        <div *ngIf="isFileselected && !isFilePreview" class="form-group"
+            [ngClass]="{ 'has-error': f.submitted && !fileUnderType.valid }">
+            <label class="custom-form-label">{{'DOCUMENT.DOCUMENT_UPLOAD.FILE_UNDER' | translate}}</label>
+            <p-dropdown [options]="documentTypes" [style]="{'text-align': 'left'}" name="fileUnderType{{j}}" [(ngModel)]="file.fileType"
+                #fileUnderType="ngModel" required (ngModelChange)="checkFileUnderList($event)"
+                placeholder="{{ 'DOCUMENT.DOCUMENT_UPLOAD.CHOOSE_FILE_UNDER' | translate }}" optionLabel="description">
+            </p-dropdown>
+            <p>{{file.type}}</p>
+
+        </div>
+        <div *ngIf="isFileselected && !isFilePreview" class="form-group"
+            [ngClass]="{ 'has-error': !documentName.valid  && documentName.dirty}">
+            <label class="custom-form-label">{{'DOCUMENT.DOCUMENT_UPLOAD.DOCUMENT_NAME' | translate}}</label>
+            <input type="text" class="form-control" name="documentName{{j}}" [(ngModel)]="file.fileName"
+                #documentName="ngModel" required />
+        </div>
+        <div class="upload-image-icon" *ngIf="isFileselected && isFilePreview">
+            <div class="remove-selected" *ngIf="isFileselected">
+                <i class="ion-md-close-circle" (click)="removeSelected(j)"></i>
+            </div>
+            <img class="imageWidth" src="{{base64Image}}" />
+        </div>
+        <div *ngIf="isFileselected && !isFilePreview">
+            <div class=" text-center upload-image-icon">
+                <i class="ion-md-document"></i>
+                <div class="remove-selected" *ngIf="isFileselected">
+                    <i class="ion-md-close-circle" (click)="removeSelected(j)"></i>
+                </div>
+            </div>
+            <span class="ellipsis-text file-name" [appNoOverflowTooltip]="fileName" triggers="manual"
+                placement="bottom">{{file.fileName}}</span>
+            <!-- <span class="">{{fileName}}</span> -->
+        </div>
+        <div class="form-group text-center">
+            <button (click)="removeSelected(j)" type="button" class="btn btn-small btn-secondary mr-2">{{ 'FORM.ACTION.REMOVE'
+                    | translate }}</button>
+            <button *ngIf="file.errors.length == 0" [disabled]="file.loading || !f.form.valid ||  !file.file"
+                class="btn btn-small btn-success">{{
+                    'FORM.ACTION.UPLOAD' | translate }}</button>
+            <div class="form-group upload-error text-center" *ngIf="file.errors.length > 0">
+                    <ul>
+                        <li *ngFor="let err of file.errors">{{err}}</li>
+                    </ul>
+            </div>
+        </div>
+    </form>
+    <div *ngIf="file.loading">
+        <div class="form-group text-center">
+            <i *ngIf="!documentLoaded" aria-hidden="true" class="fa fa-spinner fa-pulse loader-icon"></i>
+            <!-- <img class="load" [src]="imageUrl" /> -->
+        </div>
+        <div class="form-group text-center">
+            <span> {{ 'FORM.PROCESS.UPLOADING' | translate }}</span>
+        </div>
+        <div class="form-group text-center">
+            <!--<button (click)="cancel()" type="button" class="btn btn-small btn-secondary mr-2">{{ 'FORM.ACTION.CANCEL'
+                    | translate }}</button>-->
+        </div>
+    </div>
+    <div *ngIf="file.isDocumentUploaded">
+        <div class="form-group text-center">
+            <span> {{ 'DOCUMENT.DOCUMENT_UPLOAD.UPLOADED_SUCCESS_MESSAGE' | translate }} </span>
+        </div>
+    </div>
+    <div class="pt-2 pb-2 mt--15">
+            <hr/>
+    </div>
+    
+</ng-container>
+<div class="text-center upload-image-icon" draggable="true" ngClass="{{dragAreaClass}}">
+    <i [ngClass]="iconClass"></i>
+</div>
+<div class="upload-image-text text-center">
+    <p *ngIf="!dropHereLabel" class="mt-lg-2">{{ 'FILEUPLOAD.DROP_IMAGE_HERE' | translate }}</p>
+    <p *ngIf="dropHereLabel" class="mt-lg-2">{{ dropHereLabel }}</p>
+
+    <p>
+        or
+        <span class="green" (click)="browseFile()">{{ 'FILEUPLOAD.BROWSE_IMAGE' | translate }}</span>
+    </p>
+</div>
+    <p class="pt-2">{{ 'FILEUPLOAD.MAX_FILE' | translate }}</p>
+<!-- <div class="row upload-error text-center" *ngIf="errors.length > 0">
+    <div class="col-12">
+        <ul>
+            <li>{{errors[0]}}</li>
+        </ul>
+    </div>
+</div> -->

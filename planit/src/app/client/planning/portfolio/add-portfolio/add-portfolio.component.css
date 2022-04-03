@@ -1,0 +1,37 @@
+:host {
+    background: #fff;
+    position: fixed;
+    left: auto;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 30%;
+    min-width: 250px;
+    z-index: 100;
+}
+
+.isDisabled {
+    color: currentColor;
+    cursor: not-allowed;
+    opacity: 0.5;
+    text-decoration: none;
+}
+
+.member-avatar-wrapper {
+    flex: 0 0 30px;
+}
+
+.btn-group.btn-save .dropdown-menu.btn-dropDown-top {
+    top: inherit !important;
+    bottom: 100%;
+}
+
+.no-investors {
+    color: #6c6c6c !important;
+    font-weight: 500 !important;
+    padding: 9px 10px !important;
+}
+
+.table>tbody>tr:last-child>td.no-investors {
+    border-bottom: 0 !important;
+}

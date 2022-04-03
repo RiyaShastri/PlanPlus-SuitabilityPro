@@ -1,0 +1,301 @@
+<div class="side-form side-form-full-width">
+    <div class="box">
+        <div class="box-header">
+            <h1 class="d-inline-block fw-500">
+                <div ngbDropdown class="dropdown-common m-0">
+                    <a id="optionsDropdown" ngbDropdownToggle>
+                        Assumptions - {{selectedOption.description}}
+                        <i class="ion-md-arrow-dropdown fs-18"></i>
+                    </a>
+                    <div ngbDropdownMenu aria-labelledby="optionsDropdown">
+                        <ul>
+                            <li *ngFor="let option of options">
+                                <a class="dropdown-item" [ngClass]="{ 'active' : selectedOption.id === option.id }"
+                                    (click)="changeOption(option.id)">
+                                    <span></span>{{option.description}}
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </h1>
+            <span class="float-right">
+                <span (click)="back()"
+                    class="sidebar_action_icon ion-md-close-circle d-inline-block va-middle pl-4"></span>
+            </span>
+        </div>
+        <form name="form" (ngSubmit)="f.form.valid && saveAssumptions()" #f="ngForm" novalidate>
+            <div class="box-body" *ngIf="portfolioTypes.length > 0 && assumptions">
+                <div class="form-group"
+                    [ngClass]="{ 'has-error': !portfolioType.valid && (portfolioType.dirty || f.submitted)}">
+                    <label class="custom-form-label color-black fs-14"
+                        [translate]="'GOAL.ANALYSIS.LABEL.INVESTMENT_STRATEGY'"></label>
+                    <p-dropdown placeholder="{{ 'FORM.PLACEHOLDER.SELECT_INVESTMENT_STRATEGY' | translate }}"
+                        [options]="portfolioTypes" (onChange)="portfolioSelected()" optionLabel="description"
+                        name="portfolioType" [(ngModel)]="assumptions['portfolio']" #portfolioType="ngModel" required>
+                    </p-dropdown>
+                </div>
+                <div class="row row-label">
+                    <div class="col-5 text-left fw-700">
+                        <span class="same-width-label" [translate]="'GOAL.ANALYSIS.LABEL.RETURN_ON_ASSETS'"></span>
+                    </div>
+                    <div class="col-7 text-right fw-700" [translate]="'GOAL.ANALYSIS.LABEL.STANDARD_DEVIATION'"></div>
+                </div>
+                <div class="row row-label">
+                    <div class="col-5 fw-700" *ngIf="assumptions['portfolio'].id !== '0'">
+                        <span class="same-width-label text-right">{{assumptions['returnOnAssets'] | number: '1.0-2'}}%</span>
+                    </div>
+                    <div class="col-5 form-group" *ngIf="assumptions['portfolio'].id === '0'"
+                        [ngClass]="{ 'has-error': (f.submitted || return.dirty) && !return.valid }">
+                        <input class="form-control same-width-label float-right text-right" name="return"
+                            [(ngModel)]="assumptions['returnOnAssets']" #return="ngModel" 
+                            [textMask]="{mask: percentMask1}" appNumeric min="0" max="100" style="width: 80px" />
+                    </div>
+                    <div class="col-7 text-right fw-700" *ngIf="assumptions['portfolio'].id !== '0'">
+                        {{assumptions['standardDeviation'] | number: '1.0-2'}}%</div>
+                    <div *ngIf="assumptions['portfolio'].id === '0'" class="col-7 text-right form-group"
+                        [ngClass]="{ 'has-error': (f.submitted || standardDeviation.dirty) && !standardDeviation.valid }">
+                        <input class="form-control float-right text-right" name="standardDeviation"
+                            [(ngModel)]="assumptions['standardDeviation']" #standardDeviation="ngModel" 
+                            [textMask]="{mask: percentMask1}" appNumeric min="0" max="100" style="width: 80px" />
+                    </div>
+                </div>
+                <div class="accordion-wrapper assumptions-accordion-wrapper">
+                    <p-accordion [multiple]="true">
+                        <p-accordionTab [selected]="true">
+                            <p-header>
+                                <h3 class="fs-16 fw-700 d-inline-block"
+                                    [translate]="'GOAL.ANALYSIS.LABEL.WEIGHTED_RETURN_DEVIATION'"></h3>
+                            </p-header>
+                            <table class="table goal-analysis mt-1">
+                                <thead>
+                                    <tr>
+                                        <th width="40%" class="pb-0" [translate]="'GOAL.ANALYSIS.LABEL.PORTFOLIO'"></th>
+                                        <th width="20%" class="pb-0" [translate]="'GOAL.ANALYSIS.LABEL.AMOUNT'"></th>
+                                        <th width="20%" class="text-right pb-0"
+                                            [translate]="'GOAL.ANALYSIS.LABEL.RETURN_ON_ASSETS'"></th>
+                                        <th width="20%" class="text-right pb-0"
+                                            [translate]="'GOAL.ANALYSIS.LABEL.STANDARD_DEVIATION'"></th>
+                                    </tr>
+                                </thead>
+                                <tbody
+                                    *ngIf="assumptions['investmentStrategyDTO']['portfolioSummaryPayloads'] && assumptions['investmentStrategyDTO']['portfolioSummaryPayloads'].length > 0">
+                                    <tr
+                                        *ngFor="let portfolio of assumptions['investmentStrategyDTO']['portfolioSummaryPayloads']">
+                                        <td width="40%">{{portfolio['description']}}</td>
+                                        <td width="20%">{{portfolio['amount'] | currency: clientData['currencyCode']:'symbol-narrow':'1.0-0'}}</td>
+                                        <td width="20%" class="text-right">{{portfolio['rateOfReturn']}}</td>
+                                        <td width="20%" class="text-right">{{portfolio['standardDeviation']}}</td>
+                                    </tr>
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td width="40%" class="fw-700" [translate]="'GOAL.ANALYSIS.LABEL.WEIGHTED'">
+                                        </td>
+                                        <td width="20%" class="fw-700">{{assumptions['weightedAmount'] | currency: clientData['currencyCode']:'symbol-narrow':'1.0-0'}}</td>
+                                        <td width="20%" class="fw-700 text-right">{{assumptions['returnOnAssets'] | number: '1.0-2'}}%</td>
+                                        <td width="20%" class="fw-700 text-right">{{assumptions['standardDeviation'] | number: '1.0-2'}}%
+                                        </td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </p-accordionTab>
+                        <p-accordionTab>
+                            <p-header>
+                                <h3 class="fs-16 fw-700 d-inline-block"
+                                    [translate]="'GOAL.ANALYSIS.LABEL.INCOME_DISTRIBUTION'"></h3>
+                            </p-header>
+                            <table class="table goal-analysis d-flex">
+                                <tbody>
+                                    <tr *ngFor="let income of incomeDistribution; index as i">
+                                        <td width="40%">{{income['displayName']}}</td>
+                                        <td class="pt-2 pb-2 interest-div" width="20%" *ngIf="assumptions['useCustom']">
+                                            <div class="form-group mb-0"
+                                                [ngClass]="{ 'has-error': ((f.submitted || income_dist.dirty) && !income_dist.valid) || incomeDistributionInvalid}">
+                                                <input class="form-control d-inline-block text-right h-25"
+                                                    name="income_dist_{{i}}"
+                                                    [ngClass]="{ 'border-0': income['valueKey'] === 'interest'}" 
+                                                    [(ngModel)]="assumptions[income['valueKey']+'CustomStr']"
+                                                    (ngModelChange)="conserveTotalIncomeDistribution()"
+                                                    #income_dist="ngModel" [textMask]="{mask: percentMask}" appNumeric [min]="0"
+                                                    [max]="100" style="width: 80px" [disabled]="income['valueKey'] === 'interest'" />
+                                            </div>
+                                        </td>
+                                        <td class="pt-2 pb-2 interest-div" width="20%" *ngIf="!assumptions['useCustom']">
+                                        </td>
+                                       <td class="text-right" width="20%">
+                                            <div class="mb-0">
+                                                <span
+                                                    class="text-right">{{assumptions[income['valueKey'] + 'DefaultStr'] | number:'1.0-0'}}%</span>
+                                            </div>
+                                        </td>
+                                        <td width="20%"></td>
+                                    </tr>
+                                    <span *ngIf="incomeDistributionInvalid && assumptions['useCustom']" class="text-error">{{'GOAL.ANALYSIS.LABEL.INVALID_INCOME_DISTRIBUTION' | translate}}</span>
+                                    <tr>
+                                        <td width="40%" [translate]="'GOAL.ANALYSIS.LABEL.USE_CUSTOM_DISTRIBUTION'">
+                                        </td>
+                                        <td width="20%"></td>
+                                        <td class="text-right" width="20%">
+                                            <div class="form-group">
+                                                <p-checkbox name="useCustom" [(ngModel)]="assumptions['useCustom']"
+                                                    binary="true" (onChange)="setInvalidFlagIfCustomAndInvalidIncomeDistribution()" ></p-checkbox>
+                                            </div>
+                                        </td>
+                                        <td width="20%"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </p-accordionTab>
+                      <p-accordionTab>
+                        <p-header>
+                          <h3 class="fs-16 fw-700 d-inline-block"
+                              [translate]="'GOAL.ANALYSIS.LABEL.INCOME_TAX_RATES'"></h3>
+                        </p-header>
+                        <table class="table goal-analysis">
+                          <tbody>
+                          <tr>
+                            <td width="40%" [translate]="'GOAL.ANALYSIS.LABEL.AVERAGE_TAX'"></td>
+                            <td width="20%">
+                            <td class="pt-2 pb-2 interest-div" width="20%">
+                              <div class="form-group mb-0"
+                                   [ngClass]="{ 'has-error': (f.submitted || averageTax.dirty) && !averageTax.valid }">
+                                <input class="form-control d-inline-block text-right h-25"
+                                       name="averageTax"
+                                       [(ngModel)]="assumptions['taxRate']"
+                                       #averageTax="ngModel" [textMask]="{mask: percentMask2}" appNumeric min="0"
+                                       max="100" style="width: 80px" />
+                              </div>
+                            </td>
+                          </tr>
+                          <tr *ngIf="retirementGoal">
+                            <td width="40%" [translate]="'GOAL.ANALYSIS.LABEL.FULL_TAX'"></td>
+                            <td width="20%">
+                            <td class="text-right" width="20%">
+                              <div class="form-group">
+                                <p-checkbox name="checkbox" [(ngModel)]="assumptions['fullTaxCalc']"
+                                            binary="true"></p-checkbox>
+                              </div>
+                            </td>
+
+                          </tr>
+                          </tbody>
+                        </table>
+                      </p-accordionTab>
+                        <p-accordionTab>
+                            <p-header>
+                                <h3 class="fs-16 fw-700 d-inline-block"
+                                    [translate]="'GOAL.ANALYSIS.LABEL.OPTIMIZATION_OPTIONS'"></h3>
+                            </p-header>
+                            <table class="table goal-analysis">
+                                <tbody>
+                                    <tr>
+                                        <td width="40%" [translate]="'GOAL.ANALYSIS.LABEL.TAX_OPTIMIZATION'"></td>
+                                        <td width="20%">
+                                            <div class="form-check d-flex form-group m-0">
+                                                <span>
+                                                    {{'RADIOBUTTON.LABELS.NO' | translate}}
+                                                    <p-radioButton name="taxOptimization" value="0" label=""
+                                                        [(ngModel)]="assumptions['optString']" required
+                                                        #taxOptimization="ngModel"></p-radioButton>
+                                                </span>
+                                            </div>
+
+                                        </td>
+                                        <td width="20%">
+                                            <div class="form-check d-flex form-group m-0">
+                                                <span>
+                                                    {{'RADIOBUTTON.LABELS.YES' | translate}}
+                                                    <p-radioButton name="taxOptimization" value="2" label=""
+                                                        [(ngModel)]="assumptions['optString']" required
+                                                        #taxOptimization="ngModel"></p-radioButton>
+                                                </span>
+                                            </div>
+                                        </td>
+                                        <td width="20%"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </p-accordionTab>
+                        <p-accordionTab>
+                            <p-header>
+                                <h3 class="fs-16 fw-700 d-inline-block"
+                                    [translate]="'GOAL.ANALYSIS.LABEL.OTHER_OPTIONS'"></h3>
+                            </p-header>
+                            <table class="table goal-analysis">
+                                <tbody>
+                                    <tr>
+                                        <td width="40%" [translate]="'GOAL.ANALYSIS.LABEL.CORPORATE_TAX_DEFERRAL'"></td>
+                                        <td class="pt-2 pb-2 interest-div" width="20%">
+                                            <div class="form-group mb-0"
+                                                [ngClass]="{'has-error': !tax_deferral.valid && f.submitted }">
+                                                <input class="form-control d-inline-block text-right h-25"
+                                                    name="tax_deferral" [(ngModel)]="assumptions['cclassTaxDefe']"
+                                                    #tax_deferral="ngModel" [textMask]="{mask: percentMask}" appNumeric min="0"
+                                                    max="100" style="width: 80px" />
+                                            </div>
+                                        </td>
+                                        <td width="20%"></td>
+                                        <td width="20%"></td>
+                                    </tr>
+                                    <tr>
+                                        <td width="40%" [translate]="'GOAL.ANALYSIS.LABEL.CORPORATE_DEFERRAL_PERIOD'">
+                                        </td>
+                                        <td class="pt-2 pb-2 interest-div" width="20%">
+                                            <div class="form-group mb-0"
+                                                [ngClass]="{'has-error': !deferral_period.valid && f.submitted }">
+                                                <input class="form-control d-inline-block text-right h-25"
+                                                    name="deferral_period" [(ngModel)]="assumptions['cclassDefePeriod']"
+                                                    #deferral_period="ngModel" [textMask]="{mask: percentMask}" appNumeric
+                                                    min="0" max="100" style="width: 80px" />
+                                            </div>
+                                        </td>
+                                        <td width="20%"></td>
+                                        <td width="20%"></td>
+                                    </tr>
+                                    <tr>
+                                        <td width="40%" [translate]="'GOAL.ANALYSIS.LABEL.PORTFOLIO_TURNOVER_PERIOD'">
+                                        </td>
+                                        <td class="pt-2 pb-2 interest-div" width="20%">
+                                            <div class="form-group mb-0"
+                                                [ngClass]="{'has-error': !portfolio_turnover.valid && f.submitted }">
+                                                <input class="form-control d-inline-block text-right h-25"
+                                                    name="portfolio_turnover" [(ngModel)]="assumptions['portTurnOver']"
+                                                    #portfolio_turnover="ngModel" min="0" max="100"
+                                                    style="width: 80px" />
+                                            </div>
+                                        </td>
+                                        <td width="20%"></td>
+                                        <td width="20%"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </p-accordionTab>
+                        <p-accordionTab>
+                            <p-header>
+                                <h3 class="fs-16 fw-700 d-inline-block" [translate]="'GOAL.ANALYSIS.LABEL.NOTES'"></h3>
+                            </p-header>
+                            <div class="form-group notes-textarea-wrapper mt-2">
+                                <textarea type="text" *ngIf="type == 'current'" name="currentNotes" class="form-control"
+                                    id="" cols="30" rows="5" [(ngModel)]="data['notesCurrent']"
+                                    #notesCurrent="ngModel"></textarea>
+                                <textarea type="text" *ngIf="type == 'strategy'" name="strategyNotes"
+                                    class="form-control" id="" cols="30" rows="5" [(ngModel)]="data['notesStrategy']"
+                                    #notesStrategy="ngModel"></textarea>
+
+                            </div>
+                        </p-accordionTab>
+                    </p-accordion>
+                </div>
+            </div>
+            <div class="box-footer">
+                <div class="form-group text-right">
+                    <button class="btn btn-secondary btn-small mr-2" type="button" (click)="back()"
+                        [translate]="'FORM.ACTION.CANCEL'"></button>
+                    <button type="submit" class="btn btn-success btn-small" [disabled]="!f.form.valid || saveDisable || incomeDistributionInvalid"
+                        [translate]="'FORM.ACTION.SAVE'"></button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,166 @@
+<div class="bg-white pt-4 pb-4">
+    <div class="container" *ngIf="personDetail">
+        <div class="row">
+            <div class="col-sm-8">
+                <h4 class="mb-1">
+                    <a [routerLink]="['/client',clientId,'profile']" [translate]="'BREADCRUMB.CLIENT_PROFILE'"></a> /
+                    <a [routerLink]="['/client',clientId,'profile','risk-tolerance']" [translate]="'BREADCRUMB.RISK_TOLERANCE'"></a>
+                    /
+                </h4>
+                <h1 class="d-inline-block fw-500">
+                    <app-family-member-dropdown [clientId]="clientId" [personalId]="personalId" typeId="risk" (memberSwitch)="memberSwitch($event)"></app-family-member-dropdown>
+                </h1>
+                <div class="risk-toler-top d-inline-block" *ngIf="familyMembersRisk">
+                    <div *ngIf="familyMembersRisk['agreedScore'] && familyMembersRisk['agreedScore'] > 0">
+                        <h6 [translate]="'KYC.RISK_TOLERANCE'"></h6>
+                        <span>{{familyMembersRisk['agreedScore']}}</span>
+                        <!-- <span class="badge-text">{{riskScoreBadge(familyMembersRisk['agreedScore']).label}}</span> -->
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4 d-flex flex-wrap justify-content-end dropdown-right">
+                <div class="mt-auto">
+                    <app-profile-module-drop-down [clientId]="clientId"></app-profile-module-drop-down>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <hr>
+            </div>
+            <div class="col-12">
+                <ul class="nav nav-tabs" role="tablist">
+                    <li class="nav-item">
+                        <a [routerLink]="['/client',clientId,'profile','risk-tolerance',personalId,'results']" class="nav-link" data-toggle="tab" [translate]="'RISK_RESULTS_PAGE.TITLE'"></a>
+                    </li>
+                    <li class="nav-item">
+                        <a [routerLink]="['/client',clientId,'profile','risk-tolerance',personalId,'experience']" class="nav-link active" data-toggle="tab" [translate]="'RISK_EXPERIENCE_PAGE.TITLE'"></a>
+                    </li>
+                    <li class="nav-item">
+                        <a [routerLink]="['/client',clientId,'profile','risk-tolerance',personalId,'know-your-client']" class="nav-link" data-toggle="tab" [translate]="'RISK_KYC_PAGE.TITLE'"></a>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-12">
+                <hr>
+            </div>
+        </div>
+
+        <form name="form" #f="ngForm" novalidate>
+            <div class="row" *ngIf="questionModified">
+                <div class="col-12">
+                    <div class="d-flex current-main mb-3">
+                        <h4 class="m-0">{{personDetail['firstName']}} {{personDetail['lastName']}}</h4>
+                        <span>{{ 'RISK_RESULTS_PAGE.CURRENT_AGE' | translate }} {{personDetail['age']}}</span>
+                        <p (click)="toggleEdit()" *ngIf="!allowEdit" class="btn btn-success btn-small ml-auto m-0" [translate]="'PORTFOLIO.ACTION.EDIT'"></p>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-12 pr-md-4">
+                    <div class="composure-box" *ngFor="let questionCategory of questionArrWithCategoryIds['left']; let i = index;">
+                        <div class="subheader d-flex">
+                            <h4>{{questionCategory}}</h4>
+                            <a *ngIf="!allowEdit && i === 0" (click)="toggleExpand()" class="ml-auto">
+                                <span *ngIf="!expandAll" [translate]="'ACCORDIAN.EXPAND_ALL'"></span>
+                                <span *ngIf="expandAll" [translate]="'ACCORDIAN.COLLAPSE_ALL'"></span>
+                                <i [ngClass]="{'ion-ios-arrow-down' : !expandAll, 'ion-ios-arrow-up':expandAll}"></i>
+                            </a>
+                        </div>
+                        <section *ngFor="let question of questionArrWithCategory['left'][questionCategory]; index as questionIndex">
+                            <div class="income-box" *ngIf="allowEdit">
+                                <h6>{{question.text}}</h6>
+                                <div class="form-group m-0" *ngIf="!question.multipleSelect">
+                                    <p-dropdown [options]="question.options" placeholder="select option" optionLabel="text" [(ngModel)]="answer['left'][question['id']]" name="{{question['id']+'left'}}"></p-dropdown>
+
+                                </div>
+                                <div class="experience-box" *ngIf="question.multipleSelect">
+                                    <div class="form-group" *ngFor="let option of question.options">
+                                        <div class="form-check">
+                                            <p-checkbox value="{{option.value}}" label="{{option.text}}" inputId="{{option.text}}" [(ngModel)]="answer['left'][question['id']]" name="{{question['id']}}"></p-checkbox>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <p-accordion *ngIf="!allowEdit" (onOpen)="leftCurrTabIndex = 'left' + questionIndex + i" (onClose)="leftCurrTabIndex = -1">
+                                <p-accordionTab header="{{question.text}}" [selected]="expandAll">
+                                    <ul class="composure-list" *ngIf="!question.multipleSelect">
+                                        <li *ngFor="let option of question.options;" [ngClass]="{'active' : option.selected}">{{option.text}}</li>
+                                    </ul>
+                                    <ul class="composure-list experience-list" *ngIf="question.multipleSelect">
+                                        <li *ngFor="let option of question.options; index as optionIndex" [ngClass]="{'show': option.selected}">
+                                            {{option.text}}
+                                        </li>
+                                    </ul>
+                                </p-accordionTab>
+                            </p-accordion>
+                            <ul *ngIf="!question.multipleSelect && !expandAll && !allowEdit" class="composure-list" [hidden]="('left' + questionIndex + i)  === leftCurrTabIndex">
+                                <ng-container *ngFor="let option of question.options; index as optionIndex">
+                                    <li *ngIf="option.selected" [ngClass]="{'show': question.multipleSelect, 'active': !question.multipleSelect}" class="active">{{option.text}}</li>
+                                </ng-container>
+                            </ul>
+                            <ul *ngIf="question.multipleSelect && !expandAll && !allowEdit" class="composure-list experience-list" [hidden]="('left' + questionIndex + i)  === leftCurrTabIndex">
+                                <ng-container *ngFor="let option of question.options; index as optionIndex">
+                                    <li *ngIf="option.selected" [ngClass]="{'show': option.selected}">{{option.text}}</li>
+                                </ng-container>
+                            </ul>
+                        </section>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-12 pl-md-4" *ngIf="accessRights['KYC']['accessLevel'] > 0">
+                    <div class="composure-box" *ngFor="let questionCategory of questionArrWithCategoryIds['right-2']; let i = index;">
+                            <div class="subheader d-flex">
+                                <h4>{{questionCategory}}</h4>
+                            </div>
+                            <section *ngFor="let question of questionArrWithCategory['right-2'][questionCategory]; index as questionIndex">
+                                <div class="income-box" *ngIf="allowEdit">
+                                    <h6>{{question.text}}</h6>
+                                    <div class="form-group m-0" *ngIf="!question.multipleSelect">
+                                        <p-dropdown [options]="question.options" placeholder="select option" optionLabel="text" [(ngModel)]="answer['right-2'][question['id']]" name="{{question['id']+'right-2'}}"></p-dropdown>
+    
+                                    </div>
+                                    <div class="experience-box" *ngIf="question.multipleSelect">
+                                        <div class="form-group" *ngFor="let option of question.options">
+                                            <div class="form-check">
+                                                <p-checkbox value="{{option.value}}" label="{{option.text}}" inputId="{{option.text}}" [(ngModel)]="answer['right-2'][question['id']]" name="{{question['id']}}"></p-checkbox>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <p-accordion *ngIf="!allowEdit" (onOpen)="currTabIndex = questionIndex + i" (onClose)="currTabIndex = -1">
+                                    <p-accordionTab header="{{question.text}}" [selected]="expandAll">
+                                        <ul class="composure-list" *ngIf="!question.multipleSelect">
+                                            <li *ngFor="let option of question.options;" [ngClass]="{'active' : option.selected}">{{option.text}}</li>
+                                        </ul>
+                                        <ul class="composure-list experience-list" *ngIf="question.multipleSelect">
+                                            <li *ngFor="let option of question.options; index as optionIndex" [ngClass]="{'show': option.selected}">
+                                                {{option.text}}
+                                            </li>
+                                        </ul>
+                                    </p-accordionTab>
+                                </p-accordion>
+                                <ul *ngIf="!question.multipleSelect && !expandAll && !allowEdit" class="composure-list" [hidden]="(questionIndex + i)  === currTabIndex">
+                                    <ng-container *ngFor="let option of question.options; index as optionIndex">
+                                        <li *ngIf="option.selected" [ngClass]="{'show': question.multipleSelect, 'active': !question.multipleSelect}" class="active">{{option.text}}</li>
+                                    </ng-container>
+                                </ul>
+                                <ul *ngIf="question.multipleSelect && !expandAll && !allowEdit" class="composure-list experience-list" [hidden]="(questionIndex + i)  === currTabIndex">
+                                    <ng-container *ngFor="let option of question.options; index as optionIndex">
+                                        <li *ngIf="option.selected" [ngClass]="{'show': option.selected}">{{option.text}}</li>
+                                    </ng-container>
+                                </ul>
+                            </section>
+                        </div>
+                </div>
+
+                <div class="col-12" *ngIf="allowEdit">
+                    <div class="form-group text-right">
+                        <hr>
+                        <button (click)="toggleEdit()" class="btn btn-secondary mr-2" [translate]="'FORM.ACTION.CANCEL'"></button>
+                        <button (click)="editkyc()" [disabled]="f.form.invalid" class="btn btn-success" [translate]="'FORM.ACTION.SAVE_CHANGES'"></button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,30 @@
+{
+	"BREADCRUMB": {
+		"ASSETS_LIABILITIES": "Assets"
+	},
+	"FORM": {
+		"ACTION": {
+			"BACK_TO_ASSETS": "BACK TO ASSETS"
+		}
+	},
+	"PLANNING_SUMMARY": {
+		"ASSETS_LIABILITIES": {
+			"TITLE": "Assets"
+		}
+	},
+	"PORTFOLIOS": {
+		"EDIT_CURRENT_WARNING": "The following accounts have assets allocated 100% to Cash. If this is not intended, the variance calculated for this portfolio will be inaccurate. To correct this, you may allocate holdings for each account on the Planning > Assets > Holdings page, include list of applicable accounts with Cash = 100%."
+	},
+	"TAB": {
+		"ASSETS_AND_LIABILITIES": "SuitabilityPro - Assets"
+	},
+  "DOCUMENT": {
+    "GENERATE_DOCUMENT": {
+      "TYPE_NAMES": {
+        "PROFIL1": "Tolerance & Recommendation Report",
+        "PROPLANNER": "Goal Based Investment Plan"
+      }
+    }
+    }
+
+}

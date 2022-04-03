@@ -1,0 +1,230 @@
+
+.allocation-box h3 {
+    font-size: 18px;
+    color: #123;
+}
+
+.allocation-box .dropdown-common a {
+    font-size: 18px;
+    color: #123 !important;
+}
+.allocation-box .dropdown-common a.dropdown-selected-text {
+    line-height: 23px;
+}
+.allocation-box .dropdown-common a i.ion-md-arrow-dropdown {
+    margin: 0 10px 0 5px;
+}
+
+.allocation-box .dropdown-common .dropdown-menu ul li a {
+    font-size: 13px;
+}
+
+
+
+h4 {
+    font-size: 13px;
+    color: #789;
+    font-weight: 400;
+}
+
+h4 a i {
+    width: 20px;
+    height: 20px;
+    padding: 2px 4px;
+    font-size: 14px;
+    color: #FFFFFF;
+    border-radius: 50%;
+    text-align: center;
+    font-weight: bold;
+    background: #88aa33;
+}
+.asset-class-dropdown{
+    text-align: right;
+}
+
+.allocationsdata-box {
+    display: block;
+}
+
+.allocationsdata-box .data-title {
+    display: block;
+    font-size: 13px;
+    font-weight: 700;
+    color: #6e6e6c;
+    padding: 10px 0px;
+    line-height: 1;
+    text-align: center;
+}
+
+.allocationsdata-box {
+    border-top: 1px solid #dee2e6;
+}
+
+.more-details .table {
+    border-top: none;
+}
+
+.allocationsdata-box .table>thead>tr>th {
+    padding: 13px 0;
+    line-height: 19px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #789;
+}
+
+.allocationsdata-box .table>thead>tr>th.bg-grey {
+    color: #fff;
+    background: #567;
+}
+
+.allocationsdata-box .table>tbody>tr>td.bg-grey {
+    color: #fff;
+    background: #567;
+}
+.allocationsdata-box .table>tbody>tr>td:last-child {
+    padding-right: 0px;
+}
+
+.allocationsdata-total {
+    margin-top: -1px;
+}
+
+.moredetail-button {
+    font-size: 14px;
+    color: #58d;
+    text-decoration: none;
+    font-weight: 400;
+    padding: 10px 0px;
+    display: inline-block;
+}
+
+.orange-text {
+    color: #FF6644;
+}
+
+.current-table-w-range tbody tr>td.blue-bg {
+    background-color: #cbddee;
+}
+
+.current-table-w-range tbody tr>td:last-child {
+    padding-right: 0;
+}
+
+table tr>td.pr-15,
+table tr>th.pr-15 {
+    padding-right: 15px !important;
+}
+
+table tr>td.pr-0 {
+    padding-right: 0px !important;
+}
+
+.table>tbody>tr:last-child>td.border-bottom-0 {
+    border-bottom: none !important;
+}
+
+.table>tbody>tr:last-child>td.border-0 {
+    border: none !important;
+}
+
+.empty-table.table>tbody>tr:last-child>td {
+    border-bottom: none !important;
+}
+
+.mt-216 {
+    margin-top: 216px;
+}
+
+.mt-225 {
+    margin-top: 225px;
+}
+
+.td-before>td:first-child::before {
+    border-top: 1px solid #dee2e6;
+    position: absolute;
+    content: '';
+    font-size: 0px;
+    width: 100%;
+    left: 0;
+    margin-top: -15px;
+    height: 50px;
+    ;
+}
+
+.more-details .td-before:last-child>td:first-child::before {
+    border-bottom: 1px solid #dee2e6;
+    height: 51px;
+    bottom: 0px;
+}
+
+#moreDetails [class*="offset-lg-"] .td-before>td:first-child::before {
+    left: calc(16% - 100%);
+}
+
+
+
+/* responsive */
+
+@media (max-width: 1335px) {
+    .allocationsdata-box .table>thead>tr>th {
+        font-size: 11px;
+    }
+}
+
+@media (max-width: 1199px) {
+    .table td:last-child {
+        padding-right: 0px;
+    }
+}
+
+@media (max-width: 992px) {
+    .more-details .table td:last-child{
+        width: 15%;
+    }
+}
+@media (min-width: 576px) {
+    .asset-class-dropdown .dropdown-common .dropdown-menu {
+        left: auto !important;
+        right: 0px !important;
+    }
+
+}
+@media (max-width: 575px) {
+    .allocation-box .dropdown-common a {
+        font-size: 15px;
+    }
+    .more-details .td-before:last-child>td:first-child::before {
+        height: 48px;
+    }
+    .asset-class-dropdown{
+        text-align: left;
+    }
+
+    .asset-class-dropdown .dropdown-common .dropdown-menu:after ,
+    .asset-class-dropdown .dropdown-common .dropdown-menu:before {
+        left: 10px;
+        right: inherit;
+    }
+}
+
+@media (min-width: 350px) {
+    .ml-sm-auto {
+        margin-left: auto !important;
+    }
+}
+@media (max-width: 380px) {
+    .allocationsdata-box table tbody tr td span.asset_lbl {
+        width: 76px;
+    }
+
+}
+
+@media (max-width: 349px) {
+    .d-flex.flex-wrap.pb-2 {
+        display: block !important;
+    }
+    .ml-sm-auto app-common-drop-down.dropdown-right .dropdown-common .dropdown-menu {
+        right: -25px !important;
+    }
+
+}

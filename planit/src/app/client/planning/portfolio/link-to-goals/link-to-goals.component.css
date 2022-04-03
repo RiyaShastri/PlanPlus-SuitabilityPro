@@ -1,0 +1,209 @@
+:host {
+    background: #fff;
+    position: fixed;
+    left: auto;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 30%;
+    min-width: 250px;
+    z-index: 100;
+}
+
+.scrollText {
+    font-size: 12px;
+    color: #778899;
+    line-height: 20px;
+    margin: 10px 7px 0 0;
+    text-transform: uppercase;
+}
+
+.small-text {
+    color: #39414A;
+    font-weight: 400;
+}
+
+.ion-icon i {
+    background: #778899 !important;
+}
+
+.form-group input.form-control {
+    width: 100px;
+}
+
+.outer-table td {
+    vertical-align: middle;
+}
+
+.outer-table th {
+    vertical-align: top;
+}
+
+.outer-table .inner-table-wrapper {
+    position: relative;
+}
+
+.outer-table .inner-table-wrapper:after {
+    content: "";
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+    height: 17px;
+    background-color: #fff;
+}
+
+.outer-table .inner-table-wrapper .table.inner-table {
+    overflow-x: scroll;
+}
+
+.tl-fixed {
+    table-layout: fixed;
+}
+
+.table.inner-table>thead>tr:first-child>th {
+    border-bottom: none;
+    padding-bottom: 0px;
+}
+
+.table.inner-table>tbody>tr>td {
+    border: none !important;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    height: 40px;
+}
+
+.outer-table tbody .inner-table-wrapper {
+    padding-bottom: 0;
+}
+
+.fixed-span {
+    display: inline-block;
+    width: 100px;
+    padding-bottom: 1px;
+    min-height: 38px;
+}
+
+.fixed-span-truncate {
+    display: inline-block;
+    width: 100px;
+    padding-bottom: 1px;
+}
+
+
+.disable-btn {
+    opacity: 0.5;
+}
+.inner-table-wrapper table.inner-table tr td div input.form-control{
+    margin-bottom: 2px;
+}
+
+.linked-portfolio-name .text-truncate {
+    max-width: 240px;
+    display: inline-block;
+}
+
+@supports (-ms-ime-align: auto) {
+    .outer-table td.inner-table-wrapper .table.inner-table {
+        padding-bottom: 15px !important;
+    }
+    .outer-table th.inner-table-wrapper .table.inner-table {
+        padding: 0px !important;
+    }
+    .outer-table td.inner-table-wrapper .table.inner-table.inner-table-total-field 
+        {
+            padding-bottom: 10px !important;
+            padding-top: 10px !important;
+        }
+        
+}
+
+@media(max-width: 1300px) {
+    @supports (-ms-ime-align: auto) {
+        .outer-table td.inner-table-wrapper .table.inner-table {
+            padding-bottom: 20px !important;
+            padding-top: 20px !important;
+        }
+    }
+}
+
+
+@media(max-width: 1199px) {
+    .side-form-large .table {
+        max-width: 100%;
+        width: 100%;
+    }
+}
+
+@media(max-width: 1024px) {
+    .outer-table td.inner-table-wrapper .table.inner-table {
+        padding-bottom: 20px !important;
+    }
+
+    @supports (-ms-ime-align: auto) {
+        .outer-table td.inner-table-wrapper .table.inner-table {
+            padding-bottom: 25px !important;
+            padding-top: 25px !important;
+        }
+    }
+
+}
+@media(max-width: 992px) {
+
+    @supports (-ms-ime-align: auto) {
+        .outer-table td.inner-table-wrapper .table.inner-table {
+            padding-bottom: 35px !important;
+            padding-top: 35px !important;
+        }
+       
+    }
+
+    .linked-portfolio-name .text-truncate {
+        max-width: 180px;
+    }
+
+}
+@media(max-width: 767px) {
+    @supports (-ms-ime-align: auto) {
+        .outer-table td.inner-table-wrapper .table.inner-table {
+            padding-bottom: 50px !important;
+            padding-top: 50px !important;
+        }
+        .outer-table .inner-table-wrapper{
+            padding: 0;
+        }
+    }
+    .linked-portfolio-name .text-truncate {
+        max-width: 150px;
+    }
+}
+
+@media(max-width: 600px) {
+    @supports (-ms-ime-align: auto) {
+        .outer-table td.inner-table-wrapper .table.inner-table {
+            padding-bottom: 55px !important;
+            padding-top: 55px !important;
+        }
+    }
+    .linked-portfolio-name .text-truncate {
+        max-width: 100px;
+    }
+}
+
+@media(max-width: 480px) {
+    @supports (-ms-ime-align: auto) {
+        .outer-table td.inner-table-wrapper .table.inner-table {
+            padding-bottom: 62px !important;
+            padding-top: 62px !important;
+        }
+    }
+}
+
+@media(max-width: 450px) {
+    .linked-portfolio-name .text-truncate {
+        max-width: 80px;
+    }
+}
+
+::ng-deep .tooltip-inner {
+    width: 370px;
+}

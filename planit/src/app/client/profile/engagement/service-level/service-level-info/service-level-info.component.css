@@ -1,0 +1,34 @@
+.table>tbody>tr:last-child>td{
+    border-bottom: none !important;
+}
+.right-15{
+    right: 15px;
+}
+
+@media(min-width: 991px){
+    .pr-service-level{
+        padding-right: 110px;
+    }
+}
+
+
+.modal-body {
+    height: 10rem;
+}
+
+.modal-header {
+    padding: 0 1rem;
+}
+
+.modal-header .sidebar_action_icon {
+    margin-right: 0 !important;
+}
+
+.modal-footer {
+    height: 45px;
+    border-top: 0px;
+}
+
+.modal-footer>div .btn {
+    margin-bottom: 0px;
+}

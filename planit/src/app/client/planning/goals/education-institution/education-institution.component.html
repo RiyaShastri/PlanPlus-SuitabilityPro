@@ -1,0 +1,46 @@
+<div class="side-form">
+    <form name="form" (ngSubmit)="addEducationIstitution() && f.form.valid" #f="ngForm" novalidate>
+        <div class="box">
+            <div class="box-header">
+                <span class="sidebar_title" [translate]="'GOALS.EDUCATION_INSTITUTION.TITLE'"></span>
+                <span (click)="back(); closeButtonDisable = true" class="sidebar_action_icon ion-md-close-circle float-right"></span>
+            </div>
+            <div class="box-body">
+                <div class="form-group" *ngIf="model['country']">
+                    <label class="custom-form-label">{{ 'ASSET_LIABILITY.PRODUCT_SEARCH.COUNTRY_LABEL' | translate }} </label>
+                    <p-dropdown name="country" [options]="country" [(ngModel)]="model.country" placeholder="{{'ASSET_LIABILITY.HOLDING_ACCOUNT.PLACEHOLDER_COUNTRY' | translate}}"
+                        optionLabel="country" (onChange)="selectCountry(model.country)"></p-dropdown>
+                </div>
+                <div class="form-group">
+                    <label class="custom-form-label" [translate]="'GOALS.EDUCATION_INSTITUTION.INSTITUTION'"></label>
+                    <p-dropdown name="institution" [options]="institutonList" [(ngModel)]="model.institution" placeholder="Select institution" optionLabel="institution" [disabled]="institutonList.length === 0"
+                     (onChange)="institutionCost()"></p-dropdown>
+                </div>
+                <div class="form-group form-check mb-0 d-flex d-inline-block align-radio">
+                    <p-radioButton name="tuition" value="resident" class="mr-2" [(ngModel)]="model.tuition" (ngModelChange)="institutionCost()"
+                     #percentAmount="ngModel" label="{{ 'GOALS.EDUCATION_INSTITUTION.RESIDENT_TUITION' | translate }}"></p-radioButton>
+                    <p-radioButton name="tuition" value="non-resident" [(ngModel)]="model.tuition" (ngModelChange)="institutionCost()"
+                    #percentAmount="ngModel" label="{{ 'GOALS.EDUCATION_INSTITUTION.NON_RESIDENT_TUITION' | translate}}"></p-radioButton>
+                </div>
+                <div class="form-group">
+                    <p-checkbox name="roomBoard" [(ngModel)]="model.roomBoard" binary="true" label="{{ 'GOALS.EDUCATION_INSTITUTION.ROOM_BOARD' | translate }}"
+                     (onChange)="institutionCost()" ></p-checkbox>
+                </div>
+                <div class="form-group">
+                    <label class="custom-form-label" [translate]="'GOALS.EDUCATION_INSTITUTION.TUITION'"></label>
+                    <span>{{ (costOriginal) ? ( costOriginal | currency:currencyCode + ' ' + currencySymbol:'symbol-narrow':'1.0-0') : 0 | currency:currencyCode + ' ' + currencySymbol:'symbol-narrow':'1.0-0'}}</span>
+                  <br>
+                    <span>({{ (cost) ? ( cost | currency:clientCurrencyCode + ' ' + clientCurrencySymbol:'symbol-narrow':'1.0-0') : 0 | currency:clientCurrencyCode + ' ' + clientCurrencySymbol:'symbol-narrow':'1.0-0'}})</span>
+
+                </div>
+            </div>
+            <div class="box-footer">
+                <div class="form-group text-right">
+                    <button type="button" (click)="back(); closeButtonDisable = true" value="cancel" class="btn btn-secondary btn-small"
+                    [translate]="'FORM.ACTION.CANCEL'" [disabled]="closeButtonDisable"></button>
+                    <button type="submit" value="submit" [disabled]="f.form.invalid || !model.institution" class="btn btn-success btn-small mr-3" [translate]="'FORM.ACTION.SAVE'"></button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

@@ -1,0 +1,35 @@
+:host {
+    background: #fff;
+    position: fixed;
+    left: auto;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 30%;
+    min-width: 250px;
+    z-index: 9;
+}
+.side-form.implementation-questions .box .box-footer{
+    position:relative;
+    z-index: 1;
+}
+
+
+
+
+.implement-question-box {display: flex; flex-wrap: wrap;}
+
+.implement-question-box section{width: 100%;}
+.implement-question-box .subheader {border-bottom: solid 1px #e2e7ec; padding: 0px 0px; flex: 0 0 100%;}
+.implement-question-box .subheader h5{line-height: 2.5;}
+.implement-question-box .subheader h4 {font-size: 24px; font-weight: 400; color: #222;}
+.implement-question-box .subheader a {font-size: 11px; text-transform: uppercase; text-decoration: none; color: #567; font-weight: 700; line-height: 2.5}
+.implement-question-box .subheader a span {line-height: 30px;}
+.implement-question-box .subheader a i {font-size: 20px; color: #567; margin-left: 10px; float: right; line-height: 30px;}
+
+.implement-question-box p-accordion {flex: 0 0 100%;}
+
+.ques-options {
+    color: #556677;
+    font-weight: 400;
+}

@@ -1,0 +1,46 @@
+<div class="text-center upload-image-icon">
+    <div class="photo-box">
+        <input type="file" accept="image/*" #fileInput id="avatar-upload" (change)="fileChangeEvent($event)" (drop)="fileChangeEvent($event)">
+        <label for="avatar-upload" *ngIf="!croppedImage">
+            <i *ngIf="!isEntity" [ngClass]="{'ion-md-person': !isBrandingLogo, 'ion-md-cloud-upload' : isBrandingLogo}"></i>
+            <img *ngIf="isEntity" src="assets/images/building.png" alt="Entity">
+        </label>
+        <div class="upload-image-icon" *ngIf="isFileselected">
+            <div class="remove-selected" *ngIf="isFileselected">
+                <i class="ion-md-close-circle" (click)="removeSelected()"></i>
+            </div>
+            <img class="imageWidth" [src]="croppedImage" *ngIf="croppedImage" />
+        </div>
+    </div>
+</div>
+
+<div class="upload-image-text text-center">
+    <p *ngIf="!dropHereLabel" class="mt-lg-2">{{ 'FILEUPLOAD.DROP_IMAGE_HERE' | translate }}</p>
+    <p *ngIf="dropHereLabel" class="mt-lg-2">{{ dropHereLabel }}</p>
+    <p> or
+        <span class="green" (click)="browseFile()">{{ 'FILEUPLOAD.BROWSE_IMAGE' | translate }}</span>
+    </p>
+</div>
+<div class="row upload-error text-center" *ngIf="errors.length > 0">
+    <div class="col-12">
+        <ul>
+            <li *ngFor="let err of errors">{{err}}</li>
+        </ul>
+    </div>
+</div>
+
+<ng-template #cropImageTemplate let-c="close">
+    <div class="modal-header">
+        <h4 class="modal-title" [translate]="'FILEUPLOAD.CROP_IMAGE'"></h4>
+        <span (click)="c('Cross click')" class="sidebar_action_icon ion-md-close-circle"></span>
+    </div>
+    <div class="modal-body">
+        <div class="form-group text-center" *ngIf="isFileselected">
+            <image-cropper *ngIf="imageChangedEvent" [imageChangedEvent]="imageChangedEvent" [resizeToWidth]="128" onlyScaleDown="true" format="png" (imageCropped)="imageCropped($event)">
+            </image-cropper>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-small btn-secondary mb-0" (click)="c('Save click')" [translate]="'FORM.ACTION.SAVE'"></button>
+    </div>
+</ng-template>

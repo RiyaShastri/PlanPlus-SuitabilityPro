@@ -1,0 +1,178 @@
+<div class="side-form side-form-large">
+    <form name="form" (ngSubmit)="linkGoals() && f.form.valid" #f="ngForm" novalidate>
+        <div class="box">
+            <div class="box-header">
+                <span class="sidebar_title" [translate]="'PORTFOLIOS.ACTIONS.LINK_GOALS'"> </span>
+                <span (click)="back(); closeButtonDisable = true"
+                    class="sidebar_action_icon ion-md-close-circle float-right"></span>
+            </div>
+
+            <div class="box-body">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="pull-right">
+                            <span class="ion-icon d-inline-block va-middle"
+                                [ngClass]="{'disable-btn': !this.enablePrev, '': this.enablePrev}" (click)="rtl()">
+                                <i class="ion-ios-arrow-back"></i>
+                            </span>
+                            <h6 class="scrollText d-inline-block va-middle"
+                                [translate]="'PLANNING_SUMMARY.GOALS.TITLE'"></h6>
+                            <span class="ion-icon d-inline-block va-middle"
+                                [ngClass]="{'disable-btn': !this.enableNext, '': this.enableNext}" (click)="ltr()">
+                                <i class="ion-ios-arrow-forward"></i>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <hr>
+                    </div>
+                    <div class="col-12">
+                        <table class="table tl-fixed outer-table"
+                            *ngIf="goalsList && goalsList.length > 0 && portfolios && linkedGoals" id="goals">
+                            <thead>
+                                <tr>
+                                    <th width="30%" class="1col-fixed" [translate]="'CUSTOM.PORTFOLIO'"></th>
+                                    <th width="10%" class="text-right  pr-4 1col-fixed-2 hidden-md-down">
+                                        {{'PORTFOLIOS.TOTAL'
+                                        | translate}} /
+                                        <br />
+                                        <span [translate]="'PORTFOLIOS.UNALLOCATED'"></span>
+                                    </th>
+                                    <th width="60%" class="pr-0 pb-0 inner-table-wrapper">
+                                        <table class="table table-responsive inner-table">
+                                            <thead>
+                                                <tr>
+                                                    <th *ngFor="let goal of goalsList" class="text-right pr-3">
+                                                        <span class="fixed-span text-truncate"
+                                                            [appNoOverflowTooltip]="goal.description" triggers="manual"
+                                                            placement="top">{{goal.description}}</span>
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                        </table>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let portfolio of portfolios; index as portfolioIndex;">
+                                    <td width="30%">
+                                        <div class="d-flex">
+                                            <div class="text-truncate">
+                                                <span [appNoOverflowTooltip]="portfolio.description">{{portfolio.description}}</span>
+                                            </div>
+                                            <div class="mr-1">
+                                                <span class="tooltip-warning"
+                                                    *ngIf="(portfolio['overAllocatedAmount'] > portfolio['roundingDiff']) || portfolio['restrictedAccount'] == true">
+                                                    <ng-template #keyWarning>
+                                                        <p *ngIf="portfolio['restrictedAccount'] == true"
+                                                            [translate]="'PORTFOLIOS.RESTRICTED_ACCOUNTS_WARNING'"
+                                                            [translateParams]="{totalInvested: portfolio.total | currency:clientData['currencyCode']:'symbol-narrow':'1.0-0'}">
+                                                        </p>
+                                                        <div
+                                                            *ngIf="(portfolio['overAllocatedAmount'] > portfolio['roundingDiff']) && portfolio['restrictedAccount'] == true">
+                                                            <hr />
+                                                        </div>
+                                                        <p *ngIf="portfolio['overAllocatedAmount'] > portfolio['roundingDiff']"
+                                                            [translate]="'PORTFOLIOS.OVERALLOCATED_WARNING'"
+                                                            [translateParams]="{totalInvested: portfolio.total | currency:clientData['currencyCode']:'symbol-narrow':'1.0-0'}">
+                                                        </p>
+                                                        <p class="text-right m-0 p-0">
+                                                            <button class="btn btn-secondary btn-small m-0"
+                                                                (click)="warning.close()"
+                                                                [translate]="'RISK_RESULTS_PAGE.WARNING.CLOSE'"></button>
+                                                        </p>
+                                                    </ng-template>
+                                                    <span class="ion-ios-alert" [ngbTooltip]="keyWarning"
+                                                        #warning="ngbTooltip" triggers="manual" placement="right"
+                                                        (click)="warning.open()"></span>
+                                                </span>
+                                            </div>
+                                        </div>    
+                                        <br />
+                                        <h6 class="hidden-lg-up small-text">
+                                            <b>{{'PORTFOLIOS.TOTAL' | translate}}:</b>
+                                            <span class="fw-500">{{portfolio.total |
+                                                currency:clientData['currencyCode']:'symbol-narrow':'1.0-0'}}</span>
+                                        </h6>
+                                        <h6 class="hidden-lg-up small-text">
+                                            <b>{{'PORTFOLIOS.UNALLOCATED' | translate}}:</b>
+                                            <span [style.color]="portfolio.totalUnallocated<0 ? 'red' : '#39414A'">{{portfolio.totalUnallocated
+                                                | currency:clientData['currencyCode']:'symbol-narrow':'1.0-0'}}</span>
+                                        </h6>
+
+                                    </td>
+                                    <td width="10%" class="text-right pr-4 1col-fixed-2 hidden-md-down"
+                                        *ngIf="portfolio">
+                                        {{portfolio.total | currency:clientData['currencyCode']:'symbol-narrow':'1.0-0'}}
+                                        <br />
+                                        <h6 [style.color]="portfolio.totalUnallocated<0 ? 'red' : '#39414A'"
+                                            class="small-text">
+                                            {{portfolio.totalUnallocated | currency:clientData['currencyCode']:'symbol-narrow':'1.0-0'}}
+                                        </h6>
+                                    </td>
+
+                                    <td width="60%" class="pr-0 inner-table-wrapper">
+                                        <table class="table table-responsive inner-table">
+                                            <tbody>
+                                                <tr>
+                                                    <td *ngFor="let goal of goalsList; index as goalIndex"
+                                                        class="text-right pr-3 ">
+                                                        <div class="form-group mb-0 text-right"
+                                                            [ngClass]="{'has-error': !linkedGoal.valid && (linkedGoal.dirty || linkedGoal.touched || f.submitted) }">
+                                                            <input type="text" class="form-control text-right"
+                                                                [placeholder]="currency + '0.00'"
+                                                                [(ngModel)]="portfolio['linkedGoals'][goal.key]['value']"
+                                                                name="linkedGoal{{portfolioIndex}}_{{goalIndex}}"
+                                                                [pattern]="pattern"
+                                                                on-focusout="changeValue(portfolioIndex, goal.key)"
+                                                                (ngModelChange)="changeLinkedGoal($event, portfolioIndex, goal.key)"
+                                                                #linkedGoal="ngModel" required />
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="1col-fixed fw-700" width="30%" [translate]="'PORTFOLIOS.TOTAL'">
+                                    </td>
+                                    <td width="10%" class="text-right pr-4 1col-fixed-2 fw-600 hidden-md-down">
+                                        {{totalAllocation |
+                                        currency:clientData['currencyCode']:'symbol-narrow':'1.0-0'}}
+                                        <h6 [style.color]="totalUnAllocated<0 ? 'red' : '#39414A'" class="small-text">{{totalUnAllocated
+                                            | currency:clientData['currencyCode']:'symbol-narrow':'1.0-0'}}</h6>
+                                    </td>
+                                    <td width="60%" class="pr-0 inner-table-wrapper">
+                                        <table class="table table-responsive inner-table inner-table-total-field">
+                                            <tbody>
+                                                <tr>
+                                                    <td *ngFor="let goal of goalsList" class="text-right pr-3  fw-600">
+                                                        <span
+                                                            class="fixed-span">{{linkedGoals[goal.key] |
+                                                            currency:clientData['currencyCode']:'symbol-narrow':'1.0-0'}}</span>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="box-footer">
+                <div class="form-group text-right">
+                    <button class="btn btn-secondary btn-small mr-2" type="button"
+                        (click)="back(); closeButtonDisable = true" [translate]="'FORM.ACTION.CANCEL'"
+                        [disabled]="closeButtonDisable"></button>
+                    <button type="submit" class="btn btn-success btn-small" [disabled]="!f.form.valid"
+                        [translate]="'FORM.ACTION.SAVE'"></button>
+                </div>
+            </div>
+        </div>
+
+    </form>
+</div>

@@ -1,0 +1,52 @@
+.ion-icon i {
+    font-size: 14px;
+    margin: 1px 7px 0 0;
+} 
+
+.beneficiary-wrap p {
+    margin-bottom: 5px !important;
+    margin-top: 0px !important;
+    display: flex;
+    align-items: center;
+}
+
+.beneficiary-wrap p span i {
+    color: #ffcc44 !important;
+}
+
+.named-beneficiary-table table th.beneficiary-header-text-wrap {
+    text-align: center;
+}
+
+.named-beneficiary-table table .form-group .form-check{
+    width: 100% !important;
+}
+
+@media(max-width: 1185px) {
+    .collab-text-truncate {
+        width: 120px !important;
+    }
+}
+
+@media(max-width: 883px) {
+    .collab-text-truncate {
+        width: 100px !important;
+    }
+}
+@media(max-width: 749px) {
+    .collab-text-truncate {
+        width: 50px !important;
+    }
+}
+@media only screen and (min-width: 576px) and (max-width: 1200px) {
+    th span.beneficiary-header-wrap {
+        width: 60% !important;
+        display: inline-block;
+        text-align: left;
+    }
+}
+@media(max-width: 575px) {
+    .table-wrapper .table>thead>tr>th {
+        padding: 8px;
+    }
+}

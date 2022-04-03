@@ -1,0 +1,234 @@
+<div class="bg-white pt-4 pb-4">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-7 col-6">
+                <h4 class="mb-1">
+                    <a [routerLink]="['/client',clientId,'profile']" [translate]="'BREADCRUMB.CLIENT_PROFILE'"></a> /
+                    <a [routerLink]="['/client',clientId,'profile','personal-info']" [translate]="'PERSONAL_INFO.TITLE'"></a> /
+                    <a [routerLink]="['/client',clientId,'profile','personal-info', entityId, 'entity-details']" [translate]="'ENTITY.ENTITIES'"></a>
+                </h4>
+                <h1 class="fw-500">
+                    <app-family-member-dropdown [clientId]="clientId" [personalId]="entityId" [typeId]="ENTITY_TYPE" (memberSwitch)="memberSwitch($event)"></app-family-member-dropdown>
+                </h1>
+            </div>
+            <div class="col-sm-5 col-6 d-flex flex-wrap justify-content-end">
+                <div class="mt-auto">
+                    <app-profile-module-drop-down class="dropdown-right" [clientId]="clientId">
+                    </app-profile-module-drop-down>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <hr>
+            </div>
+            <div class="col-12">
+                <ul class="nav nav-tabs" role="tablist">
+                    <li class="nav-item">
+                        <a [routerLink]="['/client', clientId, 'profile', 'personal-info', entityId, 'entity-details']" class="nav-link active" data-toggle="tab"
+                            [translate]="'ENTITY.ENTITY_DETAILS'"></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" [routerLink]="['/client', clientId, 'profile', 'personal-info', entityId, 'entity-ownership']" data-toggle="tab"
+                            [translate]="'ENTITY.OWNERSHIP'"></a>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-12">
+                <hr>
+            </div>
+        </div>
+        <div class="tab-content">
+            <div class="tab-pane active">
+                <form name="editEntityDetail" #f="ngForm" novalidate>
+                    <div class="row">
+                        <div class="col-12 col-md-8 col-lg-8 order-1 order-md-0 order-lg-0">
+                            <div class="row">
+                                <div class="col-12 col-md-6 col-lg-6">
+                                    <div class="form-group" [ngClass]="{ 'has-error': !description.valid && (description.dirty || f.submitted) }">
+                                        <label class="custom-form-label" [translate]="'ENTITY.DESCRIPTION'">
+                                        </label>
+                                        <input type="text" class="form-control" name="description" [(ngModel)]="entityDetail['description']" #description="ngModel"
+                                            pattern="^[a-zA-Z].*" required>
+                                    </div>
+                                    <div class="form-group" [ngClass]="{ 'has-error': !typeList.valid && (typeList.dirty || f.submitted) }">
+                                        <label class="custom-form-label" [translate]="'ENTITY.TYPE'"></label>
+                                        <p-dropdown (onChange)="onEntityTypeChange()" placeholder="{{'ENTITY.TYPE_PLACEHOLDER' | translate }}" [options]="typeDropList" optionLabel="name"
+                                            name="typeList" [(ngModel)]="selectedType" #typeList="ngModel" required></p-dropdown>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-6 col-lg-6">
+                                    <div class="form-group" [ngClass]="{ 'has-error': !province.valid && (province.dirty || province.touched || f.submitted)}">
+                                        <label class="custom-form-label" [translate]="'ENTITY.PROVINCE'"></label>
+                                        <p-dropdown placeholder="{{'ENTITY.PROVINCE_PLACEHOLDER' | translate }}" [options]="provinceArr" optionLabel="provinceState"
+                                            name="province" [(ngModel)]="selectedProvince" #province="ngModel" required></p-dropdown>
+                                    </div>
+                                    <div class="form-group" *ngIf="selectedType && selectedType['id'] === TYPES.ACTIVE_BUISNESS">
+                                        <fieldset class="form-group add-entity-radio-wrap">
+                                            <legend class="custom-form-label w-100" [translate]="'ENTITY.RELATED_CORPORATION'"></legend>
+                                            <div class="form-check d-flex" [ngClass]="{ 'has-error': !relatedCorpo.valid && (relatedCorpo.dirty || relatedCorpo.touched || f.submitted)}">
+                                                <span class="mr-2">
+                                                    <p-radioButton name="relatedCorpo" value="{{CORPORATION_OPTIONS.NO}}" [(ngModel)]="entityDetail['relatedCorpo']" #relatedCorpo="ngModel"
+                                                        required>
+                                                    </p-radioButton>
+                                                    {{'ENTITY.NO' | translate}}
+                                                </span>
+                                                <span>
+                                                    <p-radioButton name="relatedCorpo" value="{{CORPORATION_OPTIONS.YES}}" [(ngModel)]="entityDetail['relatedCorpo']" #relatedCorpo="ngModel"
+                                                        required>
+                                                    </p-radioButton>
+                                                    {{'ENTITY.YES' | translate}}
+                                                </span>
+                                            </div>
+                                        </fieldset>
+                                        <ng-container *ngIf="entityDetail['relatedCorpo'] && entityDetail['relatedCorpo'] === CORPORATION_OPTIONS.YES">
+                                            <p-dropdown placeholder="{{ (relatedCorporateList.length == 0 ? 'ENTITY.NO_OTHER_CORPORATE_ENTITIES_EXIST' : 'ENTITY.CORPORATION_PLACEHOLDER')  | translate }}"
+                                                [options]="relatedCorporateList" optionLabel="description" name="corporationDesc"
+                                                [(ngModel)]="entityDetail['relatedCorporate']" #corporationDesc="ngModel" [required]="relatedCorporateList.length > 0"></p-dropdown>
+                                        </ng-container>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6 col-sm-9">
+                                    <div class="form-group">
+                                        <label class="custom-form-label" [translate]="'ENTITY.CURRENT_FAIR_MARKET_VALUE'"></label>
+                                    </div>
+                                </div>
+                                <div class="col-6 col-sm-3">
+                                    <div class="form-group">
+                                        <p class="entity-value fw-400 fs-14">{{entityDetail['fmv'] | currency:clientData['currencyCode'] : 'symbol-narrow':'1.0-0'}}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6 col-sm-9">
+                                    <div class="form-group">
+                                        <label class="custom-form-label" [translate]="'ENTITY.ACB_OF_INVESTMENTS'"></label>
+                                    </div>
+                                </div>
+                                <div class="col-6 col-sm-3">
+                                    <div class="form-group">
+                                        <p class="entity-value fw-400 fs-14">{{entityDetail['acb'] | currency:clientData['currencyCode'] : 'symbol-narrow':'1.0-0'}}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mt-3">
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <h3 class="entity-header" [translate]="'ENTITY.ENTITY_ASSUMPTIONS'"></h3>
+                                    </div>
+                                    <div>
+                                        <hr>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <table class="table entity_table">
+                                        <thead>
+                                            <tr>
+                                                <th width="50%" class="text-left" [translate]="'ENTITY.DESCRIPTION'"></th>
+                                                <th width="25%" class="text-right pr-2" [translate]="'ENTITY.FEDERAL'"></th>
+                                                <th width="25%" class="text-right" [translate]="'ENTITY.PROVINCIAL'"></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngFor="let data of taxAssuption['entityAssumptions'];let i= index">
+                                                <ng-container *ngIf="data['federal'] !== null || data['provincial'] !== null">
+                                                    <td width="50%" class="entity-tooltip-wrap">
+                                                        <span class="d-block text-truncate entity-text entity-text-truncate" [appNoOverflowTooltip]="'ENTITY.SSID.' + data['ssid'] | translate" triggers="manual"
+                                                            placement="bottom">{{ ('ENTITY.SSID.' + data['ssid']) | translate}}</span>
+                                                    </td>
+                                                    <td width="25%" class="text-right pr-2 py-2">
+                                                        <div class="form-group d-inline-block mb-0" *ngIf="data['federal'] !== null">
+                                                            <input type="text" class="form-control text-right h-25" [textMask]="{mask: currencyMask}" appNumeric #federal="ngModel" [(ngModel)]="data['federal']"
+                                                                name="federal_{{data['ssid']}}" />
+
+                                                        </div>
+                                                    </td>
+                                                    <td width="25%" class="text-right pr-0 py-2">
+                                                        <div class="form-group d-inline-block mb-0" *ngIf="data['provincial'] !== null">
+                                                            <input type="text" class="form-control text-right h-25" [textMask]="{mask: currencyMask}" appNumeric #probvincial="ngModel" [(ngModel)]="data['provincial']"
+                                                                name="probvincial_{{data['ssid']}}" />
+                                                        </div>
+                                                    </td>
+                                                </ng-container>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="row mt-3">
+                                <div class="col-12 entity-accordian">
+                                    <p-accordion>
+                                        <p-accordionTab>
+                                            <p-header>
+                                                <h3 class="entity-header" [translate]="'ENTITY.TAX_ASSUMPTIONS'"></h3>
+                                                <div>
+                                                    <hr>
+                                                </div>
+                                            </p-header>
+                                            <div class="row">
+                                                <div class="col-12">
+                                                    <table class="table assumption-table entity_table">
+                                                        <thead>
+                                                            <tr>
+                                                                <th width="50%" class="text-left" [translate]="'ENTITY.DESCRIPTION'"></th>
+                                                                <th width="25%" class="text-right pr-2" [translate]="'ENTITY.FEDERAL'"></th>
+                                                                <th width="25%" class="text-right" [translate]="'ENTITY.PROVINCIAL'"></th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr *ngFor="let data of taxAssuption['taxAssumptions']">
+                                                                <ng-container *ngIf="data['federal'] !== null || data['provincial'] !== null">
+                                                                    <td width="50%" class="entity-tooltip-wrap">
+                                                                        <span class="d-block text-truncate entity-text entity-text-truncate" [appNoOverflowTooltip]="(data['ssid'] === SSID['CLAWBACKFACTOR']) ? ('ENTITY.SSID.' + data['ssid'] | translate) + '' + (currency) : ('ENTITY.SSID.' + data['ssid'] | translate)"
+                                                                            triggers="manual" placement="bottom">{{ ('ENTITY.SSID.' + data['ssid']) | translate}}
+                                                                            {{ (data['ssid'] === SSID['CLAWBACKFACTOR']) ? currency
+                                                                            : '' }}</span>
+                                                                    </td>
+                                                                    <td width="25%" class="text-right pr-2">
+                                                                        <ng-container *ngIf="data['federal'] !== null">
+                                                                            <span *ngIf="data['currency']">{{ data['federal'] | currency:clientData['currencyCode']
+                                                                                : 'symbol-narrow':'1.0-2'}}</span>
+                                                                            <span *ngIf="!data['currency']">{{ (data['federal'] * 100) | number: '1.0-2'}}%</span>
+                                                                        </ng-container>
+                                                                    </td>
+                                                                    <td width="25%" class="text-right pr-0">
+                                                                        <ng-container *ngIf="data['provincial'] !== null">
+                                                                            <span *ngIf="data['currency']">{{ data['provincial'] | currency:clientData['currencyCode']
+                                                                                : 'symbol-narrow':'1.0-2'}}</span>
+                                                                            <span *ngIf="!data['currency']">{{ (data['provincial'] * 100) | number: '1.0-2'}}%</span>
+                                                                        </ng-container>
+                                                                    </td>
+                                                                </ng-container>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </p-accordionTab>
+                                    </p-accordion>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-lg-4 col-md-4 order-0 order-md-1 order-lg-1">
+                            <div class="form-group text-center">
+                                <app-image-upload maxFiles="1" maxSize="2" [isEntity]="true" iconClass="ion-ios-person" (fileSelected)="uploadImage($event)"
+                                    [existingFile]="entityDetail['imageUrl']" [isFileselected]="isFileUploded">
+                                </app-image-upload>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 mt-2">
+                            <div class="form-group text-right">
+                                <button (click)="back()" type="button" class="btn btn-secondary btn-fixwidth mr-2">{{ 'FORM.ACTION.CANCEL' | translate }}</button>
+                                <button class="btn btn-success" (click)="saveDisabled = true;updateEntity()" [disabled]="!f.valid || saveDisabled">{{ 'FORM.ACTION.SAVE_CHANGES' | translate }}</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,99 @@
+<div class="panel">
+    <div class="d-flex flex-wrap panel-header">
+        <h4 [translate]="'CLIENT_OVERVIEW.INVESTMENTS'"></h4>
+        <i *ngIf="!dataLoaded" aria-hidden="true" class="fa fa-spinner fa-pulse loader-icon"></i>
+        <div class="price-box d-flex" *ngIf="investoreData && investoreData['investmentsTotal'] ">
+            <span class="price">{{investoreData['investmentsTotal'] | currency:clientData['currencyCode'] :'symbol-narrow':'1.0-0'}}</span>
+        </div>
+    </div>
+
+    <div class="panel-body" *ngIf="investoreData && investoreData['assetAllocation'] && investoreData['investmentsByManaged'] && investoreData['investmentsByPlanned'] && !noData">
+        <div class="row"  *ngIf="netWorth && netWorth['assetsByTypes'] && networthData.length > 0">
+            <div class="col-12 mt-3">
+                <ng-container>
+                    <app-net-worth-account-table [networthData]="networthData" [chartColor]="chartColor" chartId='accountTypeSection'></app-net-worth-account-table>
+                </ng-container>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 mt-3">
+                <h6 [translate]="'CLIENT_OVERVIEW.ASSET_ALLOCATION'"></h6>
+                <div id="allocation_chart_div" class="stacked-chart"></div>
+                <table class="table account-table mt--15">
+                    <tbody>
+                        <tr *ngFor="let category of investoreData['assetAllocation'];let i = index">
+                            <td class="fw-600" width="33.33%">
+                                <span class="square mr-2" [style.background-color]="chartColor[i]"></span> {{category.type}}
+                            </td>
+                            <td width="33.33%" class="text-right fw-400">{{category.value | currency:clientData['currencyCode'] : 'symbol-narrow':'1.0-0'}}</td>
+                            <td width="33.33%" class="text-right hidden-xs-down">{{category.percent ? category.percent + '%' : '0%' }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 mt-3">
+                <h6 [translate]="'CUSTOM.MANAGED_UNMANAGED'"></h6>
+                <div id="manage_chart_div" class="stacked-chart"></div>
+                <table class="table account-table mt--15">
+                    <tbody>
+                        <tr>
+                            <td class="fw-600" width="33.33%">
+                                <span class="square mr-2" [style.background-color]="chartColor[0]"></span>
+                                <span [translate]="'CUSTOM.MANAGED'"></span>
+                            </td>
+                            <td width="33.33%" class="text-right fw-400">{{investoreData['investmentsByManaged'][0].value | currency:clientData['currencyCode']:'symbol-narrow':'1.0-0'}}</td>
+                            <td width="33.33%" class="text-right hidden-xs-down">{{investoreData['investmentsByManaged'][0].percent ? investoreData['investmentsByManaged'][0].percent + '%' : '0%'}}</td>
+                        </tr>
+                        <tr>
+                            <td class="fw-600" width="33.33%">
+                                <span class="square mr-2" [style.background-color]="chartColor[1]"></span>
+                                <span [translate]="'CUSTOM.UNMANAGED'"></span>
+                            </td>
+                            <td width="33.33%" class="text-right fw-400">{{investoreData['investmentsByManaged'][1].value  | currency:clientData['currencyCode']:'symbol-narrow':'1.0-0'}}</td>
+                            <td width="33.33%" class="text-right hidden-xs-down">{{investoreData['investmentsByManaged'][1].percent ? investoreData['investmentsByManaged'][1].percent + '%' : '0%'}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 mt-3">
+                <h6 [translate]="'CUSTOM.PLANNED_FOR'"></h6>
+                <div id="planned_chart_div" class="stacked-chart"></div>
+                <table class="table account-table">
+                    <tbody>
+                        <tr>
+                            <td class="fw-600" width="33.33%">
+                                <span class="square mr-2" [style.background-color]="chartColor[0]"></span>
+                                <span [translate]="'CUSTOM.PLANNED'"></span>
+                            </td>
+                            <td width="33.33%" class="text-right fw-400">{{investoreData['investmentsByPlanned'][0].value | currency:clientData['currencyCode']:'symbol-narrow':'1.0-0'}}</td>
+                            <td width="33.33%" class="text-right hidden-xs-down">{{investoreData['investmentsByPlanned'][0].percent ? investoreData['investmentsByPlanned'][0].percent + '%' : '0%'}}</td>
+                        </tr>
+                        <tr>
+                            <td class="fw-600" width="33.33%">
+                                <span class="square mr-2" [style.background-color]="chartColor[1]"></span>
+                                <span [translate]="'CUSTOM.UNPLANNED'"></span> 
+                            </td>
+                            <td width="33.33%" class="text-right fw-400">{{investoreData['investmentsByPlanned'][1].value | currency:clientData['currencyCode']:'symbol-narrow':'1.0-0'}}</td>
+                            <td width="33.33%" class="text-right hidden-xs-down">{{investoreData['investmentsByPlanned'][1].percent ? investoreData['investmentsByPlanned'][1].percent + '%' : '0%'}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <ng-container *ngIf="noData && !investoreData && !investoreData['assetAllocation'] && !investoreData['investmentsByManaged'] && !investoreData['investmentsByPlanned']">
+            <table class="mt-15">
+                <tbody>
+                    <tr>
+                        <td colspan="3" class="no-record text-center">
+                            <i class="ion-ios-alert mr-2"></i>{{'NO_RESULTS' | translate}}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+    </ng-container>
+</div>

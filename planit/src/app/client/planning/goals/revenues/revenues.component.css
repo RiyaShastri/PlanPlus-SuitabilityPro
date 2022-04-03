@@ -1,0 +1,44 @@
+.sort-box {
+    text-transform: capitalize;
+}
+
+.sort-dropdown-w-ico{
+    display: inline-block;
+    position: relative;
+    padding-left: 20px;
+}
+.sort-box .sort-dropdown-w-ico i.ion-md-funnel{
+    top: -10px;
+}
+
+.floating-dropdown .add-btn i, .ion-md-eye {
+    background: none;
+    color: #88aa33;
+    font-size: 23px;
+}
+
+/*Model popup css  */
+ .modal-content {
+    background-color: #fff;
+  }
+
+  .close {
+
+    opacity: 1;
+  }
+.cell-show-mobile{
+    display: none;
+}
+  @media(max-width: 767px){
+      .cell-hide-mobile{
+          display: none;
+      }
+      .cell-show-mobile{
+        display: table-cell;
+      }
+      .allRevenueData-table > tbody > tr > td:last-child{
+          width: auto;
+          padding-right: 5px;
+      }
+
+  }

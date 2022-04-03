@@ -1,0 +1,491 @@
+<div class="mt-4 row" *ngIf="selectedAccountsList && selectedAccountsList.length > 0">
+    <div class="col-12">
+        <h5 class="fw-700" [translate]="'PORTFOLIO.IMPLEMENTATION.RECOMMENDED_SOLUTION_SELECTED_ACCOUNTS'"></h5>
+        <hr />
+    </div>
+    <div class="col-12">
+        <div class="row">
+            <table class="table recommended-products">
+                <thead>
+                    <tr>
+                        <th colspan="4">&nbsp;</th>
+                        <th colspan="2">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th class="text-center border-0 pb-0 pt-0"
+                                            [translate]="'PRODUCT_RECOMM.TABLE.CURRENT_ALLOCATION'">
+                                        </th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </th>
+                        <th colspan="3">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th class="text-center green-color border-0 pb-0 pt-0"
+                                            [translate]="'PRODUCT_RECOMM.TABLE.IMPLEMENTED_ALLOCATION'"></th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </th>
+                    </tr>
+                    <tr>
+                        <th colspan="3">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th class="border-0 pb-0 pt-0" width="75%"
+                                            [translate]="'PRODUCT_RECOMM.TABLE.PRODUCT'">
+                                        </th>
+                                        <th class="border-0 pb-0 pt-0" width="20%"
+                                            [translate]="'PRODUCT_RECOMM.TABLE.CLASS'"></th>
+                                        <th class="border-0 pb-0 pt-0" width="5%">&nbsp;</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </th>
+                        <th>
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th class="text-center border-0 pb-0 pt-0"
+                                            [translate]="'PORTFOLIO.TABLE.ACCOUNT_TYPE'"></th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </th>
+                        <th colspan="2">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th class="text-center border-0 pb-0 pt-0" width="50%"
+                                            [translate]="'PORTFOLIO.TABLE.AMOUNT'"></th>
+                                        <th class="text-center border-0 pb-0 pt-0" width="50%"
+                                            [translate]="'PORTFOLIO.TABLE.PERCENT'"></th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </th>
+                        <th colspan="3">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th class="text-center border-0 pb-0 pt-0" width="45%"
+                                            [translate]="'PORTFOLIO.TABLE.AMOUNT'"></th>
+                                        <th class="text-center border-0 pb-0 pt-0" width="45%"
+                                            [translate]="'PORTFOLIO.TABLE.PERCENT'"></th>
+                                        <th class="text-center border-0 pb-0 pt-0" width="10%"
+                                            [translate]="'PORTFOLIO.TABLE.ACTION'"></th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <ng-container *ngFor="let account of accountsList; index as i">
+                        <ng-container *ngIf="account.checked === true">
+                            <tr>
+                                <td colspan="3">
+                                    <table>
+                                        <tbody>
+                                            <tr>
+                                                <td class="fw-700 border-0 pb-0 pt-0">{{account.description}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                                <td></td>
+                                <td colspan="2"></td>
+                                <td colspan="3"></td>
+                            </tr>
+
+                            <tr *ngFor="let product of account.assets; index as j">
+                                <td colspan="3">
+                                    <table>
+                                        <tbody>
+                                            <tr>
+                                                <td class="border-0 pb-0 pt-0" width="75%">
+                                                    <span class="fixed-width text-truncate"
+                                                        [appNoOverflowTooltip]="product.description" triggers="manual"
+                                                        placement="bottom">{{ product.description }}</span>
+                                                </td>
+                                                <td class="fw-400 border-0 pb-0 pt-0 asset-class-column-wrap" width="20%">
+                                                    <span class="square asset_indicator" *ngIf="product.primaryAssetClassSsid !== ASSETS_BALANCED"
+                                                        [style.background]="graphColors[assetClassColours[product.primaryAssetClassSsid]]"></span>
+                                                    <span class="asset_lbl text-truncate pr-1"
+                                                        [appNoOverflowTooltip]="('SSID_LABELS.' + product.primaryAssetClassSsid) | translate "
+                                                        triggers="manual"
+                                                        placement="bottom">{{ ('SSID_LABELS.' + product.primaryAssetClassSsid) | translate }}</span>
+                                                </td>
+                                                <td class="border-0 pb-0 pt-0 pr-0" width="5%">
+                                                    <span
+                                                        *ngIf="product.assetsBreakdown && product.assetsBreakdown.length > 0"
+                                                        (click)="open(content, product.assetsBreakdown, product.description)">
+                                                        <img src="assets/images/pie-icon.png" class="" />
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                                <td>
+                                    <table>
+                                        <tbody>
+                                            <tr>
+                                                <td class="text-center fw-400 border-0 pb-0 pt-0 pr-0">
+                                                    {{account.regulatoryType}}
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                                <td colspan="2">
+                                    <table>
+                                        <tbody>
+                                            <tr>
+                                                <td class="text-center border-0 pb-0 pt-0" width="50%">
+                                                    {{product.fmv | currency:clientData['currencyCode'] :'symbol-narrow':'1.0-2'}}
+                                                    <p *ngIf="product.transfer" class="mb-0"
+                                                        [ngClass]="product.transfer.type === 1 ? 'red-color' : 'blue-color'">
+                                                        {{product.transfer.type === 1 ? '(' + (product.transfer.amount | currency:clientData['currencyCode'] :'symbol-narrow':'1.0-2') + ')'
+                                                            : (product.transfer.amount | currency:clientData['currencyCode'] :'symbol-narrow':'1.0-2')}}
+                                                        <sup>{{product.transfer.type}}</sup>
+                                                    </p>
+                                                </td>
+                                                <td class="text-center fw-400 border-0 pb-0 pt-0 pr-0" width="50%">
+                                                    {{product.fmvPercentage | number : '1.1-1'}}%
+                                                    <p *ngIf="product.transfer" class="mb-0"
+                                                        [ngClass]="product.transfer.type === 1 ? 'red-color' : 'blue-color'">
+                                                        {{product.transfer.type === 1 ? '(' + (product.transfer.percent | number : '1.1-1') + '%' + ')'
+                                                            : (product.transfer.percent | number : '1.1-1') + '%'}}
+                                                    </p>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                                <td colspan="3">
+                                    <table>
+                                        <tbody>
+                                            <tr>
+                                                <td class="text-center border-0 pb-0 pt-0" width="45%">
+                                                    <div class="form-group mb-0 text-center"
+                                                        *ngIf="account.actionPerformed !== actionPerformed['NO_ACTION'] || !account.solution ||
+                                                        (account.actionPerformed === actionPerformed['NO_ACTION'] && account.solution && account.solution.solutionType !== solutionTypes.FUND_OF_FUNDS_SOLUTION)">
+                                                        <input type="text" [(ngModel)]="product.purchaseAmount"
+                                                            (keyup)="calculate($event, i, j, 1)"
+                                                            [textMask]="{mask: currencyMask}" appNumeric [customMin]="0"
+                                                            class="form-control text-right"
+                                                            #implementedAmount="ngModel">
+                                                    </div>
+                                                    <div
+                                                        *ngIf="account.actionPerformed === actionPerformed['NO_ACTION'] && account.solution && account.solution.solutionType === solutionTypes.FUND_OF_FUNDS_SOLUTION">
+                                                        {{product.purchaseAmount | currency:clientData['currencyCode'] :'symbol-narrow':'1.0-2'}}
+                                                    </div>
+                                                </td>
+                                                <td class="text-center border-0 pb-0 pt-0" width="45%">
+                                                    <div class="form-group mb-0 text-center"
+                                                        *ngIf="account.actionPerformed !== actionPerformed['NO_ACTION'] || !account.solution ||
+                                                        (account.actionPerformed === actionPerformed['NO_ACTION'] && account.solution && account.solution.solutionType !== solutionTypes.FUND_OF_FUNDS_SOLUTION)">
+                                                        <input type="text" class="form-control text-right"
+                                                            (keyup)="calculate($event, i, j, 2)"
+                                                            [(ngModel)]="product.implemenetedPercentage" [customMin]="0"
+                                                            [customMax]="100" [textMask]="{mask: percentMask}"
+                                                            appNumeric #implementedPercent="ngModel">
+                                                    </div>
+                                                    <div
+                                                        *ngIf="account.actionPerformed === actionPerformed['NO_ACTION'] && account.solution && account.solution.solutionType === solutionTypes.FUND_OF_FUNDS_SOLUTION">
+                                                        {{product.implemenetedPercentage | number : '1.1-1'}}%
+                                                    </div>
+                                                    <ng-container *ngIf="product.cautionIndicator">
+                                                        <span class="ignore-warning-action ion-ios-alert"
+                                                            [ngbTooltip]="pCaution" #productCaution="ngbTooltip"
+                                                            triggers="manual" placement="bottom"
+                                                            (click)="productCaution.open()"></span>
+                                                        <ng-template #pCaution>
+                                                            <p
+                                                                [translate]="'PORTFOLIO.IMPLEMENTATION.RECOMMENDED_SOLUTION.CAUTION'">
+                                                            </p>
+                                                            <p class="text-center m-0 p-0">
+                                                                <button class="btn btn-secondary btn-small m-0"
+                                                                    (click)="productCaution.close()"
+                                                                    [translate]="'RISK_RESULTS_PAGE.WARNING.CLOSE'"></button>
+                                                            </p>
+                                                        </ng-template>
+                                                    </ng-container>
+                                                </td>
+                                                <td class="text-right border-0 pb-0 pt-0 pr-0" width="10%">
+                                                    <div class="dropdown-relative">
+                                                        <button type="button" class="btn-floating"
+                                                            (click)="changeProductAction(i,j)">
+                                                            <span class="ion-md-more"></span>
+                                                        </button>
+                                                        <div [id]="'dropdownProductAction_'+i+'_'+j"
+                                                            class="dropdown-product-action dropdown-floating hide-ele">
+                                                            <ul class="floating-dropdown">
+                                                                <li (click)="changeProductAction(i,j)">
+                                                                    <a (click)="getProductInfo(product.assetKey)">
+                                                                        <i class="ion-ios-eye"></i>
+                                                                        <span
+                                                                            [translate]="'CUSTOM.PRODUCT_INFO'"></span>
+                                                                    </a>
+                                                                </li>
+                                                                <li (click)="changeProductAction(i,j)"
+                                                                    *ngIf="account.actionPerformed !== actionPerformed['NO_ACTION'] || !account.solution ||
+                                                                (account.actionPerformed === actionPerformed['NO_ACTION'] && account.solution && account.solution.solutionType !== solutionTypes.FUND_OF_FUNDS_SOLUTION)"
+                                                                    class="delete-btn">
+                                                                    <a (click)="removeProduct(i, j)">
+                                                                        <i class="ion-md-close-circle"></i>
+                                                                        <span
+                                                                            [translate]="'CUSTOM.REMOVE_PRODUCT'"></span>
+                                                                    </a>
+                                                                </li>
+                                                                <li *ngIf="account.actionPerformed === actionPerformed['NO_ACTION'] && account.solution && account.solution.solutionType === solutionTypes.FUND_OF_FUNDS_SOLUTION"
+                                                                    (click)="changeProductAction(i,j)" class="delete-btn disabled-link">
+                                                                    <a>
+                                                                        <i class="ion-md-close-circle"></i>
+                                                                        <span
+                                                                            [translate]="'CUSTOM.REMOVE_PRODUCT'"></span>
+                                                                    </a>
+                                                                </li>
+                                                                <!-- <li (click)="changeProductAction(i,j)">
+                                                                <a class="ignore-warning-action">
+                                                                    <i class="ion-ios-alert"></i>
+                                                                    <span [translate]="'CUSTOM.IGNORE_WARNING'"></span>
+                                                                </a>
+                                                            </li> -->
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="4">
+                                    <table>
+                                        <tbody>
+                                            <tr>
+                                                <td class="pt-2 pb-2 text-right fs-13 fw-700 border-0 pb-0 pt-0 pr-0">
+                                                    ({{account.description}})
+                                                    {{'PORTFOLIO.IMPLEMENTATION.TOTAL' | translate}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                                <td colspan="2">
+                                    <table>
+                                        <tbody>
+                                            <tr>
+                                                <td class="text-center fw-700 fs-14 border-0 pb-0 pt-0" width="50%">
+                                                    {{account.totalCurrentAmount | currency:clientData['currencyCode'] :'symbol-narrow':'1.0-0'}}
+                                                </td>
+                                                <td class="border-0 pb-0 pt-0" width="50%">&nbsp;</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                                <td colspan="3">&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td colspan="4" class="border-bottom-0">
+                                    <table>
+                                        <tbody>
+                                            <tr>
+                                                <td class="pt-2 pb-2 text-right fw-700 border-0 pb-0 pt-0 pr-0">
+                                                    ({{account.description}})
+                                                    {{'PORTFOLIO.IMPLEMENTATION.NET_TOTAL' | translate}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                                <td colspan="2" class="border-bottom-0">
+                                    <table>
+                                        <tbody>
+                                            <tr>
+                                                <td class="text-center fw-700 fs-15 border-0 pb-0 pt-0" width="50%">
+                                                    {{account.totalCurrentAmount | currency:clientData['currencyCode'] :'symbol-narrow':'1.0-0'}}
+                                                </td>
+                                                <td class="border-0 pb-0 pt-0" width="50%">&nbsp;</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                                <td colspan="3" class="border-bottom-0">
+                                    <table>
+                                        <tbody>
+                                            <tr>
+                                                <td class="text-center green-color fw-700 fs-15 border-0 pb-0 pt-0"
+                                                    width="45%">
+                                                    {{account.totalImplementedAmount | currency:clientData['currencyCode'] :'symbol-narrow':'1.0-0'}}
+                                                </td>
+                                                <td class="text-center red-color fw-700 fs-15 border-0 pb-0 pt-0"
+                                                    width="45%">
+                                                    <ng-container
+                                                        *ngIf="roundOff(account.totalCurrentAmount - account.totalImplementedAmount) !== 0">
+                                                        {{account.totalCurrentAmount - account.totalImplementedAmount | currency:clientData['currencyCode'] :'symbol-narrow':'1.0-0'}}
+                                                        <span class="ion-ios-alert" [ngbTooltip]="accWarning"
+                                                            #accountWarning="ngbTooltip" triggers="manual"
+                                                            placement="bottom" (click)="accountWarning.open()"></span>
+                                                        <ng-template #accWarning>
+                                                            <p>
+                                                                {{(account.totalCurrentAmount - account.totalImplementedAmount) < 0 ? ('PORTFOLIO.IMPLEMENTATION.RECOMMENDED_SOLUTION.WARNING_OVERALLOCATED' | translate)
+                                                                    : ('PORTFOLIO.IMPLEMENTATION.RECOMMENDED_SOLUTION.WARNING_UNALLOCATED' | translate) }}
+                                                            </p>
+                                                            <p class="text-center m-0 p-0">
+                                                                <button class="btn btn-secondary btn-small m-0"
+                                                                    (click)="accountWarning.close()"
+                                                                    [translate]="'RISK_RESULTS_PAGE.WARNING.CLOSE'"></button>
+                                                            </p>
+                                                        </ng-template>
+                                                    </ng-container>
+                                                </td>
+                                                <td class="text-right pt-2 pb-2 border-0 pb-0 pt-0" width="10%">&nbsp;
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="9" class="pt-0 pb-0"></td>
+                            </tr>
+                        </ng-container>
+                    </ng-container>
+                </tbody>
+
+                <tfoot>
+                    <tr>
+                        <td colspan="4" class="pt-0 pb-0"></td>
+                        <td colspan="5" class="pt-0 pb-0"></td>
+                    </tr>
+                    <tr>
+                        <td class="fw-700" colspan="4" class="border-0">
+                            <table>
+                                <tfoot>
+                                    <tr>
+                                        <td class="border-0 pb-0 pt-0 pr-0 fw-700 fs-15">
+                                            {{'PORTFOLIO.IMPLEMENTATION.TOTAL_SELECTED_ACCOUNTS' | translate}}</td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </td>
+                        <td colspan="2" class="border-0">
+                            <table>
+                                <tfoot>
+                                    <tr>
+                                        <td class="text-center fw-700 fs-15 border-0 pb-0 pt-0" width="50%">
+                                            {{totalCurrent | currency:clientData['currencyCode'] :'symbol-narrow':'1.0-0'}}
+                                        </td>
+                                        <td class="text-center fw-700 border-0 pb-0 pt-0" width="50%">&nbsp;</td>
+
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </td>
+                        <td colspan="3" class="border-0">
+                            <table>
+                                <tfoot>
+                                    <tr>
+
+                                        <td class="text-center fw-700 green-color fs-15 border-0 pb-0 pt-0" width="45%">
+                                            {{totalImplementation | currency:clientData['currencyCode'] :'symbol-narrow':'1.0-0'}}
+                                        </td>
+                                        <td class="text-center fw-700 red-color fs-15 border-0 pb-0 pt-0" width="45%">
+                                            <ng-container *ngIf="roundOff(totalCurrent - totalImplementation) !== 0">
+                                                {{totalCurrent - totalImplementation | currency:clientData['currencyCode'] :'symbol-narrow':'1.0-0'}}
+                                                <span class="ion-ios-alert" [ngbTooltip]="pWarning"
+                                                    #productWarning="ngbTooltip" triggers="manual" placement="bottom"
+                                                    (click)="productWarning.open()"></span>
+                                                <ng-template #pWarning>
+                                                    <p>
+                                                        {{(totalCurrent - totalImplementation) < 0 ? ('PORTFOLIO.IMPLEMENTATION.RECOMMENDED_SOLUTION.WARNING_OVERALLOCATED' | translate)
+                                                                    : ('PORTFOLIO.IMPLEMENTATION.RECOMMENDED_SOLUTION.WARNING_UNALLOCATED' | translate) }}
+                                                    </p>
+                                                    <p class="text-center m-0 p-0">
+                                                        <button class="btn btn-secondary btn-small m-0"
+                                                            (click)="productWarning.close()"
+                                                            [translate]="'RISK_RESULTS_PAGE.WARNING.CLOSE'"></button>
+                                                    </p>
+                                                </ng-template>
+                                            </ng-container>
+                                        </td>
+                                        <td class="text-right pr-0 border-0 pb-0 pt-0" width="10%"></td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="9" class="pt-0 pb-0"></td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="row" [ngClass]="selectedAccountsList && selectedAccountsList.length > 0 ? 'mt-2' : 'mt-5'">
+    <div class="col-12" *ngIf="!selectedAccountsList || selectedAccountsList.length == 0">
+        <hr />
+    </div>
+    <div class="col-12">
+        <p class="mb-0 d-flex align-items-center fs-12 fw-600">
+            <i class="ion-ios-medical finaMetrica-icon pr-1 fs-15"></i>
+            {{'PORTFOLIO.IMPLEMENTATION.FOOTNOTES.MAPPED_BY_FINAMETRICA' | translate}}
+        </p>
+        <!-- <p class="mb-0 fs-12 fw-600" *ngIf="selectedAccountsList && selectedAccountsList.length > 0">
+            {{'PORTFOLIO.IMPLEMENTATION.FOOTNOTES.TRANSFERRED_TO_ANOTHER_ACCOUNT' | translate}}
+        </p>
+        <p class="mb-0 fs-12 fw-600" *ngIf="selectedAccountsList && selectedAccountsList.length > 0">
+            {{'PORTFOLIO.IMPLEMENTATION.FOOTNOTES.TRANSFERRED_FROM_ANOTHER_ACCOUNT' | translate}}
+        </p> -->
+    </div>
+    <div class="col-12">
+        <hr />
+    </div>
+    <div class="col-12" *ngIf="selectedAccountsList && selectedAccountsList.length > 0">
+        <a (click)="deleteUnusedProducts()" class="delete-link pl-0">
+            <i class="ion-md-close-circle fs-22"></i>
+            <span [translate]="'PORTFOLIO.IMPLEMENTATION.DELETE_UNUSED_PRODUCTS'"></span>
+        </a>
+    </div>
+</div>
+
+<ng-template #content let-d="dismiss">
+    <div class="modal-header pl-3">
+        <span class="modal-title  modal-overflow-title" id="modal-basic-title">{{productDescription}}</span>
+        <span class="sidebar_action_icon ion-md-close-circle pr-1" (click)="d('Cross click')">
+        </span>
+    </div>
+
+    <div class="modal-body asset-classes-modal">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th colspan="2" class="text-left" [translate]="'PORTFOLIO_ALLOCATION.TABLE.CLASS'"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let allocation of allocationsData; index as aIndex">
+                    <td class="text-left">
+                        <span class="square asset_indicator"
+                            [style.background]="graphColors[assetClassColours[allocation.ssid]]"></span>
+                        <span class="asset_lbl text-truncate"
+                            [appNoOverflowTooltip]=" ('SSID_LABELS.' + allocation.ssid) | translate " triggers="manual"
+                            placement="bottom">{{ ('SSID_LABELS.' + allocation.ssid) | translate }}</span>
+                    </td>
+                    <td class="text-right fw-400">{{ allocation.allocationPercent | number : '1.1-1' }}%</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="modal-footer">
+    </div>
+</ng-template>

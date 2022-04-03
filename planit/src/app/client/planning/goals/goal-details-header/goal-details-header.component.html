@@ -1,0 +1,109 @@
+<div class="row">
+    <div class="col-md-8 col-12">
+        <h4>
+            <a [routerLink]="['/client', clientId, 'planning']" [translate]="'BREADCRUMB.PLANNING'"></a> /
+            <a [routerLink]="['/client', clientId, 'planning', 'goals']" [translate]="'BREADCRUMB.GOALS'"></a> /
+            <a *ngIf="currentPage === 'details'"
+                [routerLink]="['/client', clientId, 'planning','goals', goalId, 'edit-goal']"
+                [translate]="'BREADCRUMB.EDIT_GOAL'"></a>
+            <a *ngIf="currentPage === 'savings' && accessRights['SAV01']['accessLevel'] > 0"
+                [routerLink]="['/client', clientId, 'planning', 'goals', goalId, 'savings']"
+                [translate]="'GOALS.SAVINGS.TITLE'"></a>
+            <a *ngIf="currentPage === 'revenues'"
+                [routerLink]="['/client', clientId, 'planning', 'goals', goalId, 'revenues']"
+                [translate]="'GOALS.REVENUES.TITLE'"></a>
+            <a *ngIf="currentPage === 'analysis'"
+                [routerLink]="['/client', clientId, 'planning', 'goals', goalId, 'analysis']"
+                [translate]="'BREADCRUMB.GOALS_ANALYSIS'"></a>
+<!--             <a *ngIf="currentPage === 'plantrac'"
+                [routerLink]="['/client', clientId, 'planning', 'goals', goalId, 'plantrac']"
+                [translate]="'BREADCRUMB.PLANTRAC'"></a> -->
+        </h4>
+        <h1 class="d-sm-inline-block d-block fw-500" *ngIf="goals && goalDescription">
+            <div ngbDropdown class="dropdown-common dropdown-multiline m-0">
+                <a id="goalsDropdown" ngbDropdownToggle class="d-flex align-items-center">
+                    <div class="text-truncate fixed-width-text" id="on-mouseover-tooltip"
+                        [appNoOverflowTooltip]="goalDescription">
+                        {{goalDescription}}
+                    </div>
+                    <i class="ion-md-arrow-dropdown fs-18 ml-2"></i>
+                </a>
+                <div ngbDropdownMenu aria-labelledby="goalsDropdown">
+                    <ul>
+                        <li *ngFor="let goal of goals">
+                            <a class="dropdown-item" [ngClass]="{ 'active' : goalId === goal.key}"
+                                (click)="changeGoal(goal.key, goal.description)">
+                                {{goal.description}}
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </h1>
+    </div>
+    <div class="col-md-4 col-12 dropdown-right">
+        <ng-container *ngIf="currentPage !== 'plantrac'">
+            <div class="d-inline-block nextprive-box mr-lg-5 mr-3">
+                <!-- <i class="ion-md-arrow-dropleft-circle mr-4"></i>
+            <i class="ion-md-arrow-dropright-circle"></i> -->
+            </div>
+            <app-planning-module-drop-down class="dropdown-right pull-right" [clientId]="clientId">
+            </app-planning-module-drop-down>
+        </ng-container>
+        <ng-container *ngIf="currentPage === 'plantrac'">
+            <div class="pull-right plantrac-status">
+                <!-- <ul>
+                    <li>
+                        <a href="javascript:void(0)" class="status" [ngClass]="{'active': plantracStatus === 2, 'off-track': plantracStatus === 1}">
+                            <span>{{plantracStatus === 2 ? 'on track' : plantracStatus === 1 ? 'off track' : 'not tracking'}}</span>
+                        </a>
+                        <span>{{refreshedOn | date:'MMM/d/yyyy'}}</span>
+                    </li>
+                </ul> -->
+                <div class="circle mr-2"
+                    [ngClass]="{'green-circle': plantracStatus == 1, 'orange-circle': plantracStatus == 2}"></div>
+                {{ plantracStatus == 0 ? ('PLANTRAC.NOT_TRACKING' | translate) : (plantracStatus == 1 ? ('PLANTRAC.ON_TRACK' | translate) : ('PLANTRAC.OFF_TRACK' | translate))}}
+                <p class="fs-14" *ngIf="plantracStatus > 0">{{refreshedOn | date:'MMM/d/yyyy'}}</p>
+            </div>
+        </ng-container>
+    </div>
+    <div class="col-12">
+        <hr>
+    </div>
+    <div class="col-10">
+        <ul class="nav nav-tabs d-if" role="tablist">
+            <li class="nav-item" *ngIf="accessRights['CLI02']['accessLevel'] > 0">
+                <a [routerLink]="['/client', clientId, 'planning','goals', goalId, 'edit-goal']"
+                    class="nav-link p-lr-40" [ngClass]="{ 'active' : currentPage === 'details' }"
+                    [translate]="'GOALS.DETAILS.TITLE'"></a>
+            </li>
+            <li class="nav-item mb-0" *ngIf="accessRights['SAV01']['accessLevel'] > 0">
+                <a [routerLink]="['/client', clientId, 'planning','goals', goalId, 'savings']" class="nav-link p-lr-40"
+                    [ngClass]="{ 'active' : currentPage === 'savings' }" [translate]="'GOALS.SAVINGS.TITLE'"></a>
+            </li>
+            <li class="nav-item mb-0" *ngIf="accessRights['PEN01']['accessLevel'] > 0">
+                <a [routerLink]="['/client', clientId, 'planning', 'goals', goalId, 'revenues']"
+                    class="nav-link p-lr-40" [ngClass]="{ 'active' : currentPage === 'revenues' }"
+                    [translate]="'GOALS.REVENUES.TITLE'"></a>
+            </li>
+            <li class="nav-item mb-0" *ngIf="accessRights['MODGL']['accessLevel'] > 0">
+                <a [routerLink]="['/client', clientId, 'planning', 'goals', goalId, 'analysis']"
+                    class="nav-link p-lr-40" [ngClass]="{ 'active' : currentPage === 'analysis' }"
+                    [translate]="'GOALS.ANALYSIS.TITLE'"></a>
+            </li>
+            <li class="nav-item mb-0"
+                *ngIf="accessRights['PLANTRAC']['accessLevel'] > 0">
+                <a [routerLink]="['/client', clientId, 'planning', 'goals', goalId, 'plantrac']"
+                    class="nav-link p-lr-40" [ngClass]="{ 'active' : currentPage === 'plantrac' }"
+                    [translate]="'GOALS.PLANTRAC.TITLE'"></a>
+            </li>
+        </ul>
+    </div>
+    <!-- <div class="col-2 text-right">
+        <app-common-drop-down class="dropdown-right" [itemList]="scenario" [defaultSelected]="selectedScenario"
+            dropDownLabel="SCENARIO" (OnSelect)="sorting($event)"></app-common-drop-down>
+    </div> -->
+    <div class="col-12">
+        <hr>
+    </div>
+</div>

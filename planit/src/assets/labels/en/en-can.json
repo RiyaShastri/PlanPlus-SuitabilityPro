@@ -1,0 +1,50 @@
+{
+  "SSID_LABELS": {
+    "A_ASSCAT042": "Cash",
+    "A_ASSCAT051": "Real estate",
+    "A_ASSCAT062": "Foreign equities",
+    "A_ASSCAT043": "Short-term fixed income",
+    "A_ASSCAT044": "Fixed income",
+    "A_ASSCAT045": "Canadian equities",
+    "A_ASSCAT046": "Canadian small cap equities",
+    "A_ASSCAT047": "US equities",
+    "A_ASSCAT048": "US small cap equities",
+    "A_ASSCAT049": "International equities",
+    "A_ASSCAT050": "Emerging markets",
+    "OBJECTIV002": "Retirement lifestyle (after tax)",
+    "ACCTYP_OTHER": "Other",
+    "ACCTYP_SHELTERED": "TFSA",
+    "ACCTYP_DEFERRED": "Registered",
+    "ACCTYP_OPEN": "Open",
+    "ACCTYP_PERSONAL": "Personal use",
+    "ACCTYP_BUSINESS": "Business other",
+    "ACCTYP_CORPORATE": "Corporate",
+    "ACCTYP_REGISTERED": "Registered"
+  },
+  "BENCHMARKS": {
+    "1": "FTSE TMX Canada 91 Day Tbill",
+    "2": "FTSE TMX Canada Short Term Bond Index",
+    "3": "FTSE TMX Canada Universe Bond Index",
+    "4": "S&P/TSX Total Return Index",
+    "5": "S&P/TSX Small Cap Total Return Index",
+    "6": "S&P 500 Total Return Index",
+    "7": "Russell 2000 US Small Cap Index",
+    "8": "MSCI EAFE Total Return Index",
+    "9": "MSCI Emerging Markets Index",
+    "10": "S&P/TSX Real Estate Index)",
+    "11": "MSCI World Index"
+  },
+  "BENCHNOTES": {
+    "1": "Return reduced by 1.5%.",
+    "2": "Data from 1966, we are using Fixed income reduced by 1.5% to serve as a proxy for Short-term fixed income.",
+    "3": "",
+    "4": "",
+    "5": "Data from 1987, we are using Canadian equities to serve as a proxy Canadian small cap equities.",
+    "6": "",
+    "7": "Data from 1987.",
+    "8": "Data from 1970.",
+    "9": "Data from 1988.",
+    "10": "Russell/Morguard Property Index from 1950, S&P/TSX Real Estate Index from 1998.",
+    "11": "Data from 1970. Applies when US equities are rolled up to International equities."
+  }
+}

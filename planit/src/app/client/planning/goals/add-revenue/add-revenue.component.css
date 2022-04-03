@@ -1,0 +1,44 @@
+:host {
+    background:#fff;
+    position: fixed;
+    left: auto;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 30%;
+    min-width: 250px;
+    z-index: 100; 
+}
+
+
+.btn-group.btn-save .dropdown-menu.btn-dropDown-top{
+    top: inherit !important;
+    bottom: 100%;
+}
+.add-revenue-form-check label{
+    font-family: 'Open Sans', sans-serif;
+    font-size: 14px;
+    color: #39414A;
+    font-weight: 400;
+    white-space: nowrap;
+}
+.add-revenue-form-check p-radiobutton{
+    margin-top: -8px;
+}
+.form-fixed-value{
+    border-radius: 0;
+    border: 1px solid transparent;
+    background-color: #FEFEFE;
+    outline: none;
+    height: 40px;
+    color: #345;
+    font-family: "Open Sans";
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 40px;
+}
+@media(max-width: 325px){
+    .start-age-label{
+        min-height: 30px;
+    }
+}

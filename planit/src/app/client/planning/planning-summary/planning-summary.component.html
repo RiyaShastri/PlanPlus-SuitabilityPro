@@ -1,0 +1,172 @@
+<div class="summary-main bg-white">
+    <div class="row no-gutters h-100">
+        <div class="col-12 col-md-6 col-lg-4 col-xl-3">
+            <div class="profile_summary">
+                <h1 class="profile_title" [translate]="'PLANNING_SUMMARY.TITLE'"></h1>
+                <p class="profile_text" [translate]="'PLANNING_SUMMARY.DESCRIPTION.PARA_1'"></p>
+                <p class="profile_text" [translate]="'PLANNING_SUMMARY.DESCRIPTION.PARA_2'"></p>
+            </div>
+        </div>
+        <div class="col-12 col-md-6 col-lg-8 col-xl-9">
+            <div class="profile_actions" *ngIf="planningSummary">
+                <div *ngIf="accessRights['CLI02']['accessLevel'] > 0" class="profile_action"
+                    [routerLink]="['/client',clientId,'planning','goals']">
+                    <ng-container [ngTemplateOutlet]="goalDesc"></ng-container>
+                </div>
+                <div *ngIf="accessRights['CLI05']['accessLevel'] > 0" class="profile_action"
+                    [routerLink]="['/client',clientId,'planning','assets-liabilities']">
+                    <ng-container [ngTemplateOutlet]="asssetLiabilities"></ng-container>
+                </div>
+                <div *ngIf="accessRights['POB01']['accessLevel'] > 0" class="profile_action"
+                    [routerLink]="['/client',clientId,'planning','portfolios']">
+                    <ng-container [ngTemplateOutlet]="portfolios"></ng-container>
+                </div>
+                <div *ngIf="accessRights['PEN01']['accessLevel'] > 0" class="profile_action"
+                    [routerLink]="['/client',clientId,'planning', 'goals', 'revenues']">
+                    <ng-container [ngTemplateOutlet]="revenues"></ng-container>
+                </div>
+                <div *ngIf="accessRights['CLI13_SP']['accessLevel'] > 0" class="profile_action"
+                    [routerLink]="['/client',clientId,'planning','cash-flow-management']">
+                    <ng-container [ngTemplateOutlet]="cashFlowManagement"></ng-container>
+                </div>
+                <div *ngIf="accessRights['EST01_SP']['accessLevel'] > 0" class="profile_action"
+                    [routerLink]="['/client',clientId,'planning','estate']">
+                    <ng-container [ngTemplateOutlet]="estate"></ng-container>
+                </div>
+                <div *ngIf="accessRights['ENTITY']['accessLevel'] > 0" class="profile_action"
+                    [routerLink]="['/client',clientId,'planning','entities']">
+                    <ng-container [ngTemplateOutlet]="entities"></ng-container>
+                </div>
+                 <div *ngIf="accessRights['MIGRATE']['accessLevel'] > 0" class="profile_action" (click)="handShake(clientId)">
+                    <ng-container [ngTemplateOutlet]="handOff"></ng-container>
+                 </div>
+
+                <ng-template #elseBlock>
+                    <div  *ngIf="accessRights['POB01']['accessLevel'] > 0" class="profile_action" [routerLink]="['/client',clientId,'planning','portfolios']">
+                        <ng-container [ngTemplateOutlet]="portfolios"></ng-container>
+                    </div>
+                    <div  *ngIf="accessRights['ENTITY']['accessLevel'] > 0" class="profile_action" [routerLink]="['/client',clientId,'planning','entities']">
+                        <ng-container [ngTemplateOutlet]="entities"></ng-container>
+                    </div>
+                    <div *ngIf="accessRights['MIGRATE']['accessLevel'] > 0" class="profile_action" (click)="handShake(clientId)">
+                        <ng-container [ngTemplateOutlet]="handOff"></ng-container>
+                    </div>
+                </ng-template>
+
+
+
+                <ng-template #goalDesc>
+                    <span class="profile_icon"
+                        [ngClass]="{'complete_profile ion-ios-checkmark-empty': planningSummary['Goals'] == 100, 'zero_profile': planningSummary['Goals'] == 0, 'inprogress_profile': (planningSummary['Goals'] > 0 && planningSummary['Goals'] < 100)}"></span>
+                    <div class="content">
+                        <h5 [translate]="'PLANNING_SUMMARY.GOALS.TITLE'"></h5>
+                        <p [translate]="'PLANNING_SUMMARY.GOALS.DESCRIPTION'"></p>
+                    </div>
+                    <a>
+                        <span class="action_icon ion-ios-arrow-forward"></span>
+                    </a>
+                </ng-template>
+
+                <ng-template #asssetLiabilities>
+                    <span class="profile_icon"
+                        [ngClass]="{'complete_profile ion-ios-checkmark-empty': planningSummary['Assets And Liablities'] == 100, 'zero_profile': planningSummary['Assets And Liablities'] == 0, 'inprogress_profile': (planningSummary['Assets And Liablities'] > 0 && planningSummary['Assets And Liablities'] < 100)}"></span>
+                    <div class="content">
+                        <h5 [translate]="'PLANNING_SUMMARY.ASSETS_LIABILITIES.TITLE'"></h5>
+                        <p [translate]="'PLANNING_SUMMARY.ASSETS_LIABILITIES.DESCRIPTION'"></p>
+                    </div>
+                    <a>
+                        <span class="action_icon ion-ios-arrow-forward"></span>
+                    </a>
+                </ng-template>
+                <ng-template #portfolios>
+                    <span class="profile_icon"
+                        [ngClass]="{'complete_profile ion-ios-checkmark-empty': planningSummary['Portfolios'] == 100, 'zero_profile': planningSummary['Portfolios'] == 0, 'inprogress_profile': (planningSummary['Portfolios'] > 0 && planningSummary['Portfolios'] < 100)}"></span>
+                    <div class="content">
+                        <h5 [translate]="'PLANNING_SUMMARY.PORTFOLIOS.TITLE'"></h5>
+                        <p [translate]="'PLANNING_SUMMARY.PORTFOLIOS.DESCRIPTION'"></p>
+                    </div>
+                    <a>
+                        <span class="action_icon ion-ios-arrow-forward"></span>
+                    </a>
+                </ng-template>
+                <ng-template #revenues>
+                    <span class="profile_icon"
+                        [ngClass]="{'complete_profile ion-ios-checkmark-empty': planningSummary['Revenue'] == 100, 'zero_profile': planningSummary['Revenue'] == 0, 'inprogress_profile': (planningSummary['Revenue'] > 0 && planningSummary['Revenue'] < 100)}"></span>
+                    <div class="content">
+                        <h5 [translate]="'PLANNING_SUMMARY.REVENUES.TITLE'"></h5>
+                        <p [translate]="'PLANNING_SUMMARY.REVENUES.DESCRIPTION'"></p>
+                    </div>
+                    <a>
+                        <span class="action_icon ion-ios-arrow-forward"></span>
+                    </a>
+                </ng-template>
+                <ng-template #analysis>
+                    <span class="profile_icon"
+                        [ngClass]="{'complete_profile ion-ios-checkmark-empty': planningSummary['Analysis'] == 100, 'zero_profile': planningSummary['Analysis'] == 0, 'inprogress_profile': (planningSummary['Analysis'] > 0 && planningSummary['Analysis'] < 100)}"></span>
+                    <div class="content">
+                        <h5 [translate]="'PLANNING_SUMMARY.ANALYSIS.TITLE'"></h5>
+                        <p [translate]="'PLANNING_SUMMARY.ANALYSIS.DESCRIPTION'"></p>
+                    </div>
+                    <a>
+                        <span class="action_icon ion-ios-arrow-forward"></span>
+                    </a>
+                </ng-template>
+                <ng-template #cashFlowManagement>
+                    <span class="profile_icon"
+                        [ngClass]="{'complete_profile ion-ios-checkmark-empty': planningSummary['Cashflow'] == 100, 'zero_profile': planningSummary['Cashflow'] == 0, 'inprogress_profile': (planningSummary['Cashflow'] > 0 && planningSummary['Cashflow'] < 100)}"></span>
+                    <div class="content">
+                        <h5 [translate]="'PLANNING_SUMMARY.CASH_FLOW_MANAGEMENT.TITLE'"></h5>
+                        <p [translate]="'PLANNING_SUMMARY.CASH_FLOW_MANAGEMENT.DESCRIPTION'"></p>
+                    </div>
+                    <a>
+                        <span class="action_icon ion-ios-arrow-forward"></span>
+                    </a>
+                </ng-template>
+                <ng-template #estate>
+                    <span class="profile_icon"
+                        [ngClass]="{'complete_profile ion-ios-checkmark-empty': planningSummary['Analysis'] == 100, 'zero_profile': planningSummary['Analysis'] == 0, 'inprogress_profile': (planningSummary['Analysis'] > 0 && planningSummary['Analysis'] < 100)}"></span>
+                    <div class="content">
+                        <h5 [translate]="'PLANNING_SUMMARY.ESTATE.TITLE'"></h5>
+                        <p [translate]="'PLANNING_SUMMARY.ANALYSIS.DESCRIPTION'"></p>
+                    </div>
+                    <a>
+                        <span class="action_icon ion-ios-arrow-forward"></span>
+                    </a>
+                </ng-template>
+                <ng-template #entities>
+                    <span class="profile_icon"
+                        [ngClass]="{'complete_profile ion-ios-checkmark-empty': planningSummary['Entities'] == 100, 'zero_profile': planningSummary['Entities'] == 0, 'inprogress_profile': (planningSummary['Entities'] > 0 && planningSummary['Entities'] < 100)}"></span>
+                    <div class="content">
+                        <h5 [translate]="'PLANNING_SUMMARY.ENTITIES.TITLE'"></h5>
+                        <p [translate]="'PLANNING_SUMMARY.ENTITIES.DESCRIPTION'"></p>
+                    </div>
+                    <a>
+                        <span class="action_icon ion-ios-arrow-forward"></span>
+                    </a>
+                </ng-template>
+                <ng-template #handOff>
+                    <span class="profile_icon"></span>
+                    <div class="content">
+                            <h5 [translate]="'PLANNING_SUMMARY.HANDSHAKE.TITLE'"></h5>
+                        <p [translate]="'PLANNING_SUMMARY.HANDSHAKE.DESCRIPTION'"></p>
+                    </div>
+                    <a>
+                        <span class="action_icon ion-ios-arrow-forward"></span>
+                    </a>
+                </ng-template>
+                <!--
+                <div class="profile_action" [routerLink]="['/client', clientId, 'planning', 'product-recommendation']">
+                    <span class="profile_icon" [ngClass]="{'complete_profile ion-ios-checkmark-empty': planningSummary['Product Recommendation'] == 100, 'zero_profile': planningSummary['Product Recommendation'] == 0, 'inprogress_profile': (planningSummary['Product Recommendation'] > 0 && planningSummary['Product Recommendation'] < 100)}"></span>
+                    <div class="content">
+                        <h5 [translate]="'PLANNING_SUMMARY.PRODUCT_RECOMM.TITLE'"></h5>
+                        <p [translate]="'PLANNING_SUMMARY.PRODUCT_RECOMM.DESCRIPTION'"></p>
+                    </div>
+                    <a>
+                        <span class="action_icon ion-ios-arrow-forward"></span>
+                    </a>
+                </div>
+                -->
+            </div>
+        </div>
+    </div>
+</div>

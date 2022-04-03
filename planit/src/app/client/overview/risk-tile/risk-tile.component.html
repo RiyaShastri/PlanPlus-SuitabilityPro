@@ -1,0 +1,14 @@
+<div class="panel pb-0">
+    <div class="d-flex flex-wrap panel-header mb-3">
+        <h4 [translate]="'CLIENT_OVERVIEW.RISK_TOLERANCE'"></h4>
+    </div>
+
+    <div class="panel-body">
+        <app-risk-tolerance-listing [isTile]='true' [clientId]="clientId"></app-risk-tolerance-listing>
+    </div>
+
+    <div class="panel-footer">
+        <a [routerLink]="['/client',clientId,'profile','risk-tolerance']" class="btn btn-link ion-md-arrow-dropright"
+            [translate]="'CUSTOM.VIEW_MORE'"></a>
+    </div>
+</div>

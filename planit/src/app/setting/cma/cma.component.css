@@ -1,0 +1,29 @@
+.last-reviewed-label {
+    color: #778899;
+    font-weight: 500;
+}
+@media(max-width: 767px) {
+    .col-sm-4 {
+        -ms-flex: 0 0 33.333333%;
+        flex: 0 0 33.333333%;
+        max-width: 33.333333%;
+    }
+}
+
+@media(max-width: 599px) {
+    .col-12 {
+        -ms-flex: 0 0 100%;
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+    .last-reviewed {
+        text-align: left !important;
+        padding: 1rem 0 0 12px !important;
+    }
+}
+
+@media(max-width: 377px) {
+    .nav.nav-tabs li {
+        margin-left: 0px !important;
+    }
+}

@@ -1,0 +1,134 @@
+<div class="bg-white pt-4 pb-4">
+    <div class="container" *ngIf="entitiesList && entitiesList.length > 0">
+        <div class="row pb-4">
+            <div class="col-12">
+                <app-entities-header [clientId]="clientId" currentPage="investment" [entityId]="entityId"
+                    (switchEntity)="changeEntity($event)" (switchScenario)="changeScenario($event)">
+                </app-entities-header>
+            </div>
+            <div class="col-12">
+                <app-entities-table [clientId]="clientId" [entitiesList]="entitiesList" [isAllEntities]='false'>
+                </app-entities-table>
+            </div>
+        </div>
+        <form name="form" (ngSubmit)="f.form.valid && saveDetails()" #f="ngForm" novalidate>
+            <div class="row justify-content-between pt-5">
+                <div class="col-12 col-sm-6 col-md-5">
+                    <table class="table entity-return-risk">
+                        <thead>
+                            <tr>
+                                <th class="custom-heading" colspan="2">{{'ENTITY.PORTFOLIO_RETURN_RISK' | translate}}
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td width="50%" class="py-2">{{'GOAL.ANALYSIS.LABEL.INVESTMENT_STRATEGY' | translate}}
+                                </td>
+                                <td width="50%" class="py-2">
+                                    <div class="form-group mb-0 h-25"
+                                        [ngClass]="{ 'has-error':  strategy.invalid && (strategy.dirty || strategy.touched || f.submitted) }">
+                                        <p-dropdown [options]="strategiesOptions" name="strategy"
+                                            [(ngModel)]="selectedEntity['investmentStrategy']" #strategy="ngModel"
+                                            optionLabel="description" (onChange)="onChangeOfStrategy()" required>
+                                        </p-dropdown>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="50%" class="pr-2">{{'GOAL.ANALYSIS.LABEL.RETURN_ON_ASSETS' | translate}}
+                                </td>
+                                <td width="50%" class="text-right">
+                                    <span *ngIf="selectedEntity['investmentStrategy'].portnum !== strategies.CUSTOM">
+                                        {{selectedEntity['returnOnAssets'] | number: '1.2-2'}}%
+                                    </span>
+
+                                    <div *ngIf="selectedEntity['investmentStrategy'].portnum === strategies.CUSTOM"
+                                        class="form-group mb-0 text-right"
+                                        [ngClass]="{ 'has-error':  return.invalid && (return.dirty || return.touched || f.submitted) }">
+                                        <input type="text" class="form-control text-right"
+                                            [(ngModel)]="selectedEntity['returnOnAssets']" [customMin]="0"
+                                            [customMax]="100" [textMask]="{mask: percentMaskDecimal}" appNumeric
+                                            #return="ngModel" name="return" required>
+                                    </div>
+
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="50%" class="pr-2">{{'GOAL.ANALYSIS.LABEL.STANDARD_DEVIATION' | translate}}
+                                </td>
+                                <td width="50%" class="text-right">
+                                    <span *ngIf="selectedEntity['investmentStrategy'].portnum !== strategies.CUSTOM">
+                                        {{selectedEntity['standardDeviation'] | number: '1.2-2'}}%
+                                    </span>
+                                    <div *ngIf="selectedEntity['investmentStrategy'].portnum === strategies.CUSTOM"
+                                        class="form-group mb-0 text-right"
+                                        [ngClass]="{ 'has-error':  deviation.invalid && (deviation.dirty || deviation.touched || f.submitted) }">
+                                        <input type="text" class="form-control text-right"
+                                            [(ngModel)]="selectedEntity['standardDeviation']" [customMin]="0"
+                                            [customMax]="100" [textMask]="{mask: percentMaskDecimal}" appNumeric
+                                            #deviation="ngModel" name="deviation" required>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-12 col-sm-6 col-md-5 pt-sm-0 pt-5">
+                    <table class="table entity-distribution-table">
+                        <thead>
+                            <tr>
+                                <th class="custom-heading pr-2">{{'ENTITY.RETURN_DISTRIBUTION' | translate}}</th>
+                                <th class="text-right pr-md-5 pr-2">{{ 'ENTITY.PERCENTAGE' | translate}}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of distributions; index as i">
+                                <td class="pr-2">{{item.description | translate}}</td>
+                                <td class="text-right pr-md-5 pr-2">
+                                    <span *ngIf="!selectedEntity['custom']">
+                                        {{ selectedEntity[item.valueKey] | number: '1.0-0'}}%
+                                    </span>
+                                    <div class="distribution-input form-group mb-0 pull-right"
+                                        [ngClass]="{ 'has-error':  (distribution.invalid || total !== 100) && (distribution.dirty || distribution.touched || f.submitted) }"
+                                        *ngIf="selectedEntity['custom']">
+                                        <input type="text" class="form-control text-right"
+                                            [(ngModel)]="selectedEntity[item.valueKey]" [customMin]="0"
+                                            [customMax]="100" [textMask]="{mask: percentMask}" appNumeric
+                                            #distribution="ngModel" name="value_{{i}}" required
+                                            (keyup)="calculateTotal()">
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>{{'SETTINGS.CUSTOM' | translate}}</td>
+                                <td class="text-right pr-md-5 pr-2">
+                                    <div class="form-group mb-0"
+                                        [ngClass]="{ 'has-error':  custom.invalid && (custom.dirty || custom.touched || f.submitted) }">
+                                        <p-checkbox name="custom" [(ngModel)]="selectedEntity['custom']" binary="true"
+                                            #custom="ngModel" (onChange)="getCustomSelectedData()">
+                                        </p-checkbox>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <p *ngIf="total !== 100" class="text-error" [translate]="'ENTITY.TOTAL_NOT_100_ERROR'"></p>
+                </div>
+            </div>
+
+            <div class="row pt-4">
+                <div class="col-12">
+                    <hr />
+                    <div class="col-12 form-group text-right">
+                        <button type="button" class="btn btn-secondary btn-fixwidth mr-2"
+                            (click)="back(); closeButtonDisable = true"
+                            [disabled]="closeButtonDisable">{{ 'FORM.ACTION.CANCEL' | translate }}</button>
+                        <button type="submit" class="btn btn-success"
+                            [disabled]="saveDisabled || f.form.invalid || total !== 100">{{ 'FORM.ACTION.SAVE_CHANGES' | translate }}</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,58 @@
+.leverage-calculator .calulater-inner-wrap h4.leverage-title { 
+    color: #788588;
+}
+
+.leverage-calculator .calulater-inner-wrap .radio-wrap {
+    display: flex;
+    align-items: center;
+}
+
+.leverage-calculator .analysis-wrap-title {
+    color: #788588;
+}
+
+.leverage-calculator .analysis-wrap {
+    margin: 10px 0;
+}
+
+.box-footer .report-button-list button.dropdown-item:hover {
+    background: #d5f1fb !important;
+}
+
+.leverage-calculator .add-illustration-wrap-1 {
+    -webkit-box-ordinal-group: 4;
+    -ms-flex-order: 3;
+    order: 3;
+}
+
+.leverage-calculator .add-illustration-wrap-3 {
+    -webkit-box-ordinal-group: 5;
+    -ms-flex-order: 4;
+    order: 4;
+}
+
+.leverage-calculator .calulater-inner-wrap .portfolio-dropdown-wrap {
+    width: 50%;
+}
+
+@media(max-width: 460px) {
+    .report-button-wrap.btn-group.btn-save .dropdown-menu.btn-dropDown-top {
+        top: inherit !important;
+        bottom: 100%;
+        left: -86px !important;
+        min-width: 173px !important;
+    }
+}
+
+@media(max-width: 375px) {
+    .leverage-calculator .calulater-inner-wrap .portfolio-dropdown-wrap {
+        width: 100%;
+    }
+}
+
+@media(max-width: 344px) {
+    .side-form .box-footer button {
+        margin-right: 0 !important;
+        margin-bottom: 10px !important;
+    }
+}

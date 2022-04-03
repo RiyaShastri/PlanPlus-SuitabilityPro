@@ -1,0 +1,95 @@
+<div class="bg-white" [ngClass]="isRiskCapacity ? 'p-0' : 'py-4' ">
+    <div class="container" [ngClass]="{'p-0': isRiskCapacity}">
+        <div class="row" *ngIf="!isRiskCapacity">
+            <div class="col-12">
+                <app-goal-details-header [clientId]="clientId" currentPage="analysis" [goalId]="goalId"
+                    (switchGoal)="changeGoal($event)"></app-goal-details-header>
+            </div>
+        </div>
+        <ng-container *ngIf="accessRights['GOALHIGHLEVEL']['accessLevel'] > 0">
+            <app-high-level-tile [graphColours]="graphColours" [goalId]="goalId" [clientId]="clientId" [changer]="changer">
+            </app-high-level-tile>
+        </ng-container>
+        <div class="accordion-wrapper goal-analysis-accordions">
+            <p-accordion [multiple]="true" [activeIndex]="activeIndex" (onOpen)="onTabOpen($event)">
+                <p-accordionTab *ngIf="accessRights['GOALASSUMPT']['accessLevel'] > 0">
+                    <p-header id="planningAlternatives">
+                        <h3 class="fs-18 fw-700 d-inline-block"
+                            [translate]="'GOAL.ANALYSIS.PANEL.PLANNING_ALTERNATIVES'"></h3>
+                        <i *ngIf="!dataLoaded['planningAlternatives']" aria-hidden="true" class="fa fa-spinner fa-pulse loader-icon"></i>
+                    </p-header>
+
+                    <div *ngIf="!planningData || savingsList.length == 0" class="no-record text-center mt-3 mb-0">
+                        <i class="ion-alert mr-2"></i>{{'NO_RESULTS' | translate}}
+                    </div>
+                    <app-planning-alternative-tile *ngIf="planningData && savingsList.length > 0" [goalId]="goalId"
+                        [graphColours]="graphColours" [planningData]="planningData" [savingsList]="savingsList" [selectedPlannum]="plannum"></app-planning-alternative-tile>
+                </p-accordionTab>
+
+                <p-accordionTab *ngxPermissionsOnly="['ADVISOR']">
+                    <p-header id="cashFlowAnalysis">
+                        <h3 class="fs-18 fw-700 d-inline-block" [translate]="'GOAL.ANALYSIS.PANEL.CASH_FLOW'"></h3>
+                        <i *ngIf="!dataLoaded['cashFlowAnalysis']" aria-hidden="true" class="fa fa-spinner fa-pulse loader-icon"></i>
+                    </p-header>
+                    <div *ngIf="!currentCashFlowData || !strategyCashFlowData || savingsList.length == 0" class="no-record text-center mt-3 mb-0">
+                        <i class="ion-alert mr-2"></i>{{'NO_RESULTS' | translate}}
+                    </div>
+                    <app-cash-flow-tile *ngIf="currentCashFlowData && strategyCashFlowData" [graphColours]="graphColours" [currentData]="currentCashFlowData" [strategyData]="strategyCashFlowData"></app-cash-flow-tile>
+                </p-accordionTab>
+                <p-accordionTab *ngxPermissionsOnly="['ADVISOR']">
+                    <p-header id="investmentCapital">
+                        <h3 class="fs-18 fw-700 d-inline-block" [translate]="'GOAL.ANALYSIS.PANEL.INVESTMENT_CAPITAL'">
+                        </h3>
+                        <i *ngIf="!dataLoaded['investmentCapital']" aria-hidden="true" class="fa fa-spinner fa-pulse loader-icon"></i>
+
+                    </p-header>
+                    <div *ngIf="!currentInvestmentData || !strategyInvestmentData || savingsList.length == 0" class="no-record text-center mt-3 mb-0">
+                        <i class="ion-alert mr-2"></i>{{'NO_RESULTS' | translate}}
+                    </div>
+                    <app-investment-capital-tile  *ngIf="currentInvestmentData && strategyInvestmentData" [graphColours]="graphColours" [currentData]="currentInvestmentData" [strategyData]="strategyInvestmentData"></app-investment-capital-tile> 
+                </p-accordionTab>
+
+                <p-accordionTab  *ngIf="accessRights['CERTY']['accessLevel'] > 0">
+                    <p-header id="certaintyOutcome">
+                        <h3 class="fs-18 fw-700 d-inline-block" [translate]="'GOAL.ANALYSIS.PANEL.CERTAINTY_OUTCOME'">
+                        </h3>
+                        <i *ngIf="!dataLoaded['certaintyOutcome']" aria-hidden="true" class="fa fa-spinner fa-pulse loader-icon"></i>
+                    </p-header>
+                    <app-certainty-outcome-tile *ngIf="currentCertaintyData && strategyCertaintyData"
+                        [clientId]="clientId" [graphColours]="graphColours"
+                        [currentCertaintyData]="currentCertaintyData" [strategyCertaintyData]="strategyCertaintyData">
+                    </app-certainty-outcome-tile>
+                </p-accordionTab>
+                <p-accordionTab *ngIf="accessRights['GOALFAVUNFAV']['accessLevel'] > 0">
+                    <p-header id="favourableAndUnfavourable">
+                        <h3 class="fs-18 fw-700 d-inline-block"
+                            [translate]="'GOAL.ANALYSIS.PANEL.FAVOURABLE_UNFAVOURABLE'"></h3>
+                        <i *ngIf="!dataLoaded['favourableAndUnfavourable']" aria-hidden="true" class="fa fa-spinner fa-pulse loader-icon"></i>
+                    </p-header>
+                    <app-fevourable-unfavourable-tile *ngIf="currentFavourableData && strategyFavourableData"
+                        [graphColours]="graphColours" [currentFavourableData]="currentFavourableData"
+                        [strategyFavourableData]="strategyFavourableData"></app-fevourable-unfavourable-tile>
+                </p-accordionTab>
+                <p-accordionTab *ngIf="accessRights['GOALVAR']['accessLevel'] > 0">
+                    <p-header id="valueAtRisk">
+                        <h3 class="fs-18 fw-700 d-inline-block" [translate]="'GOAL.ANALYSIS.PANEL.VALUE_AT_RISK'"></h3>
+                        <i *ngIf="!dataLoaded['valueAtRisk']" aria-hidden="true" class="fa fa-spinner fa-pulse loader-icon"></i>
+                    </p-header>
+                    <app-value-risk-tile *ngIf="currentVaR && strategyVaR" [graphColours]="graphColours"
+                        [currentVaR]="currentVaR" [strategyVaR]="strategyVaR"></app-value-risk-tile>
+                </p-accordionTab>
+
+                <p-accordionTab *ngIf="accessRights['GOALVOA']['accessLevel'] > 0">
+                    <p-header id="valueOfAdvice">
+                        <h3 class="fs-18 fw-700 d-inline-block" [translate]="'GOAL.ANALYSIS.PANEL.VALUE_ADVICE'"></h3>
+                        <i *ngIf="!dataLoaded['valueOfAdvice']" aria-hidden="true" class="fa fa-spinner fa-pulse loader-icon"></i>
+                    </p-header>
+                    <app-value-advice-tile *ngIf="valueOfAdviceData" [graphColours]="graphColours"
+                        [valueOfAdviceData]="valueOfAdviceData"></app-value-advice-tile>
+                </p-accordionTab>
+            </p-accordion>
+        </div>
+
+    </div>
+</div>
+    

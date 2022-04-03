@@ -1,0 +1,16 @@
+<span *ngIf="dropDownLabel" class="pr-1 drop-title">{{dropDownLabel}} : </span>
+<div ngbDropdown class="dropdown-common">    
+    <a class="text-uppercase" id="dropdownBasic1" ngbDropdownToggle>
+        <span class="pr-1 selected-text">{{defaultSelected.name}}</span>
+        <i class="ion-md-arrow-dropdown"></i>
+    </a>
+    <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+        <ul *ngIf='itemList'>
+            <li  *ngFor="let item of itemList">
+                <a [ngClass]="{active : defaultSelected.id == item.id}" class="dropdown-item" (click)="getSlected(item)">
+                    <span>{{item.name}}</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>

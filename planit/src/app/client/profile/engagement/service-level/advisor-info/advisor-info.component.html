@@ -1,0 +1,136 @@
+<div class="row">
+    <div class="col-12">
+        <h5 class="fw-700" [translate]="'ENGAGEMENT.SERVICE_LEVEL_ADVISOR_INFO.TITLE.ADVISOR_INFO'"></h5>
+    </div>
+</div>
+
+<div class="row pt-4">
+    <div class="col-md-5">
+        <div class="form-group mb-4">
+            <label class="custom-form-label pb-2 mb-0"
+                [translate]="'ENGAGEMENT.SERVICE_LEVEL_ADVISOR_INFO.PRIMARY_ADVISOR'"></label>
+            <p *ngIf="!isEditable" class="field-value mb-0">{{advisorInfo['primaryAdvisor']}}</p>
+            <input *ngIf="isEditable" class="form-control m-0" name="primaryAdvisor"
+                [(ngModel)]="advisorInfo['primaryAdvisor']" #primaryAdvisor="ngModel">
+        </div>
+    </div>
+    <div class="col-md-5 offset-md-2">
+        <div class="form-group mb-4">
+            <label class="custom-form-label pb-2 mb-0">&nbsp;</label>
+            <p-checkbox name="privateClient" label="Private client" binary="true" class="equal-height"
+                [disabled]="!isEditable" [(ngModel)]="advisorInfo['privateClient']" #privateClient="ngModel">
+            </p-checkbox>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12" [ngClass]="advisorInfo['secondaryAdvisors'].length > 0 ? 'mb-1' : 'mb-4'">
+        <div class="form-group mb-0 d-flex align-items-center">
+            <label class="custom-form-label mr-2 mb-0"
+                *ngIf="isEditable || (!isEditable && advisorInfo['secondaryAdvisors'].length === 0)"
+                [translate]="'ENGAGEMENT.SERVICE_LEVEL_ADVISOR_INFO.SECONDARY_ADVISORS'"></label>
+            <a class="btn-add ml-auto" (click)="addSecondaryAdvisor()" *ngIf="isEditable && enableAddAdvisorButton">
+                <i class="ion-md-add-circle"></i>
+                <span [translate]="'ENGAGEMENT.SERVICE_LEVEL_ADVISOR_INFO.ADD'"></span>
+            </a>
+            <a class="btn-add ml-auto disabled-link" *ngIf="isEditable && !enableAddAdvisorButton">
+                <i class="ion-md-add-circle"></i>
+                <span [translate]="'ENGAGEMENT.SERVICE_LEVEL_ADVISOR_INFO.ADD'"></span>
+            </a>
+        </div>
+        <p class="field-value mb-0" *ngIf="!isEditable && advisorInfo['secondaryAdvisors'].length == 0"> N/A </p>
+    </div>
+</div>
+
+<ng-container *ngIf="advisorInfo['secondaryAdvisors'].length > 0">
+    <div class="row" *ngFor="let advisor of advisorInfo['secondaryAdvisors']; index as i">
+        <div class="col-md-5">
+            <div class="form-group mb-4" *ngIf="!isEditable">
+                <label class="custom-form-label pb-2 mb-0"
+                    [translate]="'ENGAGEMENT.SERVICE_LEVEL_ADVISOR_INFO.SECONDARY_ADVISORS'"></label>
+                <p class="field-value mb-0">
+                    {{advisor['advisorName']}}</p>
+            </div>
+            <div class="form-group mb-4" *ngIf="isEditable">
+                <label class="custom-form-label pb-2 mb-0"
+                    [translate]="'ENGAGEMENT.SERVICE_LEVEL_ADVISOR_INFO.ADVISOR_ID'"></label>
+                <div class="d-flex align-items-center">
+                    <input class="form-control m-0" name="secondaryAdvisor_{{i}}" [(ngModel)]="advisor['advisor']"
+                        #secondaryAdvisor="ngModel" (ngModelChange)="OnAdvisorIDChange($event, i)">
+                    <span class="ml-2">
+                        <a href="javascript:void(0)" (click)="searchAdvisor(i)" class="btn-add search-button"
+                            *ngIf="advisor['advisorName'] === ''">
+                            <i class="ion-ios-search"></i>
+                        </a>
+                        <a href="javascript:void(0)" (click)="removeAdvisor(i)" class="delete-btn"
+                            *ngIf="advisor['advisorName'] !== ''">
+                            <i class="ion-md-close-circle"></i>
+                        </a>
+                    </span>
+                </div>
+                <p *ngIf="advisor['advisorName'] && advisor['advisorName'] !== ''" class="field-value mb-0">
+                    {{advisor['advisorName']}}</p>
+                <p *ngIf="noSuchAdvisor[i]" class="text-error"
+                    [translate]="'ENGAGEMENT.SERVICE_LEVEL_ADVISOR_INFO.NO_SUCH_ADVISOR'"></p>
+            </div>
+        </div>
+        <div class="col-md-5 offset-md-2">
+            <div class="form-group mb-4" *ngIf="advisor['advisorName'] !== ''">
+                <label class="custom-form-label mb-0 pb-2"
+                    [translate]="'ENGAGEMENT.SERVICE_LEVEL_ADVISOR_INFO.EXPIRES'"></label>
+                <div class="equal-height">
+                    <span *ngIf="!isEditable">
+                        <i *ngIf="advisor['expiryOption'] === 1" class="ion-md-done pr-2"></i>
+                        {{advisor['expiryOption'] === -1 ? ('ENGAGEMENT.SERVICE_LEVEL_ADVISOR_INFO.NEVER' | translate) 
+                        : (advisor['expiryOption'] === 1 ? ('ENGAGEMENT.SERVICE_LEVEL_ADVISOR_INFO.EXPIRED' | translate)  
+                        : (advisor['expiryDate'] | date: displayDateFormat))}}
+                    </span>
+                    <ng-container *ngIf="isEditable && !advisor['neverExpire'] && advisor['expiryOption'] !== 1">
+                        <p-calendar [showIcon]="true" [monthNavigator]="true" [yearNavigator]="true"
+                            name="expiryDate_{{i}}" yearRange="2000:2030" [(ngModel)]="advisor['expiryDate']"
+                            #expiryDate="ngModel" [dateFormat]="dateFormat"></p-calendar>
+                    </ng-container>
+                    <p-checkbox *ngIf="isEditable && advisor['expiryOption'] !== 1" name="neverExpire_{{i}}"
+                        label="Never" binary="true" [(ngModel)]="advisor['neverExpire']" #neverExpire_{{i}}="ngModel">
+                    </p-checkbox>
+                    <span *ngIf="isEditable && advisor['expiryOption'] === 1"
+                        [translate]="'ENGAGEMENT.SERVICE_LEVEL_ADVISOR_INFO.EXPIRED'"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-container>
+
+<div class="row">
+    <div class="col-md-5">
+        <div class="form-group mb-4">
+            <label class="custom-form-label pb-2 pb-2 mb-0"
+                [translate]="'ENGAGEMENT.SERVICE_LEVEL_ADVISOR_INFO.WORK_GROUP'"></label>
+            <p *ngIf="!isEditable" class="field-value mb-0">
+                {{advisorInfo['workGroup'] ? advisorInfo['workGroup']['description'] : 'N/A'}}</p>
+
+            <p-dropdown *ngIf="isEditable" [(ngModel)]="advisorInfo['workGroup']" name="workGroup"
+                [options]="workGroupList" optionLabel="description"
+                placeholder="{{'ENGAGEMENT.SERVICE_LEVEL_ADVISOR_INFO.WORKGROUP_PLACEHOLDER' | translate}}"
+                #workGroup="ngModel" required>
+            </p-dropdown>
+
+        </div>
+    </div>
+    <div class="col-md-5 offset-md-2">
+        <div class="form-group mb-4">
+            <label class="custom-form-label pb-2 mb-0"
+                [translate]="'ENGAGEMENT.SERVICE_LEVEL_ADVISOR_INFO.REGION'"></label>
+            <p *ngIf="!isEditable" class="field-value mb-0">
+                {{advisorInfo['region'] ? advisorInfo['region']['regionDescr'] : 'N/A'}}
+            </p>
+
+            <p-dropdown *ngIf="isEditable" name="region" [options]="regionList" optionLabel="regionDescr"
+                placeholder="{{'ENGAGEMENT.SERVICE_LEVEL_ADVISOR_INFO.REGION_PLACEHOLDER' | translate}}"
+                [(ngModel)]="advisorInfo['region']" #region="ngModel" required>
+            </p-dropdown>
+
+        </div>
+    </div>
+</div>

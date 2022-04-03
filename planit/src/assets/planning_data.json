@@ -1,0 +1,1895 @@
+[
+    {
+        "name": "Stop At",
+        "graphResults": {
+            "incomeGraph": [
+                [
+                    {
+                        "year": 55,
+                        "shortfall": 0,
+                        "totalGoal": 1558,
+                        "income": 1558,
+                        "fundedAmt": 1558,
+                        "goalName": "Retirement Lifestyle (After Tax)",
+                        "colorId": "#008000"
+                    },
+                    {
+                        "year": 56,
+                        "shortfall": 0,
+                        "totalGoal": 0,
+                        "income": 47980,
+                        "fundedAmt": 0,
+                        "goalName": "Retirement Lifestyle (After Tax)",
+                        "colorId": "#008000"
+                    }
+                ],
+                [
+                    {
+                        "year": 55,
+                        "shortfall": 0,
+                        "totalGoal": 1558,
+                        "income": 1558,
+                        "fundedAmt": 1558,
+                        "goalName": "Retirement Lifestyle (After Tax)",
+                        "colorId": "#008000"
+                    },
+                    {
+                        "year": 56,
+                        "shortfall": 0,
+                        "totalGoal": 1605,
+                        "income": 1605,
+                        "fundedAmt": 1605,
+                        "goalName": "Retirement Lifestyle (After Tax)",
+                        "colorId": "#008000"
+                    },
+                    {
+                        "year": 57,
+                        "shortfall": 0,
+                        "totalGoal": 0,
+                        "income": 51952,
+                        "fundedAmt": 0,
+                        "goalName": "Retirement Lifestyle (After Tax)",
+                        "colorId": "#008000"
+                    }
+                ],
+                [
+                    {
+                        "year": 55,
+                        "shortfall": 0,
+                        "totalGoal": 1558,
+                        "income": 1558,
+                        "fundedAmt": 1558,
+                        "goalName": "Retirement Lifestyle (After Tax)",
+                        "colorId": "#008000"
+                    },
+                    {
+                        "year": 56,
+                        "shortfall": 0,
+                        "totalGoal": 1605,
+                        "income": 1605,
+                        "fundedAmt": 1605,
+                        "goalName": "Retirement Lifestyle (After Tax)",
+                        "colorId": "#008000"
+                    },
+                    {
+                        "year": 57,
+                        "shortfall": 0,
+                        "totalGoal": 0,
+                        "income": 51952,
+                        "fundedAmt": 0,
+                        "goalName": "Retirement Lifestyle (After Tax)",
+                        "colorId": "#008000"
+                    }
+                ],
+                [
+                    {
+                        "year": 55,
+                        "shortfall": 0,
+                        "totalGoal": 1558,
+                        "income": 1558,
+                        "fundedAmt": 1558,
+                        "goalName": "Retirement Lifestyle (After Tax)",
+                        "colorId": "#008000"
+                    },
+                    {
+                        "year": 56,
+                        "shortfall": 0,
+                        "totalGoal": 1605,
+                        "income": 1605,
+                        "fundedAmt": 1605,
+                        "goalName": "Retirement Lifestyle (After Tax)",
+                        "colorId": "#008000"
+                    },
+                    {
+                        "year": 57,
+                        "shortfall": 0,
+                        "totalGoal": 0,
+                        "income": 51952,
+                        "fundedAmt": 0,
+                        "goalName": "Retirement Lifestyle (After Tax)",
+                        "colorId": "#008000"
+                    }
+                ],
+                [
+                    {
+                        "year": 55,
+                        "shortfall": 0,
+                        "totalGoal": 1558,
+                        "income": 1558,
+                        "fundedAmt": 1558,
+                        "goalName": "Retirement Lifestyle (After Tax)",
+                        "colorId": "#008000"
+                    },
+                    {
+                        "year": 56,
+                        "shortfall": 0,
+                        "totalGoal": 1605,
+                        "income": 1605,
+                        "fundedAmt": 1605,
+                        "goalName": "Retirement Lifestyle (After Tax)",
+                        "colorId": "#008000"
+                    },
+                    {
+                        "year": 57,
+                        "shortfall": 0,
+                        "totalGoal": 0,
+                        "income": 51952,
+                        "fundedAmt": 0,
+                        "goalName": "Retirement Lifestyle (After Tax)",
+                        "colorId": "#008000"
+                    }
+                ],
+                [
+                    {
+                        "year": 55,
+                        "shortfall": 0,
+                        "totalGoal": 1558,
+                        "income": 1558,
+                        "fundedAmt": 1558,
+                        "goalName": "Retirement Lifestyle (After Tax)",
+                        "colorId": "#008000"
+                    },
+                    {
+                        "year": 56,
+                        "shortfall": 0,
+                        "totalGoal": 1605,
+                        "income": 1605,
+                        "fundedAmt": 1605,
+                        "goalName": "Retirement Lifestyle (After Tax)",
+                        "colorId": "#008000"
+                    },
+                    {
+                        "year": 57,
+                        "shortfall": 0,
+                        "totalGoal": 0,
+                        "income": 51952,
+                        "fundedAmt": 0,
+                        "goalName": "Retirement Lifestyle (After Tax)",
+                        "colorId": "#008000"
+                    }
+                ],
+                [
+                    {
+                        "year": 55,
+                        "shortfall": 0,
+                        "totalGoal": 1558,
+                        "income": 1558,
+                        "fundedAmt": 1558,
+                        "goalName": "Retirement Lifestyle (After Tax)",
+                        "colorId": "#008000"
+                    },
+                    {
+                        "year": 56,
+                        "shortfall": 0,
+                        "totalGoal": 1605,
+                        "income": 1605,
+                        "fundedAmt": 1605,
+                        "goalName": "Retirement Lifestyle (After Tax)",
+                        "colorId": "#008000"
+                    },
+                    {
+                        "year": 57,
+                        "shortfall": 0,
+                        "totalGoal": 0,
+                        "income": 51952,
+                        "fundedAmt": 0,
+                        "goalName": "Retirement Lifestyle (After Tax)",
+                        "colorId": "#008000"
+                    }
+                ],
+                [
+                    {
+                        "year": 55,
+                        "shortfall": 0,
+                        "totalGoal": 1558,
+                        "income": 1558,
+                        "fundedAmt": 1558,
+                        "goalName": "Retirement Lifestyle (After Tax)",
+                        "colorId": "#008000"
+                    },
+                    {
+                        "year": 56,
+                        "shortfall": 0,
+                        "totalGoal": 1605,
+                        "income": 1605,
+                        "fundedAmt": 1605,
+                        "goalName": "Retirement Lifestyle (After Tax)",
+                        "colorId": "#008000"
+                    },
+                    {
+                        "year": 57,
+                        "shortfall": 0,
+                        "totalGoal": 0,
+                        "income": 51952,
+                        "fundedAmt": 0,
+                        "goalName": "Retirement Lifestyle (After Tax)",
+                        "colorId": "#008000"
+                    }
+                ],
+                [
+                    {
+                        "year": 55,
+                        "shortfall": 0,
+                        "totalGoal": 1558,
+                        "income": 1558,
+                        "fundedAmt": 1558,
+                        "goalName": "Retirement Lifestyle (After Tax)",
+                        "colorId": "#008000"
+                    },
+                    {
+                        "year": 56,
+                        "shortfall": 0,
+                        "totalGoal": 1605,
+                        "income": 1605,
+                        "fundedAmt": 1605,
+                        "goalName": "Retirement Lifestyle (After Tax)",
+                        "colorId": "#008000"
+                    },
+                    {
+                        "year": 57,
+                        "shortfall": 0,
+                        "totalGoal": 0,
+                        "income": 51952,
+                        "fundedAmt": 0,
+                        "goalName": "Retirement Lifestyle (After Tax)",
+                        "colorId": "#008000"
+                    }
+                ]
+            ],
+            "capitalGraph": [
+                [
+                    {
+                        "year": 2019,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 10000
+                            },
+                            {
+                                "description": "Some Account",
+                                "capital": 11000
+                            }
+                        ]
+                    },
+                    {
+                        "year": 2020,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 11126
+                            },
+                            {
+                                "description": "Some Account",
+                                "capital": 12345
+                            }
+                        ]
+                    },
+                    {
+                        "year": 2021,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 12378
+                            },
+                            {
+                                "description": "Some Account",
+                                "capital": 15000
+                            }
+                        ]
+                    },
+                    {
+                        "year": 2022,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 13771
+                            },
+                            {
+                                "description": "Some Account",
+                                "capital": 14567
+                            }
+                        ]
+                    },
+                    {
+                        "year": 2023,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 15321
+                            },
+                            {
+                                "description": "Some Account",
+                                "capital": 10000
+                            }
+                        ]
+                    },
+                    {
+                        "year": 2024,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 17046
+                            },
+                            {
+                                "description": "Some Account",
+                                "capital": 12563
+                            }
+                        ]
+                    },
+                    {
+                        "year": 2025,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 18965
+                            },
+                            {
+                                "description": "Some Account",
+                                "capital": 19000
+                            }
+                        ]
+                    },
+                    {
+                        "year": 2026,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 21100
+                            },
+                            {
+                                "description": "Some Account",
+                                "capital": 25000
+                            }
+                        ]
+                    },
+                    {
+                        "year": 2027,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 23475
+                            },
+                            {
+                                "description": "Some Account",
+                                "capital": 20000
+                            }
+                        ]
+                    },
+                    {
+                        "year": 2028,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 26118
+                            },
+                            {
+                                "description": "Some Account",
+                                "capital": 15000
+                            }
+                        ]
+                    },
+                    {
+                        "year": 2029,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 29058
+                            },
+                            {
+                                "description": "Some Account",
+                                "capital": 35000
+                            }
+                        ]
+                    },
+                    {
+                        "year": 2030,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 32329
+                            },
+                            {
+                                "description": "Some Account",
+                                "capital": 40000
+                            }
+                        ]
+                    },
+                    {
+                        "year": 2031,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 35969
+                            },
+                            {
+                                "description": "Some Account",
+                                "capital": 45000
+                            }
+                        ]
+                    },
+                    {
+                        "year": 2032,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 40019
+                            },
+                            {
+                                "description": "Some Account",
+                                "capital": 35684
+                            }
+                        ]
+                    },
+                    {
+                        "year": 2033,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 44525
+                            },
+                            {
+                                "description": "Some Account",
+                                "capital": 24557
+                            }
+                        ]
+                    },
+                    {
+                        "year": 2034,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 49538
+                            },
+                            {
+                                "description": "Some Account",
+                                "capital": 42578
+                            }
+                        ]
+                    },
+                    {
+                        "year": 2035,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 47980
+                            },
+                            {
+                                "description": "Some Account",
+                                "capital": 50000
+                            }
+                        ]
+                    }
+                ],
+                [
+                    {
+                        "year": 2019,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 10000
+                            }
+                        ]
+                    },
+                    {
+                        "year": 2020,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 11126
+                            }
+                        ]
+                    },
+                    {
+                        "year": 2021,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 12378
+                            }
+                        ]
+                    },
+                    {
+                        "year": 2022,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 13771
+                            }
+                        ]
+                    },
+                    {
+                        "year": 2023,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 15321
+                            }
+                        ]
+                    },
+                    {
+                        "year": 2024,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 17046
+                            }
+                        ]
+                    },
+                    {
+                        "year": 2025,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 18965
+                            }
+                        ]
+                    },
+                    {
+                        "year": 2026,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 21100
+                            }
+                        ]
+                    },
+                    {
+                        "year": 2027,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 23475
+                            }
+                        ]
+                    },
+                    {
+                        "year": 2028,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 26118
+                            }
+                        ]
+                    },
+                    {
+                        "year": 2029,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 29058
+                            }
+                        ]
+                    },
+                    {
+                        "year": 2030,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 32329
+                            }
+                        ]
+                    },
+                    {
+                        "year": 2031,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 35969
+                            }
+                        ]
+                    },
+                    {
+                        "year": 2032,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 40019
+                            }
+                        ]
+                    },
+                    {
+                        "year": 2033,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 44525
+                            }
+                        ]
+                    },
+                    {
+                        "year": 2034,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 49538
+                            }
+                        ]
+                    },
+                    {
+                        "year": 2035,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 53557
+                            }
+                        ]
+                    },
+                    {
+                        "year": 2036,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 51952
+                            }
+                        ]
+                    }
+                ],
+                [
+                    {
+                        "year": 2019,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 10000
+                            }
+                        ]
+                    },
+                    {
+                        "year": 2020,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 11126
+                            }
+                        ]
+                    },
+                    {
+                        "year": 2021,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 12378
+                            }
+                        ]
+                    },
+                    {
+                        "year": 2022,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 13771
+                            }
+                        ]
+                    },
+                    {
+                        "year": 2023,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 15321
+                            }
+                        ]
+                    },
+                    {
+                        "year": 2024,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 17046
+                            }
+                        ]
+                    },
+                    {
+                        "year": 2025,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 18965
+                            }
+                        ]
+                    },
+                    {
+                        "year": 2026,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 21100
+                            }
+                        ]
+                    },
+                    {
+                        "year": 2027,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 23475
+                            }
+                        ]
+                    },
+                    {
+                        "year": 2028,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 26118
+                            }
+                        ]
+                    },
+                    {
+                        "year": 2029,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 29058
+                            }
+                        ]
+                    },
+                    {
+                        "year": 2030,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 32329
+                            }
+                        ]
+                    },
+                    {
+                        "year": 2031,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 35969
+                            }
+                        ]
+                    },
+                    {
+                        "year": 2032,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 40019
+                            }
+                        ]
+                    },
+                    {
+                        "year": 2033,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 44525
+                            }
+                        ]
+                    },
+                    {
+                        "year": 2034,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 49538
+                            }
+                        ]
+                    },
+                    {
+                        "year": 2035,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 53557
+                            }
+                        ]
+                    },
+                    {
+                        "year": 2036,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 51952
+                            }
+                        ]
+                    }
+                ],
+                [
+                    {
+                        "year": 2019,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 10000
+                            }
+                        ]
+                    },
+                    {
+                        "year": 2020,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 11126
+                            }
+                        ]
+                    },
+                    {
+                        "year": 2021,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 12378
+                            }
+                        ]
+                    },
+                    {
+                        "year": 2022,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 13771
+                            }
+                        ]
+                    },
+                    {
+                        "year": 2023,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 15321
+                            }
+                        ]
+                    },
+                    {
+                        "year": 2024,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 17046
+                            }
+                        ]
+                    },
+                    {
+                        "year": 2025,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 18965
+                            }
+                        ]
+                    },
+                    {
+                        "year": 2026,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 21100
+                            }
+                        ]
+                    },
+                    {
+                        "year": 2027,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 23475
+                            }
+                        ]
+                    },
+                    {
+                        "year": 2028,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 26118
+                            }
+                        ]
+                    },
+                    {
+                        "year": 2029,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 29058
+                            }
+                        ]
+                    },
+                    {
+                        "year": 2030,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 32329
+                            }
+                        ]
+                    },
+                    {
+                        "year": 2031,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 35969
+                            }
+                        ]
+                    },
+                    {
+                        "year": 2032,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 40019
+                            }
+                        ]
+                    },
+                    {
+                        "year": 2033,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 44525
+                            }
+                        ]
+                    },
+                    {
+                        "year": 2034,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 49538
+                            }
+                        ]
+                    },
+                    {
+                        "year": 2035,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 53557
+                            }
+                        ]
+                    },
+                    {
+                        "year": 2036,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 51952
+                            }
+                        ]
+                    }
+                ],
+                [
+                    {
+                        "year": 2019,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 10000
+                            }
+                        ]
+                    },
+                    {
+                        "year": 2020,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 11126
+                            }
+                        ]
+                    },
+                    {
+                        "year": 2021,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 12378
+                            }
+                        ]
+                    },
+                    {
+                        "year": 2022,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 13771
+                            }
+                        ]
+                    },
+                    {
+                        "year": 2023,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 15321
+                            }
+                        ]
+                    },
+                    {
+                        "year": 2024,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 17046
+                            }
+                        ]
+                    },
+                    {
+                        "year": 2025,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 18965
+                            }
+                        ]
+                    },
+                    {
+                        "year": 2026,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 21100
+                            }
+                        ]
+                    },
+                    {
+                        "year": 2027,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 23475
+                            }
+                        ]
+                    },
+                    {
+                        "year": 2028,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 26118
+                            }
+                        ]
+                    },
+                    {
+                        "year": 2029,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 29058
+                            }
+                        ]
+                    },
+                    {
+                        "year": 2030,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 32329
+                            }
+                        ]
+                    },
+                    {
+                        "year": 2031,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 35969
+                            }
+                        ]
+                    },
+                    {
+                        "year": 2032,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 40019
+                            }
+                        ]
+                    },
+                    {
+                        "year": 2033,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 44525
+                            }
+                        ]
+                    },
+                    {
+                        "year": 2034,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 49538
+                            }
+                        ]
+                    },
+                    {
+                        "year": 2035,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 53557
+                            }
+                        ]
+                    },
+                    {
+                        "year": 2036,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 51952
+                            }
+                        ]
+                    }
+                ],
+                [
+                    {
+                        "year": 2019,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 10000
+                            }
+                        ]
+                    },
+                    {
+                        "year": 2020,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 11126
+                            }
+                        ]
+                    },
+                    {
+                        "year": 2021,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 12378
+                            }
+                        ]
+                    },
+                    {
+                        "year": 2022,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 13771
+                            }
+                        ]
+                    },
+                    {
+                        "year": 2023,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 15321
+                            }
+                        ]
+                    },
+                    {
+                        "year": 2024,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 17046
+                            }
+                        ]
+                    },
+                    {
+                        "year": 2025,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 18965
+                            }
+                        ]
+                    },
+                    {
+                        "year": 2026,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 21100
+                            }
+                        ]
+                    },
+                    {
+                        "year": 2027,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 23475
+                            }
+                        ]
+                    },
+                    {
+                        "year": 2028,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 26118
+                            }
+                        ]
+                    },
+                    {
+                        "year": 2029,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 29058
+                            }
+                        ]
+                    },
+                    {
+                        "year": 2030,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 32329
+                            }
+                        ]
+                    },
+                    {
+                        "year": 2031,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 35969
+                            }
+                        ]
+                    },
+                    {
+                        "year": 2032,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 40019
+                            }
+                        ]
+                    },
+                    {
+                        "year": 2033,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 44525
+                            }
+                        ]
+                    },
+                    {
+                        "year": 2034,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 49538
+                            }
+                        ]
+                    },
+                    {
+                        "year": 2035,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 53557
+                            }
+                        ]
+                    },
+                    {
+                        "year": 2036,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 51952
+                            }
+                        ]
+                    }
+                ],
+                [
+                    {
+                        "year": 2019,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 10000
+                            }
+                        ]
+                    },
+                    {
+                        "year": 2020,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 11126
+                            }
+                        ]
+                    },
+                    {
+                        "year": 2021,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 12378
+                            }
+                        ]
+                    },
+                    {
+                        "year": 2022,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 13771
+                            }
+                        ]
+                    },
+                    {
+                        "year": 2023,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 15321
+                            }
+                        ]
+                    },
+                    {
+                        "year": 2024,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 17046
+                            }
+                        ]
+                    },
+                    {
+                        "year": 2025,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 18965
+                            }
+                        ]
+                    },
+                    {
+                        "year": 2026,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 21100
+                            }
+                        ]
+                    },
+                    {
+                        "year": 2027,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 23475
+                            }
+                        ]
+                    },
+                    {
+                        "year": 2028,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 26118
+                            }
+                        ]
+                    },
+                    {
+                        "year": 2029,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 29058
+                            }
+                        ]
+                    },
+                    {
+                        "year": 2030,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 32329
+                            }
+                        ]
+                    },
+                    {
+                        "year": 2031,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 35969
+                            }
+                        ]
+                    },
+                    {
+                        "year": 2032,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 40019
+                            }
+                        ]
+                    },
+                    {
+                        "year": 2033,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 44525
+                            }
+                        ]
+                    },
+                    {
+                        "year": 2034,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 49538
+                            }
+                        ]
+                    },
+                    {
+                        "year": 2035,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 53557
+                            }
+                        ]
+                    },
+                    {
+                        "year": 2036,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 51952
+                            }
+                        ]
+                    }
+                ],
+                [
+                    {
+                        "year": 2019,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 10000
+                            }
+                        ]
+                    },
+                    {
+                        "year": 2020,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 11126
+                            }
+                        ]
+                    },
+                    {
+                        "year": 2021,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 12378
+                            }
+                        ]
+                    },
+                    {
+                        "year": 2022,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 13771
+                            }
+                        ]
+                    },
+                    {
+                        "year": 2023,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 15321
+                            }
+                        ]
+                    },
+                    {
+                        "year": 2024,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 17046
+                            }
+                        ]
+                    },
+                    {
+                        "year": 2025,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 18965
+                            }
+                        ]
+                    },
+                    {
+                        "year": 2026,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 21100
+                            }
+                        ]
+                    },
+                    {
+                        "year": 2027,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 23475
+                            }
+                        ]
+                    },
+                    {
+                        "year": 2028,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 26118
+                            }
+                        ]
+                    },
+                    {
+                        "year": 2029,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 29058
+                            }
+                        ]
+                    },
+                    {
+                        "year": 2030,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 32329
+                            }
+                        ]
+                    },
+                    {
+                        "year": 2031,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 35969
+                            }
+                        ]
+                    },
+                    {
+                        "year": 2032,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 40019
+                            }
+                        ]
+                    },
+                    {
+                        "year": 2033,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 44525
+                            }
+                        ]
+                    },
+                    {
+                        "year": 2034,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 49538
+                            }
+                        ]
+                    },
+                    {
+                        "year": 2035,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 53557
+                            }
+                        ]
+                    },
+                    {
+                        "year": 2036,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 51952
+                            }
+                        ]
+                    }
+                ],
+                [
+                    {
+                        "year": 2019,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 10000
+                            }
+                        ]
+                    },
+                    {
+                        "year": 2020,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 11126
+                            }
+                        ]
+                    },
+                    {
+                        "year": 2021,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 12378
+                            }
+                        ]
+                    },
+                    {
+                        "year": 2022,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 13771
+                            }
+                        ]
+                    },
+                    {
+                        "year": 2023,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 15321
+                            }
+                        ]
+                    },
+                    {
+                        "year": 2024,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 17046
+                            }
+                        ]
+                    },
+                    {
+                        "year": 2025,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 18965
+                            }
+                        ]
+                    },
+                    {
+                        "year": 2026,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 21100
+                            }
+                        ]
+                    },
+                    {
+                        "year": 2027,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 23475
+                            }
+                        ]
+                    },
+                    {
+                        "year": 2028,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 26118
+                            }
+                        ]
+                    },
+                    {
+                        "year": 2029,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 29058
+                            }
+                        ]
+                    },
+                    {
+                        "year": 2030,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 32329
+                            }
+                        ]
+                    },
+                    {
+                        "year": 2031,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 35969
+                            }
+                        ]
+                    },
+                    {
+                        "year": 2032,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 40019
+                            }
+                        ]
+                    },
+                    {
+                        "year": 2033,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 44525
+                            }
+                        ]
+                    },
+                    {
+                        "year": 2034,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 49538
+                            }
+                        ]
+                    },
+                    {
+                        "year": 2035,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 53557
+                            }
+                        ]
+                    },
+                    {
+                        "year": 2036,
+                        "accounts": [
+                            {
+                                "description": "My Account",
+                                "capital": 51952
+                            }
+                        ]
+                    }
+                ]
+            ],
+            "shortageSurplusResults": [
+                {
+                    "isShortage": "false",
+                    "shortageSurplusValue": "$ 29,900"
+                },
+                {
+                    "isShortage": "false",
+                    "shortageSurplusValue": "$ 31,432"
+                },
+                {
+                    "isShortage": "false",
+                    "shortageSurplusValue": "$ 31,432"
+                },
+                {
+                    "isShortage": "false",
+                    "shortageSurplusValue": "$ 31,432"
+                },
+                {
+                    "isShortage": "false",
+                    "shortageSurplusValue": "$ 31,432"
+                },
+                {
+                    "isShortage": "false",
+                    "shortageSurplusValue": "$ 31,432"
+                },
+                {
+                    "isShortage": "false",
+                    "shortageSurplusValue": "$ 31,432"
+                },
+                {
+                    "isShortage": "false",
+                    "shortageSurplusValue": "$ 31,432"
+                },
+                {
+                    "isShortage": "false",
+                    "shortageSurplusValue": "$ 31,432"
+                }
+            ],
+            "increments": [
+                {
+                    "display": "Age 55",
+                    "value": 55
+                },
+                {
+                    "display": "Age 56",
+                    "value": 56
+                },
+                {
+                    "display": "Age 57",
+                    "value": 57
+                },
+                {
+                    "display": "Age 58",
+                    "value": 58
+                },
+                {
+                    "display": "Age 59",
+                    "value": 59
+                },
+                {
+                    "display": "Age 60",
+                    "value": 60
+                },
+                {
+                    "display": "Age 61",
+                    "value": 61
+                },
+                {
+                    "display": "Age 62",
+                    "value": 62
+                },
+                {
+                    "display": "Age 63",
+                    "value": 63
+                }
+            ],
+            "savings": {
+                "plannum": "04GJ84G6Z9",
+                "acctList": [
+                    {
+                        "plannum": "2PKVEXVOJG_04GEUVEGN1",
+                        "descr": "My Account",
+                        "value": "600.0",
+                        "start": 2019,
+                        "end": 2030
+                    },
+                    {
+                        "plannum": "04GJ84G6Z9_04HH64MF6R",
+                        "descr": "Some account",
+                        "value": "800.0",
+                        "start": 2019,
+                        "end": 2035
+                    }
+                ]
+            },
+            "showGraphs": 1,
+            "initialSliderValue": 0
+        }
+    }
+]

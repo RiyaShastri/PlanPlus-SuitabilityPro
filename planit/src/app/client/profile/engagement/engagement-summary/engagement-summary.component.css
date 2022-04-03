@@ -1,0 +1,174 @@
+.card {
+    border-radius: 25px;
+    border-width: 3px;
+    border-color: #ddd;
+}
+.card-wrapper {
+    flex: 0 0 20%;
+    padding: 10px;
+    max-width: 20%;
+}
+.card .card-title,
+.card .card-text {
+    color: #244061;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.heading {
+    margin: 0px;
+    color: #112233;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 1;
+    display: block;
+}
+.engagement-summary-table .dropdown-relative-right {
+    margin: 0 15px 0 auto;
+}
+.table.engagement-summary-table>thead>tr>th {
+    padding: 0.6rem 0;
+    vertical-align: middle;
+}
+.table.engagement-summary-table>tbody>tr>td {
+    vertical-align: middle !important;
+}
+.table.engagement-summary-table>tbody>tr>td:last-child {
+    border-bottom: 0 !important;
+}
+.table.priorities-table>tbody>tr:first-child>td {
+    border-top: 0 !important;
+}
+.modal-header {
+    padding: 0 1rem;
+}
+.modal-header .sidebar_action_icon {
+    margin-right: 0 !important;
+}
+.modal-footer {
+    height: 45px;
+    border-top: 0px;
+}
+.modal-footer>div .btn {
+    margin-bottom: 0px;
+}
+.ion-md-resize::before {
+    transform: rotate(-45deg);
+}
+.avatar-box {
+    flex: 0 0 auto;
+    display: flex;
+}
+.client-img {
+    border-radius: 50%;
+    position: relative;
+    width: 35px;
+    height: 35px;
+    overflow: hidden;
+    z-index: 2;
+    padding: 0px;
+    margin: 0px;
+}
+.client-img img {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 100%;
+    transform: translate(-50%, -50%);
+}
+.client-icon {
+    border: 0px;
+    border-radius: 50%;
+    position: relative;
+    width: 35px;
+    height: 35px;
+    z-index: 2;
+    padding: 0px;
+    margin: 0px;
+}
+.client-icon:before {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    line-height: 35px;
+    right: 0px;
+    bottom: 0px;
+    text-align: center;
+    font-size: 23px;
+    color: #fff;
+}
+.client-name {
+    font-family: 'Montserrat', serif;
+    font-size: 15px;
+    margin-left: 5px;
+}
+.table.priorities-table>tbody>tr>td {
+    vertical-align: middle;
+}
+.add_custom .form-group {
+    position: relative;
+    height: 40px;
+}
+.add_custom .form-group input {
+    position: absolute;
+    top: 0;
+    height: 40px;
+    width: calc(100% - 18px);
+    left: 25px;
+    vertical-align: middle;
+}
+.add_custom .form-group input.edit_priority {
+    left: 0;
+    width: 100%;
+}
+.bt-none{
+    border-top: none !important;
+}
+@media(max-width: 1049px) {
+    .card-wrapper {
+        flex: 0 0 33.33%;
+        padding: 4px;
+        max-width: 33.33%;
+    }
+}
+
+@media(max-width: 600px) {
+    .card-wrapper {
+        flex: 0 0 100%;
+    }
+
+    .card {
+        border-width: 1px;
+        border-radius: 0;
+    }
+
+    .card-body {
+        text-align: left;
+    }
+}
+
+@media(max-width: 370px) {
+    .engagement-summary-table .heading {
+        font-size: 16px;
+    }
+
+    .table.engagement-summary-table>thead>tr>th {
+        font-size: 12px;
+    }
+
+    .engagement-summary-table .client-name {
+        font-size: 12px !important;
+    }
+
+    .engagement-summary-table .client-icon,
+    .engagement-summary-table .client-img {
+        width: 30px;
+        height: 30px;
+    }
+
+    .engagement-summary-table .client-icon:before {
+        line-height: 30px;
+        font-size: 19px;
+    }
+}

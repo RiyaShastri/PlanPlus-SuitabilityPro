@@ -1,0 +1,134 @@
+<div class="row">
+    <div class="col-12">
+        <h5 class="fw-700 mb-5" [translate]="'PRODUCT_RECOMM.TITLE.SELECT_ACCOUNT_MANAGE'"></h5>
+    </div>
+    <div class="col-12 col-lg-4 prod-dropdown" *ngIf="portfolioTypes.length > 1">
+        <app-common-drop-down [itemList]="portfolioTypes" [defaultSelected]="selectedPortfolio" dropDownLabel="" (OnSelect)="getSelectedPortfolio($event)"></app-common-drop-down>
+    </div>
+    <div class="col-12 col-lg-4 prod-dropdown" *ngIf="currencies && selectedCurrency">
+        <div ngbDropdown class="dropdown-common">
+            <a class="text-uppercase" id="dropdownBasic1" ngbDropdownToggle>
+                <span class="pr-1 selected-text">{{selectedCurrency.description}}</span>
+                <i class="ion-md-arrow-dropdown"></i>
+            </a>
+            <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+                <ul>
+                    <li *ngFor="let currency of currencies">
+                        <a [ngClass]="{active : selectedCurrency.isoCode === currency.isoCode}" class="dropdown-item" (click)="getSelectedCurrency(currency)">
+                            <span>{{currency.description}}</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 col-lg-4 text-right" *ngIf="selectedPortfolio.id !== 'ALLPORTFOLIO' && investmentStrategy">
+        <div class="dropdown">{{'PRODUCT_RECOMM.TITLE.INVESTMENT_STRATEGY' | translate}}: {{investmentStrategy.porttype}}</div>
+    </div>
+
+    <div class="col-12" *ngIf="selectedCurrency && investmentProducts">
+        <table class="table mt-3">
+            <thead>
+                <tr>
+                    <th colspan="2" [translate]="'PRODUCT_RECOMM.TABLE.ACCOUNTS'"></th>
+                    <th class="hidden-md-down" [translate]="'PRODUCT_RECOMM.TABLE.ACCOUNT_NUMBER'"></th>
+                    <th class="hidden-md-down" [translate]="'PRODUCT_RECOMM.TABLE.ACCOUNT_TYPE'"></th>
+                    <th class="text-right" [translate]="'PRODUCT_RECOMM.TABLE.CURRENT'"></th>
+                    <th class="text-right" [translate]="'PRODUCT_RECOMM.TABLE.RECOMMMENDED'"></th>
+                    <th class="text-center" width="10%"><span class="hidden-md-down" [translate]="'PRODUCT_RECOMM.TABLE.ACTION'"></span></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let iProduct of investmentProducts; let i = index;">
+                    <td>
+                        <div class="form-group mb-0">
+                            <p-checkbox name="managed_{{i}}" [(ngModel)]="iProduct.included" binary="true"></p-checkbox>
+                        </div>
+                    </td>
+                    <td>
+                        <span *ngIf="iProduct.ownership.length == 1" class="initials hidden-md-down">{{iProduct.ownership[0].personDetails.btnInitials}}</span>
+                        <span *ngIf="iProduct.ownership.length > 1" class="client-avatars hidden-md-down">
+                            <span class="initials client-icon">{{iProduct.ownership[0].personDetails.btnInitials}}</span>
+                        <span class="initials client-icon spouse">{{iProduct.ownership[1].personDetails.btnInitials}}</span>
+                        </span>
+                        <span class="ml-2 fw-400">{{iProduct.description}}</span>
+                    </td>
+                    <td class="fw-400 hidden-md-down">{{iProduct.accountNumber}}</td>
+                    <td class="text-left hidden-md-down">{{iProduct.accountType}}</td>
+                    <td class="text-right">
+                        {{iProduct.totalAssets | currency:clientData['currencyCode'] :'symbol-narrow':'1.0-0'}}
+                    </td>
+                    <td class="text-right">
+                        {{iProduct.totalAssets | currency:clientData['currencyCode'] :'symbol-narrow':'1.0-0'}}
+                    </td>
+                    <td class="text-center pr-0">
+                        <div class="dropdown-relative">
+                            <button type="button" class="btn-floating" (click)="changeProductAction(i)">
+                                <span class="ion-md-more"></span>
+                            </button>
+                            <div [id]="'dropdownProductAction'+i" class="dropdown-product-action dropdown-floating hide-ele">
+                                <ul class="floating-dropdown">
+                                    <li (click)="changeProductAction(i)">
+                                        <a class="action-list" [routerLink]="[iProduct.id, 'apply-model']">
+                                            <i class="ion-ios-pie apply-model action-list"></i>
+                                            <span class="action-list" [translate]="'CUSTOM.APPLY_MODEL'"></span>
+                                        </a>
+                                    </li>
+                                    <li (click)="changeProductAction(i)">
+                                        <a class="action-list" [routerLink]="[iProduct.id, 'add-product']">
+                                            <i class="ion-md-link action-list"></i>
+                                            <span class="action-list" [translate]="'CUSTOM.ADD_PRODUCT'"></span>
+                                        </a>
+                                    </li>
+                                    <li (click)="changeProductAction(i)">
+                                        <a class="action-list" [routerLink]="[iProduct.id, 'add-favourites']">
+                                            <i class="ion-md-add action-list"></i>
+                                            <span class="action-list" [translate]="'CUSTOM.ADD_FROM_FAVOURITES'"></span>
+                                        </a>
+                                    </li>
+                                    <li (click)="changeProductAction(i)">
+                                        <a class="action-list">
+                                            <i class="ion-ios-pause rotate-pause action-list"></i>
+                                            <span class="action-list" [translate]="'CUSTOM.KEEP_CURRENT_HOLDINGS'"></span>
+                                        </a>
+                                    </li>
+                                    <li (click)="changeProductAction(i)">
+                                        <a class="action-list">
+                                            <i class="ion-android-close grey-bkground action-list"></i>
+                                            <span class="action-list" [translate]="'CUSTOM.RESET'"></span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td colspan="7">
+                        <a [routerLink]="['add-account']" class="btn-add">
+                            <i class="ion-md-add-circle"></i>
+                            <span [translate]="'PRODUCT_RECOMM.TABLE.ADD_ACCOUNT'"></span>
+                        </a>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td colspan="4" class="fw-700 hidden-lg-down" [translate]="'PRODUCT_RECOMM.TABLE.TOTAL_ACCOUNTS'"></td>
+                    <td colspan="2" class="fw-700 hidden-xl-up" [translate]="'PRODUCT_RECOMM.TABLE.TOTAL_ACCOUNTS'"></td>
+                    <td class="fw-700 text-right" *ngIf="totalCurrent">
+                        {{totalCurrent | currency:clientData['currencyCode'] :'symbol-narrow':'1.0-0'}}
+                    </td>
+                    <td class="fw-700 text-right" *ngIf="totalRecommended">
+                        {{totalRecommended | currency:clientData['currencyCode'] :'symbol-narrow':'1.0-0'}}
+                    </td>
+                    <td>&nbsp;</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="view-side-form">
+    <router-outlet></router-outlet>
+</div>

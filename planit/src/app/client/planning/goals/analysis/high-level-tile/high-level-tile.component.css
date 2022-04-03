@@ -1,0 +1,79 @@
+.summary-of-assumptions-table .text-icon-wrapper i{
+    position: relative;
+    display: block;
+    margin-left: 5px;
+}
+.level{
+    height: 10px;
+    display: block;
+    float: right;
+    width: 160px;
+}
+.orange-text {
+    color: #FF6644;
+}
+.table.goal-analysis th {
+    border-top: 0;
+    border-bottom: 0;
+}
+.summary-of-assumptions-table tr th{
+    position: relative;
+}
+.summary-of-assumptions-table tr th a{
+    position: absolute;
+    z-index: 1;
+    height: 25px;
+    background-color: #fff;
+}
+.summary-of-assumptions-table tr th span{
+    white-space: nowrap;
+}
+.summary-of-assumptions-table tbody > tr:last-child > td {
+    padding-bottom: 25px !important;
+    border-bottom: 0 !important;
+}
+.ion-md-sync {
+    color: #bd6 ;
+    cursor: pointer;
+    font-size: 24px;
+    padding-right:28px !important;
+
+}
+
+.sync-contain {
+    font-size: 14px !important;
+    color: #788588 !important;
+    font-weight: 700 !important;
+}
+
+@media(min-width: 768px){
+    .level{
+        width: 100px;
+    }
+}
+
+@media(min-width: 992px){
+    .level{
+        width: 190px;
+    }
+}
+
+@media(max-width: 1199px){
+    .summary-of-assumptions-table{
+        table-layout: fixed;
+    }
+    .summary-of-assumptions-table-first-th{
+        width: auto;
+    }
+}
+@media(max-width: 767px){
+    .summary-of-assumptions-table tr th a{
+        position: relative;
+       
+    }
+    .summary-of-assumptions-table tr th a,.summary-of-assumptions-table tr th span{
+        display: inline-block;
+        white-space: inherit;
+
+    }
+}

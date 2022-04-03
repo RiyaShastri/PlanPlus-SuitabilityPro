@@ -1,0 +1,201 @@
+<div class="side-form">
+    <form name="form" (ngSubmit)="generateReport(f) && f.form.valid" #f="ngForm" novalidate>
+        <div class="box">
+            <div class="box-header">
+                <span class="sidebar_title">{{ 'GENERATE_REPORT.TITLE' | translate }}</span>
+                <span (click)="back()" class="sidebar_action_icon ion-md-close-circle float-right"></span>
+            </div>
+            <div class="box-body">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="pull-right expand-button d-flex">
+                            <a (click)="expandALL()" class="ml-auto">
+                                <span *ngIf="!allExpanded" [translate]="'ACCORDIAN.EXPAND_ALL'"></span>
+                                <span *ngIf="allExpanded" [translate]="'ACCORDIAN.COLLAPSE_ALL'"></span>
+                                <i
+                                    [ngClass]="{'ion-ios-arrow-up' : allExpanded, 'ion-ios-arrow-down': !allExpanded}"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <p-accordion [multiple]="true" (onOpen)="openTab($event)" (onClose)="onTabClose($event)">
+                            <p-accordionTab [selected]="isWealth"
+                                *ngIf="accessRights['NETWT']['accessLevel'] > 0 || accessRights['HLDST']['accessLevel'] > 0 || accessRights['FFS01']['accessLevel'] > 0">
+                                <p-header>
+                                    <h4 class="text-uppercase">{{ 'GENERATE_REPORT.WEALTH' | translate }}</h4>
+                                </p-header>
+                                <ng-container *ngFor="let wealthReportType of wealthReportTypes">
+                                    <div class="form-group generate-report-form-check form-check"
+                                        *ngIf="wealthReportType.accessRights == '' || (wealthReportType.accessRights != '' && accessRights[wealthReportType.accessRights]['accessLevel'] > 0)">
+                                        <p-radioButton name="wealth" label="{{ wealthReportType.label | translate}}"
+                                            (ngModelChange)="showGoals(wealthReportType.value)" [(ngModel)]="selectedReport"
+                                            [value]="wealthReportType" required></p-radioButton>
+                                    </div>
+                                </ng-container>
+
+                            </p-accordionTab>
+
+                            <p-accordionTab [selected]="isInvestment"
+                                *ngIf="accessRights['PORTROLLUP']['accessLevel'] > 0 || accessRights['FFS01']['accessLevel'] > 0">
+                                <p-header>
+                                    <h4 class="text-uppercase">{{ 'GENERATE_REPORT.INVESTMENT_PROPOSAL' | translate }}
+                                    </h4>
+                                </p-header>
+                                <ng-container *ngFor="let investmentReportType of investmentReportTypes">
+                                    <div class="form-group generate-report-form-check form-check"
+                                        *ngIf="investmentReportType.accessRights == '' || (investmentReportType.accessRights != '' && accessRights[investmentReportType.accessRights]['accessLevel'] > 0)">
+                                        <p-radioButton name="investmentProposal"
+                                            (ngModelChange)="showGoals(investmentReportType.value)"
+                                            label="{{ investmentReportType.label | translate }}"
+                                            [(ngModel)]="selectedReport" [value]="investmentReportType" required>
+                                        </p-radioButton>
+                                    </div>
+                                </ng-container>
+                            </p-accordionTab>
+
+                            <p-accordionTab [selected]="isGoal"
+                                *ngIf="accessRights['TXDRP']['accessLevel'] > 0 || accessRights['GOALNOBJ']['accessLevel'] > 0">
+                                <p-header>
+                                    <h4 class="text-uppercase">{{ 'GENERATE_REPORT.GOALS' | translate }}</h4>
+                                </p-header>
+                                <ng-container *ngFor="let goalReportType of goalReportTypes">
+                                    <div class="form-group generate-report-form-check form-check"
+                                        *ngIf="goalReportType.accessRights == '' || (goalReportType.accessRights != '' && accessRights[goalReportType.accessRights]['accessLevel'] > 0)">
+                                        <p-radioButton name="goals" (ngModelChange)="showGoals(goalReportType.value)"
+                                            label="{{ goalReportType.label | translate }}" [(ngModel)]="selectedReport"
+                                            [value]="goalReportType" required></p-radioButton>
+                                    </div>
+                                </ng-container>
+
+                            </p-accordionTab>
+
+                            <p-accordionTab [selected]="isBudget" *ngIf="accessRights['CLI13_SP']['accessLevel'] > 0">
+                                <p-header>
+                                    <h4 class="text-uppercase">{{ 'GENERATE_REPORT.BUDGET' | translate }}</h4>
+                                </p-header>
+                                <ng-container *ngFor="let budgetReportType of budgetReportTypes">
+                                    <div class="form-group generate-report-form-check form-check"
+                                        *ngIf="budgetReportType.accessRights == '' || (budgetReportType.accessRights != '' && accessRights[budgetReportType.accessRights]['accessLevel'] > 0)">
+                                        <p-radioButton name="budget" label="{{ budgetReportType.label | translate }}"
+                                            (ngModelChange)="showGoals('')" [(ngModel)]="selectedReport"
+                                            [value]="budgetReportType" required></p-radioButton>
+                                    </div>
+                                </ng-container>
+                            </p-accordionTab>
+
+                            <p-accordionTab [selected]="isEstatePlanning"
+                                *ngIf="accessRights['EST01_SP']['accessLevel'] > 0">
+                                <p-header>
+                                    <h4 class="text-uppercase">{{ 'BREADCRUMB.ESTATE_PLANNING' | translate }}</h4>
+                                </p-header>
+                                <ng-container *ngFor="let estateReportType of estateReportTypes">
+                                    <div class="form-group generate-report-form-check form-check"
+                                        *ngIf="estateReportType.accessRights == '' || (estateReportType.accessRights != '' && accessRights[estateReportType.accessRights]['accessLevel'] > 0)">
+                                        <p-radioButton name="estate" label="{{ estateReportType.label | translate }}"
+                                            [(ngModel)]="selectedReport" (ngModelChange)="showGoals('')"
+                                            [value]="estateReportType" required></p-radioButton>
+                                    </div>
+                                </ng-container>
+                                <div *ngIf="selectedReport && selectedReport.value == 'rpt3'" class="form-group"
+                                    [ngClass]="{ 'has-error': f.submitted && !scenarios.valid }">
+                                    <label
+                                        class="custom-form-label">{{ 'GENERATE_REPORT.TAX_REPORT_SCENARIO' | translate }}</label>
+                                    <p-dropdown [options]="taxReportScenarioOptions" name="scenarios"
+                                        #scenarios="ngModel" optionLabel="description"
+                                        placeholder="{{ 'GENERATE_REPORT.TAX_REPORT_SCENARIO_PLACEHOLDER' | translate }}"
+                                        (ngModelChange)="showGoals('')" [(ngModel)]="taxReportScenario" required>
+                                    </p-dropdown>
+                                </div>
+                            </p-accordionTab>
+
+                            <p-accordionTab *ngIf="accessRights['ENTITY']['accessLevel'] > 0" [selected]="isEntity">
+                                <p-header>
+                                    <h4 class="text-uppercase">{{ 'GENERATE_REPORT.ENTITIES' | translate }}</h4>
+                                </p-header>
+                                <ng-container *ngFor="let entityReportType of entityReportTypes">
+                                    <div class="form-group generate-report-form-check form-check"
+                                        *ngIf="entityReportType.accessRights == '' || (entityReportType.accessRights != '' && accessRights[entityReportType.accessRights]['accessLevel'] > 0)">
+                                        <p-radioButton name="entities" (ngModelChange)="showGoals('')"
+                                            label="{{entityReportType.label | translate}}" [(ngModel)]="selectedReport"
+                                            [value]="entityReportType" required></p-radioButton>
+                                    </div>
+                                </ng-container>
+                                <div *ngIf="selectedReport && selectedReport['type'] === ENTITY" class="form-group generate-report-form-check form-check">
+                                    <label class="custom-form-label">
+                                        {{ 'ENTITY.PAGE_LABEL' | translate }}
+                                    </label>
+                                    <p-dropdown [options]="entities" name="select_entity" optionLabel="description"
+                                        [(ngModel)]="selectedEntity"
+                                        placeholder="{{ 'GENERATE_REPORT.ENTITY_PLACEHOLDER' | translate }}" required>
+                                    </p-dropdown>
+                                </div>
+                                <div *ngIf="selectedReport && selectedReport['type'] === ENTITY" class="form-group" [ngClass]="{ 'has-error': f.submitted && !entityScenario.valid }">
+                                    <label
+                                        class="custom-form-label">{{ 'GENERATE_REPORT.ENTITY_SCENARIO' | translate }}</label>
+                                    <p-dropdown [options]="entityScenarios" name="entityScenario"
+                                        #entityScenario="ngModel" optionLabel="name"
+                                        placeholder="{{ 'GENERATE_REPORT.ENTITY_SCENARIO_PLACEHOLDER' | translate }}"
+                                        [(ngModel)]="selectedEntityScenario" required>
+                                    </p-dropdown>
+                                </div>
+                            </p-accordionTab>
+                        </p-accordion>
+                    </div>
+                    <div [hidden]="isGoalHidden" class="col-12 mt-2">
+                        <div class="form-group">
+                            <label class="custom-form-label">{{ 'GENERATE_REPORT.GOALS' | translate }}</label>
+                            <p-dropdown [options]="goals" name="goal" optionLabel="description" [(ngModel)]="goal"
+                                placeholder="{{ 'GENERATE_REPORT.GOAL_PLACEHOLDER' | translate }}"></p-dropdown>
+                        </div>
+                    </div>
+                    <div [hidden]="isPortfolioHidden" class="col-12 mt-2">
+                        <div class="form-group">
+                            <label class="custom-form-label">{{ 'GENERATE_REPORT.PORTFOLIOS' | translate }}</label>
+                            <p-dropdown [options]="portfolios" name="portfolio" optionLabel="description"
+                                [(ngModel)]="portfolio" (ngModelChange)="checkPortfolio($event)"
+                                placeholder="{{ 'GENERATE_REPORT.PORTFOLIO_PLACEHOLDER' | translate }}"></p-dropdown>
+                        </div>
+                    </div>
+                    <div class="col-12 mt-2">
+                        <div class="form-group">
+                            <label class="custom-form-label">{{ 'GENERATE_REPORT.CRITERIA' | translate }}</label>
+                            <p-dropdown [options]="criterias" name="criteria" optionLabel="description"
+                                [(ngModel)]="criteria" (ngModelChange)="checkCriteria($event)"
+                                placeholder="{{ 'GENERATE_REPORT.CRITERIA_PLACEHOLDER' | translate }}"></p-dropdown>
+                        </div>
+                    </div>
+                    <div *ngIf="showScenario" class="col-12">
+                        <div class="form-group">
+                            <label class="custom-form-label">{{ 'GENERATE_REPORT.SCENARIO' | translate }}</label>
+                            <p-dropdown [options]="scenarioList" name="scenario" optionLabel="name"
+                                [(ngModel)]="selectedScenario"
+                                placeholder="{{ 'GENERATE_REPORT.SCENARIO_PLACEHOLDER' | translate }}"></p-dropdown>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="form-group">
+                            <label class="custom-form-label">{{ 'GENERATE_REPORT.FORMATS' | translate }}</label>
+                            <p-dropdown
+                                *ngIf="selectedReport === null || !(selectedReport == REPORT_TYPES.TAX_AUDIT_REPORT)"
+                                required [options]="reportFormats" name="reportFormat" [(ngModel)]="selectedFormat"
+                                #reportFormat="ngModel" optionLabel="description"
+                                placeholder="{{ 'GENERATE_REPORT.FORMATS_PLACEHOLDER' | translate }}"></p-dropdown>
+                            <p-dropdown *ngIf="(selectedReport == REPORT_TYPES.TAX_AUDIT_REPORT)" required
+                                [options]="reportFormatsTaxAudit" name="reportFormat"
+                                [(ngModel)]="selectedFormatTaxAudit" #reportFormat="ngModel" optionLabel="description"
+                                placeholder="{{ 'GENERATE_REPORT.FORMATS_PLACEHOLDER' | translate }}"></p-dropdown>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="box-footer">
+                <div class="form-group mt-5 text-right">
+                    <button [disabled]="cancelDisable" (click)="back()" type="button"
+                        class="btn btn-secondary btn-small mr-2" [translate]="'FORM.ACTION.CANCEL'"></button>
+                    <button [disabled]="f.form.invalid || saveDisable" name="save" type="submit"
+                        class="btn btn-small btn-success pl-4 pr-4" [translate]="'FORM.ACTION.SAVE'"></button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

@@ -1,0 +1,584 @@
+<div class="bg-white pt-4 pb-4">
+    <div class="container" *ngIf="familyMembersRisk && keyDifferences">
+        <div class="row">
+            <div class="col-sm-8">
+                <h4 class="mb-1">
+                    <a [routerLink]="['/client',clientId,'profile']" [translate]="'BREADCRUMB.CLIENT_PROFILE'"></a> /
+                    <a [routerLink]="['/client',clientId,'profile','risk-tolerance']" [translate]="'BREADCRUMB.RISK_TOLERANCE'"></a>
+                    /
+                </h4>
+                <h1 class="fw-500">
+                    <app-family-member-dropdown [clientId]="clientId" [personalId]="personalId" typeId="risk"
+                        (memberSwitch)="memberSwitch($event)"></app-family-member-dropdown>
+                </h1>
+            </div>
+            <div class="col-sm-4 d-flex flex-wrap justify-content-end dropdown-right">
+                <div class="mt-auto">
+                    <app-profile-module-drop-down [clientId]="clientId"></app-profile-module-drop-down>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <hr>
+            </div>
+            <div class="col-8">
+                <ul class="nav nav-tabs" role="tablist">
+                    <li class="nav-item">
+                        <a [routerLink]="['/client',clientId,'profile','risk-tolerance',personalId,'results']" class="nav-link active"
+                            data-toggle="tab" [translate]="'RISK_RESULTS_PAGE.TITLE'"></a>
+                    </li>
+                    <li class="nav-item">
+                        <a [routerLink]="['/client',clientId,'profile','risk-tolerance',personalId,'experience']" class="nav-link" 
+                            data-toggle="tab" [translate]="'RISK_EXPERIENCE_PAGE.TITLE'"></a>
+                    </li>
+                    <li class="nav-item">
+                        <a [routerLink]="['/client',clientId,'profile','risk-tolerance',personalId,'know-your-client']"
+                            class="nav-link" data-toggle="tab" [translate]="'RISK_KYC_PAGE.TITLE'"></a>
+                    </li>
+                </ul>
+            </div>
+
+        </div>
+
+        <div class="row">
+            <div class="col-12">
+                <hr>
+            </div>
+            <div class="col-12 pb-3">
+                <div class="d-flex">
+                    <div class="mr-auto">
+                            <h5 class="fw-700" [translate]="'RISK_RESULTS_PAGE.REPORT'"></h5>
+                            <small> {{'RISK_RESULTS_PAGE.DATE_AS_OF' | translate}} {{familyMembersRisk['reviewDate'] |
+                                date:'yyyy.MM.dd'}}</small>
+                    </div>
+                    <div>
+                            <img class="img-fluid" src="assets/images/finaMetrica.png" width="116">
+                    </div>
+                </div>
+                
+            </div>
+
+          <div class="col-12">
+            <hr>
+          </div>
+        </div>
+
+      <div class="col-12 p-0">
+        <div class="row">
+          <div class="col-12 col-lg-9 ">
+            <div class="row">
+              <div class="col-12 col-sm-5 col-md-4 mb-2 mb-sm-0">
+                <div class="badge-wrapper risk-badge score-box" *ngIf="familyMembersRisk['calculatedScore'];">
+                  <span class="score-lbl" [translate]="'RISK_RESULTS_PAGE.CALC.SCORE'"></span>
+                  <strong>
+                    {{familyMembersRisk['calculatedScore']}}
+                  </strong>
+                  <strong [translate]="'RISK_RESULTS_PAGE.OUT_OF'"></strong>
+                </div>
+              </div>
+              <div class="col-12 col-sm-7 col-md-8 d-flex justify-content-start">
+                <div class="badge-wrapper risk-badge score-box" *ngIf="familyMembersRisk['calculatedScore'];">
+                  <span class="score-auto" [translate]="'RISK_RESULTS_PAGE.CALC.GROUP'"></span>
+                  <span class="fw-400">{{familyMembersRisk['calculatedRiskGroup']}}</span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+          <div
+            class="col-12 col-lg-3   mb-0 pr-5 d-flex justify-content-end dropdown-right dropdown-right-familyMembersRisk">
+            <div class="badge-wrapper risk-badge score-box pull-right">
+              <div class="score-lbl font-weight-light" style="text-transform: initial"
+                    [translate]="'RISK_RESULTS_PAGE.AGREED.SCORE'"></div>
+              <strong *ngIf="familyMembersRisk['agreedChangedDate']">
+                {{agreed.riskScore}}
+              </strong>
+              <input *ngIf="!familyMembersRisk['agreedChangedDate']" type="text" class="form-control w-15" name="riskScore" [(ngModel)]="agreed.riskScore"
+                     #riskScore="ngModel" pattern="^[1-9][0-9]?$|^100$" required/>
+              <strong [translate]="'RISK_RESULTS_PAGE.OUT_OF'"></strong>
+
+              <div ngbDropdown class="dropdown-common p-1" #myDrop="ngbDropdown">
+                <a id="dropdownBasic1" class="text-uppercase" ngbDropdownToggle [ngbTooltip]="tipContent"
+                   placement="left" #t="ngbTooltip" triggers="manual">
+                  <div class="ion-icon">
+                  <i class=" m-0" [ngClass]="{'ion-md-create':familyMembersRisk['agreedChangedDate'],'ion-md-save' :!familyMembersRisk['agreedChangedDate']}"></i>
+                  </div>
+
+
+                </a>
+
+                <div ngbDropdownMenu aria-labelledby="dropdownBasic1" class="p-4 hide-ele changeRiskForm" style="width: 30rem;">
+                  <form name="form" (ngSubmit)="changeRisk(f) && f.form.valid" #f="ngForm" novalidate>
+                    <div class="form-group" *ngIf="familyMembersRisk['calculatedScore']"
+                         [ngClass]="{'has-error': !riskScore.valid && (riskScore.dirty || riskScore.touched || f.submitted)}">
+                      <label class=custom-form-label
+                             [translate]="'RISK_RESULTS_PAGE.CHANGE_SCORE_FORM.RISK_SCORE'"></label>
+                      <label *ngIf="!riskScore.valid" class="fw-400 custom-form-label custom-error"
+                             [translate]="'RISK_RESULTS_PAGE.CHANGE_SCORE_FORM.SHOW_ERROR'"></label>
+                      <input type="text" class="form-control" name="riskScore" [(ngModel)]="agreed.riskScore"
+                             #riskScore="ngModel" pattern="^[1-9][0-9]?$|^100$" required/>
+                    </div>
+                    <div class="form-group"
+                         [ngClass]="{'has-error': !comment.valid && (comment.dirty || comment.touched || f.submitted)}">
+                      <label class=custom-form-label
+                             [translate]="'RISK_RESULTS_PAGE.CHANGE_SCORE_FORM.ADD_COMMENT'"></label>
+                      <textarea type="text" class="form-control" name="comment" [(ngModel)]="agreed.comment"
+                                #comment="ngModel" rows="5"> </textarea>
+                    </div>
+                    <div class="form-group text-right m-0">
+                      <button type="button" class="btn btn-secondary btn-small mr-2" [translate]="'FORM.ACTION.CANCEL'"
+                              (click)="cancelChangeRisk(); myDrop.close();"></button>
+
+                      <button type="submit" class="btn btn-success btn-small" [disabled]="!f.form.valid"
+                              (click)="$event.stopPropagation(); myDrop.close();"
+                              [translate]="'FORM.ACTION.SAVE'"></button>
+                    </div>
+                  </form>
+                </div>
+
+              </div>
+              <div ngbDropdown class="dropdown-common p-1" #agreedHistoryDrop="ngbDropdown" *ngIf="familyMembersRisk['agreedRiskHistory'].length > 0">
+                <a id="dropdownBasic2" class="text-uppercase" ngbDropdownToggle
+                   placement="left"  triggers="manual">
+                  <div class="ion-md-arrow-dropdown"></div>
+                </a>
+                <div ngbDropdownMenu aria-labelledby="dropdownBasic2" class="p-4 hide-ele scrollable"  style="width: 25rem;">
+                  <div *ngFor="let agreePayload of familyMembersRisk['agreedRiskHistory']" class="form-group">
+                    <div class="row">
+                      <div class="col-6" *ngIf='agreePayload.changeDate'>
+                        <div class="custom-form-label" [translate]="'RISK_RESULTS_PAGE.AGREED_SCORE_HISTORY.DATE'"></div>
+                        <div class="font-weight-normal">{{agreePayload.changeDate |  date:'yyyy.MM.dd'}}</div>
+                      </div>
+                      <div class="col-6 pull-right text-right" [ngClass] = "{'col-12' : !agreePayload.changeDate && !agreePayload.comment}">
+                        <div class="custom-form-label" [translate]="'RISK_RESULTS_PAGE.AGREED_SCORE_HISTORY.AGREED_SCORE'">Agreed Score</div>
+                        <div class="font-weight-normal">{{agreePayload.agreedScore}}</div>
+                      </div>
+                    </div>
+                    <div class="row" *ngIf='agreePayload.changeDate'>
+                      <div class="col-12">
+                        <div class="custom-form-label" [translate]="'RISK_RESULTS_PAGE.AGREED_SCORE_HISTORY.COMMENT'"></div>
+                        <div class="font-weight-normal">{{agreePayload.comment}}</div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-12 mt--15">
+                        <hr>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+
+              </div>
+              <ng-template #tipContent class="tooltipbox">
+                <p *ngIf="familyMembersRisk['comments'] !== null">{{familyMembersRisk['comments']}}</p>
+                <p *ngIf="familyMembersRisk['comments'] == null || familyMembersRisk['comments'] == ''"
+                   [translate]="'RISK_RESULTS_PAGE.CHANGE_SCORE_FORM.WARNING'" [translateParams]="{calcScore: familyMembersRisk.calculatedScore, agreedScore: familyMembersRisk['agreedScore'], date: today}"></p>
+                <p class="text-right p-0 m-0">
+                  <button class="btn btn-secondary btn-small m-0" (click)="t.close()" [translate]="'RISK_RESULTS_PAGE.WARNING.CLOSE'"></button>
+                </p>
+              </ng-template>
+
+            </div>
+          </div>
+        </div>
+        <div class="row" *ngIf="familyMembersRisk['agreedChangedDate']">
+          <div class="col-12  order-lg-0 order-1">
+            <div class="pull-right">
+
+               <span *ngIf="showAgreedOverviewWarning()">
+                                <ng-template #keyWarning>
+                                    <p [innerHTML]="'RISK_RESULTS_PAGE.AGREED_SCORE_WARNING' | translate : {agreedScore: agreed.riskScore, agreedDate:familyMembersRisk['agreedChangedDate']|date:'yyyy.MM.dd', calcScore: familyMembersRisk.calculatedScore, reviewDate:familyMembersRisk['reviewDate']|date:'yyyy.MM.dd' }" class="tooltip-inner-scroll"></p>
+                                    <p class="text-right m-0 p-0">
+                                        <button class="btn btn-secondary btn-small m-0" (click)="warning.close()"
+                                                [translate]="'RISK_RESULTS_PAGE.WARNING.CLOSE'"></button>
+                                    </p>
+                                </ng-template>
+                                <span class="ion-ios-alert ion-ios-alert" [ngbTooltip]="keyWarning" #warning="ngbTooltip"
+                                      triggers="manual" placement="{{ !thirdClosed ? 'bottom' : 'top' }}" (click)="warning.open()"></span>
+                            </span>
+              <small> {{'RISK_RESULTS_PAGE.DATE_AS_OF' | translate}} {{familyMembersRisk['agreedChangedDate'] |
+                date:'yyyy.MM.dd'}}</small>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12 pl-0">
+            <div class="pull-right d-flex">
+              <a (click)="toggleAll()" class="ml-auto">
+                <span class="expandall-text" *ngIf="allClosed" [translate]="'ACCORDIAN.EXPAND_ALL'"></span>
+                <span class="expandall-text" *ngIf="!allClosed" [translate]="'ACCORDIAN.COLLAPSE_ALL'"></span>
+                <i [ngClass]="{'ion-ios-arrow-down' : allClosed, 'ion-ios-arrow-up': !allClosed}"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+
+
+      </div>
+        <div class="accordion-box">
+            <div class="accordion">
+                <div class="d-flex accordion-header align-items-center py-3">
+                    <div class="col-11 p-0">
+                        <h3 [translate]="'RISK_RESULTS_PAGE.YOUR_SCORE'"></h3>
+                    </div>
+                    <div class="col-1 p-0">
+                        <div class="pull-right d-flex">
+                            <a (click)="firstClosed = !firstClosed">
+                                <i [ngClass]="{'ion-ios-arrow-down' : firstClosed, 'ion-ios-arrow-up': !firstClosed}"
+                                    class="cursor-p"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-12 col-lg-10 col-xl-8 pr-0 pl-0 pt-3" [hidden]=firstClosed>
+                    <p class="content-montserrat-14 mb-3" [innerHTML]="'RISK_RESULTS_PAGE.GRAPH_CAPTION.PARA_1' | translate :{score: familyMembersRisk.calculatedScore,riskTolerancePercentText:familyMembersRisk.riskTolerancePercentText}"
+                        ></p>
+                    <p [hidden]="questionnaireType == 'FM25'" class="content-montserrat-14 mb-3" [innerHTML]="'RISK_RESULTS_PAGE.GRAPH_CAPTION.PARA_2' | translate : {noOfRiskGroups: this.keyDifferences['riskGroupText'].length, riskGroup: familyMembersRisk.calculatedRiskGroup}"></p>
+                    <p [hidden]="questionnaireType != 'FM25'" class="content-montserrat-14 mb-3" [innerHTML]="'RISK_RESULTS_PAGE.GRAPH_CAPTION.PARA_2_ALT' | translate : {noOfRiskGroups: this.keyDifferences['riskGroupText'].length, riskGroup: familyMembersRisk.calculatedRiskGroup}"></p>
+                    <p [hidden]="questionnaireType != 'FM25'" class="content-montserrat-14 mb-3" [innerHTML]="'RISK_RESULTS_PAGE.GRAPH_CAPTION.PARA_3_ALT' | translate : {fm25SelfEstimateScore: familyMembersRisk.fm25SelfEstimateScore,fm25SelfEstimateScoreText: familyMembersRisk.fm25SelfEstimateScoreText}">
+                    <div class="graph-image-box mt-4 mb-4">
+                        <img class="img-fluid" [src]="riskImagesrc">
+                    </div>
+                </div>
+            </div>
+            <div class="accordion">
+                <div class="d-flex accordion-header align-items-center py-3">
+                    <div class="col-11 p-0">
+                        <h3 [translate]="'RISK_RESULTS_PAGE.YOUR_RISK_GROUP.TITLE'"></h3>
+                    </div>
+                    <div class="col-1 p-0">
+                        <div class="pull-right d-flex">
+                            <a (click)="secondClosed = !secondClosed">
+                                <i [ngClass]="{'ion-ios-arrow-down' : secondClosed, 'ion-ios-arrow-up': !secondClosed}"
+                                    class="cursor-p"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" [hidden]="secondClosed  || questionnaireType == 'FM25'">
+                    <div class="col-12 col-md-2 col-lg-1">
+                        <p class="fw-600 content-montserrat-14" [translate]="'RISK_RESULTS_PAGE.YOUR_RISK_GROUP.CONTENT_1.TITLE'"></p>
+                    </div>
+                    <div class="col-12 col-md-10 col-lg-11 pl-5 pl-md-2">
+                        <p class="content-montserrat-14" [innerHTML]="familyMembersRisk.groupOverview"></p>
+                        <p class="content-montserrat-14" [innerHTML]="familyMembersRisk.financialDecisions"></p>
+                        <div class="col-lg-2 col-md-2 col-sm-3 col-12 text-right pb-3">
+                            <img class="image-wrap" [src]="'assets/images/IM_' + locale + '.png'">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row" [hidden]="secondClosed  || questionnaireType != 'FM25'">
+                    <div class="col-12 col-md-2 col-lg-2">
+                        <p class="fw-600 content-montserrat-14" [translate]="'RISK_RESULTS_PAGE.YOUR_RISK_GROUP.CONTENT_1.TITLE'"></p>
+                    </div>
+                    <div class="col-12 col-md-10 col-lg-10 pl-5 pl-md-2">
+                        <p class="content-montserrat-14"  [innerHTML]="familyMembersRisk.groupOverview"></p>
+                    </div>
+                </div>
+                <div class="row" [hidden]="secondClosed || questionnaireType !=='FM25'">
+                    <div class=" col-12 col-md-2 col-lg-2">
+                        <p class="fw-600 content-montserrat-14" [translate]="'RISK_RESULTS_PAGE.YOUR_RISK_GROUP.CONTENT_2.TITLE'"></p>
+                    </div>
+                    <div class="col-12 col-md-10 col-lg-10 pl-5 pl-md-2">
+                        <p class="content-montserrat-14" [innerHTML]="familyMembersRisk.financialDecisions"></p>
+<p class="content-montserrat-14 font-italic font-weight-bold" *ngIf="keyDifferences.keyDifferencesMap['FM25-3']">{{keyDifferences.questionDifferences['FM25-3']}}</p>
+<p class="content-montserrat-14 font-italic font-weight-bold" *ngIf="keyDifferences.keyDifferencesMap['FM25-10']">{{keyDifferences.questionDifferences['FM25-10']}}</p>
+<p class="content-montserrat-14 font-italic font-weight-bold" *ngIf="keyDifferences.keyDifferencesMap['FM25-12']">{{keyDifferences.questionDifferences['FM25-12']}}</p>
+<p class="content-montserrat-14 font-italic font-weight-bold" *ngIf="keyDifferences.keyDifferencesMap['FM25-7']">{{keyDifferences.questionDifferences['FM25-7']}}</p>
+<p class="content-montserrat-14 font-italic font-weight-bold" *ngIf="keyDifferences.keyDifferencesMap['FM25-6']">{{keyDifferences.questionDifferences['FM25-6']}}</p>
+                    </div>
+                </div>
+                <div class="row" [hidden]="secondClosed || questionnaireType !== 'FM25'">
+                    <div class="col-12 col-md-2 col-lg-2">
+                        <p class="fw-600 content-montserrat-14" [translate]="'RISK_RESULTS_PAGE.YOUR_RISK_GROUP.CONTENT_3.TITLE'"></p>
+                    </div>
+                    <div class="col-12 col-md-10 col-lg-10 pl-5 pl-md-2">
+                        <p class="content-montserrat-14">{{familyMembersRisk.employmentText}}</p>
+                        <p class="content-montserrat-14 font-italic font-weight-bold" *ngIf="keyDifferences.keyDifferencesMap['FM25-8']">{{keyDifferences.questionDifferences['FM25-8']}}</p>
+                        <p class="content-montserrat-14 font-italic font-weight-bold" *ngIf="keyDifferences.keyDifferencesMap['FM25-5']">{{keyDifferences.questionDifferences['FM25-5']}}</p>
+                    </div>
+                </div>
+                <div class="row" [hidden]="secondClosed || questionnaireType !== 'FM25'">
+                    <div class="col-12 col-md-2 col-lg-2">
+                        <p class="fw-600 content-montserrat-14" [translate]="'RISK_RESULTS_PAGE.YOUR_RISK_GROUP.CONTENT_4.TITLE'"></p>
+                    </div>
+                    <div class="col-12 col-md-10 col-lg-10 pl-5 pl-md-2">
+                        <p class="content-montserrat-14">{{familyMembersRisk.disappointmentsText}}</p>
+                        <p class="content-montserrat-14 font-italic font-weight-bold" *ngIf="keyDifferences.keyDifferencesMap['FM25-2']">{{keyDifferences.questionDifferences['FM25-2']}}</p>
+                    </div>
+                </div>
+                <div class="row" [hidden]="secondClosed || questionnaireType !== 'FM25'">
+                    <div class="col-12 col-md-2 col-lg-2">
+                        <p class="fw-600 content-montserrat-14" [translate]="'RISK_RESULTS_PAGE.YOUR_RISK_GROUP.CONTENT_5.TITLE'"></p>
+                    </div>
+                    <div class="col-12 col-md-10 col-lg-10 pl-5 pl-md-2">
+                        <p class="content-montserrat-14">{{familyMembersRisk.financialPastText}}</p>
+                        <p class="content-montserrat-14 font-italic font-weight-bold" *ngIf="keyDifferences.keyDifferencesMap['FM25-9']">{{keyDifferences.questionDifferences['FM25-9']}}</p>
+                        <p class="content-montserrat-14 font-italic font-weight-bold" *ngIf="keyDifferences.keyDifferencesMap['FM25-4']">{{keyDifferences.questionDifferences['FM25-4']}}</p>
+                    </div>
+                </div>
+                <div class="row" [hidden]="secondClosed || questionnaireType !== 'FM25'">
+                    <div class="col-12 col-md-2 col-lg-2">
+                        <p class="fw-600 content-montserrat-14" [translate]="'RISK_RESULTS_PAGE.YOUR_RISK_GROUP.CONTENT_6.TITLE'"></p>
+                    </div>
+                    <div class="col-12 col-md-10 col-lg-10 pl-5 pl-md-2">
+                        <p class="content-montserrat-14">{{familyMembersRisk.investmentText}}</p>
+                        <div class="col-lg-2 col-md-2 col-sm-3 col-12 text-right pb-3">
+                            <img class="image-wrap"  [src]="'assets/images/IM_' + locale + '.png'">
+                        </div>
+                        <p class="content-montserrat-14 font-italic font-weight-bold" *ngIf="keyDifferences.keyDifferencesMap['FM25-18']">{{keyDifferences.questionDifferences['FM25-18']}}</p>
+                        <p class="content-montserrat-14 font-italic font-weight-bold" *ngIf="keyDifferences.keyDifferencesMap['FM25-14']">{{keyDifferences.questionDifferences['FM25-14']}}</p>
+                        <p class="content-montserrat-14 font-italic font-weight-bold" *ngIf="keyDifferences.keyDifferencesMap['FM25-19']">{{keyDifferences.questionDifferences['FM25-19']}}</p>
+                        <p class="content-montserrat-14 font-italic font-weight-bold" *ngIf="keyDifferences.keyDifferencesMap['FM25-21']">{{keyDifferences.questionDifferences['FM25-21']}}</p>
+                        <p class="content-montserrat-14 font-italic font-weight-bold" *ngIf="keyDifferences.keyDifferencesMap['FM25-16']">{{keyDifferences.questionDifferences['FM25-16']}}</p>
+                    </div>
+                </div>
+                <div class="row" [hidden]="secondClosed || questionnaireType !== 'FM25'">
+                    <div class="col-12 col-md-2 col-lg-2">
+                        <p class="fw-600 content-montserrat-14" [translate]="'RISK_RESULTS_PAGE.YOUR_RISK_GROUP.CONTENT_7.TITLE'"></p>
+                    </div>
+                    <div class="col-12 col-md-10 col-lg-10 pl-5 pl-md-2">
+                        <p class="content-montserrat-14">{{familyMembersRisk.govBenefitsText}}</p>
+                        <p class="content-montserrat-14 font-italic font-weight-bold" *ngIf="keyDifferences.keyDifferencesMap['FM25-22']">{{keyDifferences.questionDifferences['FM25-22']}}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion">
+                <div class="d-flex accordion-header align-items-center py-3">
+                    <div class="col-11 p-0">
+                        <h3 class="fs-19 fw-700 manage-tool-tip-320"> {{'RISK_RESULTS_PAGE.KEY_DIFF.TITLE' |
+                            translate}}
+                            <span *ngIf="showDiffOverviewWarning()">
+                                <ng-template #keyWarning>
+                                    <p [translate]="'RISK_RESULTS_PAGE.KEY_DIFF.WARNING'" class="tooltip-inner-scroll"></p>
+                                    <p class="text-right m-0 p-0">
+                                        <button class="btn btn-secondary btn-small m-0" (click)="warning.close()"
+                                            [translate]="'RISK_RESULTS_PAGE.WARNING.CLOSE'"></button>
+                                    </p>
+                                </ng-template>
+                                <span class="ion-ios-alert" [ngbTooltip]="keyWarning" #warning="ngbTooltip"
+                                    triggers="manual" placement="{{ !thirdClosed ? 'bottom' : 'top' }}" (click)="warning.open()"></span>
+                            </span>
+                        </h3>
+                    </div>
+                    <div class="col-1 p-0">
+                        <div class="pull-right d-flex">
+                            <a (click)="thirdClosed = !thirdClosed">
+                                <i [ngClass]="{'ion-ios-arrow-down' : thirdClosed, 'ion-ios-arrow-up': !thirdClosed}"
+                                    class="cursor-p"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div [hidden]="thirdClosed">
+                    <div class="col-12 p-0">
+                        <div class="row">
+                            <div class="col-12">
+                                <p class="content-montserrat-14 mb-0" [translate]="'RISK_RESULTS_PAGE.KEY_DIFF.DESCRIPTION'"></p>
+                            </div>
+
+                            <div class="col-12 col-xl-10">
+                                <hr>
+                                <div class="differences-box" *ngIf="questions && keyDifferences">
+                                    <div class="ml-auto expandall-box d-flex">
+                                        <div class="riskGroupText-main text-center">
+                                            <span>
+                                                <small>{{'RISK_GROUPS.TITLE' | translate}}</small>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="ml-auto expandall-box d-flex">
+                                        <div class="riskGroupText-main">
+                                            <div class="d-flex">
+                                                <span class="flex-part-{{keyDifferences['riskGroupText'].length}}"
+                                                    *ngFor="let element of keyDifferences['riskGroupText']; index as i">
+                                                    {{riskGroups[element.text]}}
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <!-- <span [translate]="'RISK_GROUPS.VERY_LOW'"></span>
+                                        <span [translate]="'RISK_GROUPS.LOW'"></span>
+                                        <span class="pt-0">
+                                            <small>{{ 'RISK_GROUPS.TITLE' | translate}}</small>
+                                            {{ 'RISK_GROUPS.AVERAGE' | translate}}
+                                        </span>
+                                        <span [translate]="'RISK_GROUPS.HIGH'"></span>
+                                        <span [translate]="'RISK_GROUPS.VERY_HIGH'"></span> -->
+                                        <button type="button" pButton [icon]="diffAllClosed ? 'fa fa-chevron-up' : 'fa fa-chevron-down'"
+                                            (click)="toggleKeyDiff()">
+                                            <span class="hidden-xs-down expandall-text fw-700" *ngIf="diffAllClosed"
+                                                [translate]="'ACCORDIAN.EXPAND_ALL'"></span>
+                                            <span class="hidden-xs-down expandall-text fw-700" style="margin-left: -8px;"
+                                                *ngIf="!diffAllClosed" [translate]="'ACCORDIAN.COLLAPSE_ALL'"></span>
+                                        </button>
+                                    </div>
+                                    <div *ngFor="let section of sectionKeys">
+                                        <div class="ml-auto expandall-box d-flex mt-4">
+                                            <span class="section-header-wrap" style="text-transform:initial;">
+                                                <p class="question-number font-weight-bold content-montserrat-14">
+                                                    {{section | translate}}
+                                                </p>
+                                            </span>
+                                        </div>
+                                        <div class="ui-accordion ui-widget ui-helper-reset">
+                                            <div *ngFor="let question of sectionMapping[section]; let i = index; let last = last">
+                                                <ng-container *ngIf="checkKeyDiff(question.id)">
+                                                    <div class="ui-accordion-header ui-state-default ui-corner-all"
+                                                        [ngClass]="{'ui-state-active' : question.template}">
+                                                        <a>
+                                                            <span class="ui-accordion-toggle-icon pi" [ngClass]="question.template ? 'pi-caret-down' : 'pi-fw pi-caret-right'"
+                                                                (click)="question.template = !question.template;checkAllCondition()"></span>
+                                                            <section class="accordion-header">
+                                                                <span class="question-title">
+                                                                    <span class="question-number">Q{{question.displayOrder}}</span>
+                                                                    <span [innerHtml]="question.title"></span>
+                                                                </span>
+
+                                                                <div class="keyDiffIconWrapper">
+                                                                    <div class="ml-auto expandall-box d-flex">
+                                                                        <div class="w-100">
+                                                                            <div class="d-flex">
+                                                                                <ng-container *ngFor="let element of keyDifferences['riskGroupText']; index as scoreIndex">
+                                                                                    <span *ngIf="scoreIndex == calculatedScoreIndex + keyDifferences['keyDifferencesMap'][question.id] ; else starOrEmptySpan"
+                                                                                        class="ion-md-checkmark-circle flex-part-{{keyDifferences['riskGroupText'].length}} fs-16"
+                                                                                        [ngClass]="{
+                                                                                    'green-check': keyDifferences['keyDifferencesMap'][question.id] === 0,
+                                                                                    'yellow-check': keyDifferences['keyDifferencesMap'][question.id] === -1 || keyDifferences['keyDifferencesMap'][question.id] == 1,
+                                                                                    'red-check': keyDifferences['keyDifferencesMap'][question.id] >= 2 || keyDifferences['keyDifferencesMap'][question.id] <= -2
+                                                                                    }"></span>
+                                                                                    <ng-template #starOrEmptySpan>
+                                                                                        <span *ngIf="calculatedScoreIndex + 1 + keyDifferences['keyDifferencesMap'][question.id] > keyDifferences['riskGroupText'].length && scoreIndex == keyDifferences['riskGroupText'].length -1 && setShowLegendRedStar() ; else orangeStarOrEmptySpan"
+                                                                                            class="ion-md-star flex-part-{{keyDifferences['riskGroupText'].length}} fs-16 red-star"></span>
+                                                                                    </ng-template>
+                                                                                    <ng-template #orangeStarOrEmptySpan>
+                                                                                        <span *ngIf="calculatedScoreIndex + 1 + keyDifferences['keyDifferencesMap'][question.id] < 1 && scoreIndex == 0 && setShowLegendOrangeStar(); else emptySpan"
+                                                                                            class="ion-md-star flex-part-{{keyDifferences['riskGroupText'].length}} fs-16 orange-star"></span>
+                                                                                    </ng-template>
+                                                                                </ng-container>
+
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                                <ng-template #emptySpan>
+                                                                    <span class="flex-part-{{keyDifferences['riskGroupText'].length}}"></span>
+                                                                </ng-template>
+                                                                <span class="compare-text">
+                                                                    <span [ngbPopover]="compare" placement="{{ (last || sectionMapping[section].length - 4 < i+1) ? 'top' : 'bottom'}}"
+                                                                        triggers="manual" #popOver="ngbPopover" (click)="popOver.open(); makeChart(question.id, $event);">Compare</span>
+                                                                </span>
+                                                                <ng-template #compare>
+                                                                    <div (click)="$event.stopPropagation()">
+                                                                        <div class="d-flex flex-wrap p-3 compare-popup-text">
+                                                                            <span>Who answered Question {{question.displayOrder}} like I did?</span>
+                                                                            <span (click)="popOver.close()" class="sidebar_action_icon ion-md-close-circle ml-auto"></span>
+                                                                        </div>
+                                                                        <div class="chartContainer text-center">
+                                                                            <div id="chartdiv" [style.width.%]="100"
+                                                                                [style.height.px]="250"></div>
+                                                                        </div>
+                                                                    </div>
+                                                                </ng-template>
+                                                            </section>
+                                                        </a>
+                                                    </div>
+                                                    <div class="ui-accordion-content-wrapper" [hidden]="!question.template">
+                                                        <div class="ui-accordion-content ui-widget-content">
+                                                            <span [innerHtml]="question.text[0]"></span>
+                                                            <ng-container *ngIf="question.id === 'FM10-8' || question.id === 'FM25-16'">
+                                                                <span class="d-block my-2">{{question.text[1]}}</span>
+                                                                <div class="col-lg-2 col-md-2 col-sm-3 col-12 text-right pb-3">
+                                                                    <img class="image-wrap" [src]="'assets/images/IM_' + locale + '.png'">
+                                                                </div>
+                                                            </ng-container>
+                                                            <ul class="composure-list">
+                                                                <li *ngFor="let option of question.options" [ngClass]="option.selected ? 'active' : ''">
+                                                                    <ng-container *ngIf="question.id === 'FM10-8' || question.id === 'FM25-16'; else noData">
+                                                                        <div class="riskQuestionCustomWrapper w-100 m-0">
+                                                                            <span class="riskQuestionCustom" *ngFor="let item of option.text.split(',')">{{item}}</span>
+                                                                        </div>
+                                                                    </ng-container>
+                                                                    <ng-template #noData>
+                                                                        <span>{{option.text}}</span>
+                                                                    </ng-template>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </ng-container>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="legend-box" *ngIf = "showLegendRedStar || showLegendOrangeStar">
+                            <h6 [translate]="'RISK_RESULTS_PAGE.LEGEND.TITLE'"></h6>
+                            <p *ngIf = "showLegendRedStar && familyMembersRisk.questionnaireType == 'FM10'"><span class="ion-md-star red-star"></span>{{'RISK_RESULTS_PAGE.LEGEND.FM10_POINT_1' |
+                                translate}}</p>
+                            <p *ngIf = "showLegendRedStar && familyMembersRisk.questionnaireType == 'FM25'"><span class="ion-md-star red-star"></span>{{'RISK_RESULTS_PAGE.LEGEND.FM25_POINT_1' |
+                                translate}}</p>
+                            <p *ngIf = "showLegendOrangeStar && familyMembersRisk.questionnaireType == 'FM10'"><span class="ion-md-star orange-star"></span>{{'RISK_RESULTS_PAGE.LEGEND.FM10_POINT_2' |
+                                translate}}</p>
+                            <p *ngIf = "showLegendOrangeStar && familyMembersRisk.questionnaireType == 'FM25'"><span class="ion-md-star orange-star"></span>{{'RISK_RESULTS_PAGE.LEGEND.FM25_POINT_2' |
+                                translate}}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion" *ngIf="familyMembersRisk.questionnaireType == 'FM10' && keyDifferences && keyDifferences['inconsistent'] == true">
+                <div class="d-flex accordion-header align-items-center py-3">
+                    <div class="col-11 p-0">
+                        <h3 [translate]="'RISK_RESULTS_PAGE.INCONSISTENCY_ALERT.TITLE'"></h3>
+                    </div>
+                    <div class="col-1 p-0">
+                        <div class="pull-right d-flex">
+                            <a (click)="fourthClosed = !fourthClosed">
+                                <i [ngClass]="{'ion-ios-arrow-down' : fourthClosed, 'ion-ios-arrow-up': !fourthClosed}"
+                                    class="cursor-p"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 p-0" [hidden]="fourthClosed">
+                    <p class="content-montserrat-14 mb-3" [translate]="'RISK_RESULTS_PAGE.INCONSISTENCY_ALERT.DESCRIPTION'"></p>
+                </div>
+            </div>
+            <div class="accordion" *ngIf="familyMembersRisk.questionnaireType == 'FM10' && keyDifferences && keyDifferences['adjustedScore'] && (keyDifferences['adjustedScore'] !== keyDifferences['score']) && keyDifferences['inconsistent'] == false">
+                <div class="d-flex accordion-header align-items-center py-3">
+                    <div class="col-11 p-0">
+                        <h3 >{{'RISK_RESULTS_PAGE.ADJUSTED_SCORE.TITLE' | translate}}<span *ngIf="showDiffOverviewWarning()">
+                                <ng-template #agreedWarning>
+                                    <p [translate]="'RISK_RESULTS_PAGE.ADJUSTED_SCORE.WARNING'" class="tooltip-inner-scroll"></p>
+                                    <p class="text-right m-0 p-0">
+                                        <button class="btn btn-secondary btn-small m-0" (click)="warning3.close()"
+                                                [translate]="'RISK_RESULTS_PAGE.WARNING.CLOSE'"></button>
+                                    </p>
+                                </ng-template>
+                                <span class="ion-ios-alert" [ngbTooltip]="agreedWarning" #warning3="ngbTooltip"
+                                      triggers="manual" placement="{{ !fifthClosed ? 'bottom' : 'top' }}" (click)="warning3.open()"></span>
+                            </span></h3>
+
+                    </div>
+                    <div class="col-1 p-0">
+                        <div class="pull-right d-flex">
+                            <a (click)="fifthClosed = !fifthClosed">
+                                <i [ngClass]="{'ion-ios-arrow-down' : fifthClosed, 'ion-ios-arrow-up': !fifthClosed}"
+                                    class="cursor-p"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 p-0" [hidden]="fifthClosed">
+                    <p class="content-montserrat-14 mb-3" [translate]="'RISK_RESULTS_PAGE.ADJUSTED_SCORE.DESCRIPTION'"
+                        [translateParams]="{calculatedScore: keyDifferences['score'], adjustedScore: keyDifferences['adjustedScore']}"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,271 @@
+<div class="notification-bg" *ngIf="taskData">
+        <div class="container">
+            <form name="form" (ngSubmit)="saveTaskNotification()" #f="ngForm" novalidate>
+                <div class="row">
+                    <div class="col-12 mt-3">
+                        <div class="d-flex flex-wrap">
+                            <h1 class="mr-auto">
+                                <span class="fw-500" [translate]="'TASK_AND_NOTIFICATION.TASK_NOTIFICATION.TASKAND_NOTIFICATION'"></span>
+                                <i *ngIf="!taskLoaded" aria-hidden="true" class="fa fa-spinner fa-pulse loader-icon"></i>
+                            </h1>
+                            <div class="ml-auto">
+                                <span class="initials btn-circle-orange mt-2 cursor-p" [ngbTooltip]="systemTask" placement="bottom" triggers="click" #system="ngbTooltip"
+                                    (click)="manual.close();">{{ messageBadges['NOTIFICATION']['total'] <= 99 ? messageBadges[ 'NOTIFICATION'][ 'total'] : '99+' }}</span>
+                                <span class="initials btn-circle-red mt-2 cursor-p" [ngbTooltip]="manualTask" placement="bottom" triggers="click" #manual="ngbTooltip"
+                                    (click)="system.close();">{{ messageBadges['TASK']['total'] <= 99 ? messageBadges[ 'TASK'][ 'total'] : '99+' }}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <ng-template #systemTask>
+                        <p class="mb-2">{{messageBadges['NOTIFICATION']['total']}} {{'TASK_AND_NOTIFICATION.TASK_NOTIFICATION.SYSTEM_TASK' | translate}}</p>
+                        <p class="mb-2">
+                            <span class="txt_lbl">{{messageBadges['NOTIFICATION'].pastDue}} {{'ADVISOR.DASHBOARD.TASK_NOTIFICATION_TILE.PAST_DUE' | translate}}</span>
+                        </p>
+                        <p class="mb-2">
+                            <span class="txt_lbl">{{messageBadges['NOTIFICATION'].todayDue}} {{'ADVISOR.DASHBOARD.TASK_NOTIFICATION_TILE.DUE_TODAY' | translate}}</span>
+                        </p>
+                    </ng-template>
+                    <ng-template #manualTask>
+                        <p class="mb-2">{{messageBadges['TASK']['total']}} {{'TASK_AND_NOTIFICATION.TASK_NOTIFICATION.MANUAL_TASK' | translate}}</p>
+                        <p class="mb-2">
+                            <span class="txt_lbl">{{messageBadges['TASK'].pastDue}} {{'ADVISOR.DASHBOARD.TASK_NOTIFICATION_TILE.PAST_DUE' | translate}}</span>
+                        </p>
+                        <p class="mb-2">
+                            <span class="txt_lbl">{{messageBadges['TASK'].todayDue}} {{'ADVISOR.DASHBOARD.TASK_NOTIFICATION_TILE.DUE_TODAY' | translate}}</span>
+                        </p>
+                    </ng-template>
+                    <div class="col-12">
+                        <hr>
+                    </div>
+    
+                    <div class="col-12" *ngIf="clientId != 'all' && accessRights['ADTSK']['accessLevel'] === 3">
+                        <a routerLink="add-task" class="btn-add">
+                            <i class="ion-md-add-circle"></i>
+                            <span [translate]="'TASK_NOTIFICATION.ADD_TASK.TITLE.ADD_A_TASK'"></span>
+                        </a>
+                    </div>
+    
+                    <div class="col-12">
+                        <div class="d-flex row">
+                            <div class="col-sm-12 col-md-5 col-lg-3 order-0">
+                                <div class="dropdown-common sort-dropdown mt-3  mr-lg-3 mb-2">
+                                    <app-common-drop-down [itemList]="filterViewList" class="d-flex " [defaultSelected]="defaultView" dropDownLabel="VIEW" (OnSelect)="viewSorting($event)"></app-common-drop-down>
+                                </div>
+                                <div class="dropdown-common sort-dropdown drop-down-sortby-mobile mt-3 mb-2">
+                                    <app-common-drop-down [itemList]="filterSortList" class="d-flex" [defaultSelected]="defaultSort" dropDownLabel="SORT BY" (OnSelect)="sorting($event)"></app-common-drop-down>
+                                </div>
+                            </div>
+    
+                            <div class="col-sm-12 col-md-7 col-lg-5 p-md-0 order-md-1 order-2">
+                                <div class="d-flex justify-content-md-around">
+                                    <div class="form-group   mb-0 mr-2">
+                                        <div class="d-flex flex-sm-row flex-column">
+                                            <label class="mr-2 mb-0 custom-form-label" [translate]="'TASK_AND_NOTIFICATION.TASK_NOTIFICATION.FORM'"></label>
+                                            <p-calendar name="fromDate" [showIcon]="true" [monthNavigator]="true" required='true' [yearNavigator]="true" yearRange="1900:2020"
+                                                dateFormat="yy-mm-dd" [(ngModel)]="dataModel['fromDate']" #fromDate="ngModel" (onSelect)="dateCampare(dataModel.fromDate, dataModel.toDate)">
+                                                <p-header>
+                                                    <p-dropdown placeholder="Select From date" name="fromDate1" [(ngModel)]="dataModel['fromDate']" #fromDate1="ngModel" [options]="fromDateList"
+                                                        optionLabel="date" (onChange)="selectDatePeriod($event,'fromDate'); dateCampare(dataModel.fromDate, dataModel.toDate)"></p-dropdown>
+                                                </p-header>
+                                            </p-calendar>
+                                        </div>
+                                    </div>
+    
+                                    <div class="form-group  mb-0 pr-md-2">
+                                        <div class="d-flex flex-sm-row flex-column">
+                                            <label class="mr-2 mb-0 custom-form-label" [translate]="'TASK_AND_NOTIFICATION.TASK_NOTIFICATION.TO'"></label>
+                                            <p-calendar name="toDate" [showIcon]="true" [monthNavigator]="true" required='true' [yearNavigator]="true" yearRange="1900:2020"
+                                                dateFormat="yy-mm-dd" [(ngModel)]="dataModel['toDate']" #toDate="ngModel" (onSelect)="dateCampare(dataModel.fromDate, dataModel.toDate)">
+                                                <p-header>
+                                                    <p-dropdown name="toDate" placeholder="Select To date" [(ngModel)]="dataModel['toDate']" #toDate="ngModel" [options]="toDateList"
+                                                        optionLabel="date" (onChange)="selectDatePeriod($event,'toDate'); dateCampare(dataModel.fromDate, dataModel.toDate)"></p-dropdown>
+                                                </p-header>
+                                            </p-calendar>
+                                        </div>
+                                    </div>
+                                </div>
+    
+    
+                            </div>
+    
+                            <div class=" col-sm-12 col-md-5 col-lg-4 pb-sm-2 order-md-3 order-1">
+                                <div class="justify-content-lg-end d-flex">
+                                    <div class="dropdown-common sort-dropdown drop-down-group-mobile mt-3">
+                                        <app-common-drop-down [itemList]="groupList" class="d-flex dropdown-right" [defaultSelected]="defaultGroup" dropDownLabel="GROUP BY"
+                                            (OnSelect)="groupSorting($event)"></app-common-drop-down>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <hr>
+                    </div>
+    
+                    <div class="col-12">
+                        <div class="">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th [translate]="'TASK_AND_NOTIFICATION.TASK_NOTIFICATION.STATUS'" class="text-center"></th>
+                                        <th  class="pl-1 pr-2 th-fixed-width">
+                                            <div class="d-flex align-items-center">
+                                                <span [translate]="'TASK_AND_NOTIFICATION.TASK_NOTIFICATION.COMPLETED'"></span>
+                                                <span class="ml-auto text-left ellipsis-client w-50" [translate]="'TASK_AND_NOTIFICATION.TASK_NOTIFICATION.CLIENT_NAME'" *ngIf="clientId === 'all'"></span>
+                                            </div>
+                                        </th>
+                                        <th  class="text-left" [translate]="'TASK_NOTIFICATION.ADD_TASK.TYPE'"></th>
+                                        <th  class="text-left" [translate]="'TASK_NOTIFICATION.ADD_TASK.DUE_DATE'"></th>
+                                        <th  class="text-left hidden-md-down" [translate]="'TASK_AND_NOTIFICATION.TASK_NOTIFICATION.ASSIGNED'"></th>
+                                        <th class="hidden-sm-down">&nbsp;</th>
+                                        <th > &nbsp;</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <ng-container *ngIf="groupValues.length > 0">
+                                        <ng-container *ngFor="let groupValue of groupValues;">
+                                            <tr *ngIf="groupValue != 'none'">
+                                                <td colspan="9">
+                                                    <h3>{{groupValue}}</h3>
+                                                </td>
+                                            </tr>
+                                            <ng-container *ngFor="let task of groupTasks[groupValue].tasks; let taskIndex = index">
+                                                <tr>
+                                                    <td class="text-center" >
+                                                        <i [ngClass]="{'red-dot-indicator': task.type === 'TASK', 'orange-dot-indicator': task.type != 'TASK'}"></i>
+                                                    </td>
+                                                    <td  class="pt-2 pb-2 pr-2 pr-md-0">
+                                                        <div class="d-flex align-items-center">
+                                                            <div class="checkbox-wrapper mr-3">
+                                                                <div class="form-group mb-0" *ngIf="task.editable">
+                                                                    <p-checkbox name="group1{{task.id}}" [(ngModel)]="task.complete" binary="true" (onChange)="checked($event, task); task.checkselect = !task.checkselect"
+                                                                    [disabled]="task.isCompletedDue"></p-checkbox>
+                                                                </div>
+                                                                <p class="m-0" *ngIf="!task.editable">
+                                                                    <i class="ion-md-checkbox-outline"></i>
+                                                                </p>
+                                                            </div>
+                                                            <div class="checkbox-wrapper checkbox-wrapper-w-tooltip">
+                                                                <div class="form-group form-group-date mb-0 pr-md-2 pr-sm-2" *ngIf="task.completedDate == null || (!task.complete && task.completedDate != null)">
+                                                                    <p-calendar name="complete{{task.id}}" [showIcon]="true" [monthNavigator]="true" required='true' [yearNavigator]="true" yearRange="1900:2020"
+                                                                        dateFormat="yy-mm-dd" [(ngModel)]="task.completedDate" (ngModelChange)="checkCompletedDate(task ,task.completedDate)" #complete="ngModel"></p-calendar>
+                                                                </div>
+                                                                <span *ngIf="task.complete && task.completedDate != null" class="completedDate-truncate" [appNoOverflowTooltip]="task.completedDate" triggers="manual" placement="bottom">{{task.completedDate}}</span>
+                                                            </div>
+                                                            <span class="text-left ml-auto  ellipsis-client pr-md-2 w-50" [appNoOverflowTooltip]="SelectTooltip(task)" triggers="manual" placement="bottom" *ngIf="clientId === 'all'">
+                                                                <ng-container *ngIf="task.client1_name && task.client1_lastName && task.client2_lastName !=='' && task.client2_lastName !== null && task.client2_name !=='' && task.client2_name !== null ; else singleClient">
+                                                                    <ng-container *ngIf="task.client1_lastName == task.client2_lastName; else diffLastName">
+                                                                        {{task.client1_name + ' & ' + task.client2_name + ' ' + task.client1_lastName}}
+                                                                    </ng-container>
+                                                                </ng-container>
+                                                                <ng-template #diffLastName>
+                                                                    {{task.client1_name + ' ' + task.client1_lastName + ' / ' + task.client2_name + ' ' + task.client2_lastName}}
+                                                                </ng-template>
+                                                                <ng-template #singleClient>
+                                                                    {{task.client1_name + ' ' + task.client1_lastName}}
+                                                                </ng-template>
+                                                            </span>
+                                                        </div>
+                                                    </td>
+    
+                                                    <!-- Task Type -->
+                                                    <td class="text-left  pr-md-2 pr-sm-2" *ngIf="!task.isExpand">
+                                                        <span class="ellipsis-taskType" [appNoOverflowTooltip]="task.taskType.label" triggers="manual" placement="bottom">{{task.taskType.label}}</span>
+                                                    </td>
+                                                    <td class="text-left pr-lg-5 pr-md-1 pr-md-2 pr-sm-2" *ngIf="task.isExpand">
+                                                        <div class="form-group mb-0 ellipsis-task-type">
+                                                            <p-dropdown name="taskType" placeholder="Select a type" [options]="taskTypes" [(ngModel)]="task.taskType" #taskType="ngModel"
+                                                                optionLabel="label"></p-dropdown>
+                                                        </div>
+                                                    </td>
+                                                    <!-- Task Type -->
+    
+                                                    <!-- Due Date -->
+                                                    <td class="text-left pl-1 pr-md-2 pr-sm-2" *ngIf="!task.isExpand">
+                                                        <span class="ellipsis-dueDate"  [appNoOverflowTooltip]="task.dueDate" triggers="manual" placement="bottom">{{task.dueDate | date:'yyyy-MM-dd' }}</span>
+                                                    </td>
+                                                    <td class="text-left pr-md-1 pr-lg-2 pr-md-2 pr-sm-2" *ngIf="task.isExpand">
+                                                        <div class="form-group form-group-date form-group-date-due-date mb-0">
+                                                            <p-calendar [showIcon]="true" name="dueDate_{{task.id}}" [monthNavigator]="true" [(ngModel)]="task.dueDate" #dueDate="ngModel"
+                                                                required='true' [yearNavigator]="true" yearRange="1900:2020" dateFormat="yy-mm-dd" (onSelect)="formateDate(task, task.dueDate)"></p-calendar>
+                                                        </div>
+                                                    </td>
+                                                    <!-- Due Date -->
+    
+                                                    <!-- Assigned -->
+                                                    <td class="text-left hidden-md-down pr-md-2 pr-sm-2" *ngIf="!task.isExpand">
+                                                        {{task.planner.firstname}} {{task.planner.lastname}}
+                                                    </td>
+                                                    <td class="text-left hidden-md-down pr-md-2 pr-sm-2" *ngIf="task.isExpand">
+                                                        {{task.planner.firstname}} {{task.planner.lastname}}
+                                                        <!-- <div class="form-group mb-0">
+                                                                <p-dropdown placeholder="Assigned" name="assign" [options]="assignList" optionLabel="value"></p-dropdown>
+                                                            </div> -->
+                                                    </td>
+                                                    <!-- Assigned -->
+                                                    <td  class="text-center pl-md-5">
+                                                        <i *ngIf="task.type === 'TASK' && (task.completedDate == null || (task.completedDate != null && task.completedDate == today))" class="ion-md-close-circle" (click)="deleteTask(task, task.id)"></i>
+                                                        <i *ngIf="(task.type === 'Notification') || (task.type === 'TASK' && task.completedDate != null && task.completedDate != today)" class="ion-md-close-circle cancle-display"></i>
+                                                    </td>
+                                                    <td  class="text-center">
+                                                        <i [ngClass]="{'ion-ios-arrow-down' : !task.isExpand, 'ion-ios-arrow-up': task.isExpand}" (click)="task.isExpand = !task.isExpand;"></i>
+                                                    </td>
+                                                </tr>
+    
+                                                <tr *ngIf="task.isExpand" id="taskList_{{task.id}}">
+                                                    <td class="text-center" [ngClass]="{'border-top-0': task.isExpand}">&nbsp;</td>
+                                                    <td colspan="4" class="align-top" [ngClass]="{'border-top-0': task.isExpand}">
+                                                        <div class="d-flex flex-sm-row flex-column">
+                                                            <div class="col-12 col-sm-5 pl-0">
+                                                                <div class="form-group mb-0 ">
+                                                                    <label class="custom-form-label" [translate]="'TASK_AND_NOTIFICATION.TASK_NOTIFICATION.DESCRIPTION'"></label>
+                                                                    <textarea *ngIf="task.type === 'TASK' && task.completedDate === null " name="description_{{task.id}}" class="form-control middle-input description-form-control"
+                                                                        [(ngModel)]="task.detail" #description="ngModel">{{task.detail}}</textarea>
+                                                                    <span *ngIf="task.type !== 'TASK'" class="d-inline-block text-nowrap-custom" >{{task.detail}}</span>
+                                                                    <span *ngIf="task.type === 'TASK' && task.completedDate != null" class="d-inline-block text-nowrap-custom " >{{task.detail}}</span>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-12 col-sm-7 pl-0 ">
+                                                                <div class="form-group mb-0">
+                                                                    <label class="custom-form-label" [translate]="'TASK_AND_NOTIFICATION.TASK_NOTIFICATION.NOTES'"></label>
+                                                                    <textarea *ngIf="task.completedDate === null" name="note_{{task.id}}" class="form-control middle-input notes-form-control" [(ngModel)]="task.notes"
+                                                                        #description="ngModel">{{task.notes}}</textarea>
+                                                                    <span *ngIf="task.completedDate != null" class="d-inline-block text-nowrap-custom" >{{task.notes}}</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <!-- <td class="text-left align-top" colspan="3" [ngClass]="{'border-top-0': task.isExpand}">
+                                                    </td> -->
+                                                    <td  class="text-center hidden-sm-down" [ngClass]="{'border-top-0': task.isExpand}">&nbsp;</td>
+                                                    <td  class="text-center pr-0 hidden-sm-down" [ngClass]="{'border-top-0': task.isExpand}">&nbsp;</td>
+                                                </tr>
+                                            </ng-container>
+                                        </ng-container>
+                                    </ng-container>
+                                    <ng-container *ngIf="taskLoaded && groupValues.length === 0">
+                                        <tr>
+                                            <td colspan="7" class="no-record text-center">
+                                                <i class="ion-ios-alert mr-2"></i>{{'NO_RESULTS' | translate}}
+                                            </td>
+                                        </tr>
+                                    </ng-container>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="col-12 form-group text-right mt-4">
+                        <button type="button" (click)="back(); closeButtonDisable = true" class="btn btn-secondary btn-small" 
+                        [translate]="'TASK_AND_NOTIFICATION.TASK_NOTIFICATION.BACK_TO_PREVIOUS'" [disabled]="closeButtonDisable"></button>
+                        <button type="submit" value="submit" class="btn btn-success btn-small mr-3" [translate]="'FORM.ACTION.SAVE'"></button>
+                    </div>
+                </div>
+            </form>
+            <div class="row mb-3 mx-auto justify-content-center">
+                <app-pagination [pageChangingNum]="changePage" [PageSize]="filterData['limit']" [TotalItem]="totalPages" (OnPageChange)="getPageFilterTaskAndNotification($event)"></app-pagination>
+            </div>
+        </div>
+    </div>
+    <div class="view-side-form">
+        <router-outlet></router-outlet>
+    </div>

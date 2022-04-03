@@ -1,0 +1,56 @@
+.dropdown {
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.table>thead>tr:first-child>th {
+    padding: 16px 0;
+    border-top: 1px solid #dee2e6;
+    font-size: 12px;
+}
+
+.add-btn i {
+    font-size: 22px;
+}
+
+.dropdown-common .dropdown-menu {
+    height: 250px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+.client-avatars .client-icon+.client-icon {
+    margin-left: -7px;
+    z-index: 0;
+}
+
+i.rebalance-icon {
+    background: #fff;
+    font-size: 20px;
+    line-height: 20px;
+    color: #88aa33;
+}
+
+i.rotate-pause {
+    -webkit-transform: rotate(90deg);
+    -moz-transform: rotate(90deg);
+    -o-transform: rotate(90deg);
+    -ms-transform: rotate(90deg);
+    transform: rotate(90deg);
+}
+
+.table .table.implementation-accounts-table tr td {
+    padding: 2px 4px;
+    border: none !important;
+    color: gray;
+    font-size: 13px;
+}
+
+.finaMetrica-icon {
+    color: #0177b6;
+    font-size: 14px;
+}
+
+.fixed-width.text-truncate {
+    max-width: 120px;
+}

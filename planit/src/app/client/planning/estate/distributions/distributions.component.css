@@ -1,0 +1,29 @@
+.beneficiary-fixed-width {
+    max-width: 100px;
+}
+
+.table.estate-distributions-table > thead > tr > th table tr th, .savingsData-table.estate-distributions-table tr > td table tr td {
+    padding: 0 !important;
+}
+
+@media (max-width: 992px) {
+    .table.estate-distributions-table td:last-child {
+        width: inherit;
+    }
+}
+
+@media (max-width: 575px) {
+    .table.estate-distributions-table td:last-child {
+        width: 10%;
+    }
+}
+
+@media (max-width: 380px) {
+    .beneficiary-fixed-width {
+        max-width: 70px;
+    }
+
+    .table.estate-distributions-table > thead > tr > th {
+        font-size: 12px;
+    }
+}

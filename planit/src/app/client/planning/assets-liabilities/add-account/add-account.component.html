@@ -1,0 +1,133 @@
+<div class="side-form">
+    <form name="form"  #f="ngForm" novalidate>
+        <div class="box">
+            <div class="box-header">
+                <span class="sidebar_title" [translate]="'ADD_ACCOUNT.ADD_AN_ACCOUNT'"></span>
+                <span (click)="back()" class="sidebar_action_icon ion-md-close-circle float-right"></span>
+            </div>
+            <div class="box-body" *ngIf="portfolioType && allAccountType">
+                <div class="form-group" [ngClass]="{'has-error': accountName.errors && (accountName.dirty || accountName.touched || f.submitted)}">
+                    <label class="custom-form-label" [translate]="'ADD_ACCOUNT.ACCOUNT_NAME'"></label>
+                    <input type="text" name="accountName" class="form-control" [(ngModel)]="accountModel.accountName"
+                        #accountName="ngModel" placeholder="Enter account name" pattern="^[a-zA-Z].*"
+                        required />
+                </div>
+                <div class="form-group" [ngClass]="{'has-error': accountType.errors && (accountType.dirty || accountType.touched || f.submitted)}">
+                    <label class="custom-form-label" [translate]="'ADD_ACCOUNT.ACCOUNT_TYPE'"></label>
+                    <p-dropdown placeholder="Select account type" [options]="allAccountType" optionLabel="description"
+                        name="accountType" [(ngModel)]="accountModel.accountType" #accountType="ngModel" required
+                        (onChange)="allowMultipleOwner(accountModel.accountType,accountModel.regulatoryType); getRegularityTypes(false, accountModel.accountType.id)"></p-dropdown>
+                </div>
+              <div class="form-group" *ngIf="regulatoryTypes">
+                <label class=custom-form-label [translate]="'FORM.REGULATORY_TYPE'"></label>
+                  <div [ngClass]="{'has-error': !regulatoryType.valid && (regulatoryType.dirty || regulatoryType.touched || f.submitted)}">
+                    <p-dropdown placeholder="{{ 'FORM.REGULATORY_TYPE_PLACEHOLDER' | translate }}" [options]="regulatoryTypes" optionLabel="description"
+                                name="regulatoryType" [(ngModel)]="accountModel.regulatoryType" #regulatoryType="ngModel" required
+                                (onChange)="allowMultipleOwner(accountModel.accountType,accountModel.regulatoryType);" ></p-dropdown>
+                  </div>
+              </div>
+                <div class="form-group">
+                    <label class="custom-form-label" [translate]="'ADD_ACCOUNT.ASSET_VALUE'"></label>
+					<input type="text" class="form-control text-right" name="assets" [(ngModel)]="accountModel.assets"
+						#assets="ngModel" placeholder="{{currency}}0.00" pattern="(.)*\d+(?:\.\d{1,2})?$"
+						(change)="setTwoNumberDecimal($event, 'assetValue')" (keypress)="currencyMaskKeypress($event)"/>
+                </div>
+                <div class="form-group" *ngIf="accessRights['AL_LIABILITY']['accessLevel'] > 1 && accountModel.accountType && accountModel.accountType['loanFlag'] === 1">
+                    <label class="custom-form-label" [translate]="'ADD_ACCOUNT.LIABILITY_VALUE'"></label>
+                    <input type="text" class="form-control text-right" name="liability" [(ngModel)]="accountModel.liability"
+						#liability="ngModel" placeholder="{{currency}}0.00" pattern="(.)*\d+(?:\.\d{1,2})?$"
+                    	(change)="setTwoNumberDecimal($event, 'liabilityValue')" (keypress)="currencyMaskKeypress($event)"/>
+                </div>
+
+                <div class="form-group">
+                    <label class="custom-form-label" [translate]="'FORM.OWNERSHIP'"></label>
+                    <label class="text-error" *ngIf="ownerShipTotal !== 100 && isOwnerShipMultiple" [translate]="'ADD_ACCOUNT.OWNERSHIP_DESCRIPTION'"></label>
+                    <table class="table ownership-table">
+                        <tbody *ngIf="familyMembers">
+                            <tr *ngFor="let member of familyMembers; let i = index;">
+                              <ng-container *ngIf="accountModel.regulatoryType && ((accountModel.regulatoryType.holdco == 0 && member.role != 5) || accountModel.regulatoryType.holdco == 1 && member.role == 5)">
+                                <td [style.width.px]="30" *ngIf="isOwnerShipMultiple">
+                                    <p-checkbox name="member_chk_{{i}}" [(ngModel)]="accountModel.ownerList[i].isOwned"
+                                        binary="true" (onChange)="checkOwnership(i)"></p-checkbox>
+                                </td>
+                                <td [style.width.px]="30" *ngIf="!isOwnerShipMultiple">
+                                    <div class="form-check d-flex">
+                                    <p-radioButton styleClass="mb-2" name="member_rdb" [value]="accountModel.ownerList[i].ownerKey"
+                                        label="" [(ngModel)]="individualOwnerShip" inputId="opt{{i}}"></p-radioButton>
+                                    </div>
+                                </td>
+                                <td>
+                                    <app-member-avatar [initials]="member.btnInitials" [relationClass]="member.btnColor" avatarClass="initials" [avatarUrl]="member.avatarUrl">
+                                    </app-member-avatar>
+                                    <span class="fw-400">{{member.firstName}} {{member.lastName}}</span>
+                                </td>
+                                <ng-container *ngIf="isOwnerShipMultiple">
+                                    <td width="50" class="pt-2 pb-2" *ngIf="accountModel.ownerList[i].isOwned">
+                                        <div class="form-group mb-0" [ngClass]="{'has-error': ((!ownership.valid) || (accountModel.ownerList[i].isOwned && ownerShipTotal !== 100))}">
+                                            <input type="text" class="form-control mb-0 h-25 text-right" name="member_{{i}}"
+                                                [(ngModel)]="accountModel.ownerList[i].owned" #ownership="ngModel"
+                                                pattern="^[1-9][0-9]?$|^100$" (keyup)="changeOwnerShip($event, i)"
+                                                required />
+                                        </div>
+                                    </td>
+                                    <td width="50" class="pt-2 pb-2" *ngIf="!accountModel.ownerList[i].isOwned">
+                                        <div class="form-group mb-0">
+                                            <input type="text" class="form-control mb-0 h-25 text-right" name="member_{{i}}"
+                                                [(ngModel)]="accountModel.ownerList[i].owned" #ownership="ngModel"
+                                                pattern="^[1-9][0-9]?$|^100$" disabled />
+                                        </div>
+                                    </td>
+                                </ng-container>
+                                <ng-container *ngIf="!isOwnerShipMultiple">
+                                    <td width="50" class="text-right">
+                                        <span>100</span>
+                                    </td>
+                                </ng-container>
+                                <td width="10" class="pr-0 pl-2">%</td>
+                              </ng-container>
+                            </tr>
+                            <tr *ngIf="isOwnerShipMultiple">
+                                <td colspan="2" [translate]="'ADD_ACCOUNT.OWNERSHIP_TOTAL'"></td>
+                                <td width="50" class="text-right">
+                                    <span> {{ownerShipTotal}}</span>
+                                </td>
+                                <td width="10" class="pr-0 pl-2">%</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+
+                <div class="form-group" [ngClass]="{'has-error': (portfolio.errors && (portfolio.dirty || portfolio.touched || f.submitted)) || (selectionRequiredError)}">
+                    <label class="custom-form-label" [translate]="'ADD_ACCOUNT.ASSOCIATED_PORTFOLIO'"></label>
+                    <p-dropdown [options]="portfolioType" name="portfolio" [(ngModel)]="accountModel.portfolio"
+                        #portfolio="ngModel" placeholder="Select portfolio" optionLabel="description"
+                        [class.disabled]="isInvestment === false" (onChange)="portfolioChange()"></p-dropdown>
+                </div>
+                <div class="d-flex flex-wrap row">
+                    <div class="col-12 col-sm-6">
+                        <a (click)="addProtfolioScreen()" class="btn-add" [class.disabled]="isInvestment === false">
+                            <i class="ion-ios-add-circle"></i>
+                            <span [translate]="'PORTFOLIOS.ACTIONS.ADD_PORTFOLIO'"></span>
+                        </a>
+                    </div>
+                    <div class="col-12 col-sm-6 text-right">
+                        <div class="form-group">
+                            <p-checkbox name="group1" value="val1" label="Managed" [(ngModel)]="accountModel['managed']"
+                                binary="true"></p-checkbox>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="box-footer">
+                <div class="form-group text-right">
+                    <button type="button" (click)="back()" value="cancel" class="btn btn-secondary btn-small"
+                        [translate]="'FORM.ACTION.CANCEL'"></button>
+                    <button type="submit" value="submit" [disabled]="f.form.invalid || saveButtonDisable || (isOwnerShipMultiple && ownerShipTotal !== 100) || (!isOwnerShipMultiple && !individualOwnerShip) || selectionRequiredError" class="btn btn-success btn-small mr-3"
+                        [translate]="'ADD_ACCOUNT.ADD_ACCOUNT'" (click)="addAccount(f); saveButtonDisable = true"></button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

@@ -1,0 +1,67 @@
+<div [ngClass]="{'mt-5': profiler}">
+    <div class="row d-flex justify-content-center align-items-center">
+        <div [ngClass]="{'col-sm-8': profiler, 'col-sm-12': advisor}">
+            <h6 class="fw-700 d-inline" *ngxPermissionsOnly="['PROFILER']">
+                {{'PORTFOLIO.DETAIL.PORTFOLIO_SUITABILITY_SCORE' | translate}}
+                <span *ngIf="changedFromPoint > indicator['left']">
+                    <span class="ion-ios-alert" [ngbTooltip]="keyWarning" #warning="ngbTooltip" triggers="manual"
+                        placement="bottom" (click)="warning.open()"></span>
+                    <ng-template #keyWarning>
+                        <p>{{'PORTFOLIO.DETAIL.WARNINGS_LABEL' | translate }} {{indicator['left']}}</p>
+                        <p class="text-right m-0 p-0">
+                            <button class="btn btn-secondary btn-small m-0" (click)="warning.close()" [translate]="'RISK_RESULTS_PAGE.WARNING.CLOSE'"></button>
+                        </p>
+                    </ng-template>
+                </span>
+            </h6>
+            <h6 class="fw-700 d-inline" *ngxPermissionsExcept="['PROFILER']">
+                {{'PORTFOLIO.DETAIL.INVESTMENT_STRATEGY' | translate}}
+            </h6>
+        </div>
+        <div class="col-lg-4 col-sm-4 text-right score-bages-responsive" *ngxPermissionsOnly="['PROFILER']">
+            <div class="badge-wrapper badge-lg justify-content-md-end justify-content-sm-start">
+                <span *ngIf="suitabilityScore === 0">N/A</span>
+                <img *ngIf="suitabilityScore > 0" src="assets/images/suitability_badge/PPG Badge_{{suitabilityScore}}.png">
+                <!-- <span class="badge-number">
+                        {{suitabilityScoreImg}}
+                    </span>
+                    <span  class="badge-text">{{suitabilityBand}}</span> -->
+            </div>
+        </div>
+    </div>
+    <hr class="mb-1" />
+    <div class="row">
+            <div class="col-12 text-right">
+            <label class="fs-12 fw-600 text-secondary" [ngClass]="{'d-inline-block va-middle' : advisor}" [translate]="'PORTFOLIO.IMPLEMENTATION.INVESTMENT_POLICY'"></label>
+            <span class="fs-14 fw-500" *ngxPermissionsOnly="['PROFILER']">{{suitabilityBand.description}}</span>
+            <div class="form-group d-inline-block va-middle w-25 text-left" *ngxPermissionsExcept="['PROFILER']">
+                <p-dropdown [options]="suitabilityBands" [(ngModel)]="suitabilityBand" optionLabel="description"
+                    [showClear]="true" [readonly]="!isEditableRoute" (ngModelChange)="fromPointChange($event)"></p-dropdown>
+            </div>
+        </div>
+        <ng-container *ngxPermissionsOnly="['PROFILER']">
+            <div *ngIf="sliderValue" class="d-flex flex-wrap suitability-legend">
+                <ng-container *ngFor="let value of sliderValue">
+                    <div class="flex-even ">
+                        <span class="square asset_indicator d-inline-block" [style.background]="value.colour"></span>
+                        <span class="asset_lbl mr-1 mb-2">{{value.name}}</span>
+                    </div>
+                </ng-container>
+            </div>
+            <div class="col-12" *ngIf="sliderValue">
+                <app-custom-slider [isEditableRoute]="isEditableRoute" [sliderValue]="sliderValue" [fromPoint]="suitabilityScore"
+                    [ngcontent]="ngcontent" [indicator]="indicator" (fromPointChange)="fromPointChange($event)" (updateBand)="updateBand($event)"
+                    [member]=""></app-custom-slider>
+            </div>
+        </ng-container>
+    </div>
+    <div class="row warnings-row" *ngIf="profiler && isEditableRoute && changedFromPoint > indicator['left']">
+        <div class="col-12">
+            <p class="mt-5 mb-0 fw-700" [translate]="'PORTFOLIO.DETAIL.WARNINGS'"></p>
+            <ul class="warning-list pl-0">
+                <li> {{'PORTFOLIO.DETAIL.WARNINGS_LABEL' | translate }} {{indicator['left']}}</li>
+            </ul>
+        </div>
+    </div>
+
+</div>

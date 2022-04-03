@@ -1,0 +1,80 @@
+<div class="side-form">
+    <div class="box">
+        <form name="form" (ngSubmit)="f.form.valid && submitForm(f)" #f="ngForm" novalidate>
+            <div class="box-header">
+                <span class="sidebar_title" [translate]="'ESTATE_PLANING.DISTRIBUTIONS.ADD_A_DISTRIBUTION'"></span>
+                <span (click)="back()" class="sidebar_action_icon ion-md-close-circle float-right"></span>
+            </div>
+
+            <div class="box-body" *ngIf="bequestList.length > 0 && otherBeneficiaries == true">
+                <div class="form-group">
+                    <label class="custom-form-label"
+                        [translate]="'ESTATE_PLANING.DISTRIBUTIONS.BEQUEST_MADE_BY'"></label>
+                    <p-dropdown placeholder="Select a bequest" [options]="bequestList" optionLabel="name" name="bequest"
+                        [(ngModel)]="distribution['bequest']" #bequest="ngModel" required
+                        (onChange)="filterDropdown(distribution['bequest'])"></p-dropdown>
+                </div>
+                <div class="form-group">
+                    <label class="custom-form-label d-inline-block" [translate]="'ESTATE_PLANING.BENEFICIARY'"></label>
+                    <div class="d-inline-block float-right" *ngIf="!isEditDistribution">
+                        <a [routerLink]="['/client', clientId, 'planning', 'estate', 'distributions', 'add-beneficiary']"
+                            class="btn-add">
+                            <i class="ion-md-add-circle"></i>
+                            <span [translate]="'ESTATE_PLANING.NEW_BENEFICIARY'"></span>
+                        </a>
+                    </div>
+                    <p-dropdown placeholder="Select a beneficiary" [options]="beneficiaryList" optionLabel="name"
+                        name="beneficiary" [(ngModel)]="distribution['beneficiary']" #beneficiary="ngModel"
+                        [disabled]="beneficiaryList.length === 0" required></p-dropdown>
+                </div>
+                <div class="form-group">
+                    <label class="custom-form-label" [translate]="'ESTATE_PLANING.RELATIONSHIP'"></label>
+                    <span *ngIf="distribution['beneficiary']">
+                        {{distribution['beneficiary']['isOtherBeneficiary'] === true ? 
+                        (('SSID_LABELS.BENEFICIARY_RELATIONS.' + distribution['beneficiary']['relationName'] ) | translate) 
+                        : distribution['beneficiary']['relationName']}}
+                    </span>
+                </div>
+                <fieldset class="form-group">
+                    <legend class=custom-form-label [style.width.px]="130"
+                        [translate]="'ESTATE_PLANING.DISTRIBUTIONS.DISTRIBUTION_METHOD'"></legend>
+                    <div class="d-flex">
+                        <span class="mr-2">
+                            <p-radioButton name="distributionMethod" value="amount"
+                                label="{{'ESTATE_PLANING.DISTRIBUTIONS.AMOUNT' | translate}}"
+                                [(ngModel)]="distribution['distributionMethod']" #distributionMethod="ngModel" required>
+                            </p-radioButton>
+                        </span>
+                        <span>
+                            <p-radioButton name="distributionMethod" value="percentage"
+                                label="{{'ESTATE_PLANING.DISTRIBUTIONS.PERCENT' | translate}}"
+                                [(ngModel)]="distribution['distributionMethod']" #distributionMethod="ngModel" required>
+                            </p-radioButton>
+                        </span>
+                    </div>
+                </fieldset>
+                <div class="form-group distribution-input" *ngIf="distribution['distributionMethod'] === 'amount'"
+                    [ngClass]="{'has-error': !amount.valid && (amount.dirty || f.submitted) }">
+                    <input type="text" name="amount" [(ngModel)]="distribution['distributionValue']" #amount="ngModel"
+                        class="form-control d-inline-block text-left" [textMask]="{mask: currencyMask}" appNumeric
+                        required>
+                </div>
+                <div class="form-group distribution-input" *ngIf="distribution['distributionMethod'] === 'percentage'"
+                    [ngClass]="{'has-error': !percent.valid && (percent.dirty || f.submitted) }">
+                    <input type="text" name="percent" [(ngModel)]="distribution['distributionValue']" #percent="ngModel"
+                        class="form-control d-inline-block text-left" [customMax]="100"
+                        [textMask]="{mask: percentDecimalMask}" appNumeric required>
+                </div>
+            </div>
+            <div class="box-footer">
+                <div class="form-group text-right">
+                    <button type="button" (click)="back(); closeButtonDisabled = true;" value="cancel"
+                        class="btn btn-secondary btn-small" [translate]="'FORM.ACTION.CANCEL'"
+                        [disabled]="closeButtonDisabled"></button>
+                    <button type="submit" value="submit" [disabled]="f.form.invalid || saveButtonDisabled"
+                        class="btn btn-success btn-small mr-3" [translate]="'FORM.ACTION.SAVE'"></button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

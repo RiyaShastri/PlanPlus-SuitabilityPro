@@ -1,0 +1,181 @@
+<div class="bg-white pt-4 pb-4">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-12" *ngIf="portfolioData.length > 0">
+                <h4 class="mb-1">
+                    <a href="#">{{ 'BREADCRUMB.PLANNING' | translate }}</a> /
+                    <span>{{ 'BREADCRUMB.PORTFOLIOS' | translate }}</span>
+                </h4>
+                <h1 class="d-inline-block fw-500" *ngFor="let data of portfolioData">
+                    {{data.description}}
+                    <app-family-portfolio-dropdown [clientId]="clientId" [portfolioId]="portfolioId" (portfoliosSwitch)="portfolioSwitch($event)"></app-family-portfolio-dropdown>
+                </h1>
+                <div class="icon-edits d-inline-block ml-3">
+                    <i class="circle ion-md-create"></i>
+                </div>
+                <div class="risk-toler-top d-inline-block ml-sm-0 mt-sm-4 mt-3 ml-0">
+                    <h6 [translate]="'CLIENT_OVERVIEW.RISK_TOLERANCE'"></h6>
+                    <div class="badge-wrapper" *ngIf="portfolioDetails">
+                        <span class="badge-number">{{portfolioDetails.portfolioRiskLevel['riskScore']}}</span>
+                        <span class="badge-text">{{getRiskBadge(portfolioDetails.portfolioRiskLevel['riskScore'])}}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-12 text-right">
+                <div class="d-inline-block nextprive-box mr-lg-5 mr-3">
+                    <!-- <i class="ion-md-arrow-dropleft-circle mr-4"></i>
+                    <i class="ion-md-arrow-dropright-circle"></i> -->
+                </div>
+                <app-planning-module-drop-down class="dropdown-right" [clientId]="clientId"></app-planning-module-drop-down>
+            </div>
+
+            <div class="col-12">
+                <hr>
+            </div>
+            <div class="col-12">
+                <ul class="nav nav-tabs" role="tablist">
+                    <li class="nav-item">
+                        <a [routerLink]="['/client',clientId,'planning', 'portfolios', portfolioId, 'details']" class="nav-link" data-toggle="tab" [translate]="'GOALS.DETAILS.TITLE'"></a>
+                    </li>
+                    <li class="nav-item">
+                        <a [routerLink]="['/client',clientId,'planning', 'portfolios', portfolioId, 'objectives']" class="nav-link active" data-toggle="tab">Objectives</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-12">
+                <hr>
+            </div>
+
+
+            <div class="col-12">
+                <div class="d-flex flex-wrap current-main mt-2 text-center">
+                    <h3 class="m-0 fw-400" [translate]="'PORTFOLIO.ACTION.OBJECTIVES'"></h3>
+                    <div class="form-group mb-0 ml-5 objectives-checkbox">
+                        <div class="form-check mt-2">
+                            <p-checkbox class="d-flex text-left" *ngIf="allowEdit" label="use response from {{defaultName.description}}" binary="true"
+                                (click)="checkMark()"></p-checkbox>
+                        </div>
+                    </div>
+                    <p (click)="toggleEdit()" *ngIf="!allowEdit" class="btn btn-success btn-small ml-auto m-0" style="height: 28px;" [translate]="'PORTFOLIO.ACTION.EDIT'"></p>
+                </div>
+            </div>
+
+            <div class="col-12 mt-4">
+                <div class="expandall-text d-flex">
+                    <a *ngIf="!allowEdit" (click)="toggleExpand()" class="d-flex ml-auto">
+                        <span *ngIf="!expandAll" [translate]="'ACCORDIAN.EXPAND_ALL'"></span>
+                        <span *ngIf="expandAll" [translate]="'ACCORDIAN.COLLAPSE_ALL'"></span>
+                        <i class="ml-2" [ngClass]="{'ion-ios-arrow-down' : !expandAll, 'ion-ios-arrow-up':expandAll}"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="col-12">
+                <hr>
+            </div>
+
+            <div class="col-md-6 col-12 pr-md-4">
+                <div class="composure-box">
+                    <section>
+                        <div class="income-box" *ngIf="allowEdit">
+                            <div class="form-group m-0">
+                                <h4>Time horizon</h4>
+                                <p>based on the goal(S) associated with this portfolio, 1/3 or more of the money is needed in
+                                    approximately 14 years. &nbsp; When do you expect to need to withdraw a significant part
+                                    (1/3 or more) of the money in your investment portfolio?</p>
+                                <div class="col-6 time-horizone-dropdown">
+                                    <p-dropdown [options]="timeHorizon" optionLabel="name" [disabled]="check"></p-dropdown>
+                                </div>
+                            </div>
+                        </div>
+                        <p-accordion *ngIf="!allowEdit">
+                            <p-accordionTab [selected]="expandAll">
+                                <p-header>
+                                    <p class="fw-700 m-0">Time horizon</p>
+                                    <p>Based on the goal(S) associated with this portfolio, 1/3 or more of the money is needed
+                                        in approximately 14 years.</p>
+                                </p-header>
+                                When do you expect to need to withdraw a significant part (1/3 or more) of the money in your investment portfolio?
+                                <ul class="composure-list">
+                                    <li class="active">7 to 9 years</li>
+                                </ul>
+                            </p-accordionTab>
+                        </p-accordion>
+                    </section>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-12 pr-md-4">
+                <div class="composure-box">
+                    <section>
+                        <div class="income-box" *ngIf="allowEdit">
+                            <h4>Socially Responsibe Investing</h4>
+                            <p>SRI is the act of making smart investment decisions to achieve not only financial returns, but
+                                also social and environmental returns.
+                            </p>
+                            <div class="socially-box d-flex flex-wrap">
+                                <div class="form-group">
+                                    <div class="form-check">
+                                        <p-radioButton name="SRI" value="Option 1" [disabled]="check"></p-radioButton>
+                                        I am not interested in SRI-specific investments in my portfolio
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="form-check">
+                                        <p-radioButton name="SRI" value="Option 2" [disabled]="check"></p-radioButton>
+                                        I believe in having a small portion of SRI-specific investments in my portfolio
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="form-check">
+                                        <p-radioButton name="SRI" value="Option 3" [disabled]="check"></p-radioButton>
+                                        Having half my portfolio in SRI-specific investments would be beneficial to
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="form-check">
+                                        <p-radioButton name="SRI" value="Option 4" [disabled]="check"></p-radioButton>
+                                        I believe in having a large portion of SRI-specific investments in my portfolio
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="form-check">
+                                        <p-radioButton name="SRI" value="Option 5" [disabled]="check"></p-radioButton>
+                                        Having an investment potfolio consisting entirely of SRI investments is very importanat to me
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <p-accordion *ngIf="!allowEdit">
+                            <p-accordionTab [selected]="expandAll">
+                                <p-header>
+                                    <p class="fw-700 m-0">Socially Responsibe Investing</p>
+                                    <p>SRI is the act of making smart investment decisions to achieve not only financial returns,
+                                        but also social and environmental returns</p>
+                                </p-header>
+                                <ul class="composure-list">
+                                    <li>I am not interested in SRI-specific investments in my portfolio</li>
+                                    <li class="active">I believe in having a small portion of SRI-specific investments in my portfolio</li>
+                                    <li>Having half my portfolio in SRI-specific investments would be beneficial to</li>
+                                    <li>I believe in having a large portion of SRI-specific investments in my portfolio</li>
+                                    <li>Having an investment potfolio consisting entirely of SRI investments is very importanat
+                                        to me</li>
+                                </ul>
+                            </p-accordionTab>
+                        </p-accordion>
+                    </section>
+                </div>
+            </div>
+
+            <div class="col-12" *ngIf="allowEdit">
+                <div class="form-group text-right">
+                    <hr>
+                    <button (click)="toggleEdit()" class="btn btn-secondary mr-2" [translate]="'FORM.ACTION.CANCEL'"></button>
+                    <button class="btn btn-success" [translate]="'FORM.ACTION.SAVE_CHANGES'"></button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

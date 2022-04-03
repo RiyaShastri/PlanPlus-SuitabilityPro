@@ -1,0 +1,159 @@
+<div class="row pt-2">
+    <div class="col-12 col-md-8 text-center">
+        <h3 class="fs-16 fw-700 d-inline-block" [translate]="'GOAL.ANALYSIS.PANEL.CASH_FLOW'"></h3>
+        <div *ngIf="!noCashFlowGraph" id="planningCashFlowDiv"
+            style="height:400px; width:100%; display: inline-block;margin-left: 0px;margin-right: 0px;"></div>
+        <div *ngIf="noCashFlowGraph" class="no-record text-center position-relative"
+            style="height:400px; width:100%; display: inline-block;margin-left: 0px;margin-right: 0px;">
+            <p class="no_data_graph"><i class="ion-ios-alert mr-2"></i>{{'NO_RESULTS' | translate}}</p>
+        </div>
+        <h3 class="fs-16 fw-700 d-inline-block" [translate]="'GOAL.ANALYSIS.PANEL.INVESTMENT_CAPITAL'"></h3>
+        <div *ngIf="!noInvestmentGraph" id="investmentCapitalDiv"
+            style="height:400px; width:100%; display: inline-block;margin-left: 0px;margin-right: 0px;"></div>
+        <div *ngIf="noInvestmentGraph" class="no-record text-center position-relative"
+            style="height:400px; width:100%; display: inline-block;margin-left: 0px;margin-right: 0px;">
+            <p class="no_data_graph"><i class="ion-ios-alert mr-2"></i>{{'NO_RESULTS' | translate}}</p>
+        </div>
+    </div>
+    <div class="col-12 col-md-4  border-left">
+        <h3 class="fs-16 fw-700 d-inline-block" [translate]="'GOAL.ANALYSIS.PANEL.PLANNING_ALTERNATIVES'"></h3>
+        <i *ngIf="showLoader" aria-hidden="true" class="fa fa-spinner fa-pulse loader-icon"></i>
+        <hr />
+        <form name="form" #f="ngForm" (ngSubmit)="f.form.valid && updateDetails()" novalidate
+            *ngIf="planningData && planningDetails && custom_values">
+            <div class="form-group text-right">
+                <label class="custom-form-label fs-16 fw-700">
+                    {{planningData['graphResult']['shortageSurplusResults'][0]['isShortage'] === 'true' ? 
+                    ('GOAL.ANALYSIS.LABEL.SHORTFALL' | translate) : ('GOAL.ANALYSIS.LABEL.SURPLUS' | translate)}}:
+                    {{planningData['graphResult']['shortageSurplusResults'][0]['shortageSurplusValue']}}</label>
+            </div>
+
+            <ng-container *ngFor="let key of parameters; index as i;">
+                <div class="planning-alternetive-wrapper mb-15 pb-3">
+                    <div class="form-group mb-2 pb-2 border-bottom">
+                        <label class="custom-form-label d-inline-block mb-0">{{key.displayName}}</label>
+                        <label *ngIf="key.name === PARAMETERS['END_GOAL']" class="custom-form-label d-inline-block pull-right mb-0"
+                            [translate]="'GOAL.ANALYSIS.LABEL.GOAL_DURATION'"
+                            [translateParams]="{duration: goalDuration}"></label>
+                        <label *ngIf="key.name === PARAMETERS['RATE_OF_RETURN']"
+                            class="custom-form-label d-inline-block pull-right mb-0">{{rateOfReturnLabel[rateOfReturnIndex]}}</label>
+                    </div>
+                    <div *ngIf="key.name === PARAMETERS['ANNUAL_SAVINGS'] && savingsList && savingsList.length > 0"
+                        class="form-group mt-3" [ngClass]="{ 'has-error': f.submitted && !investmentAccount.valid }">
+                        <label class=custom-form-label
+                            [translate]="'GOAL.ANALYSIS.LABEL.CHOOSE_SAVINGS_RECORD'"></label>
+                        <p-dropdown [options]="savingsList" [(ngModel)]="selectedSaving"
+                            placeholder="Choose savings record" optionLabel="descr" name="investmentAccount"
+                            #investmentAccount="ngModel" required (onChange)="onChangeOfPlannum()"></p-dropdown>
+                    </div>
+                    <div class="planning-alternetive mt-4">
+                        <div class="form-group mb-0 ion-range-slider-custom">
+                            <ion-range-slider type="single" [from]="custom_values[key.name]['fromPoint']" grid="false"
+                                hide_min_max="false" [values]="custom_values[key.name]['values_p']"
+                                (onFinish)="onChangeOfSlider($event, key)"
+                                [disable]="custom_values[key.name]['values_p'].length == 0">
+                            </ion-range-slider>
+                        </div>
+                        <div class="planning-alternetive-right">
+                            <div class="form-group mb-0" *ngIf="key.name === PARAMETERS['INCOME_GOAL'] || key.name === PARAMETERS['ANNUAL_SAVINGS']"
+                                [ngClass]="{ 'has-error': !assumption.valid && (assumption.dirty || f.submitted)}">
+                                <input class="form-control d-inline-block text-right h-25" style="width: 80px"
+                                    [(ngModel)]="model[key.name]" #assumption="ngModel" name="{{key.name}}" [textMask]="{mask: currencyMask}" appNumeric
+                                    (focusout)="onChangeOfValue(key.name)" required />
+                            </div>
+                            <div class="form-group mb-0" *ngIf="key.name === PARAMETERS['START_GOAL'] || key.name === PARAMETERS['END_GOAL']"
+                                [ngClass]="{ 'has-error': !assumption.valid && (assumption.dirty || f.submitted)}">
+                                <input class="form-control d-inline-block text-right h-25" style="width: 80px"
+                                    [(ngModel)]="model[key.name]" #assumption="ngModel" name="{{key.name}}"
+                                    (focusout)="onChangeOfValue(key.name)" required />
+                            </div>
+                            <div class="form-group mb-0"  *ngIf="key.name === PARAMETERS['RATE_OF_RETURN']">
+                                <span>{{custom_values[key.name]['values_p'][rateOfReturnIndex]}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </ng-container>
+            <div class="planning-alternetive-wrapper" *ngIf="savingsList && savingsList.length > 0 && selectedSaving">
+                <table class="table bt-none planning-alternative-table">
+                    <thead>
+                        <tr>
+                            <th class="border-0 pb-0 pr-5" [translate]="'GOAL.ANALYSIS.LABEL.CURRENT_SAVING'"
+                                width="50%">
+                            </th>
+                            <th class="border-0 pb-0 pr-2" [translate]="'GOAL.ANALYSIS.LABEL.START'" width="25%"></th>
+                            <th class="text-right border-0 pr-3 pb-0" [translate]="'GOAL.ANALYSIS.LABEL.END'"
+                                width="25%">
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <ng-container *ngIf="selectedSaving['tierPayloadList']">
+                            <tr *ngFor="let tier of selectedSaving['tierPayloadList']">
+                                <td class="border-0 pt-1 pr-5" width="50%">
+                                    {{tier['savingsAmount'] | currency:clientData['currencyCode'] : 'symbol-narrow':'1.0-0'}}
+                                </td>
+                                <td class="border-0 pt-1 pr-2" width="25%">{{tier['startYear']}}</td>
+                                <td class="text-right border-0 pr-3 pt-1" width="25%">{{tier['endYear']}}</td>
+                            </tr>
+                        </ng-container>
+                        <ng-container *ngIf="!selectedSaving['tierPayloadList']">
+                            <tr>
+                                <td class="border-0 pt-1 pr-5" width="50%">
+                                    {{selectedSaving['value'] | currency:clientData['currencyCode'] : 'symbol-narrow':'1.0-0'}}
+                                </td>
+                                <td class="border-0 pt-1 pr-2" width="25%">{{selectedSaving['start']}}</td>
+                                <td class="text-right border-0 pr-3 pt-1" width="25%">{{selectedSaving['end']}}</td>
+                            </tr>
+                        </ng-container>
+                    </tbody>
+                </table>
+            </div>
+            <div *ngIf="isCollapsed === false">
+                <hr />
+            </div>
+            <div id="moreDetails" [ngbCollapse]="isCollapsed" class="form-group"
+                *ngIf="savingsList && savingsList.length > 0">
+                <p class="planning-alternatives-custom-label" [translate]="'GOAL.ANALYSIS.LABEL.SAVINGS_RECORDS'"></p>
+                <ng-container *ngFor="let saving of savingsList; index as i">
+                    <label class="custom-form-label fs-14">{{saving['descr']}}</label>
+                    <table class="table bt-none planning-alternative-table">
+                        <tbody>
+                            <ng-container *ngIf="saving['tierPayloadList']">
+                                <tr *ngFor="let tier of saving['tierPayloadList'];">
+                                    <td class="border-0 pt-1 pr-5" width="50%">
+                                        {{tier['savingsAmount'] | currency:clientData['currencyCode'] : 'symbol-narrow':'1.0-0'}}
+                                    </td>
+                                    <td class="border-0 pt-1 pr-2" width="25%">{{tier['startYear']}}</td>
+                                    <td class="text-right border-0 pr-3 pt-1" width="25%">{{tier['endYear']}}</td>
+                                </tr>
+                            </ng-container>
+                            <ng-container *ngIf="!saving['tierPayloadList']">
+                                <tr>
+                                    <td class="border-0 pt-1 pr-5" width="50%">
+                                        {{saving['value'] | currency:clientData['currencyCode'] : 'symbol-narrow':'1.0-0'}}
+                                    </td>
+                                    <td class="border-0 pt-1 pr-2" width="25%">{{saving['start']}}</td>
+                                    <td class="text-right border-0 pr-3 pt-1" width="25%">{{saving['end']}}</td>
+                                </tr>
+                            </ng-container>
+                        </tbody>
+                    </table>
+                    <hr *ngIf="i !== savingsList.length - 1" class="mt-1 mb-3" />
+                </ng-container>
+            </div>
+            <div class="border-bottom mb-3 border-top pt-1 pb-1">
+                <a href="javascript:void(0)" class="moredetail-button" (click)="isCollapsed = !isCollapsed"
+                    [attr.aria-expanded]="!isCollapsed" aria-controls="collapseExample">
+                    {{ isCollapsed === false? ('LESS_DETAIL' | translate) : ('MORE_DETAIL' | translate) }}</a>
+            </div>
+            <div class="form-group text-right">
+                <button (click)="back()" type="button" class="btn btn-small btn-secondary mr-2">{{ 'FORM.ACTION.CANCEL'
+                    | translate }}</button>
+                <button [disabled]="!f.form.valid || saveDisable" class="btn btn-small btn-success">{{ 'FORM.ACTION.SAVE' | translate
+                    }}</button>
+
+            </div>
+        </form>
+    </div>
+</div>

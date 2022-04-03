@@ -1,0 +1,28 @@
+.dropdown-entities-action.dropdown-floating {
+    width: 290px;
+}
+
+.dropdown-entities-action.dropdown-floating .floating-dropdown li a {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.pr-5px {
+    padding-right: 5px !important;
+}
+
+.fixed-width.text-truncate {
+    max-width: 250px;
+}
+
+.table.entity-list-table > tbody > tr.entity-total-row > td {
+    border-bottom: none !important;
+    padding-top: 25px;
+}
+
+@media(max-width: 575px){
+    .fixed-width.text-truncate {
+        max-width: 140px;
+    }
+}

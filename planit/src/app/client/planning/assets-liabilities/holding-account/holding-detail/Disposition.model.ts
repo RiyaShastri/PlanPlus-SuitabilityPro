@@ -1,0 +1,19 @@
+export interface Disposition{
+        disposition_year
+        payout_period
+        growrate_to_disp
+        growrate_during_disp
+        client_exemption
+        inclusionRate
+        modeltype
+        income_est
+        disp_ondeath?
+        disp_ondisability?
+        assetnum
+        scenario
+        update_disposition
+        depreciable?
+        cur_depreciation?
+        depreciation_rate?
+        depreciation_type?
+}

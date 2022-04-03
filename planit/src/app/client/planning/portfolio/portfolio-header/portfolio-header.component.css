@@ -1,0 +1,24 @@
+.delete-link, .delete-link span{
+    line-height: 26px;
+    display: inline-block;
+}
+
+.dropdown-common .dropdown-menu ul li {
+    /* border-top: none; */
+}
+
+
+
+@media(max-width: 767px) {
+    .breadcrumb-wrap {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-pack: justify;
+        -ms-flex-pack: justify;
+        justify-content: space-between;
+    }
+    .breadcrumb-wrap a.btn-success {
+        margin-left: inherit !important;
+    }
+}

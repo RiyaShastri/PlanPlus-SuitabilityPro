@@ -1,0 +1,317 @@
+<div class="bg-white pt-4 pb-4">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-7 col-6">
+                <h4 class="mb-1">
+                    <a [routerLink]="['/client',clientId,'profile']" [translate]="'BREADCRUMB.CLIENT_PROFILE'"></a> /
+                    <a [routerLink]="['/client',clientId,'profile','personal-info']" [translate]="'PERSONAL_INFO.TITLE'"></a> /
+                    <a [routerLink]="['/client',clientId,'profile','personal-info', entityId, 'entity-ownership']" [translate]="'ENTITY.ENTITIES'"></a>
+                </h4>
+                <h1 class="fw-500">
+                    <app-family-member-dropdown [clientId]="clientId" [personalId]="entityId" [typeId]="ENTITY_TYPE" (memberSwitch)="memberSwitch($event)"></app-family-member-dropdown>
+                </h1>
+            </div>
+            <div class="col-sm-5 col-6 d-flex flex-wrap justify-content-end">
+                <div class="mt-auto">
+                    <app-profile-module-drop-down class="dropdown-right" [clientId]="clientId">
+                    </app-profile-module-drop-down>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <hr>
+            </div>
+            <div class="col-12">
+                <ul class="nav nav-tabs" role="tablist">
+                    <li class="nav-item">
+                        <a [routerLink]="['/client', clientId, 'profile', 'personal-info', entityId, 'entity-details']" class="nav-link" data-toggle="tab"
+                            [translate]="'ENTITY.ENTITY_DETAILS'"></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" [routerLink]="['/client', clientId, 'profile', 'personal-info', entityId, 'entity-ownership']"
+                            data-toggle="tab" [translate]="'ENTITY.OWNERSHIP'"></a>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-12">
+                <hr>
+            </div>
+        </div>
+        <div class="tab-content">
+            <form name="editEntityDetail" #f="ngForm" novalidate>
+                <div class="tab-pane active entity-ownership">
+                    <div class="row">
+                        <div class="col-12 col-xl-8">
+                            <div class="row" *ngIf="entityOwnership">
+                                <div class="col-12 col-md-6 col-lg-6">
+                                    <div class="form-group">
+                                        <label class="custom-form-label" [translate]="'ENTITY.DESCRIPTION'">
+                                        </label>
+                                        <span class="entity-data">{{entityOwnership['description']}}</span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="custom-form-label" [translate]="'ENTITY.TYPE'"></label>
+                                        <span class="entity-data">{{entityOwnership['entityTypeDescription']}}</span>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-6 col-lg-6">
+                                    <div class="form-group">
+                                        <label class="custom-form-label" [translate]="'ENTITY.PROVINCE'"></label>
+                                        <span *ngIf="selectedProvince && selectedProvince['provinceState']" class="entity-data">{{selectedProvince['provinceState']}}</span>
+                                    </div>
+                                    <div class="form-group" *ngIf="entityOwnership['relCorpDesc'] && selectedType && selectedType['id'] === TYPES.ACTIVE_BUISNESS">
+                                        <label class="custom-form-label" [translate]="'ENTITY.RELATED_CORPORATION'"></label>
+                                        <span class="entity-data">{{entityOwnership['relCorpDesc']}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6 col-xs-9">
+                                    <div class="form-group">
+                                        <label class="custom-form-label" [translate]="'ENTITY.CURRENT_FAIR_MARKET_VALUE'"></label>
+                                    </div>
+                                </div>
+                                <div class="col-6 col-xs-3">
+                                    <div class="form-group">
+                                        <p class="entity-value fw-400 fs-14">{{entityOwnership['fmv'] | currency:clientData['currencyCode'] : 'symbol-narrow':'1.0-0'}}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6 col-xs-9">
+                                    <div class="form-group">
+                                        <label class="custom-form-label" [translate]="'ENTITY.ACB_OF_INVESTMENTS'"></label>
+                                    </div>
+                                </div>
+                                <div class="col-6 col-xs-3">
+                                    <div class="form-group">
+                                        <p class="entity-value fw-400 fs-14">{{entityOwnership['acb'] | currency:clientData['currencyCode'] : 'symbol-narrow':'1.0-0'}}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <hr>
+                        </div>
+                        <div class="col-12" *ngIf="!isTableGenerated">
+                            <div class="row min-h-310px">
+                                <div class="col-12 col-md-4 col-lg-4">
+                                    <div class="form-group">
+                                        <label class="custom-form-label" [translate]="'ENTITY.SHARES'"></label>
+                                        <p-multiSelect name="shares" [showToggleAll]="false" [options]="sharesList" [(ngModel)]="entityOwnership['shares']" #shares="ngModel"
+                                            defaultLabel="{{i18Text['ENTITY.SHARE_PLACEHOLDER']}}" (onChange)="checkOther(SHARE_TYPE.SHARES)"
+                                            [filter]="false">
+                                          <ng-template let-shareObj pTemplate="item">
+                                            <label>{{shareObj.firstName}}</label>
+                                          </ng-template>
+                                            <p-footer>
+                                                <form name="addShareForm" (ngSubmit)="addShareForm.form.valid" #addShareForm="ngForm" novalidate>
+                                                    <div class="form-group d-flex justify-content-end mb-0">
+                                                        <input type="text" class="form-control d-inline-block w-50 h-25 mr-1" name="shareDescription" [(ngModel)]="entityOwnership['sharesData']"
+                                                            #shareDescription="ngModel" [disabled]="!isShareOther" pattern="^[a-zA-Z][\w\d\s\-]*"
+                                                            required>
+                                                        <div class="d-flex align-items-center">
+                                                            <button (click)="addOther(entityOwnership['sharesData'], SHARE_TYPE.SHARES)" class="btn-add bg-white btn p-0 m-0" [disabled]="addShareForm.invalid || !isShareOther">
+                                                                <i class="ion-md-add-circle"></i>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </p-footer>
+                                        </p-multiSelect>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-4 col-lg-4">
+                                    <div class="form-group">
+                                        <label class="custom-form-label" [translate]="'ENTITY.OWNERS'"></label>
+                                        <p-multiSelect name="owners" [showToggleAll]="false" [options]="ownersList" [(ngModel)]="entityOwnership['owners']" #owners="ngModel"
+                                            defaultLabel="{{i18Text['ENTITY.OWNERS_PLACEHOLDER']}}" (onChange)="checkOther(SHARE_TYPE.OWNERS)"
+                                            [filter]="false">
+                                            <ng-template let-ownerObj pTemplate="item">
+                                                <label>{{ownerObj.label}}</label>
+                                            </ng-template>
+                                            <p-footer>
+                                                <form name="addOwnerForm" (ngSubmit)="addOwnerForm.form.valid" #addOwnerForm="ngForm" novalidate>
+                                                    <div class="form-group d-flex justify-content-end mb-0">
+                                                        <input type="text" class="form-control d-inline-block w-50 h-25 mr-1" name="description" [(ngModel)]="entityOwnership['ownersData']"
+                                                            #description="ngModel" [disabled]="!isOwnerOther" pattern="^[a-zA-Z][\w\d\s\-]*"
+                                                            required>
+                                                        <div class="d-flex align-items-center">
+                                                            <button (click)="addOther(entityOwnership['ownersData'], SHARE_TYPE.OWNERS)" class="btn-add bg-white btn p-0 m-0" [disabled]="addOwnerForm.invalid || !isOwnerOther">
+                                                                <i class="ion-md-add-circle"></i>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </p-footer>
+                                        </p-multiSelect>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-4 col-lg-4 d-flex justify-content-start generate-btn-wrap">
+                                    <div class="form-group m-0">
+                                        <label class="custom-form-label">&nbsp;</label>
+                                        <button class="btn btn-success m-0" (click)="generateTable()" [translate]="'ENTITY.GENERATE_TABLE'"></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12" *ngIf="isTableGenerated">
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="pb-3 border-bottom d-flex justify-content-between">
+                                        <h4 [translate]="'ENTITY.SHARE_DISTRIBUTION'"></h4>
+                                        <div class="d-flex">
+                                            <div class="dropdown-common sort-dropdown mr-2">
+                                                <app-common-drop-down class="dropdown-right" [itemList]="viewList" [defaultSelected]="selectedViewBy" dropDownLabel="{{ 'PORTFOLIOS.VIEW_DROPDOWN' | translate }}"
+                                                    (OnSelect)="viewChange($event)"></app-common-drop-down>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="pt-3 d-flex justify-content-between">
+                                        <a href="javascript:void(0);" (click)="openAddOwnerSidePanel()" class="btn-add">
+                                            <i class="ion-md-add-circle"></i>
+                                            <span [translate]="'ENTITY.ADD_OWNER'"></span>
+                                        </a>
+                                        <a [routerLink]="['add-share-class']" class="btn-add">
+                                            <i class="ion-md-add-circle"></i>
+                                            <span [translate]="'ENTITY.ADD_SHARE_CLASS'"></span>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <hr>
+                                </div>
+                            </div>
+                            <ng-container *ngIf="tableData && tableData.length > 0">
+                                <div class="distribution-wrapper d-flex">
+                                    <div class="left-side">
+                                        <div class="table-header table-row">
+                                            <span class="clientName" [translate]="'ENTITY.OWNERS'"></span>
+                                            <span class="clientStatus hidden-xs-down" [translate]="'ENTITY.ROLE'"></span>
+                                        </div>
+                                        <ng-container *ngFor="let owner of tableData[0]['owners'];let i=index">
+                                            <div class="table-row">
+                                                <span class="clientName d-flex">
+                                                    <app-member-avatar [initials]="owner['initials']" [relationClass]="owner['btnColor']" avatarClass="initials" [avatarUrl]="owner['imgUrl']">
+                                                    </app-member-avatar>
+                                                    <span class="collab-text-truncate pl-1" [appNoOverflowTooltip]="owner['ownerName']" triggers="manual" placement="bottom">{{owner['ownerName']}}</span>
+                                                </span>
+                                                <span class="clientStatus hidden-xs-down">{{ (owner['ownerRole'] === SHARE_TYPE['OTHER_ROLE']) ? SHARE_TYPE['OTHER']
+                                                    : roles[owner['ownerRole']]}}
+                                                </span>
+                                            </div>
+                                        </ng-container>
+                                    </div>
+                                    <div class="middle-side">
+                                        <div class="table-header table-row">
+                                            <div class="table-row-wrapper">
+                                                <ng-container *ngFor="let data of tableData;let i=index">
+                                                    <div class="value-wrapper d-flex headerElement">
+                                                        <span class="clientStatus text-truncate" [appNoOverflowTooltip]="data['shareClassDesc']" triggers="manual" placement="bottom">{{data['shareClassDesc']}}</span>
+                                                        <div class="dropdown-relative d-inline-block">
+                                                            <button type="button" class="btn-floating" (click)="changeShareAction(i)">
+                                                                <span class="ion-md-more"></span>
+                                                            </button>
+                                                            <div [id]="'dropdownShareAction'+i" class="dropdown-share-action dropdown-floating hide-ele">
+                                                                <ul class="floating-dropdown">
+                                                                    <li>
+                                                                        <a [routerLink]="[data['shareClassId'], 'edit-share-structure']" class="action-list">
+                                                                            <i class="ion-md-create action-list"></i>
+                                                                            <span class="action-list" [translate]="'ENTITY.EDIT_SHARE_CLASS'"></span>
+                                                                        </a>
+                                                                    </li>
+                                                                    <li  *ngIf="!data['defaulted']">
+                                                                        <a class="action-list delete-btn" (click)="deleteShare(data['shareClassId'], data['shareClassDesc'])">
+                                                                            <i class="ion-md-close-circle action-list"></i>
+                                                                            <span class="action-list" [translate]="'ENTITY.DELETE_SHARE_CLASS'"></span>
+                                                                        </a>
+                                                                    </li>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </ng-container>
+                                            </div>
+                                        </div>
+                                        <ng-container *ngFor="let owner of tableData[0]['owners'];let i=index; let last=last">
+                                            <div class="table-row">
+                                                <div class="table-row-wrapper">
+                                                    <ng-container *ngFor="let data of tableData;let j=index">
+                                                        <div class="value-wrapper">
+                                                            <span class="m-0" *ngIf="data['owners'][i]['ownerRole'] === CLIENT1 && selectedViewBy['id'] === VIEW_BY['VIEW_BY_%']">{{data['owners'][i]['ownerOwnedPercentage'] | number : '1.1-1'}}%</span>
+                                                            <span class="m-0" *ngIf="data['owners'][i]['ownerRole'] === CLIENT1 && selectedViewBy['id'] === VIEW_BY['VIEW_BY_$']">{{data['owners'][i]['ownerOwnedDollars'] | currency:clientData['currencyCode']:'symbol-narrow':'1.1-2'}}</span>
+                                                            <span class="m-0" *ngIf="data['owners'][i]['ownerRole'] === CLIENT1 && selectedViewBy['id'] === VIEW_BY['VIEW_BY_SHARE']">{{data['owners'][i]['ownerOwnedShares'] | number : '1.1-1'}}</span>
+                                                            <div class="form-group mb-0" *ngIf="data['owners'][i]['ownerRole'] !== CLIENT1 && selectedViewBy['id'] === VIEW_BY['VIEW_BY_%']"
+                                                                [ngClass]="{ 'has-error': !ownerSum.valid && f.submitted }">
+                                                                <input min="0" max="100" class="form-control  text-right d-inline-block va-middle" type="text" name="ownerSum{{i}}{{j}}"
+                                                                    [(ngModel)]="data['owners'][i]['ownerOwnedPercentage']" (keyup)="calculatePercent($event, i, j, 'ownerOwnedPercentage')"
+                                                                    #ownerSum="ngModel" [textMask]="{mask: percentMask}" appNumeric
+                                                                    required/>
+                                                            </div>
+                                                            <div class="form-group mb-0" *ngIf="data['owners'][i]['ownerRole'] !== CLIENT1 && selectedViewBy['id'] === VIEW_BY['VIEW_BY_$']"
+                                                                [ngClass]="{ 'has-error': !ownerSumAssets.valid && f.submitted }">
+                                                                <input min="0" max="100" class="form-control  text-right d-inline-block va-middle" type="text" name="ownerSumAssets{{i}}{{j}}"
+                                                                    [(ngModel)]="data['owners'][i]['ownerOwnedDollars']" (keyup)="calculatePercent($event, i, j, 'ownerOwnedDollars')" #ownerSumAssets="ngModel"
+                                                                    [textMask]="{mask: currencyMask}" appNumeric required/>
+                                                            </div>
+                                                            <div class="form-group mb-0" *ngIf="data['owners'][i]['ownerRole'] !== CLIENT1 && selectedViewBy['id'] === VIEW_BY['VIEW_BY_SHARE']"
+                                                                [ngClass]="{ 'has-error': !ownerSumShare.valid && f.submitted }">
+                                                                <input min="0" max="100" class="form-control  text-right d-inline-block va-middle" type="text" name="ownerSumShare{{i}}{{j}}"
+                                                                    [(ngModel)]="data['owners'][i]['ownerOwnedShares']" [textMask]="{mask: numberMask}"
+                                                                    appNumeric (keyup)="calculatePercent($event, i, j, 'ownerOwnedShares')"
+                                                                    #ownerSumShare="ngModel" required/>
+                                                            </div>
+                                                        </div>
+                                                    </ng-container>
+                                                </div>
+                                            </div>
+                                        </ng-container>
+                                    </div>
+                                    <div class="right-side">
+                                        <div class="table-header table-row">
+                                        </div>
+                                        <ng-container *ngFor="let owner of tableData[0]['owners'];let i=index">
+                                            <div class="table-row">
+                                                <a class="delete-link" *ngIf="owner['ownerRole'] !== CLIENT1" (click)="deleteOwner(owner['ownerId'], owner['ownerName'])">
+                                                    <i class="ion-md-close-circle"></i>
+                                                </a>
+                                            </div>
+                                        </ng-container>
+                                    </div>
+                                </div>
+                            </ng-container>
+                            <ng-container *ngIf="tableData && tableData.length === 0">
+                                <table>
+                                    <tbody>
+                                        <tr>
+                                            <td colspan="3" class="no-record text-center">
+                                                <i class="ion-ios-alert mr-2"></i>{{'NO_RESULTS' | translate}}
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </ng-container>
+                        </div>
+                    </div>
+                    <div class="row" *ngIf="isTableGenerated">
+                        <div class="col-12 mt-4">
+                            <div class="form-group text-right">
+                                <button (click)="back()" type="button" class="btn btn-secondary btn-fixwidth mr-2">{{ 'FORM.ACTION.CANCEL' | translate }}</button>
+                                <button class="btn btn-success" (click)="updateShares(); saveDisabled = true;" [disabled]="!f.valid || isNotEqualHundred || saveDisabled">{{ 'FORM.ACTION.SAVE_CHANGES' | translate }}</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<ng-container *ngIf="isAddOwnerSidePanelOpen">
+    <app-add-other-owners (closePanelEvent)="closePanel($event)" [clientId]="clientId" [entityId]="entityId" [ownersList]="this.selectedOwnerList"></app-add-other-owners>
+</ng-container>
+<div class="view-side-form">
+    <router-outlet></router-outlet>
+</div>

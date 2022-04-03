@@ -1,0 +1,229 @@
+<div class="row">
+    <div class="col-12">
+        <!-- <img height="25px" *ngIf="portfoliosData.length<=0" src="/assets/images/loader.gif" /> -->
+        <table class="table portfolios-table" [ngClass]="{'overview-portfolio-list': isTile}">
+            <thead>
+                <tr>
+                    <th width="25%">
+                        <h4 *ngIf="isTile" [translate]="'CUSTOM.PORTFOLIOS'"></h4>
+                        <span class="pr-2" *ngIf="!isTile" [translate]="'CUSTOM.PORTFOLIOS'"></span>
+                    </th>
+                    <th width="10%" [translate]="'CUSTOM.CLIENT'" class="text-left"></th>
+                    <th width="10%" *ngIf="accessRights['RISKTOLERCLIENT']['accessLevel'] > 0" class="hidden-sm-down pr-sm-2 text-left" [translate]="'RISK_TOLERANCE_PAGE.TABLE.HEADING.RISK_TOLERANCE'"></th>
+                    <th *ngIf="accessRights['CLI02']['accessLevel'] > 0" width="15%" class="text-left hidden-md-down" [translate]="'CUSTOM.GOALS_FUNDED'"></th>
+                    <th class="text-left pr-3" [translate]="'CUSTOM.SUITABILITY'" width="10%"></th>
+                    <th width="10%" class="text-left hidden-sm-down" [translate]="'CUSTOM.INVESTMENT_POLICY'"></th>
+                    <th width="10%" class="text-center" [translate]="'CUSTOM.TOTAL_ASSETS'"></th>
+                    <th width="5%">&nbsp;</th>
+                </tr>
+            </thead>
+            <tbody>
+                <ng-container *ngIf="portfoliosData && portfoliosData.length > 0">
+                    <tr *ngFor="let portfolio of portfoliosData; let i = index">
+                        <td width="25%" class="pr-2">
+                            <div class="text-truncate" [ngClass]="{'small-text' : isTile}" [appNoOverflowTooltip]="portfolio.description"
+                                triggers="manual" placement="bottom">{{portfolio.description}}</div>
+                            <!-- <h3 class="fw-500 p-0 d-inline-block text-ellipsis" >
+                                {{portfolio.description}}</h3> -->
+                        </td>
+
+                        <td width="10%" class="text-left">
+                            <div class="dropdown-relative-full"
+                                *ngIf="portfolio['ownership'] && portfolio['ownership'].length > 0; else noData">
+                                <span class="d-flex client-avatars">
+                                    <ng-container *ngFor="let owner of portfolio.ownership | slice:0:2; let i = index">
+                                        <app-member-avatar [initials]="owner.personalDetails.btnInitials"
+                                            [relationClass]="owner.personalDetails.btnColor" avatarClass="initials"
+                                            [avatarUrl]="owner.personalDetails.avatar"></app-member-avatar>
+                                    </ng-container>
+                                    <span *ngIf="portfolio.ownership.length>2" (click)="changeOwnershipAction(i)"
+                                        class="ion-md-more-horizontal action-ellipses-icon-color set-ellipses"></span>
+                                </span>
+                                <div *ngIf="portfolio.ownership.length>2" [id]="'dropdownOwnershipAction'+i"
+                                    class="dropdown-portfolio-owned-action dropdown-floating hide-ele">
+                                    <div class="floating-dropdown">
+                                        <ng-container *ngFor="let owner of portfolio.ownership; let i = index">
+                                            <app-member-avatar [initials]="owner.personalDetails.btnInitials"
+                                                [relationClass]="owner.personalDetails.btnColor" avatarClass="initials"
+                                                [avatarUrl]="owner.personalDetails.avatar"></app-member-avatar>
+                                        </ng-container>
+                                        &nbsp;
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+
+                        <td class="hidden-sm-down text-left" width="10%" *ngIf="accessRights['RISKTOLERCLIENT']['accessLevel'] > 0">
+                            <div [ngClass]="{'pl-0': isTile}" *ngIf="portfolio.decisionMaker && portfolio.decisionMaker.riskScore > 0; else blank">
+                                <span>
+                                    {{portfolio.decisionMaker.riskScore}}
+                                </span>
+                                <!-- <span class="badge-text">{{portfolio.decisionMaker.riskBand}}</span> -->
+                            </div>
+                        </td>
+
+                        <td *ngIf="accessRights['CLI02']['accessLevel'] > 0" width="15%" class="text-left hidden-md-down">
+                            <div class="dropdown-relative-full"
+                                *ngIf="portfolio['goalPortfolioAllocations'] && portfolio['goalPortfolioAllocations'].length > 0; else noData">
+                                <span *ngIf="portfolio['goalPortfolioAllocations'].length>1" class="d-flex">
+                                    {{ 'GOALS.MULTIPLE' | translate }}
+                                    <span [ngbTooltip]="multipleGoals" #t="ngbTooltip" placement="bottom"
+                                        triggers="click"
+                                        class="ion-md-more-horizontal action-ellipses-icon-color pt-1 pl-1"></span>
+                                </span>
+                                <ng-template #multipleGoals>
+                                    <ng-container
+                                        *ngFor="let goal of portfolio['goalPortfolioAllocations']; let i = index">
+                                        <p>{{goal.description}}</p>
+                                    </ng-container>
+                                </ng-template>
+                                <span *ngIf="portfolio['goalPortfolioAllocations'].length == 1" class="d-flex">
+                                    {{portfolio['goalPortfolioAllocations'][0]['description'] | slice:0:10}}
+                                    <span *ngIf="portfolio['goalPortfolioAllocations'][0]['description'].length>10"
+                                        [ngbTooltip]="truncatedGoal" #t="ngbTooltip" placement="bottom" triggers="click"
+                                        class="ion-md-more-horizontal action-ellipses-icon-color pt-1 pl-1"></span>
+                                </span>
+                                <ng-template #truncatedGoal>
+                                    <p>{{portfolio['goalPortfolioAllocations'][0]['description']}}</p>
+                                </ng-template>
+                            </div>
+                        </td>
+
+                        <td class="text-left image_wrapper pr-2 p-sm-0" width="15%">
+                            <div class="badge-wrapper-fixed">
+                                <div class="badge-wrapper pr-3"
+                                    *ngIf="portfolio['suitabilityScore'] != null && portfolio['suitabilityBand'] != null; else noData">
+                                    <span *ngIf="portfolio.suitabilityScore === 0">N/A</span>
+                                    <img *ngIf="portfolio.suitabilityScore > 0"
+                                        src="assets/images/suitability_badge/PPG Badge_{{portfolio.suitabilityScore}}.png">
+                                    <!-- <span class="badge-number">{{portfolio.suitabilityScore}}</span>
+                                    <span class="badge-text">{{portfolio.suitabilityBand}}</span> -->
+                                </div>
+                            </div>
+                        </td>
+
+                        <td width="10%" class="hidden-sm-down text-nowrap">
+                            <span class="badge-text">{{portfolio.suitabilityBand}}</span>
+                        </td>
+
+                        <td class="text-center" width="10%">
+                            <span>{{ portfolio['totalAssets'] | currency: clientData['currencyCode']
+                                :'symbol-narrow':'1.0-0'}}</span>
+                        </td>
+                        <ng-template #noData>N/A</ng-template>
+                        <ng-template #blank><span></span></ng-template>
+                        <td class="text-center" width="5%">
+                            <div class="dropdown-relative">
+                                <button type="button" class="btn-floating" (click)="changePortfolioAction(i)">
+                                    <span class="ion-md-more"></span>
+                                </button>
+                                <div [id]="'dropdownPortfolioAction'+i"
+                                    class="dropdown-portfolio-action dropdown-floating hide-ele">
+                                    <ul class="floating-dropdown">
+
+                                        <li (click)="changePortfolioAction(i)"
+                                            *ngIf="accessRights['POB01']['accessLevel'] === 3">
+                                            <a
+                                                [routerLink]="['/client', clientId, 'planning', 'portfolios', portfolio.id, 'details']">
+                                                <i class="ion-ios-arrow-forward"></i>
+                                                <span [translate]="'PORTFOLIOS.ACTIONS.PORTFOLIO_DETAILS'"></span>
+                                            </a>
+                                        </li>
+                                        <li class="not-active" *ngIf="accessRights['POB01']['accessLevel'] !== 3">
+                                            <a>
+                                                <i class="ion-ios-arrow-forward"></i>
+                                                <span [translate]="'PORTFOLIOS.ACTIONS.PORTFOLIO_DETAILS'"></span>
+                                            </a>
+                                        </li>
+
+                                        <li (click)="changePortfolioAction(i)"
+                                            *ngIf="accessRights['PORTIMPLTAB']['accessLevel'] > 0">
+                                            <a
+                                                [routerLink]="['/client', clientId, 'planning', 'portfolios', portfolio.id, 'implementation']">
+                                                <i class="ion-md-pie"></i>
+                                                <span [translate]="'PORTFOLIOS.ACTIONS.IMPLEMENTATION'"></span>
+                                            </a>
+                                        </li>
+                                        <li (click)="changePortfolioAction(i)" *ngIf="accessRights['CLI02']['accessLevel'] > 0">
+                                            <a [routerLink]="['link-portfolios-to-goals']">
+                                                <i class="ion-md-link"></i>
+                                                <span [translate]="'PORTFOLIOS.ACTIONS.LINK_GOALS'"></span>
+                                            </a>
+                                        </li>
+
+                                        <li (click)="changePortfolioAction(i)"
+                                            *ngIf="accessRights['POB01']['accessLevel'] === 3">
+                                            <a [routerLink]="[portfolio.id, 'rename']">
+                                                <i class="ion-md-create"></i>
+                                                <span [translate]="'PORTFOLIOS.ACTIONS.RENAME_PORTFOLIO'"></span>
+                                            </a>
+                                        </li>
+                                        <li class="not-active" *ngIf="accessRights['POB01']['accessLevel'] !== 3">
+                                            <a>
+                                                <i class="ion-md-create"></i>
+                                                <span [translate]="'PORTFOLIOS.ACTIONS.RENAME_PORTFOLIO'"></span>
+                                            </a>
+                                        </li>
+
+                                        <li (click)="changePortfolioAction(i)" *ngIf="portfolio.goalPortfolioAllocations.length > 0 && showRiskCapacity" >
+                                            <a [routerLink]="['/client', clientId, 'planning', 'portfolios', portfolio.id, 'analysis', portfolio.goalPortfolioAllocations[0]['id']]">
+                                                <i class="ion-md-create"></i>
+                                                <span [translate]="'PORTFOLIOS.ACTIONS.RISK_CAPACITY'"></span>
+                                            </a>
+                                        </li>
+                                        <li *ngIf="  (portfolio.goalPortfolioAllocations.length > 0 && accessRights['CLI02']['accessLevel'] > 0) || (accessRights['CLI05']['accessLevel'] > 0 && portfolio.accountPayloads.length > 0)" (click)="changePortfolioAction(i);"
+                                            class="delete-btn disable-link">
+                                            <div>
+                                                <a>
+                                                    <i class="ion-md-close-circle"></i>
+                                                    <span [translate]="'PORTFOLIOS.ACTIONS.DELETE_PORTFOLIO'"></span>
+                                                </a>
+                                            </div>
+                                        </li>
+                                        <li *ngIf="((accessRights['CLI05']['accessLevel'] > 0 &&  accessRights['CLI02']['accessLevel'] > 0) && portfolio.goalPortfolioAllocations.length == 0 && portfolio.accountPayloads.length == 0) || (portfolio.goalPortfolioAllocations.length == 0 && accessRights['CLI02']['accessLevel'] > 0 && accessRights['CLI05']['accessLevel'] == 0 ) || (accessRights['CLI05']['accessLevel'] > 0 && accessRights['CLI02']['accessLevel'] == 0  && portfolio.accountPayloads.length == 0)"
+                                            (click)="changePortfolioAction(i); delete(portfolio.id)" class="delete-btn">
+                                            <div>
+                                                <a>
+                                                    <i class="ion-md-close-circle"></i>
+                                                    <span [translate]="'PORTFOLIOS.ACTIONS.DELETE_PORTFOLIO'"></span>
+                                                </a>
+                                            </div>
+                                        </li>
+                                            <li *ngIf="accessRights['CLI05']['accessLevel'] == 0 && accessRights['CLI02']['accessLevel'] == 0" (click)="changePortfolioAction(i); delete(portfolio.id)"
+                                                class="delete-btn">
+                                                <div>
+                                                    <a>
+                                                        <i class="ion-md-close-circle"></i>
+                                                        <span
+                                                            [translate]="'PORTFOLIOS.ACTIONS.DELETE_PORTFOLIO'"></span>
+                                                    </a>
+                                                </div>
+                                            </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr *ngIf="!isTile">
+                        <td width="25%">&nbsp;</td>
+                        <td width="10%" class="text-left">&nbsp;</td>
+                        <td width="10%" *ngIf="accessRights['RISKTOLERCLIENT']['accessLevel'] > 0" class="hidden-sm-down">&nbsp;</td>
+                        <td *ngIf="accessRights['CLI02']['accessLevel'] > 0"  width="15%" class="hidden-md-down">&nbsp;</td>
+                        <td class="hidden-sm-down" width="10%">&nbsp;</td>
+                        <td class="fw-600 text-right d-table-cell total-text" [translate]="'PORTFOLIOS.TOTAL'" width="10%"></td>
+                        <td class="fw-400 d-table-cell text-center" width="10%">{{allTotalAssets |
+                            currency:clientData['currencyCode']:'symbol-narrow':'1.0-0'}}</td>
+                        <td width="5%">&nbsp;</td>
+                    </tr>
+                </ng-container>
+                <ng-container *ngIf="portfoliosData.length === 0">
+                    <tr>
+                        <td colspan="8" class="no-record text-center">
+                            <i class="ion-ios-alert mr-2"></i>{{'NO_RESULTS' | translate}}
+                        </td>
+                    </tr>
+                </ng-container>
+            </tbody>
+        </table>
+    </div>
+</div>

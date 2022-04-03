@@ -1,0 +1,39 @@
+.client-avatars .client-icon{
+    z-index: 1;
+}
+.client-avatars .client-icon + .client-icon{
+    margin-left: -10px;
+    z-index: 0;
+    position: absolute;
+}
+.client-avatars .client-img img{
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+}
+.client-icon {
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+    display: inline-block;
+    text-align: center;
+    color: #fff;
+    position: relative;
+    vertical-align: middle;
+}
+.client-icon:before {
+    bottom: 0;
+    position: absolute;
+    line-height: 40px;
+    left: 0;
+    top: 0;
+    right: 0;
+}
+
+.advanced-search-button {
+    font-size: 14px;
+    color: #58d;
+    text-decoration: none;
+    font-weight: 400;
+    display: inline-block;   
+}

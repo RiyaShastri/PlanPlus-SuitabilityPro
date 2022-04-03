@@ -1,0 +1,50 @@
+<div class="row align-items-end mb-4">
+    <div class="col-12 col-lg-6 col-md-5">
+        <div class="table-responsive">
+            <table class="table value-of-advice-table">
+                <thead>
+                    <tr>
+                        <th class="border-0" width="5%"></th>
+                        <th width="35%"></th>
+                        <th class="text-right" width="20%" [translate]="'GOAL.ANALYSIS.LABEL.IMPACT'"></th>
+                        <th class="text-right" width="20%" [translate]="'GOAL.ANALYSIS.LABEL.RESULTS'"></th>
+                        <th class="text-right" width="20%" [translate]="'GOAL.ANALYSIS.LABEL.INCOME_AVAILABLE'"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <ng-container *ngIf="valueOfAdviceData">
+                        <tr *ngFor="let item of valueOfAdviceData['valueOfAdviceItems']; index as i;">
+                            <td class="border-0" width="5%">
+                                <span *ngIf="item.impactStr !== 'N/A'" class="square asset_indicator mt-0"
+                                    [ngStyle]="{background: graphColours[i], height: '20px', width: '20px'}"></span>
+                            </td>
+                            <td width="35%">
+                                <div class="text-truncate fixed-width"
+                                    [appNoOverflowTooltip]="item.description" triggers="manual" placement="bottom">
+                                    {{item.description}}</div>
+                            </td>
+                            <td class="text-right" width="20%">{{item.impactStr !== 'N/A' ? (item.impact |
+                                currency:clientData['currencyCode']:'symbol-narrow':'1.0-0') : item.impactStr }}</td>
+                            <td class="text-right" width="20%">{{item.results |
+                                currency:clientData['currencyCode']:'symbol-narrow':'1.0-0'}}</td>
+                            <td class="text-right" width="20%">{{item.incomeAvailable |
+                                currency:clientData['currencyCode']:'symbol-narrow':'1.0-0'}}</td>
+                        </tr>
+                        <tr>
+                            <td class="border-0 pr-0" width="5%"></td>
+                            <td class="fw-600 pr-0" width="35%" [translate]="'GOAL.ANALYSIS.LABEL.TOTAL_VALUE_ADVICE'"></td>
+                            <td class="fw-600 pr-0 text-right" width="20%"></td>
+                            <td class="fw-600 pr-0 text-right" width="20%">{{valueOfAdviceData['totalResults'] |
+                                currency:clientData['currencyCode']:'symbol-narrow':'1.0-0'}}</td>
+                            <td class="fw-600 pr-0 text-right" width="20%">{{valueOfAdviceData['totalIncomeAvailable'] |
+                                currency:clientData['currencyCode']:'symbol-narrow':'1.0-0'}}</td>
+                        </tr>
+                    </ng-container>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="col-12 col-lg-6 col-md-7">
+        <div *ngIf="!noData" id="chartDiv" style="height:250px; width:100%; display: inline-block; margin-bottom: 30px;"></div>
+    </div>
+</div>

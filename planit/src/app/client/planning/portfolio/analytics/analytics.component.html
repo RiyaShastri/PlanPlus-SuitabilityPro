@@ -1,0 +1,373 @@
+<div class="side-form">
+    <form>
+        <div class="box">
+            <div class="box-header">
+                <span class="sidebar_title">{{'PORTFOLIO.ANALYTICS.TITLE' | translate}} </span>
+                <span (click)="back(); closeButtonDisable = true"
+                    class="sidebar_action_icon ion-md-close-circle float-right"></span>
+            </div>
+            <div class="box-body">
+                <div class="row">
+                    <div class="col-12 accordion-wrapper">
+                        <p-accordion [multiple]="true">
+                            <p-accordionTab [selected]="true" *ngxPermissionsOnly="['PROFILER']">
+                                <p-header class="position-relative">
+                                    <h3 class="fs-16 fw-700 d-inline-block">
+                                        {{'PORTFOLIO.ANALYTICS.PANEL.SUITABILITY_TITLE'
+                                        | translate}}</h3>
+                                    <span (click)="$event.stopPropagation()" class="analytics-warning-tooltip" *ngIf="reccommendedSuitabilityExceeded">
+                                        <span class="ion-ios-alert fs-18" [ngbTooltip]="keyCurrentWarning"
+                                            #currentWarning="ngbTooltip" triggers="manual" placement="right"
+                                            (click)="currentWarning.open()"></span>
+                                        <ng-template #keyCurrentWarning>
+                                            <p> {{'PORTFOLIO.DETAIL.WARNINGS_LABEL' | translate }} {{pjmScore}}</p>
+                                            <p class="text-right m-0 p-0">
+                                                <button class="btn btn-secondary btn-small m-0" type="button"
+                                                    (click)="currentWarning.close()"
+                                                    [translate]="'RISK_RESULTS_PAGE.WARNING.CLOSE'"></button>
+                                            </p>
+                                        </ng-template>
+                                    </span>
+                                    <i *ngIf="!suitabilityLoaded" aria-hidden="true"
+                                        class="fa fa-spinner fa-pulse loader-icon"></i>
+                                </p-header>
+                                <div id="suitability" class="row pt-2 text-center">
+                                    <div class="col-12">
+                                        <div id="suitabilityChartdiv" class="text-center"
+                                            style="height:160px; width: 260px; margin: 0 auto;"></div>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                    <div class="col-4 col-sm-3">
+                                        <span class="square bg-green asset_indicator"></span>
+                                        <span class="fs-14 fw-500 asset_lbl">{{'PORTFOLIO.ANALYTICS.LABEL.SUITABLE' |
+                                            translate}}</span>
+                                    </div>
+                                    <div class="col-4 col-sm-5">
+                                        <span class="square bg-yellow asset_indicator"></span>
+                                        <span class="fs-14 fw-500 asset_lbl">{{'PORTFOLIO.ANALYTICS.LABEL.MARGINALLY_SUITABLE'
+                                            | translate}}</span>
+                                    </div>
+                                    <div class="col-4">
+                                        <span class="square bg-red asset_indicator"></span>
+                                        <span class="fs-14 fw-500 asset_lbl">{{'PORTFOLIO.ANALYTICS.LABEL.NOT_SUITABLE'
+                                            |
+                                            translate}}</span>
+                                    </div>
+                                </div>
+                            </p-accordionTab>
+
+                            <p-accordionTab [selected]=allowAdvisor>
+                                <p-header>
+                                    <h3 class="fs-16 fw-700 d-inline-block"> {{'PORTFOLIO.ANALYTICS.PANEL.BACK_TEST' |
+                                        translate}}</h3>
+                                </p-header>
+                                <div id="backTest" class="row pt-2">
+                                    <div class="col-12">
+                                        <h3 class="fs-20 fw-500"> {{'PORTFOLIO.ANALYTICS.LABEL.UPS_AND_DOWNS' |
+                                            translate}}</h3>
+                                        <hr class="mt-2 mb-2">
+                                        <h4 class="fw-500 d-inline-block"> {{'PORTFOLIO.ANALYTICS.LABEL.RISING_FALLING_RECOVERING' |
+                                            translate}}</h4>
+                                        <hr class="mt-2 mb-2">
+                                    </div>
+                                    <div class="col-12">
+                                        <div id="updowndiv" style="height:200px; width: 320px; display: inline-block;">
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <table class="table bt-none">
+                                            <tr>
+                                                <td>
+                                                    <span class="square wh-15px asset_indicator bg-green m-0"></span>
+                                                    <p class="asset_lbl mb-0 pl-2 ff-OpenSans">
+                                                        <span class="backTest_lbl">
+                                                            {{'PORTFOLIO.ANALYTICS.PANEL.RISING' | translate }} {{Rising | number :
+                                                            "1.1-2"}}%</span>
+                                                        <span class="d-block backTest_descr">
+                                                            {{'PORTFOLIO.ANALYTICS.LABEL.RISING_DETAIL'
+                                                            | translate}}</span>
+                                                    </p>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <span class="square wh-15px asset_indicator bg-red m-0"></span>
+                                                    <p class="asset_lbl mb-0 pl-2 ff-OpenSans">
+                                                        <span class="backTest_lbl">
+                                                            {{'PORTFOLIO.ANALYTICS.PANEL.FALLING' | translate }} {{Falling | number :
+                                                            "1.1-2"}}%</span>
+                                                        <span class="d-block">
+                                                            {{'PORTFOLIO.ANALYTICS.LABEL.FALLING_DETAIL'
+                                                            | translate}} </span>
+                                                    </p>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <span class="square wh-15px asset_indicator bg-yellow m-0"></span>
+                                                    <p class="asset_lbl mb-0 pl-2 ff-OpenSans">
+                                                        <span class="backTest_lbl">
+                                                            {{'PORTFOLIO.ANALYTICS.PANEL.RECOVERING' | translate}} {{Recovering | number :
+                                                            "1.1-2"}}% </span>
+                                                        <span class="d-block">
+                                                            {{'PORTFOLIO.ANALYTICS.LABEL.RECOVERING_DETAIL'
+                                                            | translate}} </span>
+                                                    </p>
+                                                </td>
+                                            </tr>
+                                        </table>
+
+                                    </div>
+                                    <div class="col-12">
+                                        <h3 class="fs-22 fw-500 mt-4"> {{'PORTFOLIO.ANALYTICS.LABEL.BIGGEST_FALL'
+                                      |
+                                      translate}}</h3>
+                                        <hr class="mt-2">
+                                        <h4 class="fw-600 fs-20 ff-OpenSans">
+                                            {{'PORTFOLIO.ANALYTICS.LABEL.BIGGEST_FALL_LABEL'
+                                      | translate}}</h4>
+                                        <hr>
+                                    </div>
+                                    <div class="col-12">
+                                        <table class="table bt-none last-loss text-center">
+                                            <thead>
+                                                <tr>
+                                                    <th> {{'PORTFOLIO.ANALYTICS.TABLE.DEPTH_OF_FALL' | translate}} </th>
+                                                    <th> {{'PORTFOLIO.ANALYTICS.TABLE.STARTED_FALLING' | translate}}
+                                                    </th>
+                                                    <th width="20%">{{'PORTFOLIO.ANALYTICS.TABLE.MONTHS_IN_FALL' |
+                                            translate}}
+                                                    </th>
+                                                    <th width="20%">{{'PORTFOLIO.ANALYTICS.TABLE.MONTHS_TO_RECOVER' |
+                                            translate}}
+                                                    </th>
+                                                    <th width="20%">{{'PORTFOLIO.ANALYTICS.TABLE.RECOVERY' |
+                                            translate}}
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr *ngFor="let lossData of lossDetails">
+                                                    <td class="text-right">{{lossData['lossPercent']}}%</td>
+                                                    <td>{{lossData['startDate']}}</td>
+                                                    <td>{{lossData['lossMonths']}}</td>
+                                                    <td>{{lossData['recoveryMonths']}}</td>
+                                                    <td>{{lossData['recoveryDate']}}</td>
+                                                </tr>
+                                                <ng-container *ngIf="lossDetails.length === 0">
+                                                    <tr>
+                                                        <td colspan="4" class="no-record text-center">
+                                                            <i class="ion-ios-alert mr-2"></i>{{'NO_RESULTS' | translate}}
+                                                        </td>
+                                                    </tr>
+                                                </ng-container>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </p-accordionTab>
+
+                            <p-accordionTab>
+                                <p-header (click)="getAllocationDetail()">
+                                    <h3 class="fs-16 fw-700 d-inline-block">{{'PORTFOLIO.ANALYTICS.PANEL.ALLOCATION' |
+                                        translate}}</h3>
+                                    <span *ngIf="allCashCurrent"
+                                        (click)="$event.stopPropagation()" class="analytics-warning-tooltip">
+                                        <span class="ion-ios-alert fs-18" [ngbTooltip]="keyAllocationWarning"
+                                            #allocationWarning="ngbTooltip" triggers="manual" placement="right"
+                                            (click)="allocationWarning.open()"></span>
+                                        <ng-template #keyAllocationWarning>
+                                            <ng-container>
+                                                <p>
+                                                    {{'PORTFOLIOS.EDIT_CURRENT_WARNING' | translate }}
+                                                </p>
+                                            </ng-container>
+                                            <p class="text-right m-0 p-0">
+                                                <button class="btn btn-secondary btn-small m-0"
+                                                    (click)="allocationWarning.close()"
+                                                    [translate]="'RISK_RESULTS_PAGE.WARNING.CLOSE'"></button>
+                                            </p>
+                                        </ng-template>
+                                    </span>
+                                    <i *ngIf="!allocationDetails" aria-hidden="true"
+                                        class="fa fa-spinner fa-pulse loader-icon"></i>
+                                </p-header>
+                                <div id="allocation" class="row pt-2" *ngIf="allocationDetails">
+                                    <div class="col-12 text-center">
+                                        <p *ngIf="chartType === 'current'" class="allocation-graph-lbl"
+                                            [translate]="'PORTFOLIO_ALLOCATION.CURRENT'"></p>
+                                        <p *ngIf="chartType === 'target'" class="allocation-graph-lbl"
+                                            [translate]="'PORTFOLIO.ANALYTICS.LABEL.TARGET'"></p>
+                                        <p *ngIf="chartType === 'implemented'" class="allocation-graph-lbl"
+                                            [translate]="'PORTFOLIO.ANALYTICS.LABEL.IMPLEMENTATION'"></p>
+                                        <div *ngIf="graphExist" id="allocationChartDiv"
+                                            style="height:200px; width: 100%; display: inline-block;"></div>
+                                        <div *ngIf="!graphExist" class="no-record text-center position-relative"
+                                            style="height:200px; width: 100%; display: inline-block;">
+                                            <p class="no_data_graph"><i
+                                                    class="ion-ios-alert mr-2"></i>{{'NO_RESULTS' | translate}}</p>
+                                        </div>
+                                        <hr />
+                                    </div>
+                                    <div class="col-12">
+                                        <table class="table bt-none allocation-tbl">
+                                            <thead>
+                                                <tr>
+                                                    <th width="45%">{{'PORTFOLIO.ANALYTICS.LABEL.ASSET_CLASSES' |
+                                                        translate}}</th>
+                                                    <th width="25%" class="text-right">
+                                                        <span *ngIf="chartType === 'current'"
+                                                            class="allocation-graph-lbl"
+                                                            [translate]="'PORTFOLIO_ALLOCATION.CURRENT'"></span>
+                                                        <span *ngIf="chartType === 'target'"
+                                                            class="allocation-graph-lbl"
+                                                            [translate]="'PORTFOLIO.ANALYTICS.LABEL.TARGET'"></span>
+                                                        <span *ngIf="chartType === 'implemented'"
+                                                            class="allocation-graph-lbl"
+                                                            [translate]="'PORTFOLIO.ANALYTICS.LABEL.IMPLEMENTATION'"></span>
+                                                    </th>
+                                                    <th width="30%">&nbsp;</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr class="secondary-header">
+                                                    <td class="pl-0 pr-0"> {{'PORTFOLIO.ANALYTICS.TABLE.CLASS' |
+                                                        translate}}
+                                                    </td>
+                                                    <td class="text-right">%</td>
+                                                    <td class="text-right">{{'PORTFOLIO.ANALYTICS.TABLE.AMOUNT' |
+                                                        translate}}
+                                                    </td>
+                                                </tr>
+                                                <ng-container
+                                                    *ngFor="let item of allocationDetails.allocations; index as i;">
+                                                    <tr>
+                                                        <td>
+                                                            <span class="square asset_indicator"
+                                                                [style.background]="chartColors[i]"></span>
+                                                            <span
+                                                                class="asset_lbl">{{('SSID_LABELS.' + item.ssid) | translate}}</span>
+                                                        </td>
+
+                                                        <td class="text-right">
+                                                            <span *ngIf="chartType === 'current'">{{item.currentPercent
+                                                                | number : "1.1-2"}} %</span>
+                                                            <span *ngIf="chartType === 'target'">{{item.targetPercent
+                                                                | number : "1.1-2"}} %</span>
+                                                            <span *ngIf="chartType === 'implemented'">{{item.implementedPercent
+                                                                | number : "1.1-2"}} %</span>
+                                                        </td>
+                                                        <td class="text-right">
+                                                            <span *ngIf="chartType === 'current'">
+                                                                {{item.currentAmount |
+                                                                currency:clientData['currencyCode']:'symbol-narrow':'1.0-0'}}
+                                                            </span>
+                                                            <span *ngIf="chartType === 'target'">
+                                                                {{item.targetAmount |
+                                                                currency:clientData['currencyCode']:'symbol-narrow':'1.0-0'}}
+                                                            </span>
+                                                            <span *ngIf="chartType === 'implemented'">
+                                                                {{item.implementedAmount |
+                                                                currency:clientData['currencyCode']:'symbol-narrow':'1.0-0'}}
+                                                            </span>
+                                                        </td>
+                                                    </tr>
+                                                </ng-container>
+                                                <tr>
+                                                    <td class="text-right border-bottom-0">
+                                                        <b> {{'ASSET_LIABILITY.HOLDING_ACCOUNT.TOTAL' | translate}} </b>
+                                                    </td>
+                                                    <td class="fw-400 text-right border-bottom-0">
+                                                        <b> {{totalBreakDown | number : "1.1-2" }}% </b>
+                                                    </td>
+                                                    <td class="fw-400 text-right border-bottom-0">
+                                                        <b>
+                                                            {{totalBreakDownAmt |
+                                                            currency:clientData['currencyCode']:'symbol-narrow':'1.0-0'}}</b>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </p-accordionTab>
+
+                            <p-accordionTab>
+                                <p-header>
+                                    <h3 class="fs-16 fw-700 d-inline-block">{{'PORTFOLIO.ANALYTICS.PANEL.EFFICIENT_FRONTIER'
+                                        | translate}}</h3>
+                                    <i *ngIf="!efficientFrontierLoaded" aria-hidden="true"
+                                        class="fa fa-spinner fa-pulse loader-icon"></i>
+                                </p-header>
+                                <div id="efficient" class="row pt-2">
+                                    <div class="col-12 text-center" *ngIf="efficientFrontierLoaded && frontierDataProvider.length > 0">
+                                        <div id="efficientFrontierChartDiv" style="height:300px; width:100%; display: inline-block;margin-left: 0px;margin-right: 0px;"></div>
+                                    </div>
+                                    <div class="col-12 text-center" *ngIf="efficientFrontierLoaded && frontierDataProvider.length === 0">
+                                        <p class="no-record text-center m-0">
+                                            <i class="ion-ios-alert mr-2"></i>{{'NO_RESULTS' | translate}}
+                                        </p>
+                                    </div>
+                                </div>
+                            </p-accordionTab>
+
+                            <p-accordionTab *ngIf="accessRights['CASHWDG']['accessLevel'] > 0">
+                                <p-header>
+                                    <h3 class="fs-16 fw-700 d-inline-block">{{'PORTFOLIO.ANALYTICS.PANEL.CASH_WEDGE' |
+                                        translate}}</h3>
+                                    <i *ngIf="!cashWedgeLoaded" aria-hidden="true"
+                                        class="fa fa-spinner fa-pulse loader-icon"></i>
+                                </p-header>
+                                <div id="cash" class="row pt-2">
+                                    <div class="col-12">
+                                        <p class="cash-txt">
+                                            {{cashWedgeMessage}}
+                                        </p>
+                                    </div>
+                                    <div class="col-12 text-center">
+                                        <div id="cashWedgeChartDiv"
+                                            style="height:200px; width:100%; display: inline-block;"></div>
+
+                                    </div>
+                                    <div class="col-6 pl-2">
+                                        <span class="square bg-yellow asset_indicator"></span>
+                                        <span class="asset_lbl fs-14 fw-500">{{'PORTFOLIO.ANALYTICS.LABEL.CASH_WEDGE' |
+                                            translate}}</span>
+
+                                    </div>
+                                    <div class="col-6 pr-2">
+                                        <span class="square bg-green asset_indicator"></span>
+                                        <span class="asset_lbl fs-14 fw-500">{{'PORTFOLIO.ANALYTICS.LABEL.ILLQUID' |
+                                            translate}}</span>
+
+                                    </div>
+                                    <div class="col-6 pl-2">
+                                        <span class="square bg-red asset_indicator"></span>
+                                        <span class="asset_lbl fs-14 fw-500">{{'PORTFOLIO.ANALYTICS.LABEL.ADDITIONAL_LIQUIDITY'
+                                            | translate}}</span>
+
+                                    </div>
+                                    <div class="col-6 pr-2">
+                                        <span class="square bg-blue asset_indicator" [style.background]="'#77aaff'"></span>
+                                        <span class="asset_lbl fs-14 fw-500">{{'PORTFOLIO.ANALYTICS.LABEL.EXCESS_LIQUIDITY'
+                                            | translate}}</span>
+
+                                    </div>
+                                </div>
+                            </p-accordionTab>
+                        </p-accordion>
+                    </div>
+                </div>
+
+            </div>
+            <div class="box-footer">
+                <div class="form-group text-right">
+                    <button (click)="back(); closeButtonDisable = true" type="button"
+                        class="btn btn-small btn-secondary pull-right m-0" [disabled]="closeButtonDisable">{{
+                        'FORM.ACTION.CANCEL'
+                        | translate }}</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

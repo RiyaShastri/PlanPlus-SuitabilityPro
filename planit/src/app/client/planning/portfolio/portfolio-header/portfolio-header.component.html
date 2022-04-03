@@ -1,0 +1,100 @@
+<div class="row">
+    <div class="col-sm-7">
+        <h4 class="mb-1">
+            <a [routerLink]="['/client', clientId, 'planning']" [translate]="'BREADCRUMB.PLANNING'"></a> /
+            <a [routerLink]="['/client', clientId, 'planning', 'portfolios']" [translate]="'BREADCRUMB.PORTFOLIOS'"></a>
+        </h4>
+        <h1 class="d-sm-inline-block d-block fw-500" *ngIf="portfolioData">
+            <div ngbDropdown class="dropdown-common dropdown-multiline m-0 d-inline-block">
+                <a id="accountsDropdown" class="d-flex align-items-center" ngbDropdownToggle>
+                    <div class="text-truncate fixed-width-text" id="on-mouseover-tooltip" [appNoOverflowTooltip]="portfolioName">
+                        {{portfolioName}}</div>
+                    <i class="ion-md-arrow-dropdown fs-18 ml-md-3 ml-2"></i>
+                </a>
+                <div ngbDropdownMenu aria-labelledby="accountsDropdown">
+                    <ul>
+                        <li *ngFor="let portfolio of portfolioData">
+                            <a class="dropdown-item" [ngClass]="{ 'active' : portfolioId === portfolio.id }"
+                                (click)="changePortfolio(portfolio.id, portfolio.goalPortfolioAllocations)">
+                                {{portfolio.description}}
+                            </a>
+                        </li>
+                    </ul>
+                    <a routerLink="add-portfolio" class="btn-add pl-15 pb-10"
+                        *ngIf="accessRights['POADD']['accessLevel'] === 3">
+                        <i class="ion-md-add-circle fs-22"></i>
+                        <span class="d-inline-block va-middle fs-12" [translate]="'PORTFOLIOS.ACTIONS.ADD_PORTFOLIO'">
+                        </span>
+                    </a>
+                </div>
+            </div>
+            <div class="d-inline-block ml-md-3 ml-2">
+                <a [routerLink]="['rename']" class="ion-icon">
+                    <i class="action_icon ion-md-create m-0"></i>
+                </a>
+            </div>
+        </h1>
+        <i *ngIf="!detailsLoaded" aria-hidden="true" class="fa fa-spinner fa-pulse loader-icon"></i>
+    </div>
+    <div class="col-sm-5 d-flex flex-wrap justify-content-end">
+        <!-- <div class="mt-auto pr-3">
+                <i class="ion-md-arrow-dropleft-circle mr-4"></i>
+                <i class="ion-md-arrow-dropright-circle"></i>
+            </div> -->
+        <div class="mt-auto">
+            <app-planning-module-drop-down class="dropdown-right" [clientId]="clientId"></app-planning-module-drop-down>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <hr>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-6">
+        <ul class="nav nav-tabs" role="tablist">
+            <li class="nav-item">
+                <a [routerLink]="['/client',clientId,'planning', 'portfolios', portfolioId, 'details']" class="nav-link"
+                    [ngClass]="{'active': currentPage === 'details'}" data-toggle="tab"
+                    [translate]="'GOALS.DETAILS.TITLE'"></a>
+            </li>
+            <li class="nav-item" *ngIf="accessRights['PORTIMPLTAB']['accessLevel'] >= 1">
+                <a [routerLink]="['/client',clientId,'planning', 'portfolios', portfolioId, 'implementation']"
+                    class="nav-link" [ngClass]="{'active': currentPage === 'implementation'}" data-toggle="tab"
+                    [translate]="'PORTFOLIOS.ACTIONS.IMPLEMENTATION'"></a>
+            </li>
+            <li class="nav-item" *ngIf="accessRights['CLI02']['accessLevel'] == 0">
+                <a [routerLink]="['/client',clientId,'planning', 'portfolios', portfolioId, 'analysis', goalId]" class="nav-link"
+                    [ngClass]="{'active': currentPage === 'analysis'}" data-toggle="tab" [translate]="'GOALS.ANALYSIS.TITLE'"></a>
+            </li>
+        </ul>
+    </div>
+    <div class="col-md-6 mt-3 mt-md-0 text-right" *ngIf="selectedPortfolio">
+        <div class="breadcrumb-wrap">
+            <a [routerLink]="['edit']" [translate]="'PORTFOLIO.ACTION.EDIT'" class="btn btn-success btn-small p-lr-25 ml-auto mr-15 mb-0"
+                *ngIf="!isEditableRoute && currentPage === 'details'"></a>
+            <a *ngIf="  (selectedPortfolio.goalPortfolioAllocations.length > 0 && accessRights['CLI02']['accessLevel'] > 0) || (accessRights['CLI05']['accessLevel'] > 0 && selectedPortfolio.accountPayloads.length > 0)"
+                class="delete-link text-uppercase disabled-link">
+                <i class="ion-md-close-circle delete-portfolio"></i>
+                <span [translate]="'PORTFOLIO.ACTION.DELETE_PORTFOLIO'"></span>
+            </a>
+            <a *ngIf="((accessRights['CLI05']['accessLevel'] > 0 &&  accessRights['CLI02']['accessLevel'] > 0) && selectedPortfolio.goalPortfolioAllocations.length == 0 && selectedPortfolio.accountPayloads.length == 0) || (selectedPortfolio.goalPortfolioAllocations.length == 0 && accessRights['CLI02']['accessLevel'] > 0 && accessRights['CLI05']['accessLevel'] == 0 ) || (accessRights['CLI05']['accessLevel'] > 0 && accessRights['CLI02']['accessLevel'] == 0  && selectedPortfolio.accountPayloads.length == 0)"
+                (click)="deletePortfolio()" class="delete-link text-uppercase">
+                <i class="ion-md-close-circle delete-portfolio"></i>
+                <span [translate]="'PORTFOLIO.ACTION.DELETE_PORTFOLIO'"></span>
+            </a>
+            <a *ngIf="accessRights['CLI05']['accessLevel'] == 0 && accessRights['CLI02']['accessLevel'] == 0" class="delete-link text-uppercase" (click)="deletePortfolio()">
+                <i class="ion-md-close-circle delete-portfolio"></i>
+                <span [translate]="'PORTFOLIO.ACTION.DELETE_PORTFOLIO'"></span>
+            </a>
+
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-12">
+        <hr>
+    </div>
+</div>

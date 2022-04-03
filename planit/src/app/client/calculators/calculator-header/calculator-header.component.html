@@ -1,0 +1,109 @@
+<div class="row">
+    <div class="col-12">
+        <ul class="nav nav-tabs d-if" role="tablist">
+            <li *ngIf="accessRights['CAL07_SP']['accessLevel'] > 0 || accessRights['DCONS_SP']['accessLevel'] > 0 || accessRights['LEVRG_SP']['accessLevel'] > 0" class="nav-item">
+                <a [routerLink]="['/client', clientId, 'calculators', 'loan-calculator']" class="nav-link p-lr-40" routerLinkActive="active">
+                    {{ 'CALCULATOR.HEADER.LOAN_CALCULATORS' | translate }}</a>
+            </li>
+            <li  *ngIf="accessRights['CAL08_SP']['accessLevel'] > 0 || accessRights['CAL09_SP']['accessLevel'] > 0 || accessRights['CAL01_SP']['accessLevel'] > 0 || accessRights['CAL02_SP']['accessLevel'] > 0" class="nav-item">
+                <a [routerLink]="['/client', clientId, 'calculators', 'insurance-calculator']" class="nav-link p-lr-40" routerLinkActive="active">
+                    {{ 'CALCULATOR.HEADER.INSURANCE_CALCULATORS' | translate }}</a>
+            </li>
+            <li *ngIf="accessRights['TBD01'] && accessRights['TBD01']['accessLevel'] > 0" class="nav-item">
+                <a class="nav-link p-lr-40" routerLinkActive="active">
+                    {{ 'CALCULATOR.HEADER.INVESTMENT_CALCULATORS' | translate }}</a>
+            </li>
+            <li>
+                <a [routerLink]="['/client', clientId, 'calculators', 'financial-calculator']" class="nav-link p-lr-40" routerLinkActive="active">
+                    {{ 'CALCULATOR.HEADER.FINANCIAL_CALCULATORS' | translate }}</a>
+            </li>
+        </ul>
+    </div>
+    <div class="col-12">
+        <hr>
+    </div>
+
+    <div class="col-12" *ngIf="currentCalculator === 'loan-calculator'">
+        <ul class="nav nav-tabs d-if" role="tablist">
+            <li *ngIf="accessRights['CAL07_SP']['accessLevel'] > 0" class="nav-item calculator-nav-icon">
+                <a [routerLink]="['/client', clientId, 'calculators', 'loan-calculator', 'loan-amortization']" class="nav-link p-lr-40" routerLinkActive="active"> 
+                    <img src="assets/images/calculator_icons/Loan Amortization.png" class="s_pro_trans" alt="Loan Amortization">
+                    <p>{{ 'CALCULATOR.HEADER.LOAN_AMORTIZATION' | translate }}</p>
+                </a>
+            </li>
+            <li *ngIf="accessRights['DCONS_SP']['accessLevel'] > 0" class="nav-item calculator-nav-icon">
+                <a [routerLink]="['/client', clientId, 'calculators', 'loan-calculator', 'debt-consodlidation']" class="nav-link p-lr-40" routerLinkActive="active">
+                    <img src="assets/images/calculator_icons/Debt Consolidation.png" class="s_pro_trans" alt="Debt Consolidation">
+                    <p>{{ 'CALCULATOR.HEADER.DEBT_CONSOLIDATION' | translate }}</p>
+                </a>
+            </li>
+            <li  *ngIf="accessRights['LEVRG_SP']['accessLevel'] > 0" class="nav-item calculator-nav-icon">
+                <a [routerLink]="['/client', clientId, 'calculators', 'loan-calculator', 'leverage']" class="nav-link p-lr-40" routerLinkActive="active">
+                    <img src="assets/images/calculator_icons/Leverage.png" class="s_pro_trans" alt="Leverage">
+                    <p>{{ 'CALCULATOR.HEADER.LEVERAGE' | translate }}</p>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div class="col-12" *ngIf="currentCalculator === 'insurance-calculator'">
+        <ul class="nav nav-tabs d-if" role="tablist">
+            <li *ngIf="accessRights['CAL02_SP']['accessLevel'] > 0" class="nav-item calculator-nav-icon">
+                <a [routerLink]="['/client', clientId, 'calculators', 'insurance-calculator', 'life-insurance']" class="nav-link p-lr-40" routerLinkActive="active">
+                    <img src="assets/images/calculator_icons/Life Insurance.png" class="s_pro_trans" alt="Life Insurance">
+                    <p>{{ 'CALCULATOR.HEADER.LIFE_INSURANCE' | translate }}</p>
+                </a>
+            </li>
+            <li  *ngIf="accessRights['CAL01_SP']['accessLevel'] > 0" class="nav-item calculator-nav-icon">
+                <a [routerLink]="['/client', clientId, 'calculators', 'insurance-calculator', 'disability-insurance']" class="nav-link p-lr-40" routerLinkActive="active">
+                    <img src="assets/images/calculator_icons/Disability Insurance.png" class="s_pro_trans" alt="Disability Insurance">
+                    <p>{{ 'CALCULATOR.HEADER.DISABILITY_INSURANCE' | translate }}</p>
+                </a>
+            </li>
+            <li  *ngIf="accessRights['CAL09_SP']['accessLevel'] > 0" class="nav-item calculator-nav-icon">
+                <a [routerLink]="['/client', clientId, 'calculators', 'insurance-calculator', 'long-term-care']" class="nav-link p-lr-40" routerLinkActive="active">
+                    <img src="assets/images/calculator_icons/Long Term Care.png" class="s_pro_trans" alt="Long Term Care">
+                    <p>{{ 'CALCULATOR.HEADER.LONG_TERM_CARE' | translate }}</p>
+                </a>
+            </li>
+            <li *ngIf="accessRights['CAL08_SP']['accessLevel'] > 0" class="nav-item calculator-nav-icon">
+                <a [routerLink]="['/client', clientId, 'calculators', 'insurance-calculator', 'critical-illness']" class="nav-link p-lr-40" routerLinkActive="active">
+                    <img src="assets/images/calculator_icons/Critical Illness.png" class="s_pro_trans" alt="Critical Illness">
+                    <p>{{ 'CALCULATOR.HEADER.CRITICAL_ILLNESS' | translate }}</p>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div class="col-12" *ngIf="currentCalculator === 'financial-calculator'">
+        <ul class="nav nav-tabs d-if" role="tablist">
+            <li class="nav-item calculator-nav-icon">
+                <a class="nav-link p-lr-40" routerLinkActive="active"> 
+                    <img src="assets/images/calculator_icons/Present Value Future Value.png" class="s_pro_trans" alt="Loan Amortization">
+                    <p>{{ 'CALCULATOR.HEADER.PRESENT_VALUE_FUTURE_VALUE' | translate }}</p>
+                </a>
+            </li>
+            <li class="nav-item calculator-nav-icon">
+                <a [routerLink]="['/client', clientId, 'calculators', 'financial-calculator', 'rrif-illustration']" class="nav-link p-lr-40" routerLinkActive="active">
+                    <img src="assets/images/calculator_icons/RRIF Illustration.png" class="s_pro_trans" alt="Debt Consolidation">
+                    <p>{{ 'CALCULATOR.HEADER.RRIF_ILLUSTRATION' | translate }}</p>
+                </a>
+            </li>
+            <li class="nav-item calculator-nav-icon">
+                <a class="nav-link p-lr-40" routerLinkActive="active">
+                    <img src="assets/images/calculator_icons/IRA Illustration.png" class="s_pro_trans" alt="Leverage">
+                    <p>{{ 'CALCULATOR.HEADER.IRA_ILLUSTRATION' | translate }}</p>
+                </a>
+            </li>
+            <li class="nav-item calculator-nav-icon">
+                <a class="nav-link p-lr-40" routerLinkActive="active">
+                    <img src="assets/images/calculator_icons/Retirement Income Illustration.png" class="s_pro_trans" alt="Leverage">
+                    <p>{{ 'CALCULATOR.HEADER.RETIREMENT_INCOME' | translate }}</p>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="col-12">
+        <hr>
+    </div>
+
+</div>

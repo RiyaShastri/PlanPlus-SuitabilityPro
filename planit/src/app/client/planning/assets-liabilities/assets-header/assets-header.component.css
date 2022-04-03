@@ -1,0 +1,14 @@
+.delete-link, .delete-link span{
+    line-height: 26px;
+}
+
+@media (max-width: 465px) {
+    ul.nav-tabs{
+        margin: -5px 0 10px 0;
+    }
+}
+@media (max-width: 320px) {
+    ul.nav-tabs li a{
+        font-size: 12px;
+    }
+}

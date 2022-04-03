@@ -1,0 +1,50 @@
+<div class="side-form">
+    <form name="form" (ngSubmit)="addTranslation(f) && f.form.valid" #f="ngForm" novalidate>
+        <div class="box">
+            <div class="box-header">
+                <span class="sidebar_title" [translate]="'TRANSLATION.TITLE'"></span>
+                <span (click)="back(); closeButtonDisable = true" class="sidebar_action_icon ion-md-close-circle float-right"></span>
+            </div>
+            <div class="box-body">
+                <div *ngIf="regionArray && regionArray.length > 0">
+                    <h5 class="fs-16 d-inline-block">
+                        <b [translate]="'TRANSLATION.REGION'"></b>
+                    </h5>
+                    <span class="fw-500" *ngIf="!isGlobalRegion">{{regionArray[0].regionCode}}</span>
+                    <div *ngIf="isGlobalRegion" class="tree-select-custom d-inline-block w-75 va-middle">
+                        <tree-select name="regionList" idField="regionCode" [multiple]="false" [allowFilter]="false"
+                            [items]="regionArray" placeholder="Select a region" textField="regionName" childrenField="childRegions"
+                            [(ngModel)]="region" #regionList="ngModel" [allowParentSelection]="true" expandMode="All"
+                            (ngModelChange)="sorting($event)"></tree-select>
+                        <div class="tree-select-custom-caret-down">
+                            <span class="fa fa-fw fa-caret-down"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row m-1 pt-2" *ngIf="languages.length > 0 && countries.length > 0">
+                    <app-common-drop-down [itemList]="viewBy" [defaultSelected]="selectedViewBy" dropDownLabel="View" (OnSelect)="viewByChanged($event)"></app-common-drop-down>
+                    <app-common-drop-down class="pl-5" [itemList]="drop2Items" [defaultSelected]="drop2Selected" (OnSelect)="drop2select($event)"></app-common-drop-down>
+                </div>
+                <hr>
+                <div class="form-group">
+                    <label class="custom-form-label mb-0" [translate]="'TRANSLATION.DESCRIPTION'"></label>
+                    <p class="pt-2 mb-0">{{originalMessageValue}}</p>
+                </div>
+                <ng-container *ngIf="(drop2selctedView | json) !== '{}' && brandingSelection > 0">
+                    <div class="form-group" *ngFor="let country of translateItems; let i of index">
+                        <label class="custom-form-label" *ngIf="country.id !== 0 ">{{country.name}}</label>
+                        <textarea type="text" name="countryName{{i}}" [(ngModel)]="countryModel[country.id]" #countryName="ngModel" *ngIf="country.id !== 0"
+                            class="form-control middle-input" rows="100" cols="100" style="height: 80px;"></textarea>
+                    </div>
+                </ng-container>
+            </div>
+            <div class="box-footer">
+                <div class="form-group text-right">
+                    <button type="button" (click)="back(); closeButtonDisable = true" value="cancel" class="btn btn-secondary btn-small"
+                     [translate]="'FORM.ACTION.CANCEL'" [disabled]="closeButtonDisable"></button>
+                    <button type="submit" [disabled]="(drop2selctedView | json) === '{}' " value="submit" class="btn btn-success btn-small mr-3" [translate]="'FORM.ACTION.SAVE'"></button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

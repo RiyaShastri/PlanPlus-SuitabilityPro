@@ -1,0 +1,38 @@
+footer {
+    background: #345;
+    min-height: 60px;
+    line-height: normal;
+    position: relative;
+    width: 100%;
+    bottom: 0;
+    padding: 20px 0;
+    z-index: auto;
+}
+
+footer .main-container {
+    background: none;
+}
+
+footer p {
+    margin-bottom: 0;
+    color: #fff;
+    font-size: 14px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 400;
+}
+
+footer a {
+    color: #fff;
+    text-decoration: none;
+}
+footer a:hover {
+    text-decoration: underline;
+}
+
+@media (max-width: 767px){
+    
+    footer{
+        padding: 20px 0;
+        position: relative;
+    }
+}

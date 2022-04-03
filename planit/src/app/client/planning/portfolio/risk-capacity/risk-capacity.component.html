@@ -1,0 +1,11 @@
+<div class="bg-white pt-4 pb-4">
+    <div class="container">
+        <app-portfolio-header [currentPage]="currentPage" [clientId]="clientId" [portfolioId]="portfolioId" [goalId]="goalId"
+            [isEditableRoute]="isEditableRoute" [detailsLoaded]="portfoliosLoaded" (switchPortfolio)="switchPortfolio($event)"></app-portfolio-header>
+        <app-analysis isRiskCapacity="isRiskCapacity"></app-analysis>
+
+    </div>
+</div>
+<div class="view-side-form">
+    <router-outlet></router-outlet>
+</div>

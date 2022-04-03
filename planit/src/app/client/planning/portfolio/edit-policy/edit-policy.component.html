@@ -1,0 +1,252 @@
+<div class="side-form">
+    <form name="form" (ngSubmit)="f.form.valid && savePolicy(f)" #f="ngForm" novalidate>
+            <div class="box">
+                <div class="box-header">
+                    <span class="sidebar_title" [translate]="'PORTFOLIO.EDIT_POLICY.TITLE'"> </span>
+                    <span (click)="back(); closeButtonDisable = true" class="sidebar_action_icon ion-md-close-circle float-right"></span>
+                </div>
+    
+                <div class="box-body">
+                    <div class="form-group investment-policy-name" *ngIf="targetExist && isInvestmentPolicies">
+                        <label class=custom-form-label [translate]="'PORTFOLIO.EDIT_POLICY.LABEL.INVESTMENT_POLICY_NAME'"></label>
+                        <input class="form-control w-auto" #policyName="ngModel" [(ngModel)]="assetsBreakdown['description']" name="policyName"
+                        required />
+                    </div>
+                    <div class="row">
+                        <div class="col-12 text-center">
+                            <h5 class="graph-upper-lable" [translate]="'PORTFOLIO.EDIT_POLICY.LABEL.TARGET'"></h5>
+                            <div *ngIf="targetExist" id="chartdiv" style="height:200px; width: 200px; display: inline-block;"></div>
+                            <div *ngIf="!targetExist" class="no-record text-center position-relative" style="height:200px; width: 200px; display: inline-block;">
+                                <p class="no_data_graph"><i class="ion-ios-alert mr-2"></i>{{'NO_RESULTS' | translate}}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div *ngIf="assetsBreakdown && assetsBreakdown['allocations']" class="row">
+                        <div class="col-12">
+                            <hr>
+                            <div class="form-group">
+                                <table class="table bt-none">
+                                    <thead>
+                                        <tr>
+                                            <th width="40%">
+                                                <span [translate]="'PORTFOLIO.EDIT_POLICY.LABEL.ASSET_CLASSES'"></span>
+                                            </th>
+    
+                                            <th colspan="3" class="text-center" width="60%" *ngIf="accessRights['EHILO']['accessLevel'] >= 1 && !isInvestmentPolicies">
+                                                <span [translate]="'PORTFOLIO.EDIT_POLICY.LABEL.TARGET'"></span>
+                                                <p class="pull-right d-inline-block m-0 text-icon-wrapper cursor-p"
+                                                    [routerLink]="['/client', clientId, 'planning', 'portfolios', portfolioId, 'details','analytics','target']">
+                                                    <i class="ion-ios-pulse action-analytic"></i>
+                                                    <span class="text-lbl icon-left fs-12" [translate]="'PORTFOLIO.EDIT_POLICY.LABEL.ANALYTICS'">
+                                                    </span>
+                                                </p>
+                                            </th>
+                                            <th colspan="3" class="text-center" width="60%" *ngIf="accessRights['EHILO']['accessLevel'] === 0 && !isInvestmentPolicies">
+                                                <span [translate]="'PORTFOLIO.EDIT_POLICY.LABEL.TARGET'"></span>
+                                                <p class="pull-right d-inline-block m-0 text-icon-wrapper cursor-p"
+                                                    [routerLink]="['/client', clientId, 'planning', 'portfolios', portfolioId, 'details','analytics','target']">
+                                                    <i class="ion-ios-pulse action-analytic"></i>
+                                                    <span class="text-lbl icon-left fs-12" [translate]="'PORTFOLIO.EDIT_POLICY.LABEL.ANALYTICS'">
+                                                    </span>
+                                                </p>
+                                            </th>
+                                            <th colspan="3" class="text-center" width="60%" *ngIf="isInvestmentPolicies">
+                                                &nbsp;
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr class="secondary-header">
+                                            <td class="p-2 " width="40%"> {{'PORTFOLIO.EDIT_POLICY.TABLE.CLASS' |
+                                                translate}}</td>
+                                            <td class="text-right p-2" width="20%">
+                                                <ng-container *ngIf="accessRights['EHILO']['accessLevel'] >= 1 && allowAdvisor">
+                                                    {{'PORTFOLIO.EDIT_POLICY.TABLE.MIN' | translate}}%
+                                                </ng-container>
+                                            </td>
+                                            <td class="text-right p-2" width="20%">%</td>
+                                            <td class="text-right p-2" width="20%">
+                                                <ng-container *ngIf="accessRights['EHILO']['accessLevel'] >= 1 && allowAdvisor">
+                                                    {{'PORTFOLIO.EDIT_POLICY.TABLE.MAX' | translate}}%
+                                                </ng-container>
+                                            </td>
+                                        </tr>
+                                        <ng-container *ngFor="let item of assetsBreakdown['allocations']; index as i;">
+                                            <tr>
+                                                <td class="p-2 " width="40%">
+                                                    <span class="square asset_indicator" [style.background]="chartColors[i]"></span>
+                                                    <span class="asset_lbl fw-600">{{('SSID_LABELS.' + item.ssid) | translate}}</span>
+                                                </td>
+                                                <td class="p-2 text-right" [ngClass]="{'bg-blueGray08' : allowAdvisor && accessRights['EHILO']['accessLevel'] >= 1}" width="20%">
+                                                    <ng-container *ngIf="accessRights['EHILO']['accessLevel'] >= 1 && allowAdvisor">
+                                                        <span *ngIf="accessRights['EHILO']['accessLevel'] === 1">
+                                                            {{item.targetMinPolicy | number :
+                                                            "1.1-1"}}
+                                                            %</span>
+                                                        <div *ngIf="accessRights['EHILO']['accessLevel'] === 3" class="form-group  mb-0 text-right"
+                                                            [ngClass]="{ 'has-error': !assetsBreakdownMin.valid || f.submitted || item.targetMinPolicy > item.targetMaxPolicy }">
+                                                            <input class="form-control d-inline-block text-right h-25" min="0"
+                                                                max="100" #assetsBreakdownMin="ngModel" [textMask]="{mask: percentDecimalMask}" appNumeric 
+                                                                [(ngModel)]="item.targetMinPolicy"
+                                                                name="assetsBreakdownMin{{item.id}}"
+                                                                pattern="^100(\.0{0,2})? *%?$|^\d{1,2}(\.\d{1,2})? *%?$"
+                                                                required />
+                                                        </div>
+                                                    </ng-container>
+                                                </td>
+                                                <td class="p-2 text-right" width="20%">
+                                                    <div *ngIf="item.displayOrder !== 1" class="form-group  mb-0 text-right"
+                                                        [ngClass]="{ 'has-error':  assetsBreakdown.invalid || (item.targetMaxPolicy < item.targetPercent || item.targetPercent < item.targetMinPolicy) }">
+                                                        <input class="form-control d-inline-block text-right h-25" min="item.targetMinPolicy"
+                                                            max="item.targetMaxPolicy" (keyup)="updateGraph($event);"
+                                                            #assetsBreakdown="ngModel" [textMask]="{mask: percentDecimalMask}" appNumeric
+                                                            [(ngModel)]="item.targetPercent" name="assetsBreakdown{{item.id}}"
+                                                            pattern="^100(\.0{0,2})? *%?$|^\d{1,2}(\.\d{1,2})? *%?$"
+                                                            required />
+                                                    </div>
+                                                    <div class="mb-0 text-right" *ngIf="item.displayOrder === 1">
+                                                        {{item.targetPercent | number : "1.1-1" }}%
+                                                    </div>
+                                                </td>
+                                                <td class="p-2 text-right" [ngClass]="{'bg-blueGray08' : allowAdvisor && accessRights['EHILO']['accessLevel'] >= 1}" width="20%">
+                                                    <ng-container *ngIf="accessRights['EHILO']['accessLevel'] >= 1 && allowAdvisor">
+                                                        <span *ngIf="accessRights['EHILO']['accessLevel'] === 1">
+                                                            {{item.targetMaxPolicy | number :
+                                                            "1.1-1"}}
+                                                            %</span>
+                                                        <div *ngIf="accessRights['EHILO']['accessLevel'] === 3" class="form-group  mb-0 text-right"
+                                                            [ngClass]="{ 'has-error': assetsBreakdownMax.invalid  || item.targetMinPolicy > item.targetMaxPolicy || f.submitted }">
+                                                            <input class="form-control d-inline-block text-right h-25" min="0"
+                                                                max="100" #assetsBreakdownMax="ngModel" 
+                                                                [textMask]="{mask: percentDecimalMask}" appNumeric [(ngModel)]="item.targetMaxPolicy"
+                                                                name="assetsBreakdownMax{{item.id}}" pattern="^100(\.0{0,2})? *%?$|^\d{1,2}(\.\d{1,2})? *%?$"
+                                                                required />
+                                                        </div>
+                                                    </ng-container>
+                                                </td>
+                                            </tr>
+                                        </ng-container>
+                                        <tr>
+                                            <td class="text-center" width="40%">
+                                                <span class="fw-600" [translate]="'ASSET_LIABILITY.HOLDING_ACCOUNT.TOTAL'">
+                                                </span>
+                                            </td>
+                                            <td width="20%">&nbsp;</td>
+                                            <td class="pr-2 text-right" width="20%">
+                                                <span [ngClass]="{ 'error-text': f.submitted || totalBreakDown !== 100 }"
+                                                    class="fw-600 fs-14">{{totalBreakDown
+                                                    | number : "1.1-1" }}%</span>
+                                            </td>
+                                            <td width="20%">&nbsp;</td>
+                                        </tr>
+                                    </tbody>
+    
+                                </table>
+                            </div>
+                            <div id="moreDetai" class="hide-ele row">
+                                <div class="col-12">
+                                    <table class="table bt-none">
+                                        <tr>
+                                            <td class="border-0 pt-2 pb-2" width="60%">{{'PORTFOLIO.EDIT_POLICY.LABEL.RETURN'
+                                                | translate}} </td>
+                                            <td class="border-0 pt-2 pb-2 pr-2 text-right" width="20%">{{assetsBreakdown['targetSummary'].rateOfReturn
+                                                | number : "1.1-2"}}%</td>
+                                            <td class="border-0 pt-2 pb-2" width="20%"></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="border-0 pt-2 pb-2" width="60%">{{'PORTFOLIO.EDIT_POLICY.LABEL.RISK'
+                                                |
+                                                translate}}</td>
+                                            <td class="border-0 pt-2 pb-2 pr-2 text-right" width="20%">{{assetsBreakdown['targetSummary'].risk
+                                                | number : "1.1-2"}}%</td>
+                                            <td class="border-0 pt-2 pb-2" width="20%"></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="border-0 pt-2 pb-2" width="60%">{{'PORTFOLIO.EDIT_POLICY.LABEL.SHARPE_RATIO'
+                                                | translate}} </td>
+                                            <td class="border-0 pt-2 pb-2 pr-2 text-right" width="20%">{{assetsBreakdown['targetSummary'].sharpeRatio
+                                                | number : "1.1-2"}}%</td>
+                                            <td class="border-0 pt-2 pb-2" width="20%"></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="border-0 pt-2 pb-2" width="60%">{{'PORTFOLIO.EDIT_POLICY.LABEL.FEES_COSTS'
+                                                | translate}}</td>
+                                            <td class="border-0 pt-0 pb-2 pr-2 text-right" width="20%">
+                                                <div *ngIf="isfeesCosts" class="form-group  mb-0" [ngClass]="{ 'has-error':  !feesCosts.valid || f.submitted }">
+                                                    <input class="form-control d-inline-block text-right h-25" min="0" max="100"
+                                                        #feesCosts="ngModel" style="width: 80px"
+                                                        [(ngModel)]="assetsBreakdown['targetSummary'].fees" name="feesCosts"
+                                                        pattern="^100(\.0{0,2})? *%?$|^\d{1,2}(\.\d{1,2})? *%?$" required />
+                                                </div>
+                                                <div class="mb-0 text-right form-control no-border" *ngIf="!isfeesCosts">
+                                                    {{assetsBreakdown['targetSummary'].fees | number : "1.1-2" }}%
+                                                </div>
+                                            </td>
+                                            <td class="pt-2 pb-2 border-0" width="20%">
+                                                <div class="form-group  text-right  mb-0">
+                                                    <p-checkbox class="pull-right" name="assetLiabilityDetail" [(ngModel)]='isfeesCosts'
+                                                        binary="true"></p-checkbox>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2" width="80%">
+                                                <h5 class="fw-700 fs-15" [translate]="'PORTFOLIO.EDIT_POLICY.LABEL.INCOME_DISTRIBUTION'">
+                                                </h5>
+                                            </td>
+                                            <td width="20%">
+                                                <div class="form-group text-right mb-0" *ngIf="!isInvestmentPolicies">
+                                                    <p-checkbox class="pull-right" name="InvestmentIncome" [(ngModel)]="assetsBreakdown['targetSummary'].overrideCalculatedIncomeDist"
+                                                        binary="true"></p-checkbox>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <ng-container *ngFor="let incomeItem of  assetsBreakdown['targetSummary'].incomeDistribution">
+                                            <tr>
+                                                <td width="60%">{{incomeItem.id}}</td>
+                                                <td width="20%" class="pt-2 pb-2 pr-2 text-right">
+                                                    <span *ngIf="!assetsBreakdown['targetSummary'].overrideCalculatedIncomeDist">{{incomeItem.percent | number :
+                                                        "1.0-0"}}%</span>
+                                                    <div *ngIf="assetsBreakdown['targetSummary'].overrideCalculatedIncomeDist" class="form-group  mb-0" [ngClass]="{ 'has-error':  !investmentIncome.valid || f.submitted }">
+                                                        <input class="form-control d-inline-block text-right h-25" min="0"
+                                                            max="100" #investmentIncome="ngModel" [textMask]="{mask: percentMask}" appNumeric
+                                                            style="width: 80px" [(ngModel)]="incomeItem.percent" name="investmentIncome{{incomeItem.id}}"
+                                                            pattern="^100(\.0{0,2})? *%?$|^\d{1,2}(\.\d{1,2})? *%?$"
+                                                            required />
+                                                    </div>
+                                                </td>
+                                                <td class="text-right" width="20%">
+    
+                                                </td>
+                                            </tr>
+                                        </ng-container>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="row" *ngIf = "accessRights['CMAINCDIST']['accessLevel'] > 0 ">
+                                <div class="col-12 col-md-4">
+                                    <a class="moredetail-button cursor-p" (click)="toggle();isDetailExpand = !isDetailExpand ">
+                                        <span *ngIf="isDetailExpand" [translate]="'PLANNING.LESS_DETAIL'"> </span>
+                                        <span *ngIf="!isDetailExpand" [translate]="'PLANNING.MORE_DETAIL'"> </span>
+                                    </a>
+                                </div>
+                            </div>
+    
+                        </div>
+                    </div>
+                </div>
+                <div class="box-footer">
+                    <div class="form-group text-right">
+                        <button (click)="back(); closeButtonDisable = true" type="button" class="btn btn-small btn-secondary mr-2" [disabled]="closeButtonDisable">{{
+                            'FORM.ACTION.CANCEL'
+                            | translate }}</button>
+                        <button [disabled]="f.form.invalid  || totalBreakDown!==100 " class="btn btn-small btn-success">{{
+                            'FORM.ACTION.SAVE'
+                            | translate }}</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    
+    </div>

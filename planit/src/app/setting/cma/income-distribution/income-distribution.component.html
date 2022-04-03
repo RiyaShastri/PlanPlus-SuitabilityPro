@@ -1,0 +1,173 @@
+<form name="form" #f="ngForm" (ngSubmit)="updateIncomeDistribution(f)" novalidate>
+    <div class="row">
+        <div class="col-lg-10 col-md-8 col-sm-10 col-12">
+
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="form-group">
+                        <label class="custom-form-label"
+                            [translate]="'SETTINGS.PREFERRED_SOLUTION.SOLUTION_FAMILY.COUNTRY'"></label>
+                        <p-dropdown [options]="countries" name="countryList" [(ngModel)]="country"
+                            #countryList="ngModel" required optionLabel="country" placeholder="Select Country"
+                            (onChange)="getClassData(true); changeAcceptance()"></p-dropdown>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="custom-form-label"
+                            [translate]="'SETTINGS.PREFERRED_SOLUTION.SOLUTION_FAMILY.REGION'"></label>
+                        <p-dropdown [options]="regions" name="regionList" [(ngModel)]="region" #regionList="ngModel"
+                            required optionLabel="regionDescr" placeholder="Select Country"
+                            (onChange)="getClassData(true); changeAcceptance()"></p-dropdown>
+                    </div>
+                </div>
+            </div>
+
+            <p class="fs-15 fw-400">{{ 'SETTINGS.INCOME_DISTRIBUTION.ALERT' | translate }}</p>
+            <div class="mb-0">
+                <fieldset class="form-group mb-0">
+                    <legend class="fs-14 fw-600 legend-width"
+                        [translate]="'SETTINGS.INCOME_DISTRIBUTION.DISTRIBUTION_TO_APPLY'"></legend>
+                    <div class="form-check d-flex"
+                        [ngClass]="{ 'has-error': !distribution.valid && (distribution.dirty || f.submitted)}">
+                        <span>
+                            <p-radioButton name="distribution" value="Default"
+                                [(ngModel)]="incomeDetails['distribution_to_apply']" inputId="opt1"
+                                #distribution="ngModel" require
+                                (ngModelChange)="distributionChange($event); changeAcceptance()"
+                                [disabled]="editDisabled || !isEditable"></p-radioButton>
+                            <span [translate]="'SETTINGS.DEFAULT'"></span>
+                        </span>
+                        <span>
+                            <p-radioButton name="distribution" value="Custom"
+                                [(ngModel)]="incomeDetails['distribution_to_apply']" inputId="opt1"
+                                #distribution="ngModel" require
+                                (ngModelChange)="distributionChange($event); changeAcceptance()"
+                                [disabled]="editDisabled || !isEditable"></p-radioButton>
+                            <span [translate]="'SETTINGS.CUSTOM'"></span>
+                        </span>
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+        <div *ngIf="!editDisabled" class="col-lg-2 col-md-4 col-sm-2 col-12 text-right">
+            <a (click)="isEditable = !this.isEditable" href="javascript:void(0)" [translate]="'PORTFOLIO.ACTION.EDIT'"
+                class="btn btn-success btn-small p-lr-25 ml-auto mb-0" *ngIf="!isEditable"></a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <hr>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <table class="table table-responsive-sm ff-Montserrat fs-15 income-distribution" *ngIf="assetClasses">
+                <thead>
+                    <tr>
+                        <th class="w-600 pr-2" [translate]="'SETTINGS.INCOME_DISTRIBUTION.ASSET_CLASS'"></th>
+                        <th class="text-center fw-600 pr-2" [translate]="'SETTINGS.INCOME_DISTRIBUTION.INTEREST'"></th>
+                        <th class="text-center fw-600 pr-2" [translate]="'SETTINGS.INCOME_DISTRIBUTION.DIVIDEND'"></th>
+                        <th class="text-center fw-600 pr-2"
+                            [translate]="'SETTINGS.INCOME_DISTRIBUTION.REALIZED_CAPITAL_GAINS'"></th>
+                        <th class="text-center fw-600 pr-2"
+                            [translate]="'SETTINGS.INCOME_DISTRIBUTION.DEFERRED_CAPITAL_GAINS'"></th>
+                        <th class="text-center fw-600 pr-2" [translate]="'SETTINGS.INCOME_DISTRIBUTION.NON_TAXABLE'">
+                        </th>
+                        <th class="text-left fw-600" [translate]="'SETTINGS.INCOME_DISTRIBUTION.TOTAL'"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of incomeDetails['income_distribution']; index as i;">
+                        <td class="pr-2">{{('SSID_LABELS.' + item.ssid) | translate}}</td>
+                        <td class="text-center pr-2">
+                            <span *ngIf="!isEditable || incomeDetails['distribution_to_apply'] == 'Default'">
+                                {{item.interest | number: '1.0-2'}}%
+                            </span>
+                            <div *ngIf="isEditable && incomeDetails['distribution_to_apply'] == 'Custom'"
+                                class="form-group text-center mb-0 "
+                                [ngClass]="{'has-error': !interest.valid && (interest.dirty || interest.touched || f.submitted) }">
+                                <input type="text" class="form-control text-center w-75 d-inline-block va-middle"
+                                    name="interest_{{i}}" [(ngModel)]="item.interest" [customMin]="0" [customMax]="100" #interest="ngModel"
+                                    [textMask]="{mask: percentMask}" appNumeric (ngModelChange)="getTotal($event, item); changeAcceptance()" required />
+                            </div>
+                        </td>
+                        <td class="text-center pr-2">
+                            <span *ngIf="!isEditable || incomeDetails['distribution_to_apply'] == 'Default'">
+                                {{item.dividend | number: '1.0-2'}}%
+                            </span>
+                            <div *ngIf="isEditable && incomeDetails['distribution_to_apply'] == 'Custom'"
+                                class="form-group text-center mb-0"
+                                [ngClass]="{'has-error': !dividend.valid && (dividend.dirty || dividend.touched || f.submitted) }">
+                                <input type="text" class="form-control text-center w-75 d-inline-block va-middle"
+                                    name="dividend_{{i}}" [(ngModel)]="item.dividend"
+                                    [customMin]="0" [customMax]="100" #dividend="ngModel" [textMask]="{mask: percentMask}" appNumeric
+                                    (ngModelChange)="getTotal($event, item); changeAcceptance()" required />
+                            </div>
+                        </td>
+                        <td class="text-center pr-2">
+                            <span *ngIf="!isEditable || incomeDetails['distribution_to_apply'] == 'Default'">
+                                {{item.realisedCapitalGains | number: '1.0-2'}}%
+                            </span>
+                            <div *ngIf="isEditable && incomeDetails['distribution_to_apply'] == 'Custom'"
+                                class="form-group text-center mb-0"
+                                [ngClass]="{'has-error': !realisedCapitalGains.valid && (realisedCapitalGains.dirty || realisedCapitalGains.touched || f.submitted) }">
+                                <input type="text" class="form-control text-center w-75 d-inline-block va-middle"
+                                    name="realised_capital_gains_{{i}}" [(ngModel)]="item.realisedCapitalGains"
+                                    [customMin]="0" [customMax]="100" #realisedCapitalGains="ngModel" [textMask]="{mask: percentMask}" appNumeric
+                                    (ngModelChange)="getTotal($event, item); changeAcceptance()" required />
+                            </div>
+                        </td>
+                        <td class="text-center pr-2">
+                            <span *ngIf="!isEditable || incomeDetails['distribution_to_apply'] == 'Default'">
+                                {{item.deferredCapitalGains | number: '1.0-2'}}%
+                            </span>
+                            <div *ngIf="isEditable && incomeDetails['distribution_to_apply'] == 'Custom'"
+                                class="form-group text-center mb-0"
+                                [ngClass]="{'has-error': !deferredCapitalGains.valid && (deferredCapitalGains.dirty || deferredCapitalGains.touched || f.submitted) }">
+                                <input type="text" class="form-control text-center w-75 d-inline-block va-middle"
+                                    name="deferred_capital_gains_{{i}}}" [(ngModel)]="item.deferredCapitalGains"
+                                    [customMin]="0" [customMax]="100" #deferredCapitalGains="ngModel" [textMask]="{mask: percentMask}" appNumeric
+                                    (ngModelChange)="getTotal($event, item); changeAcceptance()" required />
+                            </div>
+                        </td>
+                        <td class="text-center pr-2">
+                            <span *ngIf="!isEditable || incomeDetails['distribution_to_apply'] == 'Default'">
+                                {{item.nonTaxable | number: '1.0-2'}}%
+                            </span>
+                            <div *ngIf="isEditable && incomeDetails['distribution_to_apply'] == 'Custom'"
+                                class="form-group text-center mb-0"
+                                [ngClass]="{'has-error': !nonTaxable.valid && (nonTaxable.dirty || nonTaxable.touched || f.submitted) }">
+                                <input type="text" class="form-control text-center w-75 d-inline-block va-middle"
+                                    name="non_taxable_{{i}}" [(ngModel)]="item.nonTaxable" [customMin]="0" [customMax]="100" #nonTaxable="ngModel"
+                                    [textMask]="{mask: percentMask}" appNumeric (ngModelChange)="getTotal($event, item); changeAcceptance()" required />
+                            </div>
+                        </td>
+                        <td>
+                            <span [ngClass]="{'text-danger': item['total'] !== 100}">
+                                {{item['total'] | number: '1.0-2'}}%
+                            </span>
+                            <p *ngIf="item['total'] !== 100" class="text-error"
+                                [translate]="'SETTINGS.INCOME_DISTRIBUTION.WARNING_TOTAL100'"></p>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 d-flex justify-content-end mt-3 flex-wrap">
+            <div class="form-group  mb-0 d-flex align-items-center text-right">
+                <label class="custom-form-label d-inline-block va-middle mr-2 ff-Montserrat fs-14 fw-400 "
+                    [translate]="'SETTINGS.INCOME_DISTRIBUTION.ACCEPTANCE'"></label>
+                <p-checkbox class="d-inline-block mt--10px" name="acceptance" [(ngModel)]="ID_acceptance" binary="true"
+                    #acceptance="ngModel" styleClass="va-top"></p-checkbox>
+            </div>
+            <div class="form-group d-flex align-self-center mb-0 ml-2 flex-shrink-1 text-right">
+                <button *ngIf="isEditable" type="button" class="btn btn-secondary btn-fixwidth  mr-2 "
+                    (click)="cancelChanges()" [translate]="'FORM.ACTION.CANCEL'"></button>
+                <button [disabled]="f.form.invalid || hasError || saveDisable" type="submit" class="btn btn-success btn-fixwidth"
+                    [translate]="'FORM.ACTION.SAVE_CHANGES'"></button>
+            </div>
+        </div>
+    </div>
+</form>

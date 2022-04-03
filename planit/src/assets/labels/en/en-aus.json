@@ -1,0 +1,38 @@
+{
+    "SSID_LABELS": {
+        "A_ASSCAT042": "Cash",
+        "A_ASSCAT043": "Fixed Income",
+        "A_ASSCAT044": "Australian Equity",
+        "A_ASSCAT045": "Australian Small Cap Equity",
+        "A_ASSCAT046": "Global Equity",
+        "A_ASSCAT047": "Emerging",
+        "A_ASSCAT048": "Property",
+        "OBJECTIV002": "Retirement Lifestyle (After Tax)"
+    },
+  "BENCHMARKS": {
+    "1": "Bloomberg AusBond Bank 0+Y TR Index",
+    "2": "Bloomberg AusBond Composite 0+Y TR Index",
+    "3": "S&P/ASX All Ordinaries TR Index",
+    "4": "S&P/ASX Small Ordinaries Total Return Index",
+    "5": "MSCI World Ex Aus Index",
+    "6": "MSCI Emerging Markets Index",
+    "7": "S&P/ASX 200 A-REIT Index"
+
+  },
+  "BENCHNOTES": {
+    "1": "Cash index based on Reserve Bank data for Notes and Bills from 1972, Bloomberg AusBond Bank 0+Y TR Index from 1987, return reduced by 1%",
+    "2": "10Y AUS Gov Bond TR Index from 1972, Commonwealth Bank All Series All Maturities Accumulation Index from 1977, Bloomberg AusBond Composite TR Index from 1989",
+    "3": "",
+    "4": "Data from 1991",
+    "5": "",
+    "6": "",
+    "7": "LPT Accumulation Index from 1972, S&P/ASX A-REIT Accumulation Index from 1970"
+
+  },
+  "FORM": {
+        "PLACEHOLDER": {
+            "SELECT_A_PROVINCE": "Select a State"
+        },
+        "PROVINCE": "State"
+  }
+}

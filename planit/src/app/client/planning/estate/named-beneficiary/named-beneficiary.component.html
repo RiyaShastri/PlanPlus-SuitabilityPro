@@ -1,0 +1,183 @@
+<div class="bg-white pt-4 pb-4">
+    <div class="container">
+        <app-estate-header [clientId]="clientId" currentPage="analysis"></app-estate-header>
+        <div class="row">
+            <div class="col-12">
+                <form name="form" (ngSubmit)="updateBeneficiaries() && f.form.valid" #f="ngForm" novalidate>
+                    <div class="table-wrapper named-beneficiary-table" *ngIf="allAccountsData &&  allAccountsData.length > 0">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th width="25%">&nbsp;</th>
+                                    <th width="20%" class="hidden-md-down">
+                                        <p class="mb-0">
+                                            <span style="width: 5%;" class="mr-2">&nbsp;</span>
+                                            <span style="width: 65%" class="beneficiary-header-wrap">
+                                                {{ 'ESTATE_PLANING.ADD_NAMED_BENEFICIARY.PRIMARY_BENEFICIARY' | translate}}
+                                            </span>
+                                            <span style="width: 30%" class="text-center float-right">
+                                                %
+                                            </span>
+                                        </p>
+                                    </th>
+                                    <th width="20%" class="hidden-md-down">
+                                        <p class="mb-0">
+                                            <span style="width: 5%;" class="mr-2">&nbsp;</span>
+                                            <span style="width: 65%" class="beneficiary-header-wrap">
+                                                {{ 'ESTATE_PLANING.CONTINGENT_BENEFICIARY' | translate}}
+                                            </span>
+                                            <span style="width: 30%" class="text-center float-right">
+                                                %
+                                            </span>
+                                        </p>
+                                    </th>
+                                    <th width="9%" class="beneficiary-header-text-wrap">
+                                        {{ 'ESTATE_PLANING.NAMED_BENEFICIARY.SUBJECT_TO' | translate }} <br/> {{ 'ESTATE_PLANING.NAMED_BENEFICIARY.PROBATE' | translate }}
+                                    </th>
+                                    <th width="9%" class="beneficiary-header-text-wrap">
+                                        {{ 'ESTATE_PLANING.NAMED_BENEFICIARY.LIQUID_ON' | translate}} <br/> {{ 'ESTATE_PLANING.NAMED_BENEFICIARY.DEATH' | translate}}
+                                    </th>
+                                    <th width="9%" class="text-center">
+                                        {{ 'ESTATE_PLANING.NAMED_BENEFICIARY.LIQUID_ON' | translate}} <br/> {{ 'ESTATE_PLANING.NAMED_BENEFICIARY.EMERGENCY' | translate}}
+                                    </th>
+                                    <th width="8%">&nbsp;</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <ng-container *ngFor="let account of allAccountsData; index as i">
+                                    <tr>
+                                        <td colspan="7">
+                                            <div class="d-flex" [ngClass]="{ 'pt-2' : i !== 0 }">
+                                                <div class="dropdown-relative-full" *ngIf="account['ownership'] && account['ownership'].length > 0">
+                                                    <span class="d-flex client-avatars">
+                                                        <ng-container *ngFor="let owner of account['ownership'] | slice:0:2; let ownerIndex = index">
+                                                            <span *ngIf="!owner['personDetails'].avatar && owner.owned > 0" class="initials d-inline-block" [ngClass]="{'spouse': owner.personDetails.relation == RELATION.SPOUSE, 
+                                                                'childs': owner.personDetails.relation == RELATION.SON || owner.personDetails.relation == RELATION.DAUGHTER}">
+                                                                {{owner.personDetails.firstName[0] + owner.personDetails.lastName[0]}}</span>
+                                                            <img class="initials bg-transparent" height="50" *ngIf="owner['personDetails'].avatar && owner.owned > 0" [src]="owner['personDetails'].avatar"
+                                                                (error)="owner['personDetails'].avatar=null" />
+                                                        </ng-container>
+                                                        <span *ngIf="account['ownership'].length > 2" (click)="changeOwnershipAction(ownerIndex, i)" class="ion-md-more-horizontal action-ellipses-icon-color set-ellipses"></span>
+                                                    </span>
+                                                    <div *ngIf="account['ownership'].length>2" [id]="'dropdownOwnershipAction'+ownerIndex+i" class="dropdown-portfolio-owned-action dropdown-floating hide-ele">
+                                                        <div class="floating-dropdown">
+                                                            <ng-container *ngFor="let owner of account['ownership']">
+                                                                <span *ngIf="!owner['personDetails'].avatar && owner.owned > 0" class="initials d-inline-block" [ngClass]="{'spouse': owner.personDetails.relation == RELATION.SPOUSE, 
+                                                                    'childs': owner.personDetails.relation == RELATION.SON || owner.personDetails.relation == RELATION.DAUGHTER}">
+                                                                    {{owner.personDetails.firstName[0] + owner.personDetails.lastName[0]}}
+                                                                </span>
+                                                                <img class="initials bg-transparent" height="50" *ngIf="owner['personDetails'].avatar && owner.owned > 0" [src]="owner['personDetails'].avatar"
+                                                                />
+                                                            </ng-container>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <span class="ml-2 d-inline-block fw-400 align-top">{{account['majorityOwnerName']}}</span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr *ngFor="let data of account['majorityDetails'];index as k" class="beneficiary-responsive-tooltip">
+                                        <td width="25%" class="align-top">
+                                            <span class="collab-text-truncate" [appNoOverflowTooltip]="data['account']['description']" triggers="manual" placement="bottom">{{data['account']['description']}}</span>
+                                        </td>
+                                        <td width="20%" class="align-top hidden-md-down">
+                                            <div class="beneficiary-wrap">
+                                                <p *ngFor="let primaryBeneficiary of data['primaryBeneficiary']">
+                                                    <span style="width: 5%;" class="mr-2" *ngIf="primaryBeneficiary['showWaringFlag']">
+                                                        <i class="ion-md-alert" [ngbTooltip]="keyWarning" #warning="ngbTooltip" triggers="manual"
+                                                        placement="bottom" (click)="warning.open()"></i>
+                                                        <ng-template #keyWarning>
+                                                        <p>{{'ESTATE_PLANING.NAMED_BENEFICIARY.WARNING' | translate }}</p>
+                                                        <p class="text-right m-0 p-0 justify-content-end">
+                                                        <button class="btn btn-secondary btn-small m-0 text-right" (click)="warning.close()" [translate]="'FORM.ACTION.CLOSE'"></button>
+                                                        </p>
+                                                        </ng-template>
+                                                    </span>
+                                                    <span style="width: 5%;" class="mr-2" *ngIf="!primaryBeneficiary['showWaringFlag']">&nbsp;</span>
+                                                    <span style="width: 65%" class="collab-text-truncate" [appNoOverflowTooltip]="(primaryBeneficiary && primaryBeneficiary['defaultNamedBeneficiaryDescription']) ?
+                                                    primaryBeneficiary['defaultNamedBeneficiaryDescription'] : 
+                                                    (primaryBeneficiary['otherBeneficiary']['firstName'] + ' ' + primaryBeneficiary['otherBeneficiary']['lastName'])"
+                                                        triggers="manual" placement="bottom">
+                                                        {{ (primaryBeneficiary && primaryBeneficiary['defaultNamedBeneficiaryDescription']) ? primaryBeneficiary['defaultNamedBeneficiaryDescription']
+                                                        : (primaryBeneficiary['otherBeneficiary']['firstName'] + ' ' + primaryBeneficiary['otherBeneficiary']['lastName'])
+                                                        }}
+                                                    </span>
+                                                    <span style="width: 30%" class="text-center float-right">
+                                                        {{(primaryBeneficiary['owned']) ? (primaryBeneficiary['owned'] + '%') : '0%' }}
+                                                    </span>
+                                                </p>
+                                            </div>
+                                        </td>
+                                        <td width="20%" class="align-top hidden-md-down">
+                                            <div class="beneficiary-wrap">
+                                                <p *ngFor="let contingent of data['contingentBeneficiary']">
+                                                    <span style="width: 5%;" class="mr-2" *ngIf="contingent['showWaringFlag']">
+                                                        <i class="ion-md-alert" [ngbTooltip]="contingentWarning" #warning="ngbTooltip" triggers="manual"
+                                                        placement="bottom" (click)="warning.open()"></i>
+                                                        <ng-template #contingentWarning>
+                                                        <p>{{'ESTATE_PLANING.NAMED_BENEFICIARY.WARNING' | translate }}</p>
+                                                        <p class="text-right m-0 p-0 justify-content-end">
+                                                        <button class="btn btn-secondary btn-small m-0" (click)="warning.close()" [translate]="'FORM.ACTION.CLOSE'"></button>
+                                                        </p>
+                                                        </ng-template>
+                                                        </span>
+                                                    <span style="width: 5%;" class="mr-1" *ngIf="!contingent['showWaringFlag']">&nbsp;</span>
+                                                    <span style="width: 65%" class="collab-text-truncate" [appNoOverflowTooltip]="(contingent && contingent['defaultNamedBeneficiaryDescription']) ?
+                                                        contingent['defaultNamedBeneficiaryDescription'] : 
+                                                        (contingent['otherBeneficiary']['firstName'] + ' ' + contingent['otherBeneficiary']['lastName'])"
+                                                        triggers="manual" placement="bottom">
+                                                        {{ (contingent && contingent['defaultNamedBeneficiaryDescription']) ? contingent['defaultNamedBeneficiaryDescription'] :
+                                                        (contingent['otherBeneficiary']['firstName'] + ' ' + contingent['otherBeneficiary']['lastName'])
+                                                        }}
+                                                    </span>
+                                                    <span style="width: 30%" class="text-center float-right">
+                                                        {{(contingent['owned']) ? (contingent['owned'] + '%') : '0%' }}
+                                                    </span>
+                                                </p>
+                                            </div>
+                                        </td>
+                                        <td width="9%" class="align-top">
+                                            <div class="form-group">
+                                                <div class="text-center form-check d-inline-block beneficiary-label-form-check">
+                                                    <p-checkbox name="subjectToprobat{{i}}{{k}}" label="" [(ngModel)]="data['account']['subjectProbate']" binary="true" #subjectToprobat="ngModel"></p-checkbox>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td width="9%" class="align-top">
+                                            <div class="form-group">
+                                                <div class="text-center form-check d-inline-block beneficiary-label-form-check">
+                                                    <p-checkbox name="liquidOnDeath{{i}}{{k}}" label="" [(ngModel)]="data['account']['liquidDeath']" binary="true" #liquidOnDeath="ngModel"></p-checkbox>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td width="9%" class="align-top">
+                                            <div class="form-group">
+                                                <div class="text-center form-check d-inline-block beneficiary-label-form-check">
+                                                    <p-checkbox name="liquidOnEmergency{{i}}{{k}}" label="" [(ngModel)]="data['account']['liquidEmergency']" binary="true" #liquidOnEmergency="ngModel"></p-checkbox>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td width="8%" class="align-top">
+                                            <div class="form-group mb-0">
+                                                <a href="javascript:void(0);" [routerLink]="[data['account']['id'], 'edit-named-beneficiary']" class="ion-icon">
+                                                    <i class="ion-md-create"></i>
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </ng-container>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="form-group mt-4 text-right">
+                        <button type="button" class="btn btn-secondary btn-small" [translate]="'FORM.ACTION.CANCEL'" (click)="back()"></button>
+                        <button class="btn btn-small btn-success mr-2" [translate]="'FORM.ACTION.SAVE'" [disabled]="f.form.invalid"></button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="view-side-form">
+    <router-outlet></router-outlet>
+</div>

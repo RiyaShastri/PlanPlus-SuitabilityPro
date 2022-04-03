@@ -1,0 +1,16 @@
+:host {
+    background: #fff;
+    position: fixed;
+    left: auto;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 30%;
+    min-width: 250px;
+    z-index: 100;
+}
+
+.text-secondary {
+    color: #6c757d!important;
+}
+

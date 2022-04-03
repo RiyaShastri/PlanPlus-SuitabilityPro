@@ -1,0 +1,177 @@
+<div class="row pt-2" *ngIf="!isPlanTrac">
+    <div class="col-12 text-right">
+        <app-common-drop-down [itemList]="sortBy" [defaultSelected]="selectedSortBy" class="dropdown-right"
+            dropDownLabel="Timeframe to display" (OnSelect)="displayBy($event)"></app-common-drop-down>
+    </div>
+</div>
+<div class="row pt-2" *ngIf="!isPlanTrac">
+    <div class="col-12 col-md-6 text-center" *ngIf="accessRights['CURRSCENARIO']['accessLevel'] > 0">
+   		<div *ngIf="accessRights['PORTANALYSIS']['accessLevel'] > 0">
+        	<h3 class="fs-16 fw-700  pull-left" [translate]="'GOAL.ANALYSIS.LABEL.CURRENT_SITUATION'"></h3>
+        </div>
+   		<div *ngIf="accessRights['PORTANALYSIS']['accessLevel'] == 0">
+        	<h3 class="fs-16 fw-700  pull-left" [translate]="'PORTFOLIO_ALLOCATION.CURRENT'"></h3>
+        </div>
+        <div *ngIf="!noCurrentData" id="currentCoODiv"
+            style="height:400px; width:100%; display: inline-block;margin-left: 0px;margin-right: 0px;"></div>
+        <div *ngIf="noCurrentData" class="no-record text-center position-relative"
+            style="height:50px; width:100%; display: inline-block;margin-left: 0px;margin-right: 0px;">
+            <p class="no_data_graph"><i class="ion-ios-alert mr-2"></i>{{'NO_RESULTS' | translate}}</p>
+        </div>
+    </div>
+    <div class="col-12 col-md-6 text-center">
+    	<div *ngIf="accessRights['PORTANALYSIS']['accessLevel'] == 0 && hasSolution">
+       	 <h3 class="fs-16 fw-700  pull-left" [translate]="'PORTFOLIO.ANALYTICS.LABEL.IMPLEMENTATION'"></h3>
+        </div>
+    	<div *ngIf="accessRights['PORTANALYSIS']['accessLevel'] == 0 && !hasSolution">
+       	 <h3 class="fs-16 fw-700  pull-left" [translate]="'PORTFOLIO.ANALYTICS.LABEL.TARGET'"></h3>
+        </div>
+    	<div *ngIf="accessRights['PORTANALYSIS']['accessLevel'] > 0">
+       	 <h3 class="fs-16 fw-700  pull-left" [translate]="'GOAL.ANALYSIS.LABEL.STRATEGY_SITUATION'"></h3>
+        </div>
+        <div *ngIf="!noStrategyData" id="strategyCoODiv"
+            style="height:400px; width:100%; display: inline-block;margin-left: 0px;margin-right: 0px;"></div>
+        <div *ngIf="noStrategyData" class="no-record text-center position-relative"
+            style="height:50px; width:100%; display: inline-block;margin-left: 0px;margin-right: 0px;">
+            <p class="no_data_graph"><i class="ion-ios-alert mr-2"></i>{{'NO_RESULTS' | translate}}</p>
+        </div>
+    </div>
+</div>
+<div *ngIf="accessRights['LHS']['accessLevel'] > 0">
+    <div *ngIf="!isPlanTrac">
+        <div class="row pt-2 justify-content-around" *ngIf="accessRights['CURRSCENARIO']['accessLevel'] > 0">
+            <div class="col-12 col-md-4 text-center">
+                <table class="table success-likelihood-table">
+                    <thead>
+                        <tr>
+                            <th colspan="2" class="text-left py-2"
+                                [translate]="'GOAL.ANALYSIS.LABEL.SUCCESS_LIKELIHOOD'"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <ng-container *ngIf="currentCertaintyData['successLikelihoodPayload']">
+                            <tr>
+                                <td class="text-left border-0 py-2" [translate]="'GOAL.ANALYSIS.LABEL.AT_AGE'"
+                                    [translateParams]="{age: currentCertaintyData['successLikelihoodPayload']['sucessLikelyhoaadAge']}">
+                                </td>
+                                <td class="text-right border-0 py-2">
+                                    {{currentCertaintyData['successLikelihoodPayload']['atAge'] | number: '1.0-0'}}%
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text-left border-0 py-2" [translate]="'GOAL.ANALYSIS.LABEL.ALL_AGES'"></td>
+                                <td class="text-right border-0 py-2">
+                                    {{currentCertaintyData['successLikelihoodPayload']['allAge'] | number: '1.0-0'}}%
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text-left border-0 py-2"
+                                    [translate]="'GOAL.ANALYSIS.LABEL.MORTALITY_ADJUSTED'"></td>
+                                <td class="text-right border-0 py-2">
+                                    {{currentCertaintyData['successLikelihoodPayload']['mortalityAdjusted'] | number: '1.0-0'}}%
+                                </td>
+                            </tr>
+                        </ng-container>
+                        <ng-container *ngIf="!currentCertaintyData['successLikelihoodPayload']">
+                            <tr>
+                                <td colspan="2" class="no-record text-center border-0">
+                                    <i class="ion-ios-alert mr-2"></i>{{'NO_RESULTS' | translate}}
+                                </td>
+                            </tr>
+                        </ng-container>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-12 col-md-4 text-center">
+                <table class="table success-likelihood-table">
+                    <thead>
+                        <tr>
+                            <th colspan="2" class="text-left py-2"
+                                [translate]="'GOAL.ANALYSIS.LABEL.SUCCESS_LIKELIHOOD'"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <ng-container *ngIf="strategyCertaintyData['successLikelihoodPayload']">
+                            <tr>
+                                <td class="text-left border-0 py-2" [translate]="'GOAL.ANALYSIS.LABEL.AT_AGE'"
+                                    [translateParams]="{age: strategyCertaintyData['successLikelihoodPayload']['sucessLikelyhoaadAge']}">
+                                </td>
+                                <td class="text-right border-0 py-2">
+                                    {{strategyCertaintyData['successLikelihoodPayload']['atAge'] | number: '1.0-0'}}%
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text-left border-0 py-2" [translate]="'GOAL.ANALYSIS.LABEL.ALL_AGES'"></td>
+                                <td class="text-right border-0 py-2">
+                                    {{strategyCertaintyData['successLikelihoodPayload']['allAge'] | number: '1.0-0'}}%
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text-left border-0 py-2"
+                                    [translate]="'GOAL.ANALYSIS.LABEL.MORTALITY_ADJUSTED'"></td>
+                                <td class="text-right border-0 py-2">
+                                    {{strategyCertaintyData['successLikelihoodPayload']['mortalityAdjusted'] | number: '1.0-0'}}%
+                                </td>
+                            </tr>
+                        </ng-container>
+                        <ng-container *ngIf="!strategyCertaintyData['successLikelihoodPayload']">
+                            <tr>
+                                <td colspan="2" class="no-record text-center">
+                                    <i class="ion-ios-alert mr-2"></i>{{'NO_RESULTS' | translate}}
+                                </td>
+                            </tr>
+                        </ng-container>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <!--
+  <div class="row pt-2"  *ngxPermissionsExcept="['ADVISOR']" >
+  <div class="col-12 col-md-4 offset-1 text-center" >
+    <table class="table success-likelihood-table">
+      <thead>
+      <tr>
+        <th colspan="2" class="text-left py-2" [translate]="'GOAL.ANALYSIS.LABEL.SUCCESS_LIKELIHOOD'"></th>
+      </tr>
+      </thead>
+      <tbody>
+      <ng-container *ngIf="strategyCertaintyData['successLikelihoodPayload']">
+        <tr>
+          <td class="text-left border-0 py-2" [translate]="'GOAL.ANALYSIS.LABEL.AT_AGE'"
+              [translateParams]="{age: strategyCertaintyData['successLikelihoodPayload']['sucessLikelyhoaadAge']}">
+          </td>
+          <td class="text-right border-0 py-2">{{strategyCertaintyData['successLikelihoodPayload']['atAge'] | number: '1.0-0'}}%</td>
+        </tr>
+        <tr>
+          <td class="text-left border-0 py-2" [translate]="'GOAL.ANALYSIS.LABEL.ALL_AGES'"></td>
+          <td class="text-right border-0 py-2">{{strategyCertaintyData['successLikelihoodPayload']['allAge'] | number: '1.0-0'}}%</td>
+        </tr>
+        <tr>
+          <td class="text-left border-0 py-2" [translate]="'GOAL.ANALYSIS.LABEL.MORTALITY_ADJUSTED'"></td>
+          <td class="text-right border-0 py-2">{{strategyCertaintyData['successLikelihoodPayload']['mortalityAdjusted'] | number: '1.0-0'}}%</td>
+        </tr>
+      </ng-container>
+      <ng-container *ngIf="!strategyCertaintyData['successLikelihoodPayload']">
+        <tr>
+          <td colspan="2" class="no-record text-center">
+            <i class="ion-ios-alert mr-2"></i>{{'NO_RESULTS' | translate}}
+          </td>
+        </tr>
+      </ng-container>
+      </tbody>
+    </table>
+  </div>
+</div>
+-->
+    </div>
+</div>
+<div class="row pt-2" *ngIf="isPlanTrac">
+    <div class="col-12 col-md-8 offset-md-2 text-center">
+        <div *ngIf="!noCurrentData" id="currentCoODiv"
+            style="height:400px; width:100%; display: inline-block;margin-left: 0px;margin-right: 0px;"></div>
+        <div *ngIf="noCurrentData" class="no-record text-center position-relative"
+            style="height:50px; width:100%; display: inline-block;margin-left: 0px;margin-right: 0px;">
+            <p class="no_data_graph"><i class="ion-ios-alert mr-2"></i>{{'NO_RESULTS' | translate}}</p>
+        </div>
+    </div>
+</div>

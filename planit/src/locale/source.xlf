@@ -1,0 +1,616 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+  <file source-language="en" datatype="plaintext" original="ng2.template">
+    <body>
+      <trans-unit id="product.name" datatype="html">
+        <source>
+          <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span&gt;"/>PlanPlus<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/>Plan<x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i&gt;"/>it<x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i&gt;"/>
+                </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/header/header.component.ts</context>
+          <context context-type="linenumber">13</context>
+        </context-group>
+        <note priority="1" from="description">Product Name</note>
+      </trans-unit>
+      <trans-unit id="header.link.dashboard" datatype="html">
+        <source>Dashboard</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/header/header.component.ts</context>
+          <context context-type="linenumber">23</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/header/header.component.ts</context>
+          <context context-type="linenumber">108</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/header/header.component.ts</context>
+          <context context-type="linenumber">144</context>
+        </context-group>
+        <note priority="1" from="description">Dashboard Header Link</note>
+      </trans-unit>
+      <trans-unit id="header.link.clients" datatype="html">
+        <source>Clients</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/header/header.component.ts</context>
+          <context context-type="linenumber">26</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/header/header.component.ts</context>
+          <context context-type="linenumber">105</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/header/header.component.ts</context>
+          <context context-type="linenumber">141</context>
+        </context-group>
+        <note priority="1" from="description">Client Header Link</note>
+      </trans-unit>
+      <trans-unit id="advisor.menu.my.profile" datatype="html">
+        <source>My profile</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/header/header.component.ts</context>
+          <context context-type="linenumber">63</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/header/header.component.ts</context>
+          <context context-type="linenumber">111</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/header/header.component.ts</context>
+          <context context-type="linenumber">147</context>
+        </context-group>
+        <note priority="1" from="description">advisor Menu My Profile Link</note>
+      </trans-unit>
+      <trans-unit id="advisor.menu.settings" datatype="html">
+        <source>Settings</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/header/header.component.ts</context>
+          <context context-type="linenumber">66</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/header/header.component.ts</context>
+          <context context-type="linenumber">114</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/header/header.component.ts</context>
+          <context context-type="linenumber">150</context>
+        </context-group>
+        <note priority="1" from="description">advisor Menu settings Link</note>
+      </trans-unit>
+      <trans-unit id="advisor.menu.switch" datatype="html">
+        <source>Switch to classic PlanPlus interface</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/header/header.component.ts</context>
+          <context context-type="linenumber">69</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/header/header.component.ts</context>
+          <context context-type="linenumber">117</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/header/header.component.ts</context>
+          <context context-type="linenumber">153</context>
+        </context-group>
+        <note priority="1" from="description">advisor Menu Switch Link</note>
+      </trans-unit>
+      <trans-unit id="advisor.menu.logout" datatype="html">
+        <source>Log out</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/header/header.component.ts</context>
+          <context context-type="linenumber">72</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/header/header.component.ts</context>
+          <context context-type="linenumber">129</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/header/header.component.ts</context>
+          <context context-type="linenumber">165</context>
+        </context-group>
+        <note priority="1" from="description">advisor Menu Logout Link</note>
+      </trans-unit>
+      <trans-unit id="language.en" datatype="html">
+        <source>En</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/header/header.component.ts</context>
+          <context context-type="linenumber">79</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/header/header.component.ts</context>
+          <context context-type="linenumber">83</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/header/header.component.ts</context>
+          <context context-type="linenumber">120</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/header/header.component.ts</context>
+          <context context-type="linenumber">156</context>
+        </context-group>
+        <note priority="1" from="description">Short English Language</note>
+      </trans-unit>
+      <trans-unit id="language.fr" datatype="html">
+        <source>Fr</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/header/header.component.ts</context>
+          <context context-type="linenumber">86</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/header/header.component.ts</context>
+          <context context-type="linenumber">123</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/header/header.component.ts</context>
+          <context context-type="linenumber">159</context>
+        </context-group>
+        <note priority="1" from="description">Short French Language</note>
+      </trans-unit>
+      <trans-unit id="language.de" datatype="html">
+        <source>De</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/header/header.component.ts</context>
+          <context context-type="linenumber">89</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/header/header.component.ts</context>
+          <context context-type="linenumber">126</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/header/header.component.ts</context>
+          <context context-type="linenumber">162</context>
+        </context-group>
+        <note priority="1" from="description">Short German Language</note>
+      </trans-unit>
+      <trans-unit id="client.breadcrumb.overview" datatype="html">
+        <source>Overview</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/header/header.component.ts</context>
+          <context context-type="linenumber">192</context>
+        </context-group>
+        <note priority="1" from="description">Client Breadcrumb Overview</note>
+      </trans-unit>
+      <trans-unit id="client.breadcrumb.profile" datatype="html">
+        <source>Profile</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/header/header.component.ts</context>
+          <context context-type="linenumber">193</context>
+        </context-group>
+        <note priority="1" from="description">Client Breadcrumb Profile</note>
+      </trans-unit>
+      <trans-unit id="client.breadcrumb.planning" datatype="html">
+        <source>Planning</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/header/header.component.ts</context>
+          <context context-type="linenumber">194</context>
+        </context-group>
+        <note priority="1" from="description">Client Breadcrumb Planning</note>
+      </trans-unit>
+      <trans-unit id="client.breadcrumb.collaboration" datatype="html">
+        <source>Collaboration</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/header/header.component.ts</context>
+          <context context-type="linenumber">195</context>
+        </context-group>
+        <note priority="1" from="description">Client Breadcrumb Collaboration</note>
+      </trans-unit>
+      <trans-unit id="client.breadcrumb.documents" datatype="html">
+        <source>Documents</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/header/header.component.ts</context>
+          <context context-type="linenumber">196</context>
+        </context-group>
+        <note priority="1" from="description">Client Breadcrumb Documents</note>
+      </trans-unit>
+      <trans-unit id="tile.alloc.title" datatype="html">
+        <source>Asset allocation</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/tiles/allocation-tile/allocation-tile.component.ts</context>
+          <context context-type="linenumber">5</context>
+        </context-group>
+        <note priority="1" from="description">Asset Allocation Tile Title</note>
+      </trans-unit>
+      <trans-unit id="tile.alloc.heading.current" datatype="html">
+        <source>
+                                Current
+                            </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/tiles/allocation-tile/allocation-tile.component.ts</context>
+          <context context-type="linenumber">21</context>
+        </context-group>
+        <note priority="1" from="description">Asset Allocation Current Heading</note>
+      </trans-unit>
+      <trans-unit id="tile.alloc.heading.cash" datatype="html">
+        <source>Cash</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/tiles/allocation-tile/allocation-tile.component.ts</context>
+          <context context-type="linenumber">48</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/tiles/allocation-tile/allocation-tile.component.ts</context>
+          <context context-type="linenumber">139</context>
+        </context-group>
+        <note priority="1" from="description">Asset Allocation Cash Heading</note>
+      </trans-unit>
+      <trans-unit id="tile.alloc.heading.fixed.income" datatype="html">
+        <source>Fixed incomed</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/tiles/allocation-tile/allocation-tile.component.ts</context>
+          <context context-type="linenumber">64</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/tiles/allocation-tile/allocation-tile.component.ts</context>
+          <context context-type="linenumber">155</context>
+        </context-group>
+        <note priority="1" from="description">Asset Allocation Fixed Income Heading</note>
+      </trans-unit>
+      <trans-unit id="tile.alloc.heading.equity" datatype="html">
+        <source>Equity</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/tiles/allocation-tile/allocation-tile.component.ts</context>
+          <context context-type="linenumber">80</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/tiles/allocation-tile/allocation-tile.component.ts</context>
+          <context context-type="linenumber">171</context>
+        </context-group>
+        <note priority="1" from="description">Asset Allocation Equity Heading</note>
+      </trans-unit>
+      <trans-unit id="tile.alloc.heading.target" datatype="html">
+        <source>
+                                Target
+                            </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/tiles/allocation-tile/allocation-tile.component.ts</context>
+          <context context-type="linenumber">112</context>
+        </context-group>
+        <note priority="1" from="description">Asset Allocation Target Heading</note>
+      </trans-unit>
+      <trans-unit id="tile.portfolio.title" datatype="html">
+        <source>Portfolios</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/tiles/portfolio-tile/portfolio-tile.component.ts</context>
+          <context context-type="linenumber">6</context>
+        </context-group>
+        <note priority="1" from="description">Portfolios Tile Title</note>
+      </trans-unit>
+      <trans-unit id="tile.family.heading.client" datatype="html">
+        <source>Client</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/tiles/portfolio-tile/portfolio-tile.component.ts</context>
+          <context context-type="linenumber">7</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/tiles/family-tile/family-tile.component.ts</context>
+          <context context-type="linenumber">26</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/tiles/risk-tile/risk-tile.component.ts</context>
+          <context context-type="linenumber">12</context>
+        </context-group>
+        <note priority="1" from="description">Family Tile Client Heading</note>
+      </trans-unit>
+      <trans-unit id="tile.portfolio.heading.risk.level" datatype="html">
+        <source>Risk Level</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/tiles/portfolio-tile/portfolio-tile.component.ts</context>
+          <context context-type="linenumber">8</context>
+        </context-group>
+        <note priority="1" from="description">Portfolio Tile Risk Heading</note>
+      </trans-unit>
+      <trans-unit id="tile.portfolio.heading.goal.funded" datatype="html">
+        <source>Goals funded</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/tiles/portfolio-tile/portfolio-tile.component.ts</context>
+          <context context-type="linenumber">9</context>
+        </context-group>
+        <note priority="1" from="description">Portfolio Tile Goal Heading</note>
+      </trans-unit>
+      <trans-unit id="tile.portfolio.heading.investment.strategy" datatype="html">
+        <source>Investment Strategy</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/tiles/portfolio-tile/portfolio-tile.component.ts</context>
+          <context context-type="linenumber">10</context>
+        </context-group>
+        <note priority="1" from="description">Portfolio Tile Investment Strategy Heading</note>
+      </trans-unit>
+      <trans-unit id="tile.portfolio.heading.total.assets" datatype="html">
+        <source>Total assets</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/tiles/portfolio-tile/portfolio-tile.component.ts</context>
+          <context context-type="linenumber">11</context>
+        </context-group>
+        <note priority="1" from="description">Portfolio Tile Total Assets Heading</note>
+      </trans-unit>
+      <trans-unit id="tile.general.actions" datatype="html">
+        <source>Actions</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/tiles/portfolio-tile/portfolio-tile.component.ts</context>
+          <context context-type="linenumber">12</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/tiles/risk-tile/risk-tile.component.ts</context>
+          <context context-type="linenumber">17</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/tiles/goal-tile/goal-tile.component.ts</context>
+          <context context-type="linenumber">12</context>
+        </context-group>
+        <note priority="1" from="description">Action Heading</note>
+      </trans-unit>
+      <trans-unit id="tile.general.view.more" datatype="html">
+        <source>View more</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/tiles/portfolio-tile/portfolio-tile.component.ts</context>
+          <context context-type="linenumber">52</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/tiles/investments-tile/investments-tile.component.ts</context>
+          <context context-type="linenumber">95</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/tiles/net-worth-tile/net-worth-tile.component.ts</context>
+          <context context-type="linenumber">156</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/tiles/family-tile/family-tile.component.ts</context>
+          <context context-type="linenumber">46</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/tiles/colaboration-tile/colaboration-tile.component.ts</context>
+          <context context-type="linenumber">37</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/tiles/document-tile/document-tile.component.ts</context>
+          <context context-type="linenumber">33</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/tiles/risk-tile/risk-tile.component.ts</context>
+          <context context-type="linenumber">47</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/tiles/task-tile/task-tile.component.ts</context>
+          <context context-type="linenumber">37</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/tiles/goal-tile/goal-tile.component.ts</context>
+          <context context-type="linenumber">39</context>
+        </context-group>
+        <note priority="1" from="description">View More on a Tile</note>
+      </trans-unit>
+      <trans-unit id="tile.portfolio.menu.edit.portfolio" datatype="html">
+        <source>Edit Portfolio</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/tiles/portfolio-tile/portfolio-tile.component.ts</context>
+          <context context-type="linenumber">66</context>
+        </context-group>
+        <note priority="1" from="description">Portfolio Menu Edit Portfolio</note>
+      </trans-unit>
+      <trans-unit id="tile.portfolio.menu.edit.asset.alloc" datatype="html">
+        <source>Edit Asset Allocation</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/tiles/portfolio-tile/portfolio-tile.component.ts</context>
+          <context context-type="linenumber">75</context>
+        </context-group>
+        <note priority="1" from="description">Portfolio Menu Edit Asset Allocation</note>
+      </trans-unit>
+      <trans-unit id="tile.goals.menu.link.portfolio" datatype="html">
+        <source>Link portfolios to goals</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/tiles/portfolio-tile/portfolio-tile.component.ts</context>
+          <context context-type="linenumber">84</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/tiles/goal-tile/goal-tile.component.ts</context>
+          <context context-type="linenumber">71</context>
+        </context-group>
+        <note priority="1" from="description">Goal Menu Link Portfolios</note>
+      </trans-unit>
+      <trans-unit id="tile.family.title" datatype="html">
+        <source>Family</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/tiles/family-tile/family-tile.component.ts</context>
+          <context context-type="linenumber">6</context>
+        </context-group>
+        <note priority="1" from="description">Family Tile Title</note>
+      </trans-unit>
+      <trans-unit id="tile.family.heading.status" datatype="html">
+        <source>Status</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/tiles/family-tile/family-tile.component.ts</context>
+          <context context-type="linenumber">27</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/tiles/document-tile/document-tile.component.ts</context>
+          <context context-type="linenumber">13</context>
+        </context-group>
+        <note priority="1" from="description">Family Tile Status Heading</note>
+      </trans-unit>
+      <trans-unit id="tile.family.heading.age" datatype="html">
+        <source>Age</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/tiles/family-tile/family-tile.component.ts</context>
+          <context context-type="linenumber">28</context>
+        </context-group>
+        <note priority="1" from="description">Family Tile Age Heading</note>
+      </trans-unit>
+      <trans-unit id="tile.collaboration.title" datatype="html">
+        <source>Collaboration center</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/tiles/colaboration-tile/colaboration-tile.component.ts</context>
+          <context context-type="linenumber">5</context>
+        </context-group>
+        <note priority="1" from="description">Collaboration Tile Title</note>
+      </trans-unit>
+      <trans-unit id="tile.collaboration.heading.risk.tolerance" datatype="html">
+        <source>Risk Tolerance</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/tiles/colaboration-tile/colaboration-tile.component.ts</context>
+          <context context-type="linenumber">20</context>
+        </context-group>
+        <note priority="1" from="description">Collaboration Tile Risk Tolerance Row Heading</note>
+      </trans-unit>
+      <trans-unit id="tile.collaboration.heading.document.vault" datatype="html">
+        <source>Document Vault</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/tiles/colaboration-tile/colaboration-tile.component.ts</context>
+          <context context-type="linenumber">26</context>
+        </context-group>
+        <note priority="1" from="description">Collaboration Tile Document Vault Row Heading</note>
+      </trans-unit>
+      <trans-unit id="tile.document.title" datatype="html">
+        <source>Document center</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/tiles/document-tile/document-tile.component.ts</context>
+          <context context-type="linenumber">5</context>
+        </context-group>
+        <note priority="1" from="description">Document Center tile title</note>
+      </trans-unit>
+      <trans-unit id="tile.risk.title" datatype="html">
+        <source>Risk tolerances</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/tiles/risk-tile/risk-tile.component.ts</context>
+          <context context-type="linenumber">5</context>
+        </context-group>
+        <note priority="1" from="description">Risk Tolerance Tile title</note>
+      </trans-unit>
+      <trans-unit id="tile.risk.heading.risk.tolerance" datatype="html">
+        <source>Risk Tolerance
+                    </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/tiles/risk-tile/risk-tile.component.ts</context>
+          <context context-type="linenumber">13</context>
+        </context-group>
+        <note priority="1" from="description">Risk Tolerance Heading</note>
+      </trans-unit>
+      <trans-unit id="tile.risk.heading.last.update" datatype="html">
+        <source>Last update
+                    </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/tiles/risk-tile/risk-tile.component.ts</context>
+          <context context-type="linenumber">15</context>
+        </context-group>
+        <note priority="1" from="description">Risk Tolerance Update Heading</note>
+      </trans-unit>
+      <trans-unit id="tile.risk.menu.view.results" datatype="html">
+        <source>view results</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/tiles/risk-tile/risk-tile.component.ts</context>
+          <context context-type="linenumber">63</context>
+        </context-group>
+        <note priority="1" from="description">Risk Menu view results</note>
+      </trans-unit>
+      <trans-unit id="tile.risk.menu.send.invite" datatype="html">
+        <source>send invite</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/tiles/risk-tile/risk-tile.component.ts</context>
+          <context context-type="linenumber">72</context>
+        </context-group>
+        <note priority="1" from="description">Risk Menu send invite</note>
+      </trans-unit>
+      <trans-unit id="tile.risk.menu.send.reminder" datatype="html">
+        <source>send reminder</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/tiles/risk-tile/risk-tile.component.ts</context>
+          <context context-type="linenumber">81</context>
+        </context-group>
+        <note priority="1" from="description">Risk Menu send reminder</note>
+      </trans-unit>
+      <trans-unit id="tile.risk.menu.complete.questions" datatype="html">
+        <source>complete questionnaire</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/tiles/risk-tile/risk-tile.component.ts</context>
+          <context context-type="linenumber">90</context>
+        </context-group>
+        <note priority="1" from="description">Risk Menu complete questionnaire</note>
+      </trans-unit>
+      <trans-unit id="tile.tasks.title" datatype="html">
+        <source>Tasks &amp; notifications
+                </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/tiles/task-tile/task-tile.component.ts</context>
+          <context context-type="linenumber">5</context>
+        </context-group>
+        <note priority="1" from="description">Tasks Tile Title</note>
+      </trans-unit>
+      <trans-unit id="tile.goals.title" datatype="html">
+        <source>Goals</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/tiles/goal-tile/goal-tile.component.ts</context>
+          <context context-type="linenumber">6</context>
+        </context-group>
+        <note priority="1" from="description">Goals Tile Title</note>
+      </trans-unit>
+      <trans-unit id="tile.goals.rate.per.year" datatype="html">
+        <source>$/year</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/tiles/goal-tile/goal-tile.component.ts</context>
+          <context context-type="linenumber">7</context>
+        </context-group>
+        <note priority="1" from="description">Goals Tile Rate per year</note>
+      </trans-unit>
+      <trans-unit id="tile.goals.start.date" datatype="html">
+        <source>Start date</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/tiles/goal-tile/goal-tile.component.ts</context>
+          <context context-type="linenumber">8</context>
+        </context-group>
+        <note priority="1" from="description">Goals Tile Start Date</note>
+      </trans-unit>
+      <trans-unit id="tile.goals.end.date" datatype="html">
+        <source>End date</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/tiles/goal-tile/goal-tile.component.ts</context>
+          <context context-type="linenumber">9</context>
+        </context-group>
+        <note priority="1" from="description">Goals Tile End Date</note>
+      </trans-unit>
+      <trans-unit id="tile.goals.funded.by" datatype="html">
+        <source>Funded by</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/tiles/goal-tile/goal-tile.component.ts</context>
+          <context context-type="linenumber">10</context>
+        </context-group>
+        <note priority="1" from="description">Goals Tile Funded By</note>
+      </trans-unit>
+      <trans-unit id="tile.goals.plantrac.status" datatype="html">
+        <source>PlanTrac status</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/tiles/goal-tile/goal-tile.component.ts</context>
+          <context context-type="linenumber">11</context>
+        </context-group>
+        <note priority="1" from="description">Goals Tile PlanTrac Status</note>
+      </trans-unit>
+      <trans-unit id="tile.goals.menu.edit.goal" datatype="html">
+        <source>Edit Goal</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/tiles/goal-tile/goal-tile.component.ts</context>
+          <context context-type="linenumber">53</context>
+        </context-group>
+        <note priority="1" from="description">Goal Menu Edit Goal</note>
+      </trans-unit>
+      <trans-unit id="tile.goals.menu.edit.goal.revenue" datatype="html">
+        <source>Edit Goal Revenues</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/tiles/goal-tile/goal-tile.component.ts</context>
+          <context context-type="linenumber">62</context>
+        </context-group>
+        <note priority="1" from="description">Goal Menu Edit Goal Revenue</note>
+      </trans-unit>
+      <trans-unit id="tile.goals.menu.goal.results" datatype="html">
+        <source>goal results</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/tiles/goal-tile/goal-tile.component.ts</context>
+          <context context-type="linenumber">80</context>
+        </context-group>
+        <note priority="1" from="description">Goal Menu Goal Results</note>
+      </trans-unit>
+      <trans-unit id="tile.goals.menu.view.plantrac" datatype="html">
+        <source>view plan trac</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/tiles/goal-tile/goal-tile.component.ts</context>
+          <context context-type="linenumber">90</context>
+        </context-group>
+        <note priority="1" from="description">Goal Menu View Plantrac</note>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

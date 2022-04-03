@@ -1,0 +1,113 @@
+<div class="side-form">
+    <form name="form" (ngSubmit)="generateReport(f) && f.form.valid" #f="ngForm" novalidate>
+        <div class="box">
+            <div class="box-header">
+                <span class="sidebar_title">{{ 'GENERATE_REPORT.TITLE' | translate }}</span>
+                <span (click)="closePanel()" class="sidebar_action_icon ion-md-close-circle float-right"></span>
+            </div>
+            <div class="box-body">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="pull-right expand-button d-flex">
+                            <a (click)="expandALL()" class="ml-auto">
+                                <span *ngIf="!allExpanded" [translate]="'ACCORDIAN.EXPAND_ALL'"></span>
+                                <span *ngIf="allExpanded" [translate]="'ACCORDIAN.COLLAPSE_ALL'"></span>
+                                <i [ngClass]="{'ion-ios-arrow-up' : allExpanded, 'ion-ios-arrow-down': !allExpanded}"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <p-accordion [multiple]="true" (onOpen)="openTab($event)" (onClose)="onTabClose($event)">
+                            <p-accordionTab [selected]="isLoanCalculator">
+                                <p-header>
+                                    <h4 class="text-uppercase">{{ 'CALCULATOR.HEADER.LOAN_CALCULATORS' | translate }}</h4>
+                                </p-header>
+                                <ng-container *ngFor="let lonCal of loanCalculatorReport">
+                                    <div class="form-group generate-report-form-check form-check">
+                                        <p-radioButton name="loanCal" label="{{ lonCal.label | translate}}" [(ngModel)]="selectedReport" [value]="lonCal" (ngModelChange)="setCraitaria()"
+                                            required></p-radioButton>
+                                    </div>
+                                </ng-container>
+
+                            </p-accordionTab>
+
+                            <p-accordionTab [selected]="isInsuranceCalculator">
+                                <p-header>
+                                    <h4 class="text-uppercase">{{ 'CALCULATOR.HEADER.INSURANCE_CALCULATORS' | translate }}
+                                    </h4>
+                                </p-header>
+                                <ng-container *ngFor="let insurCal of insuranceCalculator">
+                                    <div class="form-group generate-report-form-check form-check">
+                                        <p-radioButton name="insuranceCal" label="{{ insurCal.label | translate }}" [(ngModel)]="selectedReport" [value]="insurCal"
+                                            (ngModelChange)="setCraitaria()" required>
+                                        </p-radioButton>
+                                    </div>
+                                </ng-container>
+                            </p-accordionTab>
+
+                            <p-accordionTab [selected]="isInvestmentCalculator">
+                                <p-header>
+                                    <h4 class="text-uppercase">{{ 'CALCULATOR.HEADER.INVESTMENT_CALCULATORS' | translate }}</h4>
+                                </p-header>
+                                <ng-container *ngFor="let invesCal of investmentCalculator">
+                                    <div class="form-group generate-report-form-check form-check">
+                                        <p-radioButton name="investmentCal" label="{{ invesCal.label | translate }}" [(ngModel)]="selectedReport" [value]="invesCal"
+                                            (ngModelChange)="setCraitaria()" required>
+                                        </p-radioButton>
+                                    </div>
+                                </ng-container>
+                            </p-accordionTab>
+                            <p-accordionTab [selected]="isFinancialCalculator">
+                                <p-header>
+                                    <h4 class="text-uppercase">{{ 'CALCULATOR.HEADER.FINANCIAL_CALCULATORS' | translate }}</h4>
+                                </p-header>
+                                <ng-container *ngFor="let finanCal of financialCalculator">
+                                    <div class="form-group generate-report-form-check form-check">
+                                        <p-radioButton name="financialCal" label="{{ finanCal.label | translate }}" [(ngModel)]="selectedReport" (ngModelChange)="setCraitaria()"
+                                            [value]="finanCal" required></p-radioButton>
+                                    </div>
+                                </ng-container>
+                            </p-accordionTab>
+                        </p-accordion>
+                    </div>
+                    <div class="col-12 mt-2" *ngIf="selectedReport && selectedReport['criteria'].length > 0">
+                        <div class="form-group">
+                            <label class="custom-form-label">{{ 'GENERATE_REPORT.CRITERIA' | translate }}</label>
+                            <p-dropdown placeholder="{{ 'GENERATE_REPORT.CRITERIA_PLACEHOLDER' | translate }}" [options]="criterias" name="criteria"
+                                [(ngModel)]="criteria" #selectedCriteria="ngModel" required>
+                                <ng-template let-selectedCriteria pTemplate="selectedItem">
+                                    <span>{{ selectedCriteria.label | translate }}</span>
+                                </ng-template>
+                                <ng-template let-criteria pTemplate="item">
+                                    <div class="ui-helper-clearfix">
+                                        <span>{{ criteria.label | translate }}</span>
+                                    </div>
+                                </ng-template>
+                            </p-dropdown>
+                        </div>
+                    </div>
+                    <div class="col-12 mt-2">
+                        <div class="form-group d-flex save-vault-check">
+                            <label class="custom-form-label mr-2">{{ 'CALCULATOR.SAVE_TO_VAULT' | translate}}</label>
+                            <p-checkbox name="saveVault" [(ngModel)]="saveToVault" binary="true"></p-checkbox>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="form-group">
+                            <label class="custom-form-label">{{ 'GENERATE_REPORT.FORMATS' | translate }}</label>
+                            <p-dropdown required [options]="formatesList" name="reportFormat" [(ngModel)]="selectedFormat" #reportFormat="ngModel" optionLabel="description"
+                                placeholder="{{ 'GENERATE_REPORT.FORMATS_PLACEHOLDER' | translate }}"></p-dropdown>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="box-footer">
+                <div class="form-group mt-5 text-right">
+                    <button (click)="closePanel()" type="button" class="btn btn-secondary btn-small mr-2" [translate]="'FORM.ACTION.CANCEL'"></button>
+                    <button [disabled]="f.form.invalid || saveDisable" name="save" type="submit" class="btn btn-small btn-success pl-4 pr-4"
+                        [translate]="'FORM.ACTION.SAVE'"></button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

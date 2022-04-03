@@ -1,0 +1,22 @@
+<div class="row">
+    <div class="col-12 text-center" *ngIf="isData">
+        <span class="fw-700 bg-active-link btn fs-12"> {{country}} {{ 'MORTALITY.MORTALITY_TITLE' | translate}}
+            {{(selectedClient['client']['gender']) === 'F' ? ('MORTALITY.FEMALE' | translate) : ('MORTALITY.MALE' | translate)}} {{'REVENUES.AGE' | translate}}
+            {{selectedClient['retire']}}</span>
+    </div>
+</div>
+<div class="row">
+    <div class="col-12 text-center" *ngIf="isData">
+        <div id="mortalityGraphDiv"
+            style="height:300px; width:100%; display: inline-block;margin-left: 0px;margin-right: 0px;"></div>
+    </div>
+    <div class="col-12 text-center" *ngIf="!isData">
+        <table class="table mt-4">
+            <tr>
+                <td class="no-record text-center">
+                    <i class="ion-ios-alert mr-2"></i>{{'NO_RESULTS' | translate}}
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>

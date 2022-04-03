@@ -1,0 +1,81 @@
+<div class="bg-white pt-4 pb-4 assets-summary-bg">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-7 col-7">
+                <h4 class="mb-1">
+                    <a [routerLink]="['/client',clientId,'planning']" [translate]="'BREADCRUMB.PLANNING'"></a> /
+                </h4>
+                <h1 class="d-inline-block fw-500" [translate]="'BREADCRUMB.ASSETS_LIABILITIES'"></h1>
+            </div>
+            <div class="col-lg-5 col-5 text-right">
+                <app-planning-module-drop-down class="dropdown-right" [clientId]="clientId"></app-planning-module-drop-down>
+            </div>
+            <div class="col-12">
+                <hr>
+            </div>
+            <div class="col-12">
+                <ul class="nav nav-tabs" role="tablist">
+                    <li class="nav-item">
+                        <a [routerLink]="['/client',clientId,'planning', 'assets-liabilities']" data-toggle="tab" class="nav-link p-lr-40" [translate]="'ASSETS.SUMMARY'"></a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a [routerLink]="['/client',clientId,'planning', 'assets-liabilities-savings']" class="nav-link active p-lr-40" data-toggle="tab"
+                            [translate]="'ASSETS.SAVINGS'"></a>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-12">
+                <hr>
+            </div>
+            <div class="col-12">
+                <div class="d-flex">
+                    <a routerLink="add-savings" class="btn-add ">
+                        <i class="ion-md-add-circle"></i>
+                        <span [translate]="'ASSETS_SUMMARY.ACTION.ADD_SAVINGS'"></span>
+                    </a>
+                    <span *ngIf="accessRights['SCENARIOACCESS']['accessLevel'] > 0" class="dropdown-common mt-1 sort-dropdown ml-auto">
+                        <app-common-drop-down class="dropdown-right" [itemList]="scenarioObject" [defaultSelected]="selectedScenario" dropDownLabel=""
+                            (OnSelect)="onSelectScenario($event)"></app-common-drop-down>
+                    </span>
+                </div>
+                
+                <div class="d-flex flex-wrap pb-2 hidden-xs-down">
+
+                    <div class="sort-dropdown ml-0">
+                        <app-common-drop-down [itemList]="viewBy" [defaultSelected]="selectedViewBy" dropDownLabel="{{'VIEW_BY_DROPDOWN' | translate}}"
+                            (OnSelect)="displayViewBy($event)"></app-common-drop-down>
+                    </div>
+                    <div class="sort-box ml-auto">
+                        <app-common-drop-down [itemList]="groupBy" [defaultSelected]="selectedGroupBy" dropDownLabel="{{'GROUP_BY_DROPDOWN' | translate}}"
+                            (OnSelect)="displayGroupBy($event)"></app-common-drop-down>
+                    </div>
+                    <div class="sort-box ml-auto">
+                        <i class="ion-md-funnel"></i>
+                        <div class="sort-dropdown">
+                            <app-common-drop-down class="dropdown-right" [itemList]="sortBy" [defaultSelected]="selectedSortBy" dropDownLabel="{{'SORT_BY_DROPDOWN' | translate}}"
+                                (OnSelect)="sorting($event)"></app-common-drop-down>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="col-12">
+                <hr class="mt-0">
+            </div>
+
+            <div class="col-12" *ngIf="!noSavings">
+                <app-savings-list-html [clientId]="clientId" i_id="" [type]="'account'" [allSavings]="allSavings" [selectedViewBy]="selectedViewBy" [selectedGroupBy]="selectedGroupBy"></app-savings-list-html>
+            </div>
+            <ng-container *ngIf="allSavings.length > 0 && dataProviderList.length > 0">
+                <div class="col-12 hidden-xs-down">
+                    <app-timeline-chart  [clientData]="clientData" titleName="{{ 'GRAPH.SAVINGS_MAP' | translate}}" [dataProviderList]="dataProviderList" [goalList]="graphSavingList" [goalListAmount]="graphSavingListAmount"
+                    (OnSelect)="savingMapChange($event)" [selectedDropdownOption]="selectedDropdownOption"></app-timeline-chart>
+                </div>
+            </ng-container>
+        </div>
+    </div>
+</div>
+<div class="view-side-form">
+    <router-outlet></router-outlet>
+</div>

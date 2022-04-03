@@ -1,0 +1,8 @@
+.sort-box {
+    text-transform: capitalize;
+}
+
+.sort-dropdown app-common-drop-down {
+    display: flex;
+    padding-top: 0.4rem;
+}

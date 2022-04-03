@@ -1,0 +1,477 @@
+<div class="bg-white pt-4 pb-4 assets-summary-bg">
+    <div class="container">
+        <form name="form" (ngSubmit)="updateAccount() && f.form.valid" #f="ngForm" novalidate>
+            <div class="row">
+                <div class="col-lg-7 col-12">
+                    <h4 class="mb-1">
+                        <a [routerLink]="['/client',clientId,'planning']" [translate]="'BREADCRUMB.PLANNING'"></a> /
+                    </h4>
+                    <h1 class="d-inline-block fw-500" [translate]="'BREADCRUMB.ASSETS_LIABILITIES'">
+                    </h1>
+                </div>
+                <div class="col-lg-5 col-12 text-right">
+                    <app-planning-module-drop-down class="dropdown-right" [clientId]="clientId">
+                    </app-planning-module-drop-down>
+                </div>
+                <div class="col-12">
+                    <hr>
+                </div>
+                <div class="col-12">
+                    <ul class="nav nav-tabs" role="tablist">
+                        <li class="nav-item">
+                            <a [routerLink]="['/client',clientId,'planning', 'assets-liabilities']" data-toggle="tab"
+                                class="nav-link active p-lr-40" [translate]="'ASSETS.SUMMARY'"></a>
+                        </li>
+                        <li class="nav-item">
+                            <a [routerLink]="['/client',clientId,'planning', 'assets-liabilities-savings']"
+                                class="nav-link p-lr-40" data-toggle="tab" [translate]="'ASSETS.SAVINGS'"></a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-12">
+                    <hr>
+                </div>
+                <div class="col-12">
+                    <div class="d-flex flex-wrap">
+                        <a routerLink="add-account" class="btn-add" *ngIf="accessRights['BTN01']['accessLevel'] > 0">
+                            <i class="ion-md-add-circle"></i>
+                            <span [translate]="'ASSETS_SUMMARY.ADD_AN_ACCOUNT'"></span>
+                        </a>
+                        <div class="sort-box ml-3">
+                            <i class="ion-md-funnel"></i>
+                            <div class="dropdown-common mt-1 sort-dropdown">
+                                <app-common-drop-down [itemList]="sortBy" [defaultSelected]="selectedSortBy"
+                                    dropDownLabel="SORT BY" (OnSelect)="sorting($event)"></app-common-drop-down>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <hr>
+                </div>
+                <div class="col-12">
+                    <div class="table-responsive">
+                        <table class="table asset-list-table-main">
+                            <thead>
+                                <tr>
+                                    <th class="account-wrap account-wrap-responsive" [translate]="'ASSETS_SUMMARY.TABLE_HEADER.ACCOUNTS'"></th>
+                                    <th width="15%" class="hidden-md-down"
+                                        [translate]="'ASSETS_SUMMARY.TABLE_HEADER.ACCOUNT_TYPE'"></th>
+                                    <th width="15%" class="text-left hidden-md-down"
+                                        [translate]="'ASSETS_SUMMARY.TABLE_HEADER.PORTFOLIO'"></th>
+                                    <th class="text-right assets-wrap assets-wrap-responsive"
+                                        [translate]="'ASSETS_SUMMARY.TABLE_HEADER.ASSETS'"></th>
+                                    <th *ngIf="accessRights['AL_LIABILITY']['accessLevel'] > 1" class="text-right liability-wrap liability-wrap-responsive"
+                                        [translate]="'ASSETS_SUMMARY.TABLE_HEADER.LIABILITIES'"></th>
+                                    <th *ngIf="accessRights['AL_LIABILITY']['accessLevel'] == 0" class="text-right liability-wrap liability-wrap-responsive">&nbsp;</th>
+                                    <th width="13%" class="text-right hidden-md-down"
+                                        [translate]="'ASSETS_SUMMARY.TABLE_HEADER.TOTAL_SAVINGS'"></th>
+                                    <th width="4%" class="action-ellipsis-wrap">&nbsp;</th>
+                                    <th width="2%" class="expand-box">&nbsp;</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <ng-container *ngIf="assetsData && accountTypes.length > 0">
+                                    <ng-container *ngFor="let type of accountTypes; let accIndex = index; let accLast = last">
+                                        <tr>
+                                            <td colspan="4" class="p-0 hidden-md-down account-wrap">
+                                                <h3 class="pt-3 pb-3">{{type}}</h3>
+                                            </td>
+                                            <td colspan="4" class="text-right hidden-md-down td-pr-10">
+                                                <button type="button" class="expandall-btn text-uppercase"
+                                                    (click)="toggleAllAssets(type);isExpanded = !isExpanded"
+                                                    *ngIf="accIndex == 0">
+                                                    <span *ngIf="!isExpanded" class="fw-700 mr-3"
+                                                        [translate]="'ACCORDIAN.EXPAND_ALL'"></span>
+                                                    <span *ngIf="isExpanded" class="fw-700 mr-3"
+                                                        [translate]="'ACCORDIAN.COLLAPSE_ALL'"></span>
+                                                    <i
+                                                        [ngClass]="{'ion-ios-arrow-down' : !isExpanded, 'ion-ios-arrow-up': isExpanded}"></i>
+                                                </button>
+                                                <span *ngIf="accIndex > 0">&nbsp;</span>
+                                            </td>
+                                            <td colspan="8" class="text-right hidden-lg-up">
+                                                <button type="button" class="expandall-btn text-uppercase"
+                                                    (click)="toggleAllAssets(type);isExpanded = !isExpanded"
+                                                    *ngIf="accIndex == 0">
+                                                    <span *ngIf="!isExpanded" class="fw-700 mr-3"
+                                                        [translate]="'ACCORDIAN.EXPAND_ALL'"></span>
+                                                    <span *ngIf="isExpanded" class="fw-700 mr-3"
+                                                        [translate]="'ACCORDIAN.COLLAPSE_ALL'"></span>
+                                                    <i
+                                                        [ngClass]="{'ion-ios-arrow-down' : !isExpanded, 'ion-ios-arrow-up': isExpanded}"></i>
+                                                </button>
+                                                <span *ngIf="accIndex > 0">&nbsp;</span>
+                                            </td>
+                                        </tr>
+                                        <ng-container *ngFor="let data of accountList[type].accounts; let i = index; let last = last;">
+                                            <tr>
+                                                <td colspan="8" class="pt-0 pb-0" *ngIf="data">
+                                                    <table class="table">
+                                                        <thead>
+                                                            <tr>
+                                                                <td class="account-wrap account-wrap-responsive">
+                                                                    <div class="d-flex">
+                                                                        <div class="dropdown-relative-full d-flex"
+                                                                            *ngIf="data['ownership'] && data['ownership'].length > 0">
+                                                                            <span class="d-flex client-avatars">
+                                                                                <ng-container
+                                                                                    *ngFor="let owner of data.ownership | slice:0:2; let i = index">
+                                                                                    <ng-container *ngIf="owner['personDetails']">
+                                                                                        <span *ngIf="!owner['personDetails'].avatar"
+                                                                                            class="initials d-inline-block"
+                                                                                            [ngClass]="{'spouse': owner.personDetails.relation == PERSON_RELATION.CLIENT2, 'childs': owner.personDetails.relation == PERSON_RELATION.SON || owner.personDetails.relation == PERSON_RELATION.DAUGHTER}">
+                                                                                            {{owner.personDetails.firstName[0] + (owner.personDetails.lastName[0] ? owner.personDetails.lastName[0] : owner.personDetails.firstName[1])}}</span>
+                                                                                        <img class="initials bg-transparent" height="50"
+                                                                                            *ngIf="owner['personDetails'].avatar"
+                                                                                            [src]="owner['personDetails'].avatar"
+                                                                                            (error)="owner['personDetails'].avatar=null" />
+                                                                                    </ng-container>
+                                                                                </ng-container>
+                                                                                <span *ngIf="data.ownership.length > 2"
+                                                                                    (click)="changeOwnershipAction(i, accIndex)"
+                                                                                    class="ion-md-more-horizontal action-ellipses-icon-color set-ellipses"></span>
+                                                                            </span>
+                                                                            <div *ngIf="data.ownership.length>2"
+                                                                                [id]="'dropdownOwnershipAction'+i+accIndex"
+                                                                                class="dropdown-portfolio-owned-action dropdown-floating hide-ele">
+                                                                                <div class="floating-dropdown">
+                                                                                    <ng-container
+                                                                                        *ngFor="let owner of data.ownership; let i = index">
+                                                                                        <ng-container *ngIf="owner['personDetails']">
+                                                                                            <span *ngIf="!owner['personDetails'].avatar"
+                                                                                                class="initials d-inline-block"
+                                                                                                [ngClass]="{'spouse': owner.personDetails.relation == PERSON_RELATION.CLIENT2, 'childs': owner.personDetails.relation == PERSON_RELATION.SON || owner.personDetails.relation == PERSON_RELATION.DAUGHTER}">{{owner.personDetails.firstName[0]
+                                                                                            + owner.personDetails.lastName[0]}}</span>
+                                                                                            <img class="initials bg-transparent"
+                                                                                                height="50"
+                                                                                                *ngIf="owner['personDetails'].avatar"
+                                                                                                [src]="owner['personDetails'].avatar" />
+                                                                                        </ng-container>
+                                                                                    </ng-container>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <span
+                                                                            class="ml-2 d-inline-block fw-400 align-top" [appNoOverflowTooltip]="data.description" triggers="manual" placement="bottom">{{data.description}}</span>
+                                                                    </div>
+                                                                </td>
+                                                                <td width="15%" class="fw-400 hidden-md-down">
+                                                                    {{data.accountType}}</td>
+                                                                <td width="15%" class="hidden-md-down text"
+                                                                    *ngIf="portfolios && portfolios[data.portfolio]">
+                                                                   <span [appNoOverflowTooltip]="data.portfolioDescription">{{data.portfolioDescription}}</span>
+                                                                </td>
+                                                                <td class="pt-3 pb-3 text-right assets-wrap assets-wrap-responsive">
+                                                                    <div class="form-group mb-0"
+                                                                        *ngIf="(data.assetList.length === 1 || allAssetsDeleted ) && !data.readOnly"
+                                                                        [ngClass]="{'has-error': totalAssets.errors && (totalAssets.dirty || totalAssets.touched || f.submitted)}">
+                                                                      {{clientData['currencyCode']}}  <input type="text" name="totalAssets{{accIndex}}{{i}}"
+                                                                            [(ngModel)]="data.totalAssets"
+                                                                            #totalAssets="ngModel" style="width: 75%;"
+                                                                            (ngModelChange)="totalAccountsAssets(data.totalAssets, type, i, clientData['currencyCode']);"
+                                                                            class="form-control d-inline-block h-25 text-right"
+                                                                            pattern="(.)*\d+(?:\.\d{1,2})?$"
+                                                                            (keypress)="currencyMaskKeypress($event)"
+                                                                            required>
+                                                                    </div>
+                                                                    <div class="form-group mb-0"
+                                                                        *ngIf="data.assetList.length > 1 || data.readOnly">
+                                                                        <span>
+                                                                            {{clientData['currencyCode']}} {{removeCurrencyPipeFormat(data.totalAssets) | currency:clientData['currencyCode']:'symbol-narrow':'1.0-0'}}
+                                                                        </span>
+                                                                    </div>
+                                                                </td>
+                                                                <td *ngIf="accessRights['AL_LIABILITY']['accessLevel'] > 1"
+                                                                    class="pt-3 pb-3 text-right liability-wrap liability-wrap-responsive">
+                                                                    <div class="form-group mb-0"
+                                                                        *ngIf="data.loanFlag === 1 && data.assetList.length === 1 || allAssetsDeleted"
+                                                                        [ngClass]="{'has-error': liabilityAmount.errors && (liabilityAmount.dirty || liabilityAmount.touched || f.submitted)}">
+                                                                      {{clientData['currencyCode']}}  <input type="text"
+                                                                            name="liabilityAmount{{accIndex}}{{i}}"
+                                                                            [(ngModel)]="data.liabilityAmount"
+                                                                            #liabilityAmount="ngModel" style="width: 75%;"
+                                                                            (ngModelChange)="totalLiabilities(data.liabilityAmount, type, i, clientData['currencyCode'])"
+                                                                            class="form-control d-inline-block h-25 text-right"
+                                                                            pattern="(.)*\d+(?:\.\d{1,2})?$"
+                                                                            (keypress)="currencyMaskKeypress($event)"
+                                                                            required>
+                                                                    </div>
+                                                                    <div class="form-group mb-0"
+                                                                        *ngIf="data.loanFlag === 1 && data.assetList.length > 1">
+                                                                        <span>
+                                                                            {{clientData['currencyCode']}} {{ removeCurrencyPipeFormat(data.liabilityAmount) |
+                                                                            currency:clientData['currencyCode']:'symbol-narrow':'1.0-0'}}
+                                                                        </span>
+                                                                    </div>
+                                                                </td>
+                                                                <td *ngIf="accessRights['AL_LIABILITY']['accessLevel'] == 0" class="pt-3 pb-3 text-right liability-wrap liability-wrap-responsive">&nbsp;</td>
+                                                                <td width="13%" class="text-right hidden-md-down">
+                                                                    <span *ngIf="data.currentYearSavings > 0">
+                                                                       {{clientData['currencyCode']}}  {{data.currentYearSavings | currency:clientData['currencyCode']:'symbol-narrow':'1.0-0'}}
+                                                                    </span>
+                                                                </td>
+                                                                <td class="text-center action-ellipsis-wrap" width="4%">
+                                                                    <div class="dropdown-relative">
+                                                                        <button type="button" class="btn-floating"
+                                                                            (click)="toggleActionMenu('dropdownAssetsAction', data.id)">
+                                                                            <span class="ion-md-more"></span>
+                                                                        </button>
+                                                                        <div [id]="'dropdownAssetsAction_'+data.id"
+                                                                            class="dropdown-portfolio-action dropdown-floating hide-ele">
+                                                                            <ul class="floating-dropdown">
+                                                                                <li (click)="toggleActionMenu('dropdownAssetsAction', data.id)"
+                                                                                    *ngIf="accessRights['CLI05']['accessLevel'] > 0">
+                                                                                    <a class="action-list" [routerLink]="[data.id,'edit-account']">
+                                                                                        <i class="ion-md-create action-list"></i>
+                                                                                        <span [translate]="'ASSETS_SUMMARY.ACTION.EDIT_ACCOUNT'" class="action-list"></span>
+                                                                                    </a>
+                                                                                </li>
+                                                                                <li (click)="toggleActionMenu('dropdownAssetsAction', data.id)"
+                                                                                    *ngIf="accessRights['BTN02']['accessLevel'] > 0"
+                                                                                    class="add-btn">
+                                                                                    <a  *ngIf="accessRights['PMSE']['accessLevel'] > 0"
+                                                                                        [routerLink]="['/client',clientId,'planning','assets-liabilities', data.id,'holding-account','product-search']">
+                                                                                        <i class="ion-md-add-circle action-list"></i>
+                                                                                        <span [translate]="'ASSETS_SUMMARY.ACTION.ADD_HOLDINGS'" class="action-list"></span>
+                                                                                    </a>
+                                                                                    <a  *ngIf="accessRights['PMSE']['accessLevel'] <= 0" (click)="goToAddCustom(data.id)">
+                                                                                        <i class="ion-md-add-circle"></i>
+                                                                                        <span
+                                                                                            [translate]="'ASSETS_SUMMARY.ACTION.ADD_HOLDINGS'"></span>
+                                                                                    </a>
+                                                                                </li>
+                                                                                <li (click)="toggleActionMenu('dropdownAssetsAction', data.id)" *ngIf="accessRights['SAV01']['accessLevel'] > 0"
+                                                                                    class="add-btn">
+                                                                                    <a [routerLink]="[data.id,'add-savings']" class="action-list">
+                                                                                        <i class="ion-md-add-circle action-list"></i>
+                                                                                        <span [translate]="'ASSETS_SUMMARY.ACTION.ADD_SAVINGS'" class="action-list"></span>
+                                                                                    </a>
+                                                                                </li>
+                                                                                <li *ngIf="accessRights['SAV01']['accessLevel'] > 0"
+                                                                                    (click)="toggleActionMenu('dropdownAssetsAction', data.id)">
+                                                                                    <a [routerLink]="[data.id,'savings']" class="action-list">
+                                                                                        <i class="ion-md-create action-list"></i>
+                                                                                        <span class="action-list" [translate]="'ASSETS_SUMMARY.ACTION.EDIT_SAVINGS'"></span>
+                                                                                    </a>
+                                                                                </li>
+                                                                                <li *ngIf="!data.readOnly"
+                                                                                    (click)="toggleActionMenu('dropdownAssetsAction', data.id); deleteAccount(type, data.id);"
+                                                                                    class="delete-btn">
+                                                                                    <a class="action-list">
+                                                                                        <i class="ion-md-close-circle action-list"></i>
+                                                                                        <span class="action-list" [translate]="'ASSETS_SUMMARY.ACTION.DELETE_ACCOUNT'"></span>
+                                                                                    </a>
+                                                                                </li>
+                                                                                <li *ngIf="data.readOnly" class="delete-btn disable-link">
+                                                                                    <a class="action-list">
+                                                                                        <i class="ion-md-close-circle action-list"></i>
+                                                                                        <span class="action-list" [translate]="'ASSETS_SUMMARY.ACTION.DELETE_ACCOUNT'"></span>
+                                                                                    </a>
+                                                                                </li>
+                                                                            </ul>
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
+                                                                <td class="text-center expand-box" width="2%">
+                                                                    <i [ngClass]="data.isExpand?'ion-ios-arrow-up':'ion-ios-arrow-down'"
+                                                                        (click)="toggleAssetsList(data.id);data.isExpand=!data.isExpand"></i>
+                                                                </td>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody *ngIf="data.assetList!= null && data.assetList.length > 0"
+                                                            class="asset-list" id="assetList_{{data.id}}">
+                                                            <tr *ngFor="let asset of data.assetList; let list = index;">
+                                                                <td class="account-wrap account-wrap-responsive">
+                                                                    <span class="assets-title" [appNoOverflowTooltip]="asset.description" triggers="manual" placement="bottom">{{asset.description}}</span>
+                                                                </td>
+                                                                <td width="15%" class="fw-400 hidden-md-down">&nbsp;</td>
+                                                                <td width="15%" class="hidden-md-down">&nbsp;</td>
+                                                                <td class="text-right assets-wrap assets-wrap-responsive">
+                                                                   {{asset.currencyCode}} {{asset.fmv | currency:asset.currencyCode:'symbol-narrow':'1.0-0'}}
+                                                                </td>
+                                                                <td class="text-right liability-wrap liability-wrap-responsive" *ngIf="accessRights['AL_LIABILITY']['accessLevel'] > 1">
+                                                                    <ng-container *ngIf="data.loanFlag === 1; else noData">
+                                                                       {{asset.currencyCode}} {{asset.currentLiablities | currency:asset.currencyCode:'symbol-narrow':'1.0-0'}}
+                                                                    </ng-container>
+                                                                    <ng-template #noData>
+                                                                        &nbsp;
+                                                                    </ng-template>
+                                                                </td>
+                                                                <td class="text-right liability-wrap liability-wrap-responsive" *ngIf="accessRights['AL_LIABILITY']['accessLevel'] == 0">&nbsp;</td>
+                                                                <td width="13%" class="text-right hidden-md-down">&nbsp;</td>
+                                                                <td class="text-center action-ellipsis-wrap" width="4%">
+                                                                    <div class="dropdown-relative assets-list-action">
+                                                                        <button type="button" class="btn-floating"
+                                                                            (click)="toggleActionMenu('dropdownListAction', asset.assetKey)">
+                                                                            <span class="ion-md-more"></span>
+                                                                        </button>
+                                                                        <div [id]="'dropdownListAction_'+ asset.assetKey"
+                                                                            class="dropdown-portfolio-action dropdown-floating hide-ele">
+                                                                            <ul class="floating-dropdown">
+                                                                                <li
+                                                                                    (click)="toggleActionMenu('dropdownListAction', asset.assetKey);editHoldings(data.id,asset.assetKey)">
+                                                                                    <a class="action-list">
+                                                                                        <i class="ion-md-create"></i>
+                                                                                        <span class="action-list" [translate]="'ASSETS_SUMMARY.ASSETS_LIST_ACTION.EDIT_HOLDING'"></span>
+                                                                                    </a>
+                                                                                </li>
+                                                                                <li *ngIf="accessRights['RELINK_HOLDING']['accessLevel'] > 0"
+                                                                                    (click)="toggleActionMenu('dropdownListAction', asset.assetKey)">
+                                                                                    <a class="action-list"
+                                                                                        [routerLink]="['/client',clientId,'planning','assets-liabilities', data.id,'holding-account','product-search',asset.assetKey]">
+                                                                                        <i class="ion-md-link"></i>
+                                                                                        <span class="action-list" [translate]="'ASSETS_SUMMARY.ASSETS_LIST_ACTION.RELINK_HOLDING'"></span>
+                                                                                    </a>
+                                                                                </li>
+                                                                                <li class="disable-link" *ngIf="!accessRights['RELINK_HOLDING']['accessLevel'] > 0"
+                                                                                    (click)="toggleActionMenu('dropdownListAction', asset.assetKey)">
+                                                                                        <a class="action-list">
+                                                                                            <i class="ion-md-link"></i>
+                                                                                            <span class="action-list" [translate]="'ASSETS_SUMMARY.ASSETS_LIST_ACTION.RELINK_HOLDING'"></span>
+                                                                                        </a>
+                                                                                </li>
+                                                                                <li *ngIf="asset.lastUpWho !== 'MSTAR' && accessRights['FFS01']['accessLevel'] > 0"
+                                                                                    class="disable-link"
+                                                                                    (click)="toggleActionMenu('dropdownListAction', asset.assetKey)">
+                                                                                    <a class="action-list">
+                                                                                        <i class="ion-md-eye"></i>
+                                                                                        <span class="action-list" [translate]="'ASSETS_SUMMARY.ASSETS_LIST_ACTION.PRODUCT_INFO'"></span>
+                                                                                    </a>
+                                                                                </li>
+                                                                                <li *ngIf="asset.lastUpWho === 'MSTAR' && accessRights['FFS01']['accessLevel'] > 0"
+                                                                                    (click)="toggleActionMenu('dropdownListAction', asset.assetKey); getFactSheet(asset.prodCode);">
+                                                                                    <a class="action-list">
+                                                                                        <i class="ion-md-eye"></i>
+                                                                                        <span class="action-list" [translate]="'ASSETS_SUMMARY.ASSETS_LIST_ACTION.PRODUCT_INFO'"></span>
+                                                                                    </a>
+                                                                                </li>
+                                                                                <li (click)="toggleActionMenu('dropdownListAction', asset.assetKey); deleteHolding(type,list, i,asset.assetKey);"
+                                                                                    class="delete-btn">
+                                                                                    <a class="action-list">
+                                                                                        <i class="ion-md-close-circle"></i>
+                                                                                        <span class="action-list" [translate]="'ASSETS_SUMMARY.ASSETS_LIST_ACTION.DELETE_HOLDING'"></span>
+                                                                                    </a>
+                                                                                </li>
+                                                                            </ul>
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
+                                                                <td class="text-center expand-box" width="2%">&nbsp;</td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                            <tr *ngIf="last && accIndex == accountTypes.length- 2">
+                                                    <td colspan="3" class="fw-700 hidden-md-down account-wrap">
+                                                        {{'ASSET_LIABILITY.HOLDING_ACCOUNT.TOTAL' | translate}} {{'ASSETS_SUMMARY.INVESTMENTS' | translate}}
+                                                    </td>
+                                                    <td class="fw-700 d-block d-sm-block d-md-block d-lg-none account-wrap">
+                                                        {{'ASSET_LIABILITY.HOLDING_ACCOUNT.TOTAL' | translate}} {{'ASSETS_SUMMARY.INVESTMENTS' | translate}}
+                                                    </td>
+                                                    <td class="fw-600 text-right assets-wrap">
+                                                       {{clientData['currencyCode']}} {{ totalInvestment['assets'] | currency:clientData['currencyCode']:'symbol-narrow':'1.0-0'}}
+                                                    </td>
+                                                    <td class="fw-600 text-right liability-wrap" *ngIf="accessRights['AL_LIABILITY']['accessLevel'] > 1">
+                                                       {{clientData['currencyCode']}} {{ totalInvestment['liability'] | currency:clientData['currencyCode']:'symbol-narrow':'1.0-0'}}
+                                                    </td>
+                                                    <td class="liability-wrap" *ngIf="accessRights['AL_LIABILITY']['accessLevel'] === 0">
+                                                        &nbsp;
+                                                    </td>
+                                                    <td class="fw-600 text-right hidden-md-down">
+                                                       {{clientData['currencyCode']}} {{ totalInvestment['savings'] | currency:clientData['currencyCode']:'symbol-narrow':'1.0-0'}}
+                                                    </td>
+                                                    <td class="action-ellipsis-wrap">&nbsp;</td>
+                                                    <td class="expand-box">&nbsp;</td>
+                                                </tr>
+                                                <tr *ngIf="type === null && last">
+                                                    <td colspan="3" class="fw-700 hidden-md-down account-wrap">
+                                                        {{'ASSET_LIABILITY.HOLDING_ACCOUNT.TOTAL' | translate}} {{'ASSETS_SUMMARY.TOTAL_OTHER' | translate}}
+                                                    </td>
+                                                    <td class="fw-700 d-block d-sm-block d-md-block d-lg-none account-wrap">
+                                                        {{'ASSET_LIABILITY.HOLDING_ACCOUNT.TOTAL' | translate}} {{'ASSETS_SUMMARY.TOTAL_OTHER' | translate}}
+                                                    </td>
+                                                    <td class="fw-600 text-right assets-wrap">
+                                                        {{clientData['currencyCode']}} {{ totalOther['assets'] | currency:clientData['currencyCode']:'symbol-narrow':'1.0-0'}}
+                                                    </td>
+                                                    <td class="fw-600 text-right liability-wrap" *ngIf="accessRights['AL_LIABILITY']['accessLevel'] > 1">
+                                                       {{clientData['currencyCode']}} {{ totalOther['liability'] | currency:clientData['currencyCode']:'symbol-narrow':'1.0-0'}}
+                                                    </td>
+                                                    <td class="liability-wrap" *ngIf="accessRights['AL_LIABILITY']['accessLevel'] === 0">
+                                                        &nbsp;
+                                                    </td>
+                                                    <td class="fw-600 text-right hidden-md-down">
+                                                       {{clientData['currencyCode']}} {{ totalOther['savings'] | currency:clientData['currencyCode']:'symbol-narrow':'1.0-0'}}
+                                                    </td>
+                                                    <td class="action-ellipsis-wrap">&nbsp;</td>
+                                                    <td class="expand-box">&nbsp;</td>
+                                                </tr>
+                                        </ng-container>
+                                    </ng-container>
+                                    <tr>
+                                        <td colspan="3" class="fw-700 hidden-md-down account-wrap" [translate]="'ASSET_LIABILITY.HOLDING_ACCOUNT.TOTAL'">
+                                        </td>
+                                        <td class="fw-700 d-block d-sm-block d-md-block d-lg-none account-wrap" [translate]="'ASSET_LIABILITY.HOLDING_ACCOUNT.TOTAL'">
+                                        </td>
+                                        <td class="fw-600 text-right assets-wrap">
+                                           {{clientData['currencyCode']}} {{ totalAllAssets | currency:clientData['currencyCode']:'symbol-narrow':'1.0-0'}}
+                                        </td>
+                                        <td class="fw-600 text-right liability-wrap" *ngIf="accessRights['AL_LIABILITY']['accessLevel'] > 1">
+                                           {{clientData['currencyCode']}} {{ totalAllLiability | currency:clientData['currencyCode']:'symbol-narrow':'1.0-0'}}
+                                        </td>
+                                        <td class="fw-600 text-right liability-wrap" *ngIf="accessRights['AL_LIABILITY']['accessLevel'] === 0">
+                                            &nbsp;
+                                        </td>
+                                        <td class="fw-600 text-right hidden-md-down">
+                                           {{clientData['currencyCode']}} {{ totalAllSavings | currency:clientData['currencyCode']:'symbol-narrow':'1.0-0'}}
+                                        </td>
+                                        <td class="action-ellipsis-wrap">&nbsp;</td>
+                                        <td class="expand-box">&nbsp;</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td colspan="4" class="hidden-md-down account-wrap">
+                                            <span class="net-worth-text" [translate]="'ASSETS_SUMMARY.NET_WORTH'"></span>
+                                        </td>
+                                        <td colspan="2" class="hidden-lg-up hidden-xs-down account-wrap">
+                                            <span class="net-worth-text" [translate]="'ASSETS_SUMMARY.NET_WORTH'"></span>
+                                        </td>
+                                        <td colspan="2"  class="hidden-sm-up d-table-cell account-wrap">
+                                            <span class="net-worth-text" [translate]="'ASSETS_SUMMARY.NET_WORTH'"></span>
+                                        </td>
+                                        <td colspan="4" class="hidden-md-down">
+                                            <span class="net-worth-price">{{clientData['currencyCode']}} {{netTotal |
+                                                currency:clientData['currencyCode']:'symbol-narrow':'1.0-0'}}</span>
+                                        </td>
+                                        <td colspan="3" class="hidden-lg-up">
+                                            <span class="net-worth-price">{{clientData['currencyCode']}} {{netTotal |
+                                                currency:clientData['currencyCode']:'symbol-narrow':'1.0-0'}}</span>
+                                        </td>
+                                    </tr>
+                                </ng-container>
+                                <ng-container *ngIf="!assetsData || accountTypes.length == 0">
+                                    <tr>
+                                        <td colspan="7" class="no-record text-center">
+                                            <i class="ion-ios-alert mr-2"></i>{{'NO_RESULTS' | translate}}
+                                        </td>
+                                    </tr>
+                                </ng-container>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="col-12 mt-3" *ngIf="assetsData && accountTypes.length > 0">
+                    <div class="form-group text-right">
+                        <button type="submit" class="btn btn-success btn-small"
+                            [translate]="'FORM.ACTION.SAVE_CHANGES'"></button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="view-side-form">
+    <router-outlet></router-outlet>
+</div>

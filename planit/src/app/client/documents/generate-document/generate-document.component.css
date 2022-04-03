@@ -1,0 +1,60 @@
+:host {
+    background:#fff;
+    position: fixed;
+    left: auto;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 30%;
+    min-width: 250px;
+    z-index: 100; 
+
+}
+.choose-document-box {position: relative; display: block; margin-bottom: 25px;}
+.choose-document-box .document-icon {display: block; text-align: center; border: solid 5px transparent; border-radius: 20px;}
+.choose-document-box .document-icon.active {border-color: #789; background: none;}
+.choose-document-box .document-icon i {display: block; line-height: 1; color: #fa2;}
+.choose-document-box .document-icon i:before {display: block; line-height: 0.79; font-size: 270px;}
+.choose-document-box .document-icon i.red {color: #f64;}
+.choose-document-box .document-icon i.pink {color: #f4a;}
+.choose-document-box .document-icon i.blue {color: #7af;}
+.choose-document-box .document-icon i.bluelight {color: #6ce;}
+.choose-document-box .document-icon i.green {color: #bd6;}
+
+.choose-document-box span {position: absolute; left: 42px; right: 42px; top: 110px; font-size: 12px; color: #0f2032; font-weight: 700; line-height: 18px;}
+.selectall span {
+    font-size: 13.5px;
+    color: #789;
+    line-height: 22px;
+    font-weight: 600;
+}
+.selectall span i{
+    width: 22px;
+    height: 22px;
+    line-height: 22px;
+    display: inline-block;
+    background: #9b4;
+    color: #fff;
+    text-align: center;
+    border-radius: 50%;
+    font-size: 14px;
+}
+
+/* responsive */
+
+@media (max-width: 575px) {
+  .choose-document-box .document-icon i:before {font-size: 260px;}
+  .choose-document-box span {left: 30px; right: 30px; top: 105px; font-size: 10px; line-height: 14px;}
+}
+
+@media (max-width: 375px) {
+  .choose-document-box .document-icon i:before {font-size: 170px;}
+  .choose-document-box span {left: 25px; right: 25px; top: 65px; font-size: 10px; line-height: 14px;}
+}
+.section-header {
+    background: #f4f6f8;
+    font-weight: bold;
+}
+
+
+

@@ -1,0 +1,18 @@
+.circle {
+    background: transparent;
+    border-radius: 50%;
+    height: 12px;
+    width: 12px;
+    display: inline-block;
+    border: solid 1px #789;
+}
+
+.green-circle {
+    background: #bd6;
+    border-color: transparent;
+}
+
+.orange-circle {
+    background: #ffaa20;
+    border-color: transparent;
+}

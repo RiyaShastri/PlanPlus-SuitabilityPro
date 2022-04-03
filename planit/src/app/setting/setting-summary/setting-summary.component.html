@@ -1,0 +1,69 @@
+<div class="summary-main bg-white">
+    <div class="row no-gutters h-100">
+        <div class="col-12 col-md-6 col-lg-4 col-xl-3">
+            <div class="profile_summary">
+                <h1 class="profile_title" [translate]="'SETTINGS.TITLE'"></h1>
+                <p class="profile_text" [translate]="'SETTINGS.DESCRIPTION'">
+                </p>
+            </div>
+        </div>
+        <div class="col-12 col-md-6 col-lg-8 col-xl-9">
+            <div class="profile_actions">
+                <div class="profile_action" [routerLink]="['/settings','cma','rates_of_return']" *ngIf="showCMA">
+                    <span class="profile_icon zero_profile"></span>
+                    <div class="content">
+                        <h5 [translate]="'SETTINGS.CMA.TITLE'"></h5>
+                        <p [translate]="'SETTINGS.CMA.DESCRIPTION'"></p>
+                    </div>
+                    <a>
+                        <span class="action_icon ion-ios-arrow-forward"></span>
+                    </a>
+                </div>
+                <ng-container *ngIf="accessRights['DFTINVPOL']['accessLevel'] > 0">
+                    <div class="profile_action" [routerLink]="['/settings','investment-policies']">
+                        <span class="profile_icon zero_profile"></span>
+                        <div class="content">
+                            <h5 [translate]="'SETTINGS.INVESTMENT_POLICIES.TITLE'"></h5>
+                            <p [translate]="'SETTINGS.INVESTMENT_POLICIES.DESCRIPTION'"></p>
+                        </div>
+                        <a>
+                            <span class="action_icon ion-ios-arrow-forward"></span>
+                        </a>
+                    </div>
+                </ng-container>
+                <div class="profile_action" [routerLink]="['/settings','professional-judgement-matrix']"
+                    *ngIf="accessRights['PJMADMIN']['accessLevel'] > 1">
+                    <span class="profile_icon zero_profile"></span>
+                    <div class="content">
+                        <h5 [translate]="'SETTINGS.PJM.TITLE'"></h5>
+                        <p [translate]="'SETTINGS.PJM.DESCRIPTION'"></p>
+                    </div>
+                    <a>
+                        <span class="action_icon ion-ios-arrow-forward"></span>
+                    </a>
+                </div>
+                <div class="profile_action" [routerLink]="['/settings','preferred-solutions']"
+                    *ngIf="accessRights['WEB24']['accessLevel'] > 1">
+                    <span class="profile_icon zero_profile"></span>
+                    <div class="content">
+                        <h5 [translate]="'SETTINGS.PREFERRED_SOLUTIONS.TITLE'"></h5>
+                        <p [translate]="'SETTINGS.PREFERRED_SOLUTIONS.DESCRIPTION'"></p>
+                    </div>
+                    <a>
+                        <span class="action_icon ion-ios-arrow-forward"></span>
+                    </a>
+                </div>
+                <div class="profile_action" *ngIf="accessRights['WEB25']['accessLevel'] > 1 && showFavProd">
+                    <span class="profile_icon zero_profile"></span>
+                    <div class="content">
+                        <h5 [translate]="'SETTINGS.FAVOURITE_PRODUCTS.TITLE'"></h5>
+                        <p [translate]="'SETTINGS.FAVOURITE_PRODUCTS.DESCRIPTION'"></p>
+                    </div>
+                    <a>
+                        <span class="action_icon ion-ios-arrow-forward"></span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

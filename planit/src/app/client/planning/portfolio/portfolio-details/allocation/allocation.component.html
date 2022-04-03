@@ -1,0 +1,131 @@
+<div>
+    <h6 class="fw-700" [translate]="'PORTFOLIO.DETAIL.ALLOCATION'"></h6>
+    <hr />
+    <div class="row">
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 text-center" *ngIf="accessRights['CURRSCENARIO']['accessLevel'] > 0">
+            <h5>
+                <span class="graph-upper-lable">{{'PORTFOLIO.DETAIL.CURRENT' | translate}}</span>
+                <ng-container *ngIf="currentCashPercent && currentCashPercent === 100">
+                    <span class="ion-ios-alert" [ngbTooltip]="keyCurrentWarning" #currentWarning="ngbTooltip" triggers="manual" placement="bottom"
+                        (click)="currentWarning.open()"></span>
+                    <ng-template #keyCurrentWarning>
+                        <p>{{'PORTFOLIOS.EDIT_CURRENT_WARNING' | translate }}</p>
+                        <ul *ngIf="allocationResponse.warnings">
+                            <li *ngFor="let item of allocationResponse.warnings[0].detailItems">
+                                {{item}}
+                            </li>
+                        </ul>
+                        <p class="text-right m-0 p-0">
+                            <button class="btn btn-secondary btn-small m-0" (click)="currentWarning.close()" [translate]="'RISK_RESULTS_PAGE.WARNING.CLOSE'"></button>
+                        </p>
+                    </ng-template>
+                </ng-container>
+            </h5>
+            <div *ngIf="currentExist" id="currentPieChart" style="height:200px; width: 200px; display: inline-block;">
+            </div>
+            <div *ngIf="!currentExist" class="no-record text-center position-relative" style="height:200px; width: 200px; display: inline-block;">
+                <p class="no_data_graph">
+                    <i class="ion-ios-alert mr-2"></i>{{'NO_RESULTS' | translate}}</p>
+            </div>
+            <div class="row">
+                <div class="col-7 pr-md-0">
+                    <ng-container *ngIf="isOnlyProFiler">
+                        <a [routerLink]="['edit-current']" class="fs-12 text-icon-wrapper" *ngIf="currentPage === 'details' && investedAmount && investedAmount > 0">
+                            <i class="current-edit ion-md-pie"></i>
+                            <span class="text-lbl icon-left ff-Montserrat" [translate]="'PORTFOLIO.ACTION.EDIT_CURRENT'"></span>
+                        </a>
+                        <a [routerLink]="['edit-current']" class="fs-12 text-icon-wrapper disabled-link" *ngIf="currentPage === 'details' && (!investedAmount || investedAmount == 0)">
+                            <i class="current-edit ion-md-pie"></i>
+                            <span class="text-lbl icon-left ff-Montserrat" [translate]="'PORTFOLIO.ACTION.EDIT_CURRENT'"></span>
+                        </a>
+                    </ng-container>
+                    <ng-container *ngxPermissionsOnly="['ADVISOR']">
+                        <a [routerLink]="['edit-current']" class="fs-12 text-icon-wrapper" *ngIf="currentPage === 'details' && isEditAllocationAllowed">
+                            <i class="current-edit ion-md-pie"></i>
+                            <span class="text-lbl icon-left ff-Montserrat" [translate]="'PORTFOLIO.ACTION.EDIT_CURRENT'"></span>
+                        </a>
+                    </ng-container>
+                </div>
+                <div class="col-5">
+                    <a *ngIf="accessRights['POB01']['accessLevel'] === 3" [routerLink]="['analytics','current']" class="fs-12 text-icon-wrapper">
+                        <i class="action_icon ion-ios-pulse"></i>
+                        <span class="text-lbl icon-left ff-Montserrat" [translate]="'PORTFOLIO.ACTION.ANALYTICS'"></span>
+                    </a>
+                    <a *ngIf="accessRights['POB01']['accessLevel'] !== 3" class="fs-12 text-icon-wrapper disabled-link">
+                        <i class="action_icon ion-ios-pulse"></i>
+                        <span class="text-lbl icon-left ff-Montserrat" [translate]="'PORTFOLIO.ACTION.ANALYTICS'"></span>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 text-center" *ngIf="currentPage === 'details'">
+            <h5>
+                <span class="graph-upper-lable" [translate]="'CUSTOM.TARGET'"></span>
+            </h5>
+            <div *ngIf="targetExist" id="targetPieChart" style="height:200px; width: 200px; display: inline-block;">
+            </div>
+            <div *ngIf="!targetExist" class="no-record text-center position-relative" style="height:200px; width: 200px; display: inline-block;">
+                <p class="no_data_graph">
+                    <i class="ion-ios-alert mr-2"></i>{{'NO_RESULTS' | translate}}</p>
+            </div>
+            <div class="row">
+                <div class="col-7 pr-md-0">
+                    <a *ngIf="isEditableRoute && accessRights['POB01']['accessLevel'] !== 0" [routerLink]="['edit-policy']" class="fs-12 text-icon-wrapper">
+                        <i class="action_icon ion-md-ribbon"></i>
+                        <span class="text-lbl icon-left ff-Montserrat" [translate]="'PORTFOLIO.ACTION.EDIT_POLICY'"></span>
+                    </a>
+                    <a *ngIf="!isEditableRoute || accessRights['POB01']['accessLevel'] === 0" class="fs-12 text-icon-wrapper disabled-link">
+                        <i class="action_icon ion-md-ribbon"></i>
+                        <span class="text-lbl icon-left ff-Montserrat" [translate]="'PORTFOLIO.ACTION.EDIT_POLICY'"></span>
+                    </a>
+                </div>
+                <div class="col-5">
+                    <a *ngIf="accessRights['POB01']['accessLevel'] === 3" [routerLink]="['analytics','target']" class="fs-12 text-icon-wrapper">
+                        <i class="action_icon ion-ios-pulse"></i>
+                        <span class="text-lbl icon-left ff-Montserrat" [translate]="'PORTFOLIO.ACTION.ANALYTICS'"></span>
+                    </a>
+                    <a *ngIf="accessRights['POB01']['accessLevel'] !== 3" class="fs-12 text-icon-wrapper disabled-link">
+                        <i class="action_icon ion-ios-pulse"></i>
+                        <span class="text-lbl icon-left ff-Montserrat" [translate]="'PORTFOLIO.ACTION.ANALYTICS'"></span>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 text-center" *ngIf="currentPage === 'implementation'">
+            <h5>
+                <span class="graph-upper-lable" [translate]="'PORTFOLIO_ALLOCATION.IMPLEMENTED'"></span>
+                <ng-container *ngIf="implementedPercentTotal && implementedPercentTotal !== 100">
+                    <span class="ion-ios-alert" [ngbTooltip]="keyCurrentWarning" #currentWarning="ngbTooltip" triggers="manual" placement="bottom"
+                        (click)="currentWarning.open()"></span>
+                    <ng-template #keyCurrentWarning>
+                        <p>{{'PORTFOLIO_ALLOCATION.WARNING.IMPLEMENTED_PERCENT_WARNING' | translate }}</p>
+                        <p class="text-right m-0 p-0">
+                            <button class="btn btn-secondary btn-small m-0" (click)="currentWarning.close()" [translate]="'PORTFOLIO_ALLOCATION.WARNING.CLOSE'"></button>
+                        </p>
+                    </ng-template>
+                </ng-container>
+            </h5>
+            <div *ngIf="implementedExist" id="implementationPieChart" style="height:200px; width: 200px; display: inline-block;"></div>
+            <div *ngIf="!implementedExist" class="no-record text-center position-relative" style="height:200px; width: 200px; display: inline-block;">
+                <p class="no_data_graph">
+                    <i class="ion-ios-alert mr-2"></i>{{'NO_RESULTS' | translate}}</p>
+            </div>
+            <div class="row">
+                <div class="col-12 text-right">
+                    <a *ngIf="accessRights['POB01']['accessLevel'] === 3" [routerLink]="['analytics','implemented']" class="fs-12 text-icon-wrapper">
+                        <i class="action_icon ion-ios-pulse"></i>
+                        <span class="text-lbl icon-left ff-Montserrat" [translate]="'PORTFOLIO.ACTION.ANALYTICS'"></span>
+                    </a>
+                    <a *ngIf="accessRights['POB01']['accessLevel'] !== 3" class="fs-12 text-icon-wrapper disabled-link">
+                        <i class="action_icon ion-ios-pulse"></i>
+                        <span class="text-lbl icon-left ff-Montserrat" [translate]="'PORTFOLIO.ACTION.ANALYTICS'"></span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <ng-container>
+        <app-allocation-table *ngIf="isCustom && currentPage === 'implementation'" [clientId]="clientId" [portfolioId]="portfolioId" [allocationResponse]="allocationResponse"></app-allocation-table>
+    </ng-container>
+    <!-- <hr /> -->
+</div>

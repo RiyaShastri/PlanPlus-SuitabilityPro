@@ -1,0 +1,11 @@
+pipelines:
+  branches:
+    staging:
+      - step:
+          name: Build and package
+          deployment: Dev
+          script:
+            - apt-get update
+            - apt-get install -y zip openssl curl
+            - bash ./upload.sh $S3KEY $S3SECRET
+

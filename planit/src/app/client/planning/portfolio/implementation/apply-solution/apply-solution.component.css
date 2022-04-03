@@ -1,0 +1,55 @@
+:host {
+    background: #fff;
+    position: fixed;
+    left: auto;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 50%;
+    min-width: 250px;
+    z-index: 100;
+}
+
+i.current-edit {
+    background: #fff !important;
+    font-size: 20px !important;
+    line-height: 20px !important;
+    color: #88aa33 !important;
+}
+
+.finaMetrica-icon {
+    color: #0177b6;
+    font-size: 14px;
+}
+
+.chartMarginallyLow-wrapper, .marginallyHigher-wrapper {
+    position: relative;
+}
+
+.chartMarginallyLow-wrapper i.ion-ios-medical.finaMetrica-icon {
+    position: absolute;
+    left: -5px;
+    top: 65px;
+}
+
+.marginallyHigher-wrapper i {
+    position: absolute;
+    left: 0;
+    bottom: 110px;
+}
+
+.more-detail-wrapper .ui-accordion .ui-accordion-header a {
+    padding: 0;
+}
+
+.legend {
+    color: #778899;
+}
+
+.MarginalUpper, .MarginalLower {
+    background: #FC4;
+}
+
+.OK {
+    background: #bd6;
+}

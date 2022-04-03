@@ -1,0 +1,81 @@
+<div class="side-form">
+    <form name="form" (ngSubmit)="saveRetirementAssuption() && f.form.valid" #f="ngForm" novalidate>
+        <div class="box">
+            <div class="box-header">
+                <span class="sidebar_title" [translate]="'GOALS.EDIT_RETIREMENT_ASSUMPTIONS'"></span>
+                <span (click)="back(); closeButtonDisable = true" class="sidebar_action_icon ion-md-close-circle float-right"></span>
+            </div>
+            <div class="box-body">
+                <div class="form-group" *ngIf="familyMembers">
+                    <table class="table" *ngIf="client1">
+                        <thead>
+                            <tr>
+                                <th class="border-0"></th>
+                                <th class="border-0">
+                                    <div class="d-flex align-items-start">
+                                        <span *ngIf="!client1.avatar" class="initials client mr-2">{{ client1.firstName[0] + client1.lastName[0]}}</span> 
+                                        <img class="initials bg-transparent mr-2" height="50" *ngIf="client1.avatar" [src]="client1.avatar" (error)="client1.avatar = null" />
+                                        {{client1.firstName}} {{client1.lastName}}
+                                    </div>
+                                </th>
+                                <th class="border-0" *ngIf="client2">
+                                    <div class="d-flex align-items-start">
+                                        <span *ngIf="!client2.avatar" class="initials spouse mr-2">{{ client2.firstName[0] + client2.lastName[0]}}</span> 
+                                        <img class="initials bg-transparent mr-2" height="50" *ngIf="client2.avatar" [src]="client2.avatar" (error)="client2.avatar = null" />
+                                        {{client2.firstName}} {{client2.lastName}}
+                                    </div>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="border-0" [translate]="'ADD_GOALS.WILL_RETIRE_AT_AGE'"></td>
+                                <td class="border-0">
+                                    <div class="form-group">
+                                        <input class="form-control d-inline-block  text-right h-25" style="width: 80px" [(ngModel)]="model.client1RetiredAge" #client1RetiredAge="ngModel"
+                                            name="client1RetiredAge" (blur)="setDataProvider(model.client1RetiredAge,model.client1HorizonAge, client1, true)" required />
+                                    </div>
+                                    <!-- <span *ngIf="client1.retired">Retired</span> -->
+                                </td>
+                                <td class="border-0" *ngIf="client2">
+                                    <div class="form-group">
+                                        <input class="form-control d-inline-block  text-right h-25" #client2RetiredAge="ngModel" style="width: 80px"
+                                            [(ngModel)]="model.client2RetiredAge" (blur)="setDataProvider(model.client2RetiredAge,model.client2HorizonAge, client2, false)" name="client2RetiredAge" required />
+                                    </div>
+                                    <!-- <span *ngIf="client2.retired">Retired</span> -->
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="border-0" [translate]="'ADD_GOALS.PLANNING_HORIZONE'"></td>
+                                <td class="border-0">
+                                    <input class="form-control d-inline-block  text-right h-25" #client1HorizonAge="ngModel" style="width: 80px" [(ngModel)]="model.client1HorizonAge"
+                                        name="client1HorizonAge" (blur)="setDataProvider(model.client1RetiredAge,model.client1HorizonAge, client1, true)" required />
+                                    <i class="cursor-p ion-ios-arrow-down" [ngClass]="isClien1HorizonExpand?'ion-ios-arrow-up':'ion-ios-arrow-down'" 
+                                    (click)="isClien1HorizonExpand=!isClien1HorizonExpand;isClien2HorizonExpand=false;setDataProvider(model.client1RetiredAge,model.client1HorizonAge, client1, true)"></i>
+                                </td>
+                                <td class="border-0" *ngIf="client2">
+                                    <input class="form-control d-inline-block  text-right h-25" #client2HorizonAge="ngModel" style="width: 80px" [(ngModel)]="model.client2HorizonAge"
+                                        name="client2HorizonAge" (blur)="setDataProvider(model.client2RetiredAge,model.client2HorizonAge, client2, false)" required />
+                                    <i class="cursor-p ion-ios-arrow-down" [ngClass]="isClien2HorizonExpand?'ion-ios-arrow-up':'ion-ios-arrow-down'" 
+                                    (click)="isClien2HorizonExpand=!isClien2HorizonExpand;isClien1HorizonExpand=false;setDataProvider(model.client2RetiredAge,model.client2HorizonAge, client2, false)"></i>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <ng-template [ngIf]="isClien1HorizonExpand || isClien2HorizonExpand">
+                    <div class="form-group" *ngIf="mortalityChartData">
+                        <app-mortality-graph [chartData]="mortalityChartData" [selectedClient]="selectedClient" [country]="selectedCountry"></app-mortality-graph>
+                    </div>
+                </ng-template>
+            </div>
+            <div class="box-footer">
+                <div class="form-group text-right">
+                    <button type="button" (click)="back(); closeButtonDisable = true" value="cancel" class="btn btn-secondary btn-small" 
+                    [translate]="'FORM.ACTION.CANCEL'" [disabled]="closeButtonDisable"></button>
+                    <button type="submit" value="submit" [disabled]="f.form.invalid" class="btn btn-success btn-small mr-3" [translate]="'FORM.ACTION.SAVE'"></button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

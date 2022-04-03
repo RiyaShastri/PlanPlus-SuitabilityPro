@@ -1,0 +1,141 @@
+/* You can add global styles to this file, and also import other style files */
+
+.error {
+    color: #ee2222;
+}
+
+.upload-image-icon {
+    margin: 0 auto;
+    text-align: center;
+    width: 120px;
+    height: 120px;
+    position: relative;
+}
+
+.upload-image-icon i {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    display: block;
+    background-color: #F5F6F7;
+}
+
+.upload-image-icon.droparea i {
+    border: 3px dashed #bbb;
+}
+
+.upload-image-icon i:before {
+    opacity: 0.16;
+    color: #334455;
+    font-size: 82px;
+    font-weight: 500;
+    display: block;
+    line-height: 120px;
+}
+
+.upload-image-icon img {
+    display: block;
+    border-radius: 50%;
+    position: relative;
+    height: 100%;
+    max-width: 100%;
+}
+
+.photo-box label img{
+    max-width: 75px;
+    height: auto;
+    border-radius: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.file-name {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    max-width: 100%;
+    display: inline-block;
+    margin-top: 15px;
+}
+
+.upload-image-text p {
+    font-weight: 700;
+    margin: 0;
+    padding: 0;
+    color: #778899;
+    font-size: 12px;
+}
+.upload-image-text span {
+    color: #778899;
+    font-family: "Open Sans";
+    font-size: 12px;
+    font-weight: bold;
+    line-height: 15px;
+    text-align: center;
+    display: block;
+    padding: 0 10px;
+    width: 25%;
+    margin: 0 auto;
+}
+
+.upload-image-text span.green {
+    color: #88AA33;
+    display: inline-block;
+    padding: 0px;
+    cursor: pointer; width: auto;
+}
+
+.remove-selected {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    width: 20px;
+    height: 20px;
+    font-size: 14px;
+    z-index: 2
+}
+
+.remove-selected i {
+    width: 20px;
+    height: 20px;
+    background: none;
+    cursor: pointer;
+}
+
+.remove-selected i:before {
+    font-size: 18px;
+    line-height: normal;
+    color: #789;
+    opacity: 1;
+}
+.upload-error ul{
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.upload-error ul li{
+    list-style: none;
+    padding: 0;
+    font-size: 14px;
+    margin-top: 10px;
+    color: #ee2222;
+    font-weight: normal;
+}
+
+@media (max-width: 1199px) {
+  .upload-image-text span {width: 40%;}
+}
+
+@media (max-width: 992px) {
+  .upload-image-text span {width: 18%;}
+}
+
+@media (max-width: 767px) {
+  .upload-image-text span {width: 22%;}
+}
+
+@media (max-width: 575px) {
+  .upload-image-text span {width: 40%;}
+}

@@ -1,0 +1,235 @@
+<div class="row">
+    <div class="col-12">
+        <h5 class="fw-700 mb-5" [translate]="'PORTFOLIO.IMPLEMENTATION.SELECT_ACCOUNTS_TO_CUSTOMIZE'"></h5>
+    </div>
+    <div class="col-12 col-lg-8 prod-dropdown mt-3" *ngIf="currencies && selectedCurrency">
+        <div ngbDropdown class="dropdown-common">
+            <a class="text-uppercase" id="dropdownBasic1" ngbDropdownToggle>
+                <span class="pr-1 selected-text text-capitalize">{{selectedCurrency['description']}}</span>
+                <i class="ion-md-arrow-dropdown"></i>
+            </a>
+            <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+                <ul>
+                    <li *ngFor="let currency of currencies">
+                        <a [ngClass]="{active : selectedCurrency.currencyCode === currency.currencyCode}"
+                            class="dropdown-item" (click)="getSelectedCurrency(currency)">
+                            <span>{{currency.description}}</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 col-lg-4 text-right mt-3">
+        <a [routerLink]="['add-account']" class="btn-add" *ngIf="accessRights['BTN01']['accessLevel'] > 0">
+            <i class="ion-md-add-circle"></i>
+            <span [translate]="'PORTFOLIO.TABLE.ADD_ACCOUNT'"></span>
+        </a>
+    </div>
+
+    <div class="col-12 mt-2">
+        <i *ngIf="!portfolioAccounts" aria-hidden="true" class="fa fa-spinner fa-pulse loader-icon"></i>
+        <table class="table" *ngIf="portfolioAccounts">
+            <thead>
+                <tr>
+                    <th colspan="2" [translate]="'PORTFOLIO.TABLE.ACCOUNTS'"></th>
+                    <th [translate]="'PORTFOLIO.TABLE.SOLUTION'"></th>
+                    <th class="text-right" width="50">
+                        <span class="hidden-md-down" [translate]="'PORTFOLIO.TABLE.ACTION'"></span>
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <ng-container *ngFor="let pAccount of portfolioAccounts; let i = index;">
+                    <tr>
+                        <td>
+                            <div class="form-group mb-0">
+                                <p-checkbox name="managed_{{i}}" [(ngModel)]="pAccount.checked" binary="true"
+                                    [disabled]="pAccount.disabled" (onChange)="accountSelectionChange()">
+                                </p-checkbox>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="dropdown-relative-full d-flex align-items-center"
+                                *ngIf="pAccount['ownership'] && pAccount['ownership'].length > 0">
+                                <span class="client-avatars">
+                                    <ng-container *ngFor="let owner of pAccount.ownership | slice:0:2; let i = index">
+                                        <app-member-avatar [initials]="owner.btnInitials"
+                                            [relationClass]="owner.btnColor" avatarClass="initials"
+                                            [avatarUrl]="owner.personDetails.avatar"></app-member-avatar>
+                                    </ng-container>
+                                    <span *ngIf="pAccount.ownership.length>2" (click)="changeOwnershipAction(i)"
+                                        class="ion-md-more-horizontal action-ellipses-icon-color set-ellipses"></span>
+                                </span>
+                                <div *ngIf="pAccount.ownership.length>2" [id]="'dropdownOwnershipAction'+i"
+                                    class="dropdown-pAccount-owned-action dropdown-floating hide-ele">
+                                    <div class="floating-dropdown">
+                                        <ng-container *ngFor="let owner of pAccount.ownership; let i = index">
+                                            <app-member-avatar [initials]="owner.btnInitials"
+                                                [relationClass]="owner.btnColor" avatarClass="initials"
+                                                [avatarUrl]="owner.personDetails.avatar"></app-member-avatar>
+                                        </ng-container>
+                                        &nbsp;
+                                    </div>
+                                </div>
+                                <span class="ml-2 fw-400 fixed-width text-truncate"
+                                    [appNoOverflowTooltip]="pAccount.description" triggers="manual"
+                                    placement="bottom">{{ pAccount.description }}</span>
+                            </div>
+                        </td>
+                        <td>
+                            <span *ngIf="pAccount.actionPerformed !== actionPerformed['RESET']; else noData">
+                                <i *ngIf="pAccount.solution && pAccount.solution.mappedSolution === true"
+                                    class="ion-ios-medical finaMetrica-icon"></i>
+                                {{pAccount.actionPerformed === actionPerformed['CUSTOM_SOLUTION'] && pAccount.customSolutionApplied ? ('PORTFOLIO.IMPLEMENTATION.CUSTOM' | translate) : 
+                                            (pAccount.actionPerformed === actionPerformed['KEEP_CURRENT_HOLDINGS'] ? ('PORTFOLIO.IMPLEMENTATION.CURRENT' | translate) : 
+                                            (pAccount.solution ? pAccount.solution.description : 'N/A'))}}
+                            </span>
+                            <p *ngIf="!isCustom && pAccount.solution && pAccount.solution.solutionFamilyName && pAccount.actionPerformed !== actionPerformed.RESET && pAccount.actionPerformed !== actionPerformed.KEEP_CURRENT_HOLDINGS"
+                                class="mb-0 fs-11">
+                                ({{pAccount.solution.solutionFamilyName}})</p>
+                            <ng-template #noData>N/A</ng-template>
+                        </td>
+                        <td class="pr-0 text-center">
+                            <div class="dropdown-relative">
+                                <button type="button" class="btn-floating" (click)="changeAccountAction(i)">
+                                    <span class="ion-md-more"></span>
+                                </button>
+                                <div [id]="'dropdownAccountAction'+i"
+                                    class="dropdown-account-action dropdown-floating hide-ele">
+                                    <ul class="floating-dropdown">
+                                        <li *ngIf="pAccount.checked" (click)="changeAccountAction(i)">
+                                            <a (click)="applySolution(pAccount.plannum)">
+                                                <i class="ion-md-locate"></i>
+                                                <span [translate]="'PORTFOLIO.IMPLEMENTATION.APPLY_SOLUTION'"></span>
+                                            </a>
+                                        </li>
+                                        <li *ngIf="!pAccount.checked" class="not-active"
+                                            (click)="changeAccountAction(i)">
+                                            <a>
+                                                <i class="ion-md-locate"></i>
+                                                <span [translate]="'PORTFOLIO.IMPLEMENTATION.APPLY_SOLUTION'"></span>
+                                            </a>
+                                        </li>
+                                        <li *ngIf="pAccount.checked" (click)="changeAccountAction(i)">
+                                            <a (click)="addProduct(pAccount.plannum)">
+                                                <i class="ion-md-add"></i>
+                                                <span [translate]="'CUSTOM.ADD_PRODUCT'"></span>
+                                            </a>
+                                        </li>
+                                        <li *ngIf="!pAccount.checked" class="not-active"
+                                            (click)="changeAccountAction(i)">
+                                            <a>
+                                                <i class="ion-md-add"></i>
+                                                <span [translate]="'CUSTOM.ADD_PRODUCT'"></span>
+                                            </a>
+                                        </li>
+                                        <li *ngIf="pAccount.checked"
+                                            (click)="changeAccountAction(i); modifyAppliedSolution(pAccount.plannum, pAccount.description, actionPerformed.KEEP_CURRENT_HOLDINGS)">
+                                            <a>
+                                                <i class="ion-ios-pause rotate-pause"></i>
+                                                <span [translate]="'CUSTOM.KEEP_CURRENT_HOLDINGS'"></span>
+                                            </a>
+                                        </li>
+                                        <li *ngIf="!pAccount.checked" class="not-active"
+                                            (click)="changeAccountAction(i)">
+                                            <a>
+                                                <i class="ion-ios-pause rotate-pause"></i>
+                                                <span [translate]="'CUSTOM.KEEP_CURRENT_HOLDINGS'"></span>
+                                            </a>
+                                        </li>
+                                        <li *ngIf="pAccount.canRebalance && pAccount.checked"
+                                            (click)="changeAccountAction(i);">
+                                            <a (click)="rebalance(pAccount.plannum, pAccount.description)">
+                                                <i class="ion-ios-pie rebalance-icon"></i>
+                                                <span [translate]="'PORTFOLIO.IMPLEMENTATION.REBALANCE'"></span>
+                                            </a>
+                                        </li>
+                                        <li *ngIf="pAccount.canRebalance && !pAccount.checked" class="not-active"
+                                            (click)="changeAccountAction(i)">
+                                            <a>
+                                                <i class="ion-ios-pie rebalance-icon"></i>
+                                                <span [translate]="'PORTFOLIO.IMPLEMENTATION.REBALANCE'"></span>
+                                            </a>
+                                        </li>
+                                        <!-- <li *ngIf="pAccount.checked" (click)="changeAccountAction(i)">
+                                            <a [routerLink]="['transfer']">
+                                                <i class="ion-ios-shuffle fs-14"></i>
+                                                <span [translate]="'PORTFOLIO.IMPLEMENTATION.TRANSFER'"></span>
+                                            </a>
+                                        </li>
+                                        <li *ngIf="!pAccount.checked" class="not-active" (click)="changeAccountAction(i)">
+                                            <a>
+                                                <i class="ion-ios-shuffle fs-14"></i>
+                                                <span [translate]="'PORTFOLIO.IMPLEMENTATION.TRANSFER'"></span>
+                                            </a>
+                                        </li> -->
+                                        <li *ngIf="pAccount.checked" (click)="changeAccountAction(i);"
+                                            class="delete-btn">
+                                            <a
+                                                (click)="modifyAppliedSolution(pAccount.plannum, pAccount.description, actionPerformed.RESET)">
+                                                <i class="ion-md-close-circle"></i>
+                                                <span [translate]="'CUSTOM.RESET'"></span>
+                                            </a>
+                                        </li>
+                                        <li *ngIf="!pAccount.checked" class="delete-btn not-active"
+                                            (click)="changeAccountAction(i)">
+                                            <a>
+                                                <i class="ion-md-close-circle"></i>
+                                                <span [translate]="'CUSTOM.RESET'"></span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="w-40px text-right">
+                            <span class="accordion-arrow-right" (click)="accountExpanded[i] = !accountExpanded[i]">
+                                <i [ngClass]="{'ion-ios-arrow-down' : !accountExpanded[i], 'ion-ios-arrow-up': accountExpanded[i]}"
+                                    class="cursor-p"></i>
+                            </span>
+                        </td>
+                    </tr>
+                    <tr *ngIf="accountExpanded[i]">
+                        <td class="pt-0 pb-1 border-0"></td>
+                        <td class="pt-0 pb-1 border-0">
+                            <table class="table implementation-accounts-table">
+                                <thead>
+                                    <tr>
+                                        <td class="fw-600" [translate]="'PORTFOLIO.TABLE.TYPE'"></td>
+                                        <td class="fw-600 text-right" [translate]="'PORTFOLIO.TABLE.CURRENT'"></td>
+                                        <td class="fw-600 text-right" [translate]="'PORTFOLIO.TABLE.IMPLEMENTED'"></td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>{{pAccount.regulatoryType}}</td>
+                                        <td class="text-right">
+                                            {{pAccount.totalCurrentAmount  | currency:selectedCurrency['currencyCode'] : 'symbol-narrow':'1.0-0'}}
+                                        </td>
+                                        <td class="text-right">
+                                            {{pAccount.totalImplementedAmount  | currency:selectedCurrency['currencyCode'] : 'symbol-narrow':'1.0-0'}}
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                        <td class="pt-0 pb-1 border-0"></td>
+                        <td class="pt-0 pb-1 border-0"></td>
+                        <td class="pt-0 pb-1 border-0"></td>
+                    </tr>
+                </ng-container>
+
+                <ng-container *ngIf="portfolioAccounts.length === 0">
+                    <tr>
+                        <td colspan="5" class="no-record text-center">
+                            <i class="ion-alert mr-2"></i>{{'NO_RESULTS' | translate}}
+                        </td>
+                    </tr>
+                </ng-container>
+            </tbody>
+        </table>
+    </div>
+
+</div>

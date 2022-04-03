@@ -1,0 +1,262 @@
+<div class="side-form side-form-large side-form-full-width">
+    <form name="form" #f="ngForm">
+        <div class="box">
+            <div class="box-header">
+                <span class="sidebar_title">{{ 'CALCULATOR.CALCULATORS_TITLE' | translate }}</span>
+                <span (click)="back()" class="sidebar_action_icon ion-md-close-circle float-right"></span>
+            </div>
+            <div class="box-body">
+                <div class="row">
+                    <div class="col-12">
+                        <app-calculator-header [clientId]="clientId" currentCalculator="insurance-calculator"></app-calculator-header>
+                    </div>
+                </div>
+                <div class="long-term-care-cal calculator-wrap calculator-row-alignment-wrapper">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="form-group d-flex d-inline-block drop-down-wrap mb-3">
+                                <div class="mr-3 w-25 form-group mb-0" [ngClass]="{'has-error': f.submitted && !scenarioList.valid}">
+                                    <p-dropdown [options]="scenarioLists" name="scenarioList" [(ngModel)]="selectedScenario" #scenarioList="ngModel" optionLabel="value" placeholder="{{'CALCULATOR.PLACEHOLDER.SELECT_A_SCENARIO' | translate}}" (onChange)="changeScenario()" required></p-dropdown>
+                                </div>
+                                <button type="button" (click)="setData()" class="m-0 align-content-center btn btn-small btn-secondary mr-2" [translate]="'CALCULATOR.LOAD'"></button>
+                                <span class="pt-2 align-content-center ml-auto save-date-wrap">{{ 'CALCULATOR.DATE_SAVED' | translate }} {{ longtermData['updatedDate'] ? longtermData['updatedDate'] : 'N/A'  }}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 col-lg-5">
+                            <h4 class="cal-title fw-700 fs-14">{{ 'CALCULATOR.LONG_TERM.LONG_TERM_CARE_NEEDS' | translate }}</h4>
+                            <div class="row">
+                                <div class="col-6 col-sm-4 col-md-4 col-lg-6">
+                                    <div class="form-group mb-0">
+                                        <span class="align-content-center">{{ 'CALCULATOR.LONG_TERM.CURRENT_AGE' | translate }}</span>
+                                    </div>
+                                </div>
+                                <div class="col-6 col-sm-5 col-md-4 col-lg-6">
+                                    <div class="form-group">
+                                        <input type="text" class="w-75 form-control text-center" name="currentAge" [(ngModel)]="longtermData['currentAge']" #currentAge="ngModel" min="0" max="100" (input)="calculateData()" />
+                                    </div>
+                                    <p *ngIf="longtermData['errors'] && longtermData['errors']['currentAge']" class="text-error mb-1"> {{longtermData['errors']['currentAge']}} </p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6 col-sm-4 col-md-4 col-lg-6">
+                                    <div class="form-group mb-0">
+                                        <span class="align-content-center">{{ 'CALCULATOR.LONG_TERM.RETIREMENT_AGE' | translate }}</span>
+                                    </div>
+                                </div>
+                                <div class="col-6 col-sm-5 col-md-4 col-lg-6">
+                                    <div class="form-group">
+                                        <input type="text" class="w-75 form-control text-center" name="retireAge" [(ngModel)]="longtermData['retireAge']" #retireAge="ngModel" min="0" max="100" (input)="calculateData()" />
+                                    </div>
+                                    <p *ngIf="longtermData['errors'] && longtermData['errors']['retireAge']" class="text-error mb-1"> {{longtermData['errors']['retireAge']}} </p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6 col-sm-4 col-md-4 col-lg-6">
+                                    <div class="form-group mb-0">
+                                        <span class="align-content-center">{{ 'CALCULATOR.LONG_TERM.PLANNING_HORIZON' | translate }}</span>
+                                    </div>
+                                </div>
+                                <div class="col-6 col-sm-5 col-md-4 col-lg-6">
+                                    <div class="form-group">
+                                        <input type="text" class="w-75 form-control text-center" name="planningHorizon" [(ngModel)]="longtermData['planningHorizon']" #planningHorizon="ngModel" min="0" max="100" (input)="calculateData()" />
+                                    </div>
+                                    <p *ngIf="longtermData['errors'] && longtermData['errors']['planningHorizon']" class="text-error mb-1"> {{longtermData['errors']['planningHorizon']}} </p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6 col-sm-4 col-md-4 col-lg-6">
+                                    <div class="form-group mb-0">
+                                        <span class="align-content-center">{{ 'CALCULATOR.LONG_TERM.INFLATION_RATE' | translate }}</span>
+                                    </div>
+                                </div>
+                                <div class="col-6 col-sm-5 col-md-4 col-lg-6">
+                                    <div class="form-group" [ngClass]="{ 'has-error': !inflationRate.valid && f.submitted }">
+                                        <input type="text" class="w-75 form-control text-center" name="inflationRate" [(ngModel)]="longtermData['inflationRate']" #inflationRate="ngModel" [textMask]="{mask: percentMask}" appNumeric (input)="calculateData()" [customMin]="0" [customMax]="100"
+                                            required/>
+                                    </div>
+                                    <p *ngIf="longtermData['errors'] && longtermData['errors']['inflationRate']" class="text-error mb-1"> {{longtermData['errors']['inflationRate']}} </p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6 col-sm-4 col-md-4 col-lg-6">
+                                    <div class="form-group mb-0">
+                                        <span class="align-content-center">{{ 'CALCULATOR.LONG_TERM.AFTER_TAX_RATE_OF_RETURN' | translate }}</span>
+                                    </div>
+                                </div>
+                                <div class="col-6 col-sm-5 col-md-4 col-lg-6">
+                                    <div class="form-group" [ngClass]="{ 'has-error': !investmentReturn.valid && f.submitted }">
+                                        <input type="text" class="w-75 form-control text-center" name="investmentReturn" [(ngModel)]="longtermData['investmentReturn']" #investmentReturn="ngModel" [textMask]="{mask: percentMask}" appNumeric (input)="calculateData()" [customMin]="0" [customMax]="100"
+                                            required/>
+                                    </div>
+                                    <p *ngIf="longtermData['errors'] && longtermData['errors']['investmentReturn']" class="text-error mb-1"> {{longtermData['errors']['investmentReturn']}} </p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6 col-sm-4 col-md-4 col-lg-6">
+                                    <div class="form-group mb-0">
+                                        <span class="align-content-center">{{ 'CALCULATOR.LONG_TERM.MARGINAL_TAX_RATE' | translate }}</span>
+                                    </div>
+                                </div>
+                                <div class="col-6 col-sm-5 col-md-4 col-lg-6">
+                                    <div class="form-group" [ngClass]="{ 'has-error': !marginalTaxRate.valid && f.submitted }">
+                                        <input type="text" class="w-75 form-control text-center" name="marginalTaxRate" [(ngModel)]="longtermData['marginalTaxRate']" #marginalTaxRate="ngModel" [textMask]="{mask: percentMask}" appNumeric (input)="calculateData()" [customMin]="0" [customMax]="100"
+                                            required/>
+                                    </div>
+                                    <p *ngIf="longtermData['errors'] && longtermData['errors']['marginalTax']" class="text-error mb-1"> {{longtermData['errors']['marginalTax']}} </p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6 col-sm-4 col-md-4 col-lg-6">
+                                    <div class="form-group mb-0">
+                                        <span class="align-content-center">{{ 'CALCULATOR.LONG_TERM.PERCENTAGE_OF_COST_TO_INSURE' | translate }}</span>
+                                    </div>
+                                </div>
+                                <div class="col-6 col-sm-5 col-md-4 col-lg-6">
+                                    <div class="form-group" [ngClass]="{ 'has-error': !percentToInsure.valid && f.submitted }">
+                                        <input type="text" class="w-75 form-control text-center" name="percentToInsure" [(ngModel)]="longtermData['percentToInsure']" #percentToInsure="ngModel" [textMask]="{mask: percentMask}" appNumeric (input)="calculateData()" [customMin]="0" [customMax]="100"
+                                            required/>
+                                    </div>
+                                    <p *ngIf="longtermData['errors'] && longtermData['errors']['percentInscure']" class="text-error mb-1"> {{longtermData['errors']['percentInscure']}} </p>
+                                </div>
+                            </div>
+
+
+                            <h5>{{ 'CALCULATOR.LONG_TERM.HOME_CARE_COVERAGE' | translate }}</h5>
+                            <div class="row">
+                                <div class="col-6 col-sm-4 col-md-4 col-lg-6">
+                                    <div class="form-group mb-0">
+                                        <span class="align-content-center">{{ 'CALCULATOR.LONG_TERM.ESTIMATED_MONTHLY_COST' | translate }}</span>
+                                    </div>
+                                </div>
+                                <div class="col-6 col-sm-5 col-md-4 col-lg-6">
+                                    <div class="form-group">
+                                        <input type="text" class="w-75 form-control text-center" name="homeCareCost" [(ngModel)]="longtermData['homeCareCost']" #homeCareCost="ngModel" [textMask]="{mask: currencyMask}" appNumeric (input)="calculateData()" />
+                                    </div>
+                                    <p *ngIf="longtermData['errors'] && longtermData['errors']['homeCareCost']" class="text-error mb-1"> {{longtermData['errors']['homeCareCost']}} </p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6 col-sm-4 col-md-4 col-lg-6">
+                                    <div class="form-group mb-0">
+                                        <span class="align-content-center">{{ 'CALCULATOR.LONG_TERM.STARTING_AGE' | translate }}</span>
+                                    </div>
+                                </div>
+                                <div class="col-6 col-sm-5 col-md-4 col-lg-6">
+                                    <div class="form-group">
+                                        <input type="text" class="w-75 form-control text-center" name="homeCareStartAge" [(ngModel)]="longtermData['homeCareStartAge']" #homeCareStartAge="ngModel" min="0" max="100" (input)="calculateData()" />
+                                    </div>
+                                    <p *ngIf="longtermData['errors'] && longtermData['errors']['homeCareStartAge']" class="text-error mb-1"> {{longtermData['errors']['homeCareStartAge']}} </p>
+                                </div>
+                            </div>
+
+                            <h5>{{ 'CALCULATOR.LONG_TERM.FACILITY_CARE_COVERAGE' | translate }}</h5>
+                            <div class="row">
+                                <div class="col-6 col-sm-4 col-md-4 col-lg-6">
+                                    <div class="form-group mb-0">
+                                        <span class="align-content-center">{{ 'CALCULATOR.LONG_TERM.ESTIMATED_MONTHLY_COST' | translate }}</span>
+                                    </div>
+                                </div>
+                                <div class="col-6 col-sm-5 col-md-4 col-lg-6">
+                                    <div class="form-group">
+                                        <input type="text" class="w-75 form-control text-center" name="facilityCareCost" [(ngModel)]="longtermData['facilityCareCost']" #facilityCareCost="ngModel" [textMask]="{mask: currencyMask}" appNumeric (input)="calculateData()" />
+                                    </div>
+                                    <p *ngIf="longtermData['errors'] && longtermData['errors']['facilityCareCost']" class="text-error mb-1"> {{longtermData['errors']['facilityCareCost']}} </p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6 col-sm-4 col-md-4 col-lg-6">
+                                    <div class="form-group mb-0">
+                                        <span class="align-content-center">{{ 'CALCULATOR.LONG_TERM.STARTING_AGE' | translate }}</span>
+                                    </div>
+                                </div>
+                                <div class="col-6 col-sm-5 col-md-4 col-lg-6">
+                                    <div class="form-group">
+                                        <input type="text" class="w-75 form-control text-center" name="facilityCareStartAge" [(ngModel)]="longtermData['facilityCareStartAge']" #facilityCareStartAge="ngModel" min="0" max="100" (input)="calculateData()" />
+                                    </div>
+                                    <p *ngIf="longtermData['errors'] && longtermData['errors']['facilityCareStartAge']" class="text-error mb-1"> {{longtermData['errors']['facilityCareStartAge']}} </p>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="col-12 col-lg-7" *ngIf="longtermData['insuredResultList']">
+                            <div class="analysis-wrap">
+                                <div class="table-responsive">
+                                    <table class="table table-borderless">
+                                        <thead>
+                                            <tr class="text-right">
+                                                <th class="text-left">{{ 'CALCULATOR.LONG_TERM.ANALYSIS' | translate }}</th>
+                                                <th>{{ 'SSID_LABELS.' + longtermData['insuredResultList'][0]['ppsdid'] | translate }}</th>
+                                                <th>{{ 'CALCULATOR.LONG_TERM.50_PERCENT' | translate }} {{ 'SSID_LABELS.' + longtermData['insuredResultList'][1]['ppsdid'] | translate }}</th>
+                                                <th>{{ 'CALCULATOR.LONG_TERM.100_PERCENT' | translate }} {{ 'SSID_LABELS.' + longtermData['insuredResultList'][2]['ppsdid'] | translate }}</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr class="text-right">
+                                                <td class="text-left">{{'CALCULATOR.LONG_TERM.DAILY_HOME_CARE_BENEFIT_INSURED' | translate}}</td>
+                                                <ng-container *ngFor="let item of longtermData['insuredResultList'];index as k">
+                                                    <td>
+                                                        {{item['dailyHomeCareBenefit'] | currency:clientData['currencyCode']:'symbol-narrow':'1.0-0'}}
+                                                    </td>
+                                                </ng-container>
+                                            </tr>
+                                            <tr class="text-right">
+                                                <td class="text-left">{{'CALCULATOR.LONG_TERM.DAILY_FACILITY_CARE_BENEFIT_INSURED' | translate}}</td>
+                                                <ng-container *ngFor="let item of longtermData['insuredResultList'];index as k">
+                                                    <td class="under-line">
+                                                        {{item['dailyFacilityCareBenefit'] | currency:clientData['currencyCode']:'symbol-narrow':'1.0-0'}}
+                                                        <span></span>
+                                                    </td>
+                                                </ng-container>
+                                            </tr>
+                                            <tr class="text-right">
+                                                <td class="text-left">{{'CALCULATOR.LONG_TERM.YOUR_COST_TO_FUND_YOUR_NEEDS' | translate}}</td>
+                                                <ng-container *ngFor="let item of longtermData['insuredResultList'];index as k">
+                                                    <td>
+                                                        {{item['futureCapitalRequired'] | currency:clientData['currencyCode']:'symbol-narrow':'1.0-0'}}
+                                                    </td>
+                                                </ng-container>
+                                            </tr>
+                                            <tr class="text-right">
+                                                <td class="text-left">{{'CALCULATOR.LONG_TERM.PRESENT_VALUE_OF_YOUR_COST' | translate}}</td>
+                                                <ng-container *ngFor="let item of longtermData['insuredResultList'];index as k">
+                                                    <td>
+                                                        {{item['presentValueOfCapital'] | currency:clientData['currencyCode']:'symbol-narrow':'1.0-0'}}
+                                                    </td>
+                                                </ng-container>
+                                            </tr>
+                                            <tr class="text-right">
+                                                <td class="text-left">{{'CALCULATOR.LONG_TERM.INDEXED_SAVINGS_TO_FUND_YOUR_COST' | translate}}</td>
+                                                <ng-container *ngFor="let item of longtermData['insuredResultList'];index as k">
+                                                    <td>
+                                                        {{item['savingsRequired'] | currency:clientData['currencyCode']:'symbol-narrow':'1.0-0'}}
+                                                    </td>
+                                                </ng-container>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="graph-wrap">
+                                <div id="logTermGraph" style="height: 400px;"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="box-footer button-responsive">
+                <div class="form-group text-right calculator-save-button-wrap">
+                    <button type="button" [disabled]="isError" class="btn btn-small btn-primary btn-fixwidth btn-report mr-2 btn-report" (click)="generateReport()">{{ 'CALCULATOR.REPORT' | translate }}</button>
+                    <button type="button" (click)="back()" class="btn btn-small btn-secondary btn-fixwidth mr-2">{{'FORM.ACTION.CANCEL' | translate }}</button>
+                    <button type="submit" (click)="saveData(f)" [disabled]="isError || f.form.invalid" class="btn btn-small btn-success pl-4 pr-4" [translate]="'FORM.ACTION.SAVE'"></button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<ng-container *ngIf="isCalculatorReportSidePanelOpen">
+    <app-calculator-report-side-panel (closePanelEvent)="closePanel()" [calculatorData]="reportObject" [clientId]="clientId" type="long-term-care" [selectedScenario]="selectedScenario['key']"></app-calculator-report-side-panel>
+</ng-container>
+<router-outlet></router-outlet>

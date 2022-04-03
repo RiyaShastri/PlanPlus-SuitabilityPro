@@ -1,0 +1,76 @@
+:host {
+    background: #fff;
+    position: fixed;
+    left: auto;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 30%;
+    min-width: 250px;
+    z-index: 100;
+}
+
+.backTest_lbl {
+    font-weight: 700;
+    font-size: 16px;
+    display: block;
+    margin-bottom: 5px;
+    line-height: 15px;
+}
+
+.last-loss {
+    text-align: right;
+    font-family: 'Open Sans';
+}
+
+.last-loss.table thead th {
+    vertical-align: top;
+}
+
+.last-loss.table > tbody > tr:last-child > td, .bottom-line,
+.allocation-tbl.table > tbody > tr:last-child > td, .bottom-line {
+    border-bottom: none !important;
+}
+
+.last-loss th {
+    font-weight: normal;
+}
+
+.last-loss td {
+    font-size: 16px;
+    font-weight: 600;
+    color: #567;
+}
+
+.allocation-graph-lbl {
+    margin-bottom: 0px;
+    font-size: 14px;
+    color: #778899;
+    font-weight: 600;
+}
+
+.allocation-tbl .asset_indicator {
+    margin-top: 4px;
+}
+.allocation-tbl .asset_lbl {
+    font-family: 'Montserrat';
+    font-weight: 500;
+}
+
+.allocation-tbl.table>thead>tr>th {
+    color: #567;
+}
+.allocation-tbl tr td {
+    color: #123;
+}
+
+.cash-txt {
+    font-size: 14px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 400;
+    color: #345;
+}
+
+::ng-deep .tooltip-inner {
+    width: 300px;
+}

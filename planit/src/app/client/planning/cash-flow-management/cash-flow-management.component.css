@@ -1,0 +1,84 @@
+#chartdiv {
+    height: 300px;
+    width: 100%;
+}
+
+.margin-right-15 {
+    margin-right: 15px;
+}
+
+.margin-left-15 {
+    margin-left: 15px;
+}
+
+.inner-background {
+    background: #f4f4f4
+}
+
+* {
+    box-sizing: border-box;
+}
+
+.progress-container {
+    position: relative;
+    width: 80%;
+    height: 20px;
+}
+
+.progressbar {
+    position: absolute;
+    height: 20px;
+    max-width: 100%;
+    background: #4f81bd;
+}
+
+.progress {
+    /* position: absolute; */
+    height: 20px;
+}
+.expandall-text{
+    font-family: "Open Sans";
+    font-size: 11px;
+    text-transform: uppercase;
+}
+.inner-background .form-group .form-control{
+    background-color: transparent;
+}
+.currency-lineheight{
+    line-height: 33px;
+}
+.expenses-text{
+    font-size: 11px;
+}
+.cash-flow-management-wrapper .form-group .form-control{
+    padding: .375rem .2rem
+}
+
+
+@media(max-width: 575px){
+    .main-layout-body .margin-left-15 {margin-left: 0;}
+}
+
+@media(max-width: 380px){
+    .cash-flow-management-wrapper h1.d-inline-block {font-size: 18px;}
+    .main-layout-body .col-3 , .footer-body .col-3{padding: 0 8px;line-height: 1.3;}
+    .main-layout-body .col-3 span , .footer-body .col-3 span {font-size: 12px;}
+    .col-3 span {font-size: 12px;}
+    .main-layout-body .col-9 .row .col-4:last-child{padding: 0 10px 0 0;}
+    .main-layout-body .col-9 .row .col-4:last-child a i{font-size: 12px;}
+    .main-layout-body .col-9 .row .col-4{padding-left: 0px;}
+    .main-layout-body .col-9 .row .col-4 span , .header-body .col-9 .row .col-4 span , .footer-body .col-9 span{font-size: 10px !important;}
+    .main-layout-body .col-9 .row .col-4 .form-group input {width: 90% !important;font-size: 10px !important;padding: 6px 2px !important;}
+    /* .header-body .col-3 label {font-size: 12px !important;} */
+    .header-body .col-3 .form-group label {
+        color: red !important;}
+    .header-body .col-9 .initials{width: 18px;height: 18px;line-height: 18px;}
+    .tbl-header .col-5 , .tbl-header .col-4 , .tbl-header .col-3 {font-size: 12px !important;}
+    /* .col-5.expensest-title {font-size: 12px !important;} */
+    
+    
+}
+
+@media(max-width: 320px){
+    .main-layout-body .col-3 span , .footer-body .col-3 span {font-size: 10px;}
+}

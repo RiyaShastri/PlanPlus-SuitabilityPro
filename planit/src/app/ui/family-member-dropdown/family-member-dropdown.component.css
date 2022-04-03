@@ -1,0 +1,4 @@
+.family-dropdown {position: relative;}
+.family-dropdown .dropdown-menu {left: 0 !important; right: auto; width: 15rem}
+.family-dropdown .dropdown-menu:before {left: 14px; right: auto;}
+.family-dropdown .dropdown-menu:after {left: 14px; right: auto;}

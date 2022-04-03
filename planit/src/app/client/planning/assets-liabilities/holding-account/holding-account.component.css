@@ -1,0 +1,39 @@
+.holding-account-bg .table td,
+.holding-account-bg .table th {
+    border-bottom: 1px solid #dee2e6;
+}
+
+.holding-account-bg .total-text {
+    font-size: 20px;
+}
+
+.holding-account-bg .total-price {
+    font-size: 20px;
+}
+
+@media (max-width: 575px) {
+    .holding-account-bg .table td.market-val,
+    .holding-account-bg .table th.market-val {
+        display: table-cell;
+        padding-right: 5px;
+    }
+    .holding-account-bg .table tr th.pr-5,.holding-account-bg .table tr td.pr-5,.holding-account-bg .table tr td.total-price{padding-right: 5px !important;}
+    .holding-account-bg .table tr td.total-price span.fw-400{font-weight: 700 !important;}
+    .holding-account-bg .table tr td.total-price,.holding-account-bg .table tr td.total-text{font-size: 12px !important;     font-weight: 700 !important;}
+}
+
+.disable-link i,
+.disable-link a i,
+.disable-link span {
+    color: #ced8e2 !important;
+}
+
+.disable-link i {
+    background: #eee;
+}
+
+.floating-dropdown li.disable-link,
+.floating-dropdown li.disable-link span,
+.floating-dropdown li.disable-link i {
+    cursor: not-allowed !important;
+}

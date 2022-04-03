@@ -1,0 +1,623 @@
+<div class="side-form side-form-large side-form-full-width">
+    <form name="form">
+        <div class="box">
+            <div class="box-header">
+                <span class="sidebar_title">{{ 'CALCULATOR.CALCULATORS_TITLE' | translate }}</span>
+                <span (click)="back()" class="sidebar_action_icon ion-md-close-circle float-right"></span>
+            </div>
+            <div class="box-body">
+                <div class="row">
+                    <div class="col-12">
+                        <app-calculator-header [clientId]="clientId" currentCalculator="loan-calculator"></app-calculator-header>
+                    </div>
+                </div>
+                <div class="row calculator-wrap">
+                    <div class="col-12">
+                        <div class="form-group d-flex d-inline-block" [ngClass]="{ 'mb-0': loanListData.length == 0 }">
+                            <div class="mr-3 w-25" *ngIf="loanListData.length > 0">
+                                <p-dropdown [options]="loanListData" name="loanList" [(ngModel)]="amortizationData['loan']" #loanList="ngModel" optionLabel="description"
+                                    placeholder="{{'CALCULATOR.PLACEHOLDER.SELECT_A_LOAN' | translate}}"></p-dropdown>
+                            </div>
+                            <button [ngClass]="{ 'mb-3': loanListData.length == 0 }" type="button" class="m-0 align-content-center btn btn-small btn-secondary mr-2" [translate]="'CALCULATOR.LOAD'"></button>
+                            <span [ngClass]="{ 'mb-3': loanListData.length == 0 }" class="pt-2 align-content-center ml-auto save-date-wrap">{{ 'CALCULATOR.DATE_SAVED' | translate }} N/A</span>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <h4 class="loan-amortization-div fw-600">{{ 'CALCULATOR.LOAN_AMORTIZATION.LOAN_AMORTIZATION_TITLE' | translate }}</h4>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <span class="align-content-center"></span>
+                    </div>
+                </div>
+                <div class="loan-amortize-cal-div calculator-wrap mb-15" *ngIf="amortizationData && amortizationPeriodOpt.length > 0">
+                    <div class="row">
+                            <div class="col-12">
+                                <div class="row">
+                                    <div class="col-12 col-lg-6 amount-borrow-order-wrap">
+                                        <div class="row">
+                                            <div class="col-6 col-sm-4 col-lg-6">
+                                                <div class="form-group mb-0">
+                                                    <span class="align-content-center">{{ 'CALCULATOR.LOAN_AMORTIZATION.AMOUNT_BORROWED' | translate }}</span>
+                                                </div>
+                                            </div>
+                                            <div class="col-6 col-sm-5 col-lg-6">
+                                                <div class="form-group d-flex align-items-center">
+                                                    <input type="text" class="form-control text-center" name="amountBorrowed" [(ngModel)]="amortizationData['nborrowed']"
+                                                        #amountBorrowed="ngModel" [textMask]="{mask: currencyMask1}" appNumeric  />
+                                                    <span class="ml-2">
+                                                        <i class="ion-md-calculator" (click)="calculateData(2)"></i>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-lg-6 text-right">
+                                        <div class="form-group checkbox-wrap">
+                                            <p-checkbox name="usLoan" [(ngModel)]="amortizationData['usLoan']" label="U.S. Loan" binary="true" #usLoan="ngModel">
+                                            </p-checkbox>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 col-lg-6">
+                           
+                            <div class="row">
+                                <div class="col-6 col-sm-4 col-lg-6">
+                                    <div class="form-group mb-0">
+                                        <span class="align-content-center">{{ 'CALCULATOR.LOAN_AMORTIZATION.LOAN_DATE' | translate }}</span>
+                                    </div>
+                                </div>
+                                <div class="col-6 col-sm-5 col-lg-6">
+                                    <div class="form-group ">
+                                        <p-calendar [showIcon]="true" [maxDate]="maxDate" [monthNavigator]="true" required='true' [yearNavigator]="true"
+                                            yearRange="2000:2030" name="loanDate" [(ngModel)]="amortizationData['dloanDate']" #loanDate="ngModel"
+                                            dateFormat="yy-mm-dd"></p-calendar>
+                                            <p *ngIf="amortizationData['errors'] && amortizationData['errors']['dLoanDate']" class="text-error mb-1"> {{amortizationData['errors']['dLoanDate']}} </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6 col-sm-4 col-lg-6">
+                                    <div class="form-group mb-0">
+                                        <span class="align-content-center">{{ 'CALCULATOR.LOAN_AMORTIZATION.CURRENT_BALANCE' | translate }}</span>
+                                    </div>
+                                </div>
+                                <div class="col-6 col-sm-5 col-lg-6">
+                                    <div class="form-group text-center ">
+                                        <span class="align-content-center">
+                                            {{ amortizationData['ncurrentBalance'] | currency:clientData['currencyCode']:'symbol-narrow':'1.0-0'}}
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6 col-sm-4 col-lg-6">
+                                    <div class="form-group mb-0">
+                                        <span class="align-content-center">{{ 'CALCULATOR.LOAN_AMORTIZATION.RENEWAL_DATE' | translate }}</span>
+                                    </div>
+                                </div>
+                                <div class="col-6 col-sm-5 col-lg-6">
+                                    <div class="form-group ">
+                                        <p-calendar [showIcon]="true" [maxDate]="maxDate" [monthNavigator]="true" required='true' [yearNavigator]="true"
+                                            yearRange="2000:2030" name="renewalDate" [(ngModel)]="amortizationData['drenewal']" #renewalDate="ngModel"
+                                            dateFormat="yy-mm-dd"></p-calendar>
+                                    </div>
+                                    <p *ngIf="amortizationData['errors'] && amortizationData['errors']['dRenewal']" class="text-error mb-1"> {{amortizationData['errors']['dRenewal']}} </p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6 col-sm-4 col-lg-6">
+                                    <div class="form-group mb-0">
+                                        <span class="align-content-center">{{ 'CALCULATOR.LOAN_AMORTIZATION.RENEWAL_DATE_BALANCE' | translate }}</span>
+                                    </div>
+                                </div>
+                                <div class="col-6 col-sm-5 col-lg-6">
+                                    <div class="form-group text-center ">
+                                        <span class="align-content-center">
+                                            {{ amortizationData['nrenewalBalance'] | currency:clientData['currencyCode']:'symbol-narrow':'1.0-0'}}
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6 col-sm-4 col-lg-6">
+                                    <div class="form-group mb-0">
+                                        <span class="align-content-center">{{ 'CALCULATOR.LOAN_AMORTIZATION.INTEREST_RATE' | translate }}</span>
+                                    </div>
+                                </div>
+                                <div class="col-6 col-sm-5 col-lg-6">
+                                    <div class="form-group" [ngClass]="{'has-error' : !interestRate.valid}">
+                                        <input type="text" class=" form-control text-center" name="interestRate" [(ngModel)]="amortizationData['ninterest']"
+                                        [textMask]="{mask: percentMask1}" (ngModelChange)="setTheInterestRate()" appNumeric  #interestRate="ngModel" [customMin]="0" [customMax]="100" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6 col-sm-4 col-lg-6">
+                                    <div class="form-group mb-0">
+                                        <span class="align-content-center">{{ 'CALCULATOR.LOAN_AMORTIZATION.COMPOUNDED' | translate }}</span>
+                                    </div>
+                                </div>
+                                <div class="col-6 col-sm-5 col-lg-6">
+                                    <div class="form-group ">
+                                        <p-dropdown [options]="compoundingList" name="compondingList" [(ngModel)]="selectCompound" #compondingList="ngModel" optionLabel="frequency"
+                                            placeholder="{{'CALCULATOR.PLACEHOLDER.SELECT_A_COMPOUND' | translate}}"></p-dropdown>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6 col-sm-4 col-lg-6">
+                                    <div class="form-group mb-0">
+                                        <span class="align-content-center">{{ 'CALCULATOR.LOAN_AMORTIZATION.AMORTIZATION_PERIOD' | translate }}</span>
+                                    </div>
+                                </div>
+                                <div class="col-6 col-sm-5 col-lg-6">
+                                    <div class="form-group ">
+                                        <p-dropdown [options]="amortizationPeriodOpt" name="amortizationPeriod" [(ngModel)]="selectAmortizationPeriod" #amortizationPeriod="ngModel"
+                                            optionLabel="description" placeholder="{{'CALCULATOR.PLACEHOLDER.SELECT_A_AMORTIZATION_PERIOD' | translate}}"></p-dropdown>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6 col-sm-4 col-lg-6">
+                                    <div class="form-group mb-0">
+                                        <span class="align-content-center">{{ 'CALCULATOR.LOAN_AMORTIZATION.AMORTIZATION' | translate }}</span>
+                                    </div>
+                                </div>
+                                <div class="col-6 col-sm-5 col-lg-6">
+                                    <div class="form-group d-flex align-items-center">
+                                        <input type="text" class="form-control text-center" name="amortization" [(ngModel)]="amortizationData['amortTerm']"
+                                            #amortization="ngModel" [textMask]="{mask: numberMask}" appNumeric />
+                                        <span class="ml-2">
+                                            <i class="ion-md-calculator" (click)="calculateData(1)"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <ng-container>
+                                <div class="form-group">
+                                    <p *ngIf="amortizationData['errors'] && amortizationData['errors']['amortTerm']" class="text-error mb-1"> {{amortizationData['errors']['amortTerm']}} </p>
+                                </div>
+                            </ng-container>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <h4 class="border-0 p-0 m-0">{{ 'CALCULATOR.LOAN_AMORTIZATION.PAYMENTS' | translate }}</h4>
+                        </div>
+                        <div class="col-12">
+                            <hr>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 col-lg-6">
+                            <div class="row">
+                                <div class="col-6 col-sm-4 col-lg-6">
+                                    <div class="form-group mb-0">
+                                        <span class="align-content-center">{{ 'CALCULATOR.LOAN_AMORTIZATION.PAYMENT_TYPE' | translate }}</span>
+                                    </div>
+                                </div>
+                                <div class="col-6 col-sm-5 col-lg-6">
+                                    <div class="form-group ">
+                                        <p-dropdown [options]="paymentTypes" name="payementType" [(ngModel)]="selectedPaymentType" #payementType="ngModel" optionLabel="paymentType"
+                                            placeholder="{{'CALCULATOR.PLACEHOLDER.SELECT_PAYMENT_TYPE' | translate}}"></p-dropdown>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6 col-sm-4 col-lg-6">
+                                    <div class="form-group mb-0">
+                                        <span class="align-content-center">{{ 'CALCULATOR.LOAN_AMORTIZATION.PAYMENT_FREQUENCY' | translate }}</span>
+                                    </div>
+                                </div>
+                                <div class="col-6 col-sm-5 col-lg-6">
+                                    <div class="form-group ">
+                                        <p-dropdown [options]="paymentFrequency" name="payementFrequency" [(ngModel)]="selectPaymentFrequency" #payementFrequency="ngModel"
+                                            optionLabel="frequency" placeholder="{{'CALCULATOR.PLACEHOLDER.SELECT_PAYMENT_FREQUENCY' | translate}}"></p-dropdown>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6 col-sm-4 col-lg-6">
+                                    <div class="form-group mb-0">
+                                        <span class="align-content-center">{{ 'CALCULATOR.LOAN_AMORTIZATION.PAYMENT_AMOUNT' | translate }}</span>
+                                    </div>
+                                </div>
+                                <div class="col-6 col-sm-5 col-lg-6">
+                                    <div class="form-group d-flex align-items-center">
+                                        <input type="text" class=" form-control text-center" name="paymentAmount" [(ngModel)]="amortizationData['npayment']"
+                                            [textMask]="{mask: currencyMask1}" appNumeric  #paymentAmount="ngModel" />
+                                        <span class="ml-2">
+                                            <i class="ion-md-calculator" (click)="calculateData(3)"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6 col-sm-4 col-lg-6">
+                                    <div class="form-group mb-0">
+                                        <span class="align-content-center">{{ 'CALCULATOR.LOAN_AMORTIZATION.INCREASE_PAYMENT_ANNUALLY' | translate }}</span>
+                                    </div>
+                                </div>
+                                <div class="col-6 col-sm-5 col-lg-6">
+                                    <div class="payment-increase-wrap">
+
+                                        <div class="form-group d-flex align-items-center" [ngClass]="{'has-error' : !increasePercent.valid}">
+                                            <input type="text" class="form-control text-center" name="increasePercent" [(ngModel)]="amortizationData['nincPercent']" #increasePercent="ngModel"
+                                            [textMask]="{mask: percentMask}" appNumeric [customMin]="0" [customMax]="100" />
+                                            <span class="align-content-center">or</span>
+                                            <input type="text" class="form-control text-center" name="increaseAmount" [(ngModel)]="amortizationData['nincAmount']" #increaseAmount="ngModel"
+                                            [textMask]="{mask: currencyMask}" appNumeric  />
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6 col-sm-4 col-lg-6">
+                                    <div class="form-group mb-0">
+                                        <span class="align-content-center">{{ 'CALCULATOR.LOAN_AMORTIZATION.ANNIVERSARY_LUMP_SUM_PAYMENT' | translate }}</span>
+                                    </div>
+                                </div>
+                                <div class="col-6 col-sm-5 col-lg-6">
+                                    <div class="form-group">
+                                        <input type="text" class=" form-control text-center" name="annivarsaryLumpSum" [(ngModel)]="amortizationData['nanniversary']"
+                                            #annivarsaryLumpSum="ngModel" [textMask]="{mask: currencyMask}" appNumeric  />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6 col-sm-4 col-lg-6">
+                                    <div class="form-group mb-0">
+                                        <span class="align-content-center">{{ 'CALCULATOR.LOAN_AMORTIZATION.NO_OF_IRREGULAR_PAYMENTS' | translate }}</span>
+                                    </div>
+                                </div>
+                                <div class="col-6 col-sm-5 col-lg-6">
+                                    <div class="form-group">
+                                        <input type="text" class=" form-control text-center" name="irregularPayment" [(ngModel)]="amortizationData['nirregular']"
+                                            #irregularPayment="ngModel" (blur)="irragularPaymentSet(amortizationData['nirregular'])"  />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row" *ngIf="totalIrregularPayment.length > 0">
+                                <div class="col-4">
+                                    <div class="form-group mb-0">
+                                        <span class="align-content-center">&nbsp;</span>
+                                    </div>
+                                </div>
+                                <div class="col-8">
+                                    <div class="form-group">
+                                        <label class="w-40 custom-form-label d-inline-block text-center">{{ 'CALCULATOR.LOAN_AMORTIZATION.AMOUNT' | translate }}</label>
+                                        <label class="ml-2 w-40 custom-form-label d-inline-block text-center">{{ 'CALCULATOR.LOAN_AMORTIZATION.DATE' | translate }}</label>
+                                    </div>
+                                    <ng-container *ngFor="let data of totalIrregularPayment; index as i">
+                                        <div class="form-group mb-2">
+                                            <input type="text" class="w-40 form-control d-inline-block text-center" name="irregularPaymentAmount{{i}}" [(ngModel)]="data.amount"
+                                                #irregularPaymentAmount="ngModel" [textMask]="{mask: currencyMask}" appNumeric />
+                                            <p-calendar styleClass="w-50 d-inline-block" [showIcon]="true" [maxDate]="maxDate" [monthNavigator]="true" required='true'
+                                                [yearNavigator]="true" yearRange="2000:2030" name="irregularPaymentDate{{i}}"
+                                                [(ngModel)]="data.date" #irregularPaymentDate="ngModel" dateFormat="yy-mm-dd"></p-calendar>
+                                        </div>
+                                    </ng-container>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <h4 class="border-0 p-0 m-0">{{ 'CALCULATOR.LOAN_AMORTIZATION.TOTAL_COST' | translate }}</h4>
+                        </div>
+                        <div class="col-12">
+                            <hr>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 col-lg-6">
+                            <div class="row">
+                                <div class="col-6 col-sm-4 col-lg-6">
+                                    <div class="form-group mb-0">
+                                        <span class="align-content-center">{{ 'CALCULATOR.LOAN_AMORTIZATION.TOTAL_INTEREST_PAID' | translate }}</span>
+                                    </div>
+                                </div>
+                                <div class="col-6 col-sm-5 col-lg-6">
+                                    <div class="form-group">
+                                        <input type="text" class=" form-control text-center" name="totalInterest" [(ngModel)]="amortizationData['ntotalInterest']"
+                                            #totalInterest="ngModel" (ngModelChange)="updateGraph()" [textMask]="{mask: currencyMask1}" appNumeric />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6 col-sm-4 col-lg-6">
+                                    <div class="form-group mb-0">
+                                        <span class="align-content-center">{{ 'CALCULATOR.LOAN_AMORTIZATION.TOTAL_PRINCIPAL_PAID' | translate }}</span>
+                                    </div>
+                                </div>
+                                <div class="col-6 col-sm-5 col-lg-6">
+                                    <div class="form-group">
+                                        <input type="text" class=" form-control text-center" name="totalPrincipal" [(ngModel)]="amortizationData['ntotalPrincipal']"
+                                            #totalPrincipal="ngModel" (ngModelChange)="updateGraph()" [textMask]="{mask: currencyMask1}" appNumeric />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6 col-sm-4 col-lg-6">
+                                    <div class="form-group mb-0">
+                                        <span class="align-content-center">{{ 'CALCULATOR.LOAN_AMORTIZATION.TOTAL_PAYMENTS' | translate }}</span>
+                                    </div>
+                                </div>
+                                <div class="col-6 col-sm-5 col-lg-6">
+                                    <div class="form-group">
+                                        <input type="text" class=" form-control text-center" name="totalPayment" [(ngModel)]="amortizationData['ntotalPayments']"
+                                            #totalPayment="ngModel" (ngModelChange)="updateGraph()" [textMask]="{mask: currencyMask1}" appNumeric />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-lg-6">
+                            <div id="paymentGraph" style="height:400px;"></div>
+                        </div>
+                    </div>
+                    <p-accordion (onOpen)="onOpen($event, ACCORDION_VALUE['INTEREST_RATE'])">
+                        <section class="subheader">
+                            <p-accordionTab>
+                                <p-header class="accordion-header">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <h4 class="border-0 p-0 m-0">{{ 'CALCULATOR.LOAN_AMORTIZATION.RATE_DIFFERENTIAL' | translate }}</h4>
+                                        </div>
+
+                                    </div>
+                                </p-header>
+                                <div class="row">
+                                    <div class="col-12 col-lg-6">
+                                        <div class="row">
+                                            <div class="col-6 col-sm-4 col-lg-6">
+                                                <div class="form-group mb-0">
+                                                    <span class="align-content-center">{{ 'CALCULATOR.LOAN_AMORTIZATION.EXISTING_INTEREST_RATE' | translate }}</span>
+                                                </div>
+                                            </div>
+                                            <div class="col-6 col-sm-5 col-lg-6">
+                                                <div class="form-group  text-center">
+                                                    <span class="align-content-center">{{amortizationData['nidinterest']}}%</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-6 col-sm-4 col-lg-6">
+                                                <div class="form-group mb-0">
+                                                    <span class="align-content-center">{{ 'CALCULATOR.LOAN_AMORTIZATION.NEW_INTEREST_RATE' | translate }}</span>
+                                                </div>
+                                            </div>
+                                            <div class="col-6 col-sm-5 col-lg-6">
+                                                <div class="form-group" [ngClass]="{'has-error' : !newInterestRate.valid}">
+                                                    <input type="text" class=" form-control text-center" name="newInterestRate" [(ngModel)]="amortizationData['nidcurrent']" #newInterestRate="ngModel"
+                                                    [textMask]="{mask: percentMask2}" appNumeric [customMin]="0" [customMax]="100"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row retain-radiobutton-wrap">
+                                            <div class="col-6 col-sm-4 col-md-4 col-lg-4">
+                                                <div class="form-group mb-0">
+                                                    <span class="align-content-center">{{ 'CALCULATOR.LOAN_AMORTIZATION.RETAIN' | translate }}</span>
+                                                </div>
+                                            </div>
+                                            <div class="col-6 col-sm-5 col-md-6 col-lg-8">
+                                                <div class="form-group">
+                                                    <div class="form-check d-inline-block custom-form-check mr-2">
+                                                        <p-radioButton name="retainType" value="{{RETAIN_TYPE.PAYMENT}}"
+                                                        [(ngModel)]="amortizationData['nidpayment']" required #retainType="ngModel">
+                                                        </p-radioButton>
+                                                        <label class="mt-1">{{ 'CALCULATOR.LOAN_AMORTIZATION.PAYMENT' | translate }}</label>
+                                                    </div>
+                                                    <div class="form-check d-inline-block custom-form-check">
+                                                        <p-radioButton name="retainType" value="{{RETAIN_TYPE.AMORTIZATION}}" label="" 
+                                                        [(ngModel)]="amortizationData['nidpayment']" required #retainType="ngModel">
+                                                        </p-radioButton>
+                                                        <label class="mt-1">{{ 'CALCULATOR.LOAN_AMORTIZATION.AMORTIZATION' | translate }}</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-6 col-sm-4 col-lg-6">
+                                                <div class="form-group mb-0">
+                                                    <span class="align-content-center">{{ 'CALCULATOR.LOAN_AMORTIZATION.INTEREST_SAVINGS' | translate }}</span>
+                                                </div>
+                                            </div>
+                                            <div class="col-6 col-sm-5 col-lg-6">
+                                                <div class="form-group d-flex align-items-center justify-content-center">
+                                                    <div>
+                                                        <span>{{amortizationData['nidsavings'] | currency:clientData['currencyCode']:'symbol-narrow':'1.0-2'
+                                                            }}</span>
+                                                    </div>
+                                                    <span class="ml-2">
+                                                        <i class="ion-md-calculator" (click)="calculateData(2, true)"></i>
+                                                    </span> 
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-6 col-sm-4 col-lg-6">
+                                                <div class="form-group mb-0">
+                                                    <span class="align-content-center">{{ 'CALCULATOR.LOAN_AMORTIZATION.AS_OF_DATE' | translate }}</span>
+                                                </div>
+                                            </div>
+                                            <div class="col-6 col-sm-5 col-lg-6">
+                                                <div class="form-group  text-center">
+                                                    <span class="align-content-center">{{ amortizationData['diddate'] ? amortizationData['diddate'] : 'N/A' }}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </p-accordionTab>
+                        </section>
+                    </p-accordion>
+                    <p-accordion (onOpen)="onOpen($event, ACCORDION_VALUE['MAXIMUM_LOAN'])">
+                        <section class="subheader">
+                            <p-accordionTab>
+                                <p-header class="accordion-header">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <h4 class="border-0 p-0 m-0">{{ 'CALCULATOR.LOAN_AMORTIZATION.MAXIMUM_LOAN' | translate }}</h4>
+                                        </div>
+                                    </div>
+                                </p-header>
+                                <div class="row">
+                                    <div class="col-12 col-lg-6">
+                                        <div class="row">
+                                            <div class="col-6 col-sm-4 col-lg-6">
+                                                <div class="form-group mb-0">
+                                                    <span class="align-content-center">{{ 'CALCULATOR.LOAN_AMORTIZATION.FAMILY_INCOME_PER_YEAR' | translate }}</span>
+                                                </div>
+                                            </div>
+                                            <div class="col-6 col-sm-5 col-lg-6">
+                                                <div class="form-group">
+                                                    <input type="text" class=" form-control text-center" name="familyIncomePerYear" [(ngModel)]="amortizationData['nhbincome']"
+                                                    #familyIncomePerYear="ngModel" [textMask]="{mask: currencyMask}" appNumeric />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-6 col-sm-4 col-lg-6">
+                                                <div class="form-group mb-0">
+                                                    <span class="align-content-center">{{ 'CALCULATOR.LOAN_AMORTIZATION.TOTAL_OTHER_PAYEMENTS_PER_MONTH' | translate }}</span>
+                                                </div>
+                                            </div>
+                                            <div class="col-6 col-sm-5 col-lg-6">
+                                                <div class="form-group">
+                                                    <input type="text" class=" form-control text-center" name="totalOtherPayment" [(ngModel)]="amortizationData['nhbpayments']"
+                                                        #totalOtherPayment="ngModel" [textMask]="{mask: currencyMask1}" appNumeric />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-6 col-sm-4 col-lg-6">
+                                                <div class="form-group mb-0">
+                                                    <span class="align-content-center">{{ 'CALCULATOR.LOAN_AMORTIZATION.TOTAL_DEBT_SERVICE_LIMIT' | translate }}</span>
+                                                </div>
+                                            </div>
+                                            <div class="col-6 col-sm-5 col-lg-6">
+                                                <div class="form-group" [ngClass]="{'has-error' : !totalDebtService.valid}">
+                                                    <input type="text" class=" form-control text-center" name="totalDebtService" [(ngModel)]="amortizationData['nhbdebt']" #totalDebtService="ngModel"
+                                                    [textMask]="{mask: percentMask}" appNumeric [customMin]="0" [customMax]="100"  />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-6 col-sm-4 col-lg-6">
+                                                <div class="form-group mb-0">
+                                                    <span class="align-content-center">{{ 'CALCULATOR.LOAN_AMORTIZATION.MAXIMUM_LOAN_AMOUNT' | translate }}</span>
+                                                </div>
+                                            </div>
+                                            <div class="col-6 col-sm-5 col-lg-6">
+                                                <div class="form-group d-flex align-items-center justify-content-center">
+                                                    <div>
+                                                        <span>{{amortizationData['nhbborrow'] | currency:clientData['currencyCode']:'symbol-narrow':'0.0-2'
+                                                            }}</span>
+                                                    </div>
+                                                    <span class="ml-2">
+                                                        <i class="ion-md-calculator" (click)="calculateData(3, true)"></i>
+                                                    </span>
+                                                </div>                                                
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </p-accordionTab>
+                        </section>
+                    </p-accordion>
+                    <p-accordion (onOpen)="onOpen($event, ACCORDION_VALUE['LEVERAGE_BREAK'])">
+                        <section class="subheader">
+                            <p-accordionTab class="last-accodion">
+                                <p-header class="accordion-header">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <h4 class="border-0 p-0 m-0">{{ 'CALCULATOR.LOAN_AMORTIZATION.LEVERAGE_BREAK_EVEN' | translate }}</h4>
+                                        </div>
+
+                                    </div>
+                                </p-header>
+                                <div class="row">
+                                    <div class="col-12 col-lg-6">
+                                        <div class="row">
+                                            <div class="col-6 col-sm-4 col-lg-6">
+                                                <div class="form-group mb-0">
+                                                    <span class="align-content-center">{{ 'CALCULATOR.LOAN_AMORTIZATION.MARGINAL_TEXT_RATE' | translate }}</span>
+                                                </div>
+                                            </div>
+                                            <div class="col-6 col-sm-5 col-lg-6">
+                                                <div class="form-group" [ngClass]="{'has-error' : !marginTextRate.valid}">
+                                                    <input type="text" class=" form-control text-center" name="marginTextRate" [(ngModel)]="amortizationData['nnritax']" #marginTextRate="ngModel"
+                                                    [textMask]="{mask: percentMask1}" appNumeric [customMin]="0" [customMax]="100"  />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-6 col-sm-4 col-lg-6">
+                                                <div class="form-group mb-0">
+                                                    <span class="align-content-center">{{ 'CALCULATOR.LOAN_AMORTIZATION.FEES_ON_INVESTMENT_PURCHASES' | translate }}</span>
+                                                </div>
+                                            </div>
+                                            <div class="col-6 col-sm-5 col-lg-6">
+                                                <div class="form-group" [ngClass]="{'has-error' : !investmentPurchases.valid}">
+                                                    <input type="text" class=" form-control text-center" name="investmentPurchases" [(ngModel)]="amortizationData['nnrifees']" #investmentPurchases="ngModel"
+                                                    [textMask]="{mask: percentMask1}" appNumeric [customMin]="0" [customMax]="100"  />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-6 col-sm-4 col-lg-6">
+                                                <div class="form-group mb-0">
+                                                    <span class="align-content-center">{{ 'CALCULATOR.LOAN_AMORTIZATION.PERCENT_OF_INVESTMENT_INCOME_TAXABLE' | translate }}</span>
+                                                </div>
+                                            </div>
+                                            <div class="col-6 col-sm-5 col-lg-6">
+                                                <div class="form-group" [ngClass]="{'has-error' : !investmentIncome.valid}">
+                                                    <input type="text" class=" form-control text-center" name="investmentIncome" [(ngModel)]="amortizationData['nnriincome']" #investmentIncome="ngModel"
+                                                    [textMask]="{mask: percentMask1}" appNumeric [customMin]="0" [customMax]="100" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-6 col-sm-4 col-lg-6">
+                                                <div class="form-group mb-0">
+                                                    <span class="align-content-center">{{ 'CALCULATOR.LOAN_AMORTIZATION.BREAK_EVEN_POINT' | translate }}</span>
+                                                </div>
+                                            </div>
+                                            <div class="col-6 col-sm-5 col-lg-6">
+                                                <div class="form-group d-flex align-items-center justify-content-center">
+                                                    <div>
+                                                        <span>{{amortizationData['nnribreakEven'] | number:'0.0-2'}}%</span>
+                                                    </div>
+                                                    <span class="ml-2">
+                                                        <i class="ion-md-calculator" (click)="calculateData(1, true)"></i>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </p-accordionTab>
+                        </section>
+                    </p-accordion>
+                </div>
+            </div>
+            <div class="box-footer button-responsive">
+                <div class="form-group text-right">
+                    <button type="button" class="btn btn-small btn-primary btn-fixwidth btn-report mr-2" (click)="generateReport()">{{ 'CALCULATOR.REPORT' | translate }}</button>
+                    <button type="button" (click)="back()" class="btn btn-small btn-secondary btn-fixwidth mr-2">{{'FORM.ACTION.CANCEL' | translate }}</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<ng-container *ngIf="isCalculatorReportSidePanelOpen">
+    <app-calculator-report-side-panel (closePanelEvent)="closePanel()" [calculatorData]="reportObject" [clientId]="clientId" type="loan-amortization"></app-calculator-report-side-panel>
+</ng-container>
+<router-outlet></router-outlet>
+<!-- <router-outlet></router-outlet> -->

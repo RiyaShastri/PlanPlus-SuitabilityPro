@@ -1,0 +1,96 @@
+<ng-container *ngIf="dataLoaded">
+    <div class="row pt-3">
+        <div class="col-12">
+            <h5 class="fw-700" [translate]="'ENGAGEMENT.SERVICE_LEVEL_CLIENT_INFO.TITLE.CLIENT_INFO'"></h5>
+        </div>
+    </div>
+    <div class="row pt-4">
+        <div class="col-md-5">
+            <div class="form-group mb-4">
+                <label class="custom-form-label  pb-2 mb-0"
+                    [translate]="'ENGAGEMENT.SERVICE_LEVEL_CLIENT_INFO.BECAME_A_CLIENT'"
+                    [translateParams]="{dateFormat: displayDateFormat}"></label>
+                <p *ngIf="!isEditable" class="mb-0">
+                    {{clientInfo['becameClientDate'] ? (clientInfo['becameClientDate'] | date:displayDateFormat) : 'N/A'}}
+                </p>
+                <p-calendar *ngIf="isEditable" [showIcon]="true" [monthNavigator]="true" [yearNavigator]="true"
+                    [yearRange]="yearRange" [maxDate]="maxDate" name="becameClientDate"
+                    [(ngModel)]="clientInfo['becameClientDate']" #becameClientDate="ngModel" [dateFormat]="dateFormat"
+                    (onSelect)="validateDate(clientInfo['planLastReviewedDate'], 0)"
+                    (onInput)="validateDate(clientInfo['becameClientDate'], 0)"></p-calendar>
+                <p class="text-error" *ngIf="invalidDate[0] == true" [translate]="'ENGAGEMENT.SERVICE_LEVEL_CLIENT_INFO.FUTURE_DATE_ERROR'">
+                </p>
+            </div>
+            <div class="form-group mb-4">
+                <label class="custom-form-label  pb-2 mb-0"
+                    [translate]="'ENGAGEMENT.SERVICE_LEVEL_CLIENT_INFO.PLAN_LAST_REVIEWED'"
+                    [translateParams]="{dateFormat: displayDateFormat}"></label>
+                <p *ngIf="!isEditable" class="mb-0">
+                    {{clientInfo['planLastReviewedDate'] ? (clientInfo['planLastReviewedDate'] | date:displayDateFormat) : 'N/A'}}
+                </p>
+                <p-calendar *ngIf="isEditable" [showIcon]="true" [monthNavigator]="true" [yearNavigator]="true"
+                    [yearRange]="yearRange" [maxDate]="maxDate" name="planLastReviewedDate"
+                    [(ngModel)]="clientInfo['planLastReviewedDate']" #planLastReviewedDate="ngModel"
+                    [dateFormat]="dateFormat" (onSelect)="validateDate(clientInfo['planLastReviewedDate'], 1)"
+                    (onInput)="validateDate(clientInfo['planLastReviewedDate'], 1)">
+                </p-calendar>
+                <p class="text-error" *ngIf="invalidDate[1] == true" [translate]="'ENGAGEMENT.SERVICE_LEVEL_CLIENT_INFO.PLAN_LAST_REVIEWED_DATE_ERROR'">
+                </p>
+            </div>
+            <div class="form-group mb-4">
+                <label class="custom-form-label  pb-2 mb-0"
+                    [translate]="'ENGAGEMENT.SERVICE_LEVEL_CLIENT_INFO.PORTFOLIO_LAST_REVIEWED'"
+                    [translateParams]="{dateFormat: displayDateFormat}"></label>
+                <p *ngIf="!isEditable" class="mb-0">
+                    {{clientInfo['portfolioLastReviewedDate'] ? (clientInfo['portfolioLastReviewedDate'] | date:displayDateFormat) : 'N/A'}}
+                </p>
+                <p-calendar *ngIf="isEditable" [showIcon]="true" [monthNavigator]="true" [yearNavigator]="true"
+                    [yearRange]="yearRange" [maxDate]="maxDate" name="portfolioLastReviewedDate"
+                    [(ngModel)]="clientInfo['portfolioLastReviewedDate']" #portfolioLastReviewedDate="ngModel"
+                    [dateFormat]="dateFormat" (onSelect)="validateDate(clientInfo['planLastReviewedDate'], 2)"
+                    (onInput)="validateDate(clientInfo['portfolioLastReviewedDate'], 2)">
+                </p-calendar>
+                <p class="text-error" *ngIf="invalidDate[2] == true" [translate]="'ENGAGEMENT.SERVICE_LEVEL_CLIENT_INFO.PORTFOLIO_LAST_REVIEWED_DATE_ERROR'">
+                </p>
+            </div>
+        </div>
+        <div class="col-md-5 offset-md-2">
+            <div class="form-group mb-4">
+                <label class="custom-form-label  pb-2 mb-0">
+                    {{'ENGAGEMENT.SERVICE_LEVEL_CLIENT_INFO.CLIENT_TYPE' | translate}}
+                    <small class="color-black fs-12" [translate]="'ENGAGEMENT.SERVICE_LEVEL_CLIENT_INFO.AS_OF'"
+                        [translateParams]="{'date':'2017.06.06'}"></small>
+                </label>
+                <p *ngIf="!isEditable" class="m-0">
+                    {{clientInfo['clientType'] ? clientInfo['clientType']['label'] : 'N/A'}}
+                </p>
+                <p-dropdown *ngIf="isEditable" name="clientType" [options]="clientTypes" optionLabel="label"
+                    placeholder="Select client type" [(ngModel)]="clientInfo['clientType']" #clientType="ngModel">
+                </p-dropdown>
+            </div>
+            <div class="form-group mb-4">
+                <label class="custom-form-label  pb-2 mb-0"
+                    [translate]="'ENGAGEMENT.SERVICE_LEVEL_CLIENT_INFO.FREQUENCY'"></label>
+                <p *ngIf="!isEditable" class="mb-0">
+                    {{clientInfo['planLastReviewedFrequency'] ? clientInfo['planLastReviewedFrequency']['name'] : 'N/A'}}
+                </p>
+                <p-dropdown *ngIf="isEditable" name="planLastReviewedFrequency" [options]="frequencyList"
+                    optionLabel="name" placeholder="Select frequency"
+                    [(ngModel)]="clientInfo['planLastReviewedFrequency']" #planLastReviewedFrequency="ngModel">
+                </p-dropdown>
+            </div>
+            <div class="form-group mb-4">
+                <label class="custom-form-label  pb-2 mb-0"
+                    [translate]="'ENGAGEMENT.SERVICE_LEVEL_CLIENT_INFO.FREQUENCY'"></label>
+                <p *ngIf="!isEditable" class="mb-0">
+                    {{clientInfo['portfolioLastReviewedFrequency'] ? clientInfo['portfolioLastReviewedFrequency']['name'] : 'N/A'}}
+                </p>
+                <p-dropdown *ngIf="isEditable" name="portfolioLastReviewedFrequency" [options]="frequencyList"
+                    optionLabel="name" placeholder="Select frequency"
+                    [(ngModel)]="clientInfo['portfolioLastReviewedFrequency']"
+                    #portfolioLastReviewedFrequency="ngModel">
+                </p-dropdown>
+            </div>
+        </div>
+    </div>
+</ng-container>

@@ -1,0 +1,199 @@
+<div class="side-form">
+    <form name="form" (ngSubmit)="f.form.valid && saveCurrent(f)" #f="ngForm" novalidate>
+        <div class="box">
+            <div class="box-header">
+                <span class="sidebar_title" [translate]="'EDIT_CURRENT.TITLE.EDIT_CURRENT_ALLOCATION'"></span>
+                <span class="sidebar_action_icon ion-md-close-circle float-right" (click)="back(); closeButtonDisable = true"></span>
+            </div>
+            <div class="box-body">
+                <div class="col-12 text-center">
+                    <h4>
+                        <span class="graph-upper-lable" [translate]="'PORTFOLIO_ALLOCATION.CURRENT'"></span>
+                        <span *ngIf="cashAllocation === 100">
+                            <i class="ion-ios-alert fs-16" [ngbTooltip]="alertMessage" placement="bottom" triggers="manual"
+                                #alert="ngbTooltip" (click)="alert.open()"></i>
+                            <ng-template #alertMessage>
+                                <p class="font">{{'PORTFOLIOS.EDIT_CURRENT_WARNING' | translate }}</p>
+                                <ul *ngIf="allocation.warnings">
+                                    <li>{{allocation.warnings}}</li>
+                                </ul>
+                                <p class="text-right m-0 p-0">
+                                    <button class="btn btn-secondary btn-small m-0" (click)="alert.close()" [translate]="'FORM.ACTION.CLOSE'"></button>
+                                </p>
+                            </ng-template>
+                        </span>
+                    </h4>
+                    <div *ngIf="currentExist" id="chartdiv" style="height:200px; width: 200px; display: inline-block;"></div>
+                    <div *ngIf="!currentExist" class="no-record text-center position-relative" style="height:200px; width: 200px; display: inline-block;">
+                        <p class="no_data_graph"><i class="ion-ios-alert mr-2"></i>{{'NO_RESULTS' | translate}}</p>
+                    </div>
+                </div>
+                <div class="row" *ngIf="allocation">
+                    <div class="col-12">
+                        <hr>
+                        <div class="form-group">
+                            <table class="table bt-none table-responsive allocation-table">
+                                <thead>
+                                    <tr>
+                                        <th class="pl-0 pr-0" width="40%" [translate]="'PORTFOLIO_ALLOCATION.TABLE.ASSET_CLASS'"></th>
+                                        <th colspan="2" width="60%" class="pl-5 " [translate]="'PORTFOLIO_ALLOCATION.CURRENT'"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="secondary-header">
+                                        <td class="pl-0 pr-0" width="40%" [translate]="'PORTFOLIO_ALLOCATION.TABLE.CLASS'"></td>
+                                        <td class="text-right" width="30%">%</td>
+                                        <td class="text-right " width="30%" [translate]="'FORM.AMOUNT'"></td>
+                                    </tr>
+                                    <ng-container *ngFor="let item of allocation.allocations; let i =index;">
+                                        <tr>
+                                            <td class="pt-2 pb-2" width="40%">
+                                                <span class="square asset_indicator" [style.background]="graphColors[i]"></span>
+                                                <span class="asset_lbl">{{('SSID_LABELS.' + item.ssid) | translate}}</span>
+                                            </td>
+                                            <td class="pt-2 pb-2 text-right" width="30%">
+                                                <div class="form-group  mb-0 text-right" *ngIf="item.displayOrder !== 1 && allocation.access"
+                                                    [ngClass]="{'has-error': allocationPercent.errors && !allocationPercent.valid  || f.submitted }">
+                                                    <div class="fix-div-width">
+                                                        <input style="max-width: 80px;" class="form-control d-inline-block text-right h-25"
+                                                            min="0" max="100" name="allocationPercent{{i}}"
+                                                            #allocationPercent="ngModel"  [textMask]="{mask: percentDecimalMask}" appNumeric
+                                                            pattern="^[0-9][0-9]*(.[0-9]{0,2})?$|^100$" [(ngModel)]="item.currentPercent"
+                                                            (keyup)="updateGraph($event)" required />
+                                                    </div>
+                                                </div>
+                                                <div class="mb-0 text-right" *ngIf="item.displayOrder === 1">
+                                                    {{item.currentPercent | number : "1.1-1" }}%
+                                                </div>
+                                            </td>
+                                            <td class="pt-2 pb-2  text-right" width="30%">
+                                                <!-- <div class="form-group  mb-0 text-right" *ngIf="item.allocationBreakdown !== 'Cash'">
+                                                            <input class="form-control d-inline-block text-right h-25" min="0" max="100" #[assetsBreakdown{{item.allocationBreakdownId}}]="ngModel"
+                                                                 style="width: 80px" [(ngModel)]="item.amount"
+                                                                name="assetsBreakdown{{item.allocationBreakdownId}}" required/>
+                                                        </div> -->
+                                                <div class="mb-0 text-right">
+                                                    {{item.currentAmount | currency:clientData['currencyCode']:'symbol-narrow':'1.0-0' }}
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </ng-container>
+                                    <tr>
+                                        <td class="text-right">
+                                            <b>{{'ASSET_LIABILITY.HOLDING_ACCOUNT.TOTAL' | translate}}</b>
+                                        </td>
+                                        <td class="fw-400 text-right ">
+                                            <b>{{totalSum | number : "1.1-1" }}%</b>
+                                        </td>
+                                        <td class="fw-400 text-right ">
+                                            <b>{{totalAmount | currency:clientData['currencyCode']:'symbol-narrow':'1.0-0'}}</b>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div *ngIf="totalSum !== 100" class="form-group mb-0 text-center has-error">
+                            <span class="text-danger" [translate]="'EDIT_CURRENT.ERROR_MESSAGE.TOTAL_MUST_BE_EQUAL_TO_100'"></span>
+                        </div>
+                        <div class="form-group">
+                            <div id="moreDetai" class="hide-ele">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <table class="table bt-none">
+                                            <tr>
+                                                <td class="border-0 pt-2 pb-2 " width="40%" [translate]="'PORTFOLIO.EDIT_POLICY.LABEL.RETURN'"></td>
+                                                <td class="pt-2 pb-2   text-right border-0" width="30%">
+                                                    {{allocation.currentSummary.rateOfReturn | number : "1.1-1" }}%
+                                                </td>
+                                                <td class="pt-2 pb-2  text-right border-0" width="30%">&nbsp;</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="border-0 pt-2 pb-2 " width="40%" [translate]="'PORTFOLIO.EDIT_POLICY.LABEL.RISK'"></td>
+                                                <td class="pt-2 pb-2   text-right border-0" width="30%">
+                                                    {{allocation.currentSummary.risk | number : "1.1-1" }}%
+                                                </td>
+                                                <td class="pt-2 pb-2  text-right border-0" width="30%"></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="border-0 pt-2 pb-2 " width="40%" [translate]="'PORTFOLIO.EDIT_POLICY.LABEL.SHARPE_RATIO'"></td>
+                                                <td class="pt-2 pb-2   text-right border-0" width="30%">
+                                                    {{allocation.currentSummary.sharpeRatio | number : "1.1-1" }}%
+                                                </td>
+                                                <td class="pt-2 pb-2  text-right border-0" width="30%"></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="border-0 pt-0 pb-2 " width="40%" [translate]="'PORTFOLIO.EDIT_POLICY.LABEL.FEES_COSTS'"></td>
+                                                <td class="pt-0 pb-2 text-right border-0" width="30%">
+                                                    <div class="form-group mb-0 text-right" *ngIf="isCost" [ngClass]="{'has-error': feesCosts.errors && !feesCosts.valid  || f.submitted }">
+                                                        <input class="form-control d-inline-block text-right h-25" name="feesCosts"
+                                                            [(ngModel)]="allocation.currentSummary.fees" #feesCosts="ngModel"
+                                                             pattern="^[0-9][0-9]*(.[0-9]{0,2})?$|^100$"
+                                                            min="0" max="100" style="width: 80px" required />
+                                                    </div>
+                                                    <div class="mb-0 text-right form-control no-border" *ngIf="!isCost">
+                                                        {{allocation.currentSummary.fees | number : "1.1-2" }}%
+                                                    </div>
+                                                </td>
+                                                <td class="pt-0 pb-2 pl-4 border-0" width="30%">
+                                                    <p-checkbox name="cost" value="cost1" [(ngModel)]="isCost" #cost="ngModel"
+                                                        binary="true"></p-checkbox>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="2">
+                                                    <h5 class="fw-700 label-size" [translate]="'EDIT_CURRENT.INVESTMENT_INCOME_DISTRIBUTION'"></h5>
+                                                </td>
+                                                <td class="pt-2 pb-2 pl-4">
+                                                    <p-checkbox name="income" [(ngModel)]="allocation.currentSummary.overrideCalculatedIncomeDist" #income="ngModel"
+                                                        binary="true"></p-checkbox>
+                                                </td>
+                                            </tr>
+                                            <tr *ngFor="let data of allocation.currentSummary.incomeDistribution; let j =index;">
+                                                <td width="40%">{{data.id}}</td>
+                                                <td class="pt-2 pb-2  text-right interest-div" width="30%">
+                                                    <div class="form-group mb-0 pl-2 text-right " *ngIf="allocation.currentSummary.overrideCalculatedIncomeDist"
+                                                        [ngClass]="{'has-error': interest.errors && !interest.valid  || f.submitted }">
+                                                        <input class="form-control d-inline-block text-right h-25" name="interest{{j}}"
+                                                            [(ngModel)]="data.percent" #interest="ngModel" 
+                                                            [textMask]="{mask: percentMask}" appNumeric min="0" max="100" style="width: 80px"
+                                                            pattern="^[0-9][0-9]*(.[0-9]{0,2})?$|^100$" required />
+                                                    </div>
+                                                    <div class="mb-0" *ngIf="!allocation.currentSummary.overrideCalculatedIncomeDist">
+                                                        <span class="text-right">{{data.percent | number : "1.0-0" }}%</span>
+                                                    </div>
+                                                </td>
+                                                <td class="text-right" width="30%">
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12">
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row" *ngIf = "accessRights['CMAINCDIST']['accessLevel'] > 0 ">
+                                <div class="col-12 col-md-4">
+                                    <a class="moredetail-button cursor-p" (click)="toggle();isDetailExpand = !isDetailExpand ">
+                                        <span *ngIf="isDetailExpand" [translate]="'PLANNING.LESS_DETAIL'"> </span>
+                                        <span *ngIf="!isDetailExpand" [translate]="'PLANNING.MORE_DETAIL'"> </span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="box-footer">
+                <div class="form-group text-right">
+                    <button (click)="back(); closeButtonDisable = true" type="button" class="btn btn-small btn-secondary mr-2" [disabled]="closeButtonDisable">{{
+                        'FORM.ACTION.CANCEL' | translate }}</button>
+                    <button type="submit" class="btn btn-small btn-success" [disabled]="f.form.invalid  || totalSum!== 100 ">{{
+                        'FORM.ACTION.SAVE' | translate }}</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

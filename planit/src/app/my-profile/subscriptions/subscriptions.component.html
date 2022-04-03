@@ -1,0 +1,99 @@
+<div class="about-container">
+  <div class="main-container">
+    <div class="panel mt-0">
+      <div class="panel-body info-box">
+        <div class="d-flex flex-wrap panel-header mb-xl-3 mb-3">
+          <h4 [translate]="'PERSONAL_INFO.MY_SUBSCRIPTION'"></h4>
+        </div>
+
+            <div class="row">
+              <div class="col-12">
+                <div class="form-group">
+                <label class="custom-form-label">
+                  <span [translate]="'PERSONAL_INFO.ROLE'"></span>
+                </label>
+                  <span class="fw-400 fs-14">
+                                            <i style="color:#99bb44" class="ion-md-checkmark"></i>
+                    {{ role }}
+                                        </span>
+                </div>
+              </div>
+              <div class="col-12" *ngIf="userLicences.length > 0">
+                <div class="form-group">
+                  <label class="custom-form-label" [translate]="'PERSONAL_INFO.LICENCE'">
+                  </label>
+                  <div class="row fs-14 fw-400">
+                    <div class="pb-10 col-12" *ngFor="let licence of userLicences; let i = index;">
+                                                <span [ngClass]="licence.authorized ? '' : 'grayed-out pl-17'">
+                                                    <i *ngIf="licence.authorized" style="color:#99bb44" class="ion-md-checkmark"></i>
+                                                  <span [innerHTML]="licence['licenseName'] "></span>
+                                                </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-12">
+                <div class="form-group">
+                  <div class="custom-form-label"><label  [translate]="'PERSONAL_INFO.USERNAME'">
+                  </label>
+                    <ng-template #usernameGuide>
+                      <p [innerHTML]="'SUBSCRIPTION.USERNAME_GUIDE' | translate" class="tooltip-inner-scroll"></p>
+                      <p class="text-right m-0 p-0">
+                        <button class="btn btn-secondary btn-small m-0" (click)="guide1.close()"
+                                [translate]="'RISK_RESULTS_PAGE.WARNING.CLOSE'"></button>
+                      </p>
+                    </ng-template>
+                    <span class="ion-ios-alert ion-ios-alert" [ngbTooltip]="usernameGuide" #guide1="ngbTooltip"
+                          triggers="manual" placement="bottom-left" (click)="guide1.open()"></span></div>
+                  <span class="fw-400 fs-14">
+                                            {{ advisorDetails['email'] }}
+                                        </span>
+                </div>
+              </div>
+              <div class="col-12">
+                <div class="form-group">
+                  <div class="custom-form-label">
+                  <label  [translate]="'PERSONAL_INFO.USER_ID'">
+                  </label>
+                  <ng-template #userIDGuide>
+                    <p [innerHTML]="'SUBSCRIPTION.USER_ID_GUIDE' | translate" class="tooltip-inner-scroll"></p>
+                    <p class="text-right m-0 p-0">
+                      <button class="btn btn-secondary btn-small m-0" (click)="guide2.close()"
+                              [translate]="'RISK_RESULTS_PAGE.WARNING.CLOSE'"></button>
+                    </p>
+                  </ng-template>
+                  <span class="ion-ios-alert ion-ios-alert" [ngbTooltip]="userIDGuide" #guide2="ngbTooltip"
+                        triggers="manual" placement="bottom-left" (click)="guide2.open()"></span>
+                  </div>
+                  <span class="fw-400 fs-14">
+                                            {{ advisorDetails['planner'] }}
+                                        </span>
+                </div>
+              </div>
+              <div class="col-12">
+                <div class="form-group">
+                  <label class="custom-form-label" [translate]="'PERSONAL_INFO.EXPIRY'">
+                  </label>
+                  <span class="fw-400 fs-14" *ngIf="advisorDetails['expiryDate']">
+                                            {{ advisorDetails['expiryDate'] | date:'yyyy.MM.dd' }}
+                                        </span>
+                  <span class="fw-400 fs-14" *ngIf="!advisorDetails['expiryDate']">N/A</span>
+                </div>
+              </div>
+            </div>
+
+
+      </div>
+    </div>
+    <div class="row" >
+      <div class="col-12">
+        <div class="form-group text-right">
+          <hr>
+          <button *ngIf="isSSO" (click)="window.open(environment.SSOMyAccount, '_blank')" type="button" class="btn btn-success"
+                  [translate]="'PERSONAL_INFO.MANAGE_SUBSCRIPTION'" ></button>
+              </div>
+      </div>
+    </div>
+  </div>
+</div>
+<router-outlet></router-outlet>

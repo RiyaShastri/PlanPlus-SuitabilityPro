@@ -1,0 +1,74 @@
+<div class="side-form">
+    <form name="form" #f="ngForm" novalidate>
+        <div class="box">
+            <div class="box-header">
+                <span class="sidebar_title" [translate]="">{{ (shareId) ? ('ENTITY.EDIT_SHARE_CLASS' | translate) : ('ENTITY.ADD_SHARE_CLASS' | translate) }}</span>
+                <span (click)="back();cancelDisable = true" class="sidebar_action_icon ion-md-close-circle float-right"></span>
+            </div>
+            <div class="box-body">
+                <div class="form-group" [ngClass]="{ 'has-error': !description.valid && (description.dirty || description.touched || f.submitted)}">
+                    <label class="custom-form-label" [translate]="'ENTITY.SHARE_DESCRIPTION'"></label>
+                    <input type="text" class="form-control" name="description" [(ngModel)]="entityShare['description']" #description="ngModel"
+                        pattern="^[a-zA-Z][\w\d\s\-]*" required />
+                </div>
+                <div class="form-group" [ngClass]="{ 'has-error': !typeList.valid && (typeList.dirty || typeList.touched || f.submitted)}">
+                    <label class="custom-form-label" [translate]="'ENTITY.SHARE_TYPE'"></label>
+                    <p-dropdown placeholder="{{'ENTITY.TYPE_PLACEHOLDER' | translate }}" [options]="shareTypes" optionLabel="name" name="shareType"
+                        [(ngModel)]="selectedShareType" #typeList="ngModel" (onChange)="changeShareType()" required></p-dropdown>
+                </div>
+                <div class="form-group">
+                    <fieldset class="form-group add-entity-radio-wrap">
+                        <legend class="custom-form-label w-100" [translate]="'ENTITY.VOTING_SHARES'"></legend>
+                        <div class="form-check d-flex" [ngClass]="{ 'has-error': !votingShares.valid && (votingShares.dirty || votingShares.touched || f.submitted)}">
+                            <span class="mr-2">
+                                <p-radioButton name="votingShares" value="{{CORPORATION_OPTIONS.NO}}" [(ngModel)]="entityShare['votingShares']" #votingShares="ngModel"
+                                    required [disabled]="true">
+                                </p-radioButton>
+                                {{'ENTITY.NO' | translate}}
+                            </span>
+                            <span>
+                                <p-radioButton name="votingShares" value="{{CORPORATION_OPTIONS.YES}}" [(ngModel)]="entityShare['votingShares']" #votingShares="ngModel"
+                                    required [disabled]="true">
+                                </p-radioButton>
+                                {{'ENTITY.YES' | translate}}
+                            </span>
+                        </div>
+                    </fieldset>
+                </div>
+                <div class="row">
+                    <div class="col-4 share-structure-input">
+                        <div class="form-group" [ngClass]="{ 'has-error': !issuesedShare.valid && (issuesedShare.dirty || issuesedShare.touched || f.submitted)}">
+                            <label class="custom-form-label" [translate]="'ENTITY.ISSUED_SHARES'"></label>
+                            <input type="text" class="form-control text-right" name="issuesedShare" [(ngModel)]="entityShare['issuedShares']" #issuesedShare="ngModel"
+                                [textMask]="{mask: numberMask}" appNumeric required />
+                        </div>
+                    </div>
+                    <div class="col-4 share-structure-input pl-0" *ngIf="selectedShareType && selectedShareType['id'] === SHARE_TYPES.FIXED_VALUE">
+                        <div class="form-group" [ngClass]="{ 'has-error': !fixedValue.valid && (fixedValue.dirty || fixedValue.touched || f.submitted)}">
+                            <label class="custom-form-label" [translate]="'ENTITY.FIXED_VALUE'"></label>
+                            <input type="text" class="form-control text-right" name="fixedValue" [(ngModel)]="entityShare['fixedValue']" #fixedValue="ngModel"
+                                [textMask]="{mask: currencyMask}" appNumeric required />
+                            <p *ngIf="entityShare['fixedValue'] && entityShare['issuedShares']">@ {{ (entityShare['fixedValue'] / entityShare['issuedShares']) | currency:clientData['currencyCode']
+                                : 'symbol-narrow':'1.0-2' }} / {{'ENTITY.SHARES' | translate}}</p>
+                        </div>
+                    </div>
+                    <div class="col-4 share-structure-input pl-0">
+                        <div class="form-group" [ngClass]="{ 'has-error': !purchasedPrice.valid && (purchasedPrice.dirty || purchasedPrice.touched || f.submitted)}">
+                            <label class="custom-form-label" [translate]="'ENTITY.PURCHASE_PRICE_PUC'"></label>
+                            <input type="text" class="form-control text-right" name="purchasedPrice" [(ngModel)]="entityShare['puc']" #purchasedPrice="ngModel"
+                                [textMask]="{mask: currencyMask}" appNumeric required />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="box-footer">
+                <div class="form-group">
+                    <button [disabled]="cancelDisable" (click)="back(); cancelDisable = true" type="button" class="btn btn-small btn-secondary mr-2"
+                        [translate]="'FORM.ACTION.CANCEL'"></button>
+                    <button [disabled]="f.form.invalid || saveDisabled" (click)="updateShare()" type="submit" class="btn btn-small btn-success"
+                        [translate]="'FORM.ACTION.SAVE'"></button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

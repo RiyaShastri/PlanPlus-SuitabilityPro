@@ -1,0 +1,34 @@
+.end-year-fix-height {
+    min-height: 37px;
+}
+
+.form-check-w-auto {
+    width: auto;
+}
+
+.check-form-group-100 input[type="text"].form-control {
+    width: 100px;
+}
+
+.mt-2-custom {
+    margin-top: 2rem;
+}
+
+.form-fixed-value {
+    border-radius: 0;
+    border: 1px solid transparent;
+    background-color: #FEFEFE;
+    outline: none;
+    height: 40px;
+    color: #345;
+    font-family: "Open Sans";
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 40px;
+}
+
+@media(max-width: 484px) {
+    .check-form-group-100 input[type="text"].form-control {
+        width: 74px !important;
+    }
+}

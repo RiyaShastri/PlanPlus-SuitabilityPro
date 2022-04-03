@@ -1,0 +1,68 @@
+<div class="side-form">
+    <form name="form" (ngSubmit)="sendReminder() && f.form.valid" #f="ngForm" novalidate>
+        <div class="box">
+            <div class="box-header">
+                <span class="sidebar_title" [translate]="'RISK_TOLERANCE_PAGE.FORM.TITLE.SEND_REMINDER'"></span>
+                <span (click)="back(); closeButtonDisable = true" class="sidebar_action_icon ion-md-close-circle"></span>
+            </div>
+
+            <div class="box-body">
+                <div class="form-group"
+                    [ngClass]="{'has-error': !from.valid && (from.dirty || from.touched || f.submitted)}">
+                    <label class="custom-form-label" [translate]="'FORM.EMAIL'"></label>
+                    <input type="email" class="form-control" name="from" [(ngModel)]="reminder.from" #from="ngModel"
+                        pattern="^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$" required />
+                </div>
+                <div class="form-group" *ngIf="reminder.to">
+                    <label class="custom-form-label" [translate]="'FORM.SEND_TO'"></label>
+                    <span class="form-value-lbl">{{reminder.to}}</span><br/><br/>
+                    <span class="form-value-lbl" style="padding-left: 0px;">{{reminder.guideMessage}}</span>
+                </div>
+                <div class="form-group"
+                    [ngClass]="{'has-error': !subject.valid && (subject.dirty || subject.touched || f.submitted)}">
+                    <label class="custom-form-label" [translate]="'FORM.SUBJECT'"></label>
+                    <input type="text" class="form-control" name="subject" [(ngModel)]="reminder.subject"
+                        #subject="ngModel" required myNoSpaces />
+                </div>
+                <div class="form-group"
+                    [ngClass]="{'has-error': !message.valid && (message.dirty || message.touched || f.submitted)}">
+                    <label class="custom-form-label" >{{reminder.intro}}</label>
+                    <textarea class="form-control large-input" name="message" [(ngModel)]="reminder.message"
+                        #message="ngModel" required rows="10" myNoSpaces></textarea>
+                </div>
+                <div class="form-group" *ngIf="invitAccess">
+                    <label class="custom-form-label d-inline-block">
+                        <span>{{'RISK_TOLERANCE_PAGE.SEND_INVITE.INVITE_TO' | translate}}
+                            <i class="fs-12">{{'RISK_TOLERANCE_PAGE.SEND_INVITE.DOCUMENT_VAULT' | translate}}</i>
+                        </span>
+                    </label>
+                    <p-checkbox class="pull-right" [(ngModel)]="reminder['inviteOptionPayload']['invitetoDocumentVault']" binary="true"
+                        name="doc_vault" [disabled]="inviteOptions['invitetoDocumentVault'] == true">
+                    </p-checkbox>
+                </div>
+                <div class="form-group" *ngIf="invitAccess && reminder.inviteType === SEND_INVITATION_PARAM.RISK_TOLERANCE">
+                    <label class="custom-form-label d-inline-block" [translate]="'RISK_TOLERANCE_PAGE.SEND_INVITE.SHOW_REPORT'"></label>
+                    <p-checkbox class="pull-right" [(ngModel)]="reminder['inviteOptionPayload']['showReport']" binary="true"
+                        name="show_report"></p-checkbox>
+                </div>
+                <div class="form-group">
+                    <label class="custom-form-label d-inline-block"
+                        [translate]="'RISK_TOLERANCE_PAGE.SEND_INVITE.ENABLE_READ_RECEIPT'"></label>
+                    <p-checkbox class="pull-right" [(ngModel)]="reminder['inviteOptionPayload']['enableReadReceipt']" binary="true"
+                        name="read_receipt"></p-checkbox>
+                </div>
+                <div class="form-group">
+                    <p class="form-note">{{ 'RISK_TOLERANCE_PAGE.SEND_INVITE.DESCRIPTION' | translate }}</p>
+                </div>
+            </div>
+            <div class="box-footer">
+                <div class="form-group text-right">
+                    <button class="btn btn-secondary btn-small mr-2" type="button" (click)="back(); closeButtonDisable = true"
+                        [translate]="'FORM.ACTION.CANCEL'" [disabled]="closeButtonDisable"></button>
+                    <button type="submit" class="btn btn-success btn-small" [disabled]="!f.form.valid || saveDisabled"
+                        [translate]="'RISK_TOLERANCE_PAGE.TABLE.ACTIONS.SEND_REMINDER'"></button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

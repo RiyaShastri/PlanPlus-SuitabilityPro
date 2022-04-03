@@ -1,0 +1,31 @@
+version: 0.3
+
+phases:
+  install:
+    commands:
+      - echo Installing source NPM dependencies...
+      - npm install
+      - npm install -g @angular/cli
+      - npm install -g increase-memory-limit
+  pre_build:
+    commands:
+      - echo pre_build started on `date`
+  build:
+    commands:
+      - echo Build started on `date`
+      - echo Copy configuration files TODO
+      - cd planit
+      - npm install
+      - increase-memory-limit
+      - node --max_old_space_size=16000 "./node_modules/@angular/cli/bin/ng" build --env=ppdev --base-href /app/ -prod
+      - cp ../htaccess/.htaccess_aws dist/htaccess
+  post_build:
+    commands:
+      - echo Build completed on `date`
+artifacts:
+  files:
+      - 'planit/dist/**/*'
+      - appspec.yml
+      - cleanup.sh
+      - restart-pp-stage.sh
+

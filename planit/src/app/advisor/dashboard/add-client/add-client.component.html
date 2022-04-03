@@ -1,0 +1,150 @@
+<div class="add-client side-form">
+    <form name="form" #f="ngForm" novalidate>
+        <div class="box">
+            <div class="box-header">
+                <span class="sidebar_title">{{ 'ADVISOR.DASHBOARD.CLIENTS_TILE.ADD_NEW_CLIENT' | translate }} </span>
+                <span (click)="back(); closeButtonDisable = true" class="sidebar_action_icon ion-md-close-circle float-right"></span>
+            </div>
+
+            <div class="box-body" *ngIf="client">
+
+                <div class="form-group center">
+                    <app-image-upload maxFiles="1" maxSize="2" iconClass="ion-ios-person" [existingFile]="isAvatar"
+                        [isFileselected]="isFileUploded" (fileSelected)="uploadeImage($event)"></app-image-upload>
+                </div>
+
+                <div class="row">
+                    <div class="col-3">
+                        <div class="form-group">
+                            <label class="custom-form-label mb-15" [translate]="'FORM.STATUS'"></label>
+                            {{allowSpouseAdd ? ('ADVISOR.CLIENT2' | translate): ('ADVISOR.CLIENT1' | translate)}}
+                        </div>
+                    </div>
+                    <div class="col-9" *ngIf="!allowSpouseAdd && !isClient2Added ">
+                        <div class="form-group"
+                            [ngClass]="{ 'has-error': !maritalStatus.valid && (maritalStatus.dirty || maritalStatus.touched || isFormSubmitted)}">
+                            <label class="custom-form-label" [translate]="'FORM.MARITAL_STATUS'"></label>
+                            <p-dropdown [options]="maritalStatuses" name="maritalStatuses"
+                                [(ngModel)]="client.maritalStatus" #maritalStatus="ngModel" required optionLabel="name"
+                                placeholder="Choose marital status"></p-dropdown>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-10">
+                        <div class="form-group"
+                            [ngClass]="{ 'has-error': !firstName.valid && (firstName.dirty || firstName.touched || isFormSubmitted)}">
+                            <label class="custom-form-label" [translate]="'FORM.FIRST_NAME'"></label>
+                            <input type="text" class="form-control" name="firstName" [(ngModel)]="client.firstName"
+                                pattern="^[a-zA-Z][\w\d\s\-]*" #firstName="ngModel" required />
+                        </div>
+                    </div>
+                    <div class="col-2 pl-0">
+                        <div class="form-group">
+                            <label class="custom-form-label" [translate]="'FORM.INITIALS'"></label>
+                            <input type="text" class="form-control" name="initials" [(ngModel)]="client.initials"
+                                #initials="ngModel" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-10">
+                        <div class="form-group"
+                            [ngClass]="{ 'has-error': !lastName.valid && (lastName.dirty || lastName.touched || isFormSubmitted)}">
+                            <label class="custom-form-label" [translate]="'FORM.LAST_NAME'"></label>
+                            <input type="text" class="form-control" name="lastName" [(ngModel)]="client.lastName"
+                                pattern="^[a-zA-Z][\w\d\s\-]*" #lastName="ngModel" required />
+                        </div>
+                    </div>
+                    <div class="col-2 pl-0">
+                        <div class="form-group">
+                            <label class="custom-form-label" [translate]="'FORM.RETIRED'"></label>
+                            <p-checkbox name="retired" [(ngModel)]="client.retired" binary="true" #retired="ngModel">
+                            </p-checkbox>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group"
+                    [ngClass]="{ 'has-error':  !gender.valid && (gender.dirty || gender.touched || isFormSubmitted)}">
+                    <fieldset>
+                        <legend class=custom-form-label [translate]="'FORM.GENDER'"></legend>
+                        <div class="form-check d-flex">
+                            <span>
+                                <p-radioButton name="gender" value="M" label="M" [(ngModel)]="client.gender"
+                                    #gender="ngModel" required></p-radioButton>
+                            </span>
+                            <span>
+                                <p-radioButton name="gender" value="F" label="F" [(ngModel)]="client.gender"
+                                    #gender="ngModel" required></p-radioButton>
+                            </span>
+                        </div>
+                    </fieldset>
+                </div>
+
+                <div class="row ui-fluid">
+                    <div class="col-10">
+                        <div class="form-group"
+                            [ngClass]="{ 'has-error': (!birthDate.valid || invalidBirthdate || invalidYear) && (birthDate.dirty || birthDate.touched || isFormSubmitted)}">
+                            <label class="custom-form-label">{{ 'FORM.DATE_OF_BIRTH' | translate }}</label>
+                            <p-calendar (onSelect)="calculateAge(client.birthDate)"
+                                (onInput)="calculateAge(client.birthDate)" [showIcon]="true" [maxDate]="maxDate"
+                                [monthNavigator]="true" required='true' [yearNavigator]="true" [yearRange]="yearRange"
+                                name="birthDate" [(ngModel)]="client.birthDate" #birthDate="ngModel"
+                                [dateFormat]="dateFormat"></p-calendar>
+                            <p class="text-error" *ngIf="invalidBirthdate == true" [translate]="'FORM.INVALID_DATE'">
+                            </p>
+                            <p class="text-error" *ngIf="invalidYear == true" [translate]="'FORM.INVALID_BIRTHYEAR'"
+                                [translateParams]="{'minYear': minYear}">
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-2 pl-0">
+                        <div class="form-group">
+                            <label class="custom-form-label">{{ 'FORM.AGE' | translate }}</label>
+                            <label type="text"
+                                class="form-control custom-form-control disabled">{{familyMemberAge}}</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group"
+                    [ngClass]="{ 'has-error': !email.valid && (email.dirty || email.touched || isFormSubmitted) }">
+                    <label class=custom-form-label [translate]="'FORM.EMAIL'"></label>
+                    <input type="email" class="form-control" name="email" [(ngModel)]="client.email" #email="ngModel"
+                        pattern="^([\w.]+)([+]?\w+)([-]?\w+)@([\w.]+)([-]?\w+)\.([a-zA-Z]{2,5})$" />
+                </div>
+            </div>
+            <div class="box-footer">
+                <div class="form-group text-right">
+                    <button (click)="back(); closeButtonDisable = true" type="button" class="btn btn-small btn-secondary btn-fixwidth mr-2"
+                        [translate]="'FORM.ACTION.CANCEL'" [disabled]="closeButtonDisable"></button>
+                    <!-- <button *ngIf="isClient2" [disabled]="f.form.invalid" (click)="addSpouse(f.form.valid, 1)" type="button" class="btn btn-small btn-success pl-4 pr-4"
+                        [translate]="'FORM.ACTION.NEXT'"></button> -->
+
+                    <button [disabled]="loading" type="submit" class="btn btn-small btn-success pl-4 pr-4"
+                        (click)="addClient(f.form.valid, 1)" [translate]="'FORM.ACTION.SAVE'"></button>
+
+                    <div class="btn-group btn-save btn-custom-split" ngbDropdown role="group" placement="top-right"
+                        aria-label="Button group with nested dropdown">
+                        <button [disabled]="loading" class="btn btn-small btn-success dropdown-toggle-split"
+                            ngbDropdownToggle></button>
+                        <div class="dropdown-menu btn-dropDown-top" ngbDropdownMenu>
+                            <button class="dropdown-item" (click)="addClient(f.form.valid, 1);"
+                                [translate]="'FORM.ACTION.SAVE'"></button>
+                            <button class="dropdown-item" (click)="addClient(f.form.valid, 2);"
+                                [translate]="'FORM.ACTION.SAVE/EDIT'"></button>
+                            <button *ngIf="accessRights['CLI18']['accessLevel'] === 3" class="dropdown-item"
+                                (click)="addClient(f.form.valid, 3);"
+                                [translate]="'FORM.ACTION.SAVE/ADD_FAMILY_MEMBER'"></button>
+                        </div>
+                    </div>
+                    <img *ngIf="loading"
+                        src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

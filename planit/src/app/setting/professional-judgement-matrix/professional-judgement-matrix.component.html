@@ -1,0 +1,637 @@
+<form name="form" #f="ngForm" novalidate>
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <app-settings-header currentPage="pjm" [lastUpdatedDate]="lastReviewDate"></app-settings-header>
+            </div>
+            <div class="col-12">
+
+                <div class="row mt-2 mb-1">
+                    <div class="col-10">
+                        <h5 class="fs-14 fw-400 text-secondary" [translate]="'SETTINGS.PJM_DATA.DETAIL'"></h5>
+                    </div>
+                    <div class="col-2">
+                        <button *ngIf="displayPrefrence['isView'] && canCreateCustom && accessRights['PJMADMINEDIT']['accessLevel'] > 0"
+                            class="btn btn-small btn-success pull-right" type="button" (click)="editPJM('edit'); acceptanceChange()"
+                            [translate]="'PORTFOLIO.ACTION.EDIT'"></button>
+                    </div>
+                </div>
+				<div class="row mt-2 mb-1">
+					<div class="col-10">
+						<h5 class="fs-14 fw-400 text-secondary">
+							<a class="ion-md-cloud-download btn-download" href="https://planplusglobal.com/PPG_Suitability_PJM.pdf"
+								rel="noopener noreferrer" target="_blank">
+							</a>
+							{{ 'SETTINGS.PJM_DATA.DOWNLOAD' | translate }}
+						</h5>
+					</div>
+				</div>
+				<div class="space">
+				</div>
+                <div class="col-lg-4 col-md-6 col-sm-6 col-12" *ngIf="countries.length > 1">
+                    <div class="form-group">
+                        <label class="custom-form-label"
+                            [translate]="'SETTINGS.PREFERRED_SOLUTION.SOLUTION_FAMILY.COUNTRY'"></label>
+                        <p-dropdown [options]="countries" name="country" [(ngModel)]="country" (ngModelChange)="acceptanceChange()" #maritalStatus="ngModel"
+                            required optionLabel="country" placeholder="Select Country"
+                            [disabled]="displayPrefrence['isView']"></p-dropdown>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 col-sm-6 col-12" *ngIf="showRegion">
+                    <div class="form-group">
+                        <label class="custom-form-label"
+                            [translate]="'SETTINGS.PREFERRED_SOLUTION.SOLUTION_FAMILY.REGION'"></label>
+                        <div class="tree-select-custom">
+                            <tree-select name="regionList" idField="regionCode" [multiple]="false" [allowFilter]="false"
+                                [items]="regionArray" placeholder="Select a region" textField="regionName"
+                                childrenField="childRegions" [(ngModel)]="region" (ngModelChange)="acceptanceChange()" #regionList="ngModel"
+                                [allowParentSelection]="true" expandMode="All" required class=""
+                                [disabled]="displayPrefrence['isView']"></tree-select>
+                            <div class="tree-select-custom-caret-down">
+                                <span class="fa fa-fw fa-caret-down"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- <div class="col-lg-4 col-md-6 col-sm-6 col-12">
+          <div class="form-group">
+            <label class="custom-form-label">Investment Policy</label>
+            <p-dropdown [options]="policyArray" name="policyArray" [(ngModel)]="policy" #maritalStatus="ngModel"
+              required optionLabel="policyName" placeholder="Select Policy" [disabled]="displayPrefrence['isView']"></p-dropdown>
+          </div>
+        </div> -->
+                <div class="col-lg-4 col-md-6 col-sm-6 col-12">
+                    <div class="form-group">
+                        <fieldset class="form-group">
+                            <legend class=custom-form-label>
+                                {{ 'SETTINGS.PJM_DATA.MATRIX_TO_APPLY' | translate  }}</legend>
+                            <div class="form-check d-flex">
+                                <span>
+                                    <p-radioButton name="groupname" value="default" #groupname="ngModel"
+                                        [(ngModel)]="matrixOpt" (ngModelChange)="distributionChange($event); acceptanceChange()"
+                                        [disabled]="displayPrefrence['isView']"></p-radioButton>
+                                    <span [translate]="'SETTINGS.PREFERRED_SOLUTION.DETAILS.DEFAULT'"></span>
+                                </span>
+                                <span>
+                                    <p-radioButton name="groupname" value="custom" #groupname="ngModel"
+                                        [(ngModel)]="matrixOpt" (ngModelChange)="acceptanceChange()"
+                                        [disabled]="displayPrefrence['isView']"></p-radioButton>
+                                    <span [translate]="'SETTINGS.PREFERRED_SOLUTION.DETAILS.CUSTOM'"></span>
+                                </span>
+                            </div>
+                        </fieldset>
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-12">
+                <hr class="mt-0 mb-2" />
+            </div>
+
+            <div class="col-12">
+                <span class="fs-22 fw-700" [translate]="'SETTINGS.PJM_DATA.INVESTMENT_POLICY'"></span>
+                <hr class="mt-2" />
+                <div class="row">
+                    <div class="col-md-10 offset-md-2">
+                        <div class="investment-policies-graph">
+                            <span class="graph-label ff-Montserrat fw-500 pb-3"
+                                [translate]="'SETTINGS.PREFERRED_SOLUTION.INVESTMENT_POLICIES'"></span>
+                            <!-- <app-stack-bar-chart></app-stack-bar-chart> -->
+                            <div id="chartdiv"></div>
+                        </div>
+                    </div>
+                </div>
+                <hr class="mb-2" />
+            </div>
+            <div class="pjm-fixheight-wrapper">
+                <!-- Suitability score range -->
+                <div class="col-12">
+                    <span class="fs-18 fw-700" [translate]="'SETTINGS.PJM_DATA.SUITABILITY_SCORE_RANGE'"></span>
+                    <hr class="mt-2" />
+                    <div class="row">
+                        <div class="col-md-10 offset-md-2">
+                            <div class="score-range-custom-graph-wrapper">
+                                <div class="score-range-custom-graph" *ngIf="investmentPolicies.length > 0">
+                                    <span class="indicator" style="left: calc(0% - 25px);">0</span>
+                                    <ng-container *ngFor="let investment of investmentPolicies; let i = index">
+                                        <span class="indicator"
+                                            [ngStyle]="{ 'left': 'calc('+ investment.suitabiliyHigh +'% - 25px)' }">{{investment.suitabiliyHigh}}</span>
+                                    </ng-container>
+                                    <span class="indicator" style="left: calc(100% - 25px);">100</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr class="mt-4 mb-2" />
+                </div>
+
+                <!-- Time horizon limit -->
+                <div class="col-12">
+                    <span class="fs-18 fw-700" [translate]="'SETTINGS.PJM_DATA.TIME_HORIZON_LIMIT'"></span>
+                    <i class="cursor-p float-right ion-ios-arrow-down"
+                        (click)="accordionEnviorment['isTimeHorizon'] = !accordionEnviorment['isTimeHorizon']"
+                        [ngClass]="accordionEnviorment['isTimeHorizon'] ? 'ion-ios-arrow-up' : 'ion-ios-arrow-down'"></i>
+                    <hr class="mt-2" />
+                    <div class="row">
+                        <div class="col-md-10 offset-md-2">
+                            <div class="score-range-custom-graph-wrapper">
+                                <div class="score-range-custom-graph" *ngIf="timeHorizonArray.length > 0">
+                                    <span class="indicator" style="left: calc(0% - 25px);"></span>
+                                    <ng-container *ngFor="let time of timeHorizonArray">
+                                        <span class="indicator"
+                                            [ngStyle]="{ 'left': 'calc('+ time['suitabilityScore'] +'% - 25px)' }">{{time['timeHorizonId']}}</span>
+                                    </ng-container>
+                                    <span class="indicator" style="left: calc(100% - 25px);"></span>
+                                </div>
+                                <div class="score-range-custom-graph" *ngIf="timeHorizonArray.length === 0">
+                                    <span class="indicator" style="left: calc(0% - 25px);">0</span>
+                                    <span class="indicator" style="left: calc(100% - 25px);">100</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 mt-4">
+                            <span *ngIf="accordionEnviorment['isTimeHorizon'] && displayPrefrence['isEdit']"
+                                class="fw-500 fs-16 pb-2 d-flex">
+                                {{ 'SETTINGS.PJM_DATA.SUITABILITY_DESCRIPTION' | translate }}
+                            </span>
+                            <div class="add-solution-row mt-md-auto mt-2"
+                                *ngIf="accordionEnviorment['isTimeHorizon'] && displayPrefrence['isEdit']">
+                                <a class="btn-add" (click)="isAddTimeHorizon = true; acceptanceChange()" [hidden]="isDefaultMatrixOpt()">
+                                    <i class=" ion-md-add-circle"></i>
+                                    <span [translate]="'SETTINGS.PJM_DATA.ADD_A_TIME_HORIZON'"></span>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col-12" *ngIf="accordionEnviorment['isTimeHorizon']">
+                            <hr />
+                        </div>
+                        <div class="col-12 pb-5" [hidden]="!accordionEnviorment['isTimeHorizon']">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th width="40%" [translate]="'SETTINGS.PJM_DATA.TIME_HORIZON'"></th>
+                                        <th width="30%" class="text-center"
+                                            [translate]="'SETTINGS.PJM_DATA.UPPER_LIMIT'"></th>
+                                        <th width="30%"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="fs-14" *ngFor="let timeHorizon of timeHorizonArray; let i = index;">
+                                        <td width="40%" class="py-2 align-middle">{{timeHorizon['timeHorizonName']}}
+                                        </td>
+                                        <td width="30%" class="text-center py-2">
+                                            <div class="form-group mb-0">
+                                                <input name="timeHorizon+{{i}}" style="max-width: 80px;"
+                                                    [(ngModel)]="timeHorizon['suitabilityScore']"
+                                                    class="form-control d-inline-block text-center h-25"
+                                                    [class.custom-no-border]="isDefaultMatrixOpt()"
+                                                    (keyup)="checkRange('timeHorizonArray'); acceptanceChange()"
+                                                    required pattern="^[1-9][0-9]?$|^100$"
+                                                    appNumeric
+                                                    *ngIf="displayPrefrence['isEdit']"
+                                                    [disabled]="isDefaultMatrixOpt()" />
+                                            </div>
+                                            <span
+                                                *ngIf="displayPrefrence['isView']">{{timeHorizon['suitabilityScore']}}</span>
+                                        </td>
+                                        <td width="30%" class="py-2 align-middle">
+                                            <div class="delete-btn pull-right pointer"
+                                                *ngIf="displayPrefrence['isEdit']">
+                                                <a (click)="removeTimeHorizon(i); acceptanceChange()" [hidden]="isDefaultMatrixOpt()">
+                                                    <i class="ion-md-close-circle"></i>
+                                                    <span [translate]="'SETTINGS.PJM_DATA.DELETE_TIME_HORIZONE'"></span>
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <ng-container *ngIf="timeHorizonArray.length === 0">
+                                        <tr>
+                                            <td colspan="3" class="no-record text-center">
+                                                <i class="ion-ios-alert mr-2"></i>{{'NO_RESULTS' | translate}}
+                                            </td>
+                                        </tr>
+                                    </ng-container>
+                                    <tr *ngIf="timeHorizonArrayError !== ''">
+                                        <td colspan="3" class="text-center"><span
+                                                class="text-danger">{{timeHorizonArrayError}}</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <hr class="my-2" *ngIf="!accordionEnviorment['isTimeHorizon']" />
+                </div>
+
+                <!-- Knowledge -->
+                <div class="col-12">
+                    <span class="fs-18 fw-700" [translate]="'SETTINGS.PJM_DATA.KNOWLEDGE'"></span>
+                    <i class="cursor-p float-right ion-ios-arrow-down"
+                        (click)="accordionEnviorment['isKnowledge'] = !accordionEnviorment['isKnowledge']"
+                        [ngClass]="accordionEnviorment['isKnowledge'] ? 'ion-ios-arrow-up' : 'ion-ios-arrow-down'"></i>
+                    <hr class="mt-2" />
+                    <div class="row">
+                        <div class="col-md-10 offset-md-2">
+                            <div class="score-range-custom-graph-wrapper">
+                                <div class="score-range-custom-graph" *ngIf="(knowledgeRanges | json) !== '{}'">
+                                    <span class="indicator" style="left: calc(0% - 25px);"></span>
+                                    <ng-container *ngFor="let knowledge of filterBy(objectKeys(knowledgeRanges), knowledgeNotAllowed)">
+                                        <span class="indicator"
+                                            [ngStyle]="{ 'left': 'calc('+ knowledgeRanges[knowledge] +'% - 25px)' }">{{knowledge}}</span>
+                                    </ng-container>
+                                    <span class="indicator" style="left: calc(100% - 25px);"></span>
+                                </div>
+                                <div class="score-range-custom-graph" *ngIf="(knowledgeRanges | json) === '{}'">
+                                    <span class="indicator" style="left: calc(0% - 25px);">0</span>
+                                    <span class="indicator" style="left: calc(100% - 25px);">100</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 mt-4">
+                            <span *ngIf="accordionEnviorment['isKnowledge']" class="fw-500 fs-16 d-flex">
+                                {{ 'SETTINGS.PJM_DATA.KNOWLEDGE_DESCRIPTION' | translate }}
+                            </span>
+                        </div>
+                        <div class="col-12" *ngIf="accordionEnviorment['isKnowledge']">
+                            <hr />
+                        </div>
+                        <div class="col-12 pb-5" [hidden]="!accordionEnviorment['isKnowledge']">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th width="40%" [translate]="'SETTINGS.PJM_DATA.KNOWLEDGE'"></th>
+                                        <th width="30%" class="text-center"
+                                            [translate]="'SETTINGS.PJM_DATA.UPPER_LIMIT'"></th>
+                                        <th width="30%"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="fs-14">
+                                        <td width="40%" class="py-2 align-middle"
+                                            [translate]="'SETTINGS.PJM_DATA.NO_KNOWLEDGE_ABOUT_INVESTING'"></td>
+                                        <td width="30%" class="text-center py-2">
+                                            <div class="form-group mb-0">
+                                                <input type="text" style="max-width: 80px;" name="knowledgeRanges1"
+                                                    class="form-control d-inline-block text-center h-25"
+                                                    [class.custom-no-border]="isDefaultMatrixOpt()"
+                                                    [(ngModel)]="knowledgeRanges['1']"
+                                                    (keyup)="checkRange('knowledgeRanges'); acceptanceChange()"
+                                                    required pattern="^[1-9][0-9]?$|^100$"
+                                                    appNumeric
+                                                    *ngIf="displayPrefrence['isEdit']"
+                                                    [disabled]="isDefaultMatrixOpt()" />
+                                            </div>
+                                            <span *ngIf="displayPrefrence['isView']">{{knowledgeRanges['1']}}</span>
+                                        </td>
+                                        <td width="30%" class="py-2 align-middle"></td>
+                                    </tr>
+                                    <tr class="fs-14">
+                                        <td width="40%" class="py-2 align-middle"
+                                            [translate]="'SETTINGS.PJM_DATA.BASIC_KNOWLEDGE_ABOUT_INVESTING'"></td>
+                                        <td width="30%" class="text-center py-2">
+                                            <div class="form-group mb-0">
+                                                <input type="text" style="max-width: 80px;" name="knowledgeRanges2"
+                                                    class="form-control d-inline-block text-center h-25"
+                                                    [class.custom-no-border]="isDefaultMatrixOpt()"
+                                                    [(ngModel)]="knowledgeRanges['2']"
+                                                    (keyup)="checkRange('knowledgeRanges'); acceptanceChange()" 
+                                                    required pattern="^[1-9][0-9]?$|^100$"
+                                                    appNumeric
+                                                    *ngIf="displayPrefrence['isEdit']"
+                                                    [disabled]="isDefaultMatrixOpt()" />
+                                            </div>
+                                            <span *ngIf="displayPrefrence['isView']">{{knowledgeRanges['2']}}</span>
+                                        </td>
+                                        <td width="30%" class="py-2 align-middle"></td>
+                                    </tr>
+                                    <tr class="fs-14">
+                                        <td width="40%" class="py-2 align-middle"
+                                            [translate]="'SETTINGS.PJM_DATA.VERY_KNOWLEDGE_ABOUT_INVESTING'"></td>
+                                        <td width="30%" class="text-center py-2">
+                                            <div class="form-group mb-0">
+                                                <input type="text" style="max-width: 80px;" name="knowledgeRanges3"
+                                                    class="form-control d-inline-block text-center h-25"
+                                                    [class.custom-no-border]="isDefaultMatrixOpt()"
+                                                    [(ngModel)]="knowledgeRanges['3']"
+                                                    (keyup)="checkRange('knowledgeRanges'); acceptanceChange()" 
+                                                    required pattern="^[1-9][0-9]?$|^100$"
+                                                    appNumeric
+                                                    *ngIf="displayPrefrence['isEdit']"
+                                                    [disabled]="isDefaultMatrixOpt()" />
+                                            </div>
+                                            <span *ngIf="displayPrefrence['isView']">{{knowledgeRanges['3']}}</span>
+                                        </td>
+                                        <td width="30%" class="py-2 align-middle"></td>
+                                    </tr>
+                                    <tr class="fs-14">
+                                        <td width="40%" class="py-2 align-middle"
+                                            [translate]="'SETTINGS.PJM_DATA.UNKNOWN'"></td>
+                                        <td width="30%" class="text-center py-2">
+                                            <div class="form-group mb-0">
+                                                <input type="text" style="max-width: 80px;" name="knowledgeRanges4"
+                                                    class="form-control d-inline-block text-center h-25"
+                                                    [class.custom-no-border]="isDefaultMatrixOpt()"
+                                                    [(ngModel)]="knowledgeRanges['4']"
+                                                    (keyup)="checkRange('knowledgeRanges'); acceptanceChange()" currencyMask
+                                                    required pattern="^[1-9][0-9]?$|^100$"
+                                                    *ngIf="displayPrefrence['isEdit']"
+                                                    [disabled]="isDefaultMatrixOpt()" />
+                                            </div>
+                                            <span *ngIf="displayPrefrence['isView']">{{knowledgeRanges['4']}}</span>
+                                        </td>
+                                        <td width="30%" class="py-2 align-middle"></td>
+                                    </tr>
+                                    <tr *ngIf="knowledgeRangesError !== ''">
+                                        <td colspan="3" class="text-center"><span
+                                                class="text-danger">{{knowledgeRangesError}}</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <hr class="my-2" *ngIf="!accordionEnviorment['isKnowledge']" />
+                </div>
+
+                <!-- Experience -->
+                <div class="col-12">
+                    <span class="fs-18 fw-700" [translate]="'SETTINGS.PJM_DATA.EXPERIENCE'"></span>
+                    <i class="cursor-p float-right ion-ios-arrow-down"
+                        (click)="accordionEnviorment['isExperience'] = !accordionEnviorment['isExperience']"
+                        [ngClass]="accordionEnviorment['isExperience'] ? 'ion-ios-arrow-up' : 'ion-ios-arrow-down'"></i>
+                    <hr class="mt-2" />
+                    <div class="row">
+                        <div class="col-md-10 offset-md-2">
+                            <div class="score-range-custom-graph-wrapper">
+                                <div class="score-range-custom-graph" *ngIf="(experienceRanges | json) !== '{}'">
+                                    <span class="indicator" style="left: calc(0% - 25px);"></span>
+                                    <ng-container *ngFor="let experience of filterBy(objectKeys(experienceRanges), experienceNotAllowed)">
+                                        <span class="indicator"
+                                            [ngStyle]="{ 'left': 'calc('+ experienceRanges[experience] +'% - 25px)' }">{{experience}}</span>
+                                    </ng-container>
+                                    <span class="indicator" style="left: calc(100% - 25px);"></span>
+                                </div>
+                                <div class="score-range-custom-graph" *ngIf="(experienceRanges | json) === '{}'">
+                                    <span class="indicator" style="left: calc(0% - 25px);">0</span>
+                                    <span class="indicator" style="left: calc(100% - 25px);">100</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 mt-4">
+                            <span *ngIf="accordionEnviorment['isExperience']" class="fw-500 fs-16 d-flex">
+                                {{ 'SETTINGS.PJM_DATA.SUITABILITY_SCORE_EXPERIANCE_DETAIL' | translate }}
+                            </span>
+                        </div>
+                        <div class="col-12" *ngIf="accordionEnviorment['isExperience']">
+                            <hr />
+                        </div>
+                        <div class="col-12 pb-5" [hidden]="!accordionEnviorment['isExperience']">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th width="40%" [translate]="'SETTINGS.PJM_DATA.EXPERIENCE'"></th>
+                                        <th width="30%" class="text-center"
+                                            [translate]="'SETTINGS.PJM_DATA.UPPER_LIMIT'"></th>
+                                        <th width="30%"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="fs-14">
+                                        <td width="40%" class="py-2 align-middle"
+                                            [translate]="'SETTINGS.PJM_DATA.NO_PRIOR_INVESTMENT_EXPERIENCE'"></td>
+                                        <td width="30%" class="text-center py-2">
+                                            <div class="form-group mb-0">
+                                                <input type="text" style="max-width: 80px;" name="experienceRanges1"
+                                                    class="form-control d-inline-block text-center h-25"
+                                                    [class.custom-no-border]="isDefaultMatrixOpt()"
+                                                    [(ngModel)]="experienceRanges['1']"
+                                                    (keyup)="checkRange('experienceRanges'); acceptanceChange()"
+                                                    required pattern="^[1-9][0-9]?$|^100$"
+                                                    appNumeric
+                                                    *ngIf="displayPrefrence['isEdit']"
+                                                    [disabled]="isDefaultMatrixOpt()" />
+                                            </div>
+                                            <span *ngIf="displayPrefrence['isView']">{{experienceRanges['1']}}</span>
+                                        </td>
+                                        <td width="30%" class="py-2 align-middle"></td>
+                                    </tr>
+                                    <tr class="fs-14">
+                                        <td width="40%" class="py-2 align-middle"
+                                            [translate]="'SETTINGS.PJM_DATA.PRIOR_INVESTMENT_EXPERIENCE'"></td>
+                                        <td width="30%" class="text-center py-2">
+                                            <div class="form-group mb-0">
+                                                <input type="text" style="max-width: 80px;" name="experienceRanges2"
+                                                    class="form-control d-inline-block text-center h-25"
+                                                    [class.custom-no-border]="isDefaultMatrixOpt()"
+                                                    [(ngModel)]="experienceRanges['2']"
+                                                    (keyup)="checkRange('experienceRanges'); acceptanceChange()"
+                                                    required pattern="^[1-9][0-9]?$|^100$"
+                                                    appNumeric
+                                                    *ngIf="displayPrefrence['isEdit']"
+                                                    [disabled]="isDefaultMatrixOpt()" />
+                                            </div>
+                                            <span *ngIf="displayPrefrence['isView']">{{experienceRanges['2']}}</span>
+                                        </td>
+                                        <td width="30%" class="py-2 align-middle"></td>
+                                    </tr>
+                                    <tr class="fs-14">
+                                        <td width="40%" class="py-2 align-middle"
+                                            [translate]="'SETTINGS.PJM_DATA.UNKNOWN'"></td>
+                                        <td width="30%" class="text-center py-2">
+                                            <div class="form-group mb-0">
+                                                <input type="text" style="max-width: 80px;" name="experienceRanges3"
+                                                    class="form-control d-inline-block text-center h-25"
+                                                    [class.custom-no-border]="isDefaultMatrixOpt()"
+                                                    [(ngModel)]="experienceRanges['3']"
+                                                    (keyup)="checkRange('experienceRanges'); acceptanceChange()" currencyMask
+                                                       required pattern="^[1-9][0-9]?$|^100$"
+                                                    *ngIf="displayPrefrence['isEdit']"
+                                                    [disabled]="isDefaultMatrixOpt()" />
+                                            </div>
+                                            <span *ngIf="displayPrefrence['isView']">{{experienceRanges['3']}}</span>
+                                        </td>
+                                        <td width="30%" class="py-2 align-middle"></td>
+                                    </tr>
+                                    <tr *ngIf="experienceRangesError !== ''">
+                                        <td colspan="3" class="text-center"><span
+                                                class="text-danger">{{experienceRangesError}}</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <hr class="my-2" *ngIf="!accordionEnviorment['isExperience']" />
+                </div>
+
+                <!-- Composure -->
+                <div class="col-12">
+                    <span class="fs-18 fw-700" [translate]="'SETTINGS.PJM_DATA.COMPOSURE'"></span>
+                    <i class="cursor-p float-right ion-ios-arrow-down"
+                        (click)="accordionEnviorment['isComposure'] = !accordionEnviorment['isComposure']"
+                        [ngClass]="accordionEnviorment['isComposure'] ? 'ion-ios-arrow-up' : 'ion-ios-arrow-down'"></i>
+                    <hr class="mt-2" />
+                    <div class="row">
+                        <div class="col-md-10 offset-md-2">
+                            <div class="score-range-custom-graph-wrapper">
+                                <div class="score-range-custom-graph" *ngIf="(composureRanges | json) !== '{}'">
+                                    <span class="indicator" style="left: calc(0% - 25px);"></span>
+                                    <ng-container *ngFor="let answer of objectKeys(graphSpans['composure'])">
+                                        <span class="indicator"
+                                            [ngStyle]="{ 'left': 'calc('+ answer +'% - 25px)' }">{{graphSpans['composure'][answer]}}</span>
+                                    </ng-container>
+                                    <span class="indicator" style="left: calc(100% - 25px);"></span>
+                                </div>
+                                <div class="score-range-custom-graph" *ngIf="(composureRanges | json) === '{}'">
+                                    <span class="indicator" style="left: calc(0% - 25px);">0</span>
+                                    <span class="indicator" style="left: calc(100% - 25px);">100</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 mt-4">
+                            <span *ngIf="accordionEnviorment['isComposure']" class="fw-500 fs-16 d-flex">
+                                {{ 'SETTINGS.PJM_DATA.SUITABILITY_SCORE_COMPOSURE_DETAIL' | translate }}
+                            </span>
+                        </div>
+                        <div class="col-12" *ngIf="accordionEnviorment['isComposure']">
+                            <hr />
+                        </div>
+                        <div class="col-12 pb-5" [hidden]="!accordionEnviorment['isComposure']">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th width="40%" [translate]="'SETTINGS.PJM_DATA.COMPOSURE'"></th>
+                                        <th width="30%" class="text-center"
+                                            [translate]="'SETTINGS.PJM_DATA.UPPER_LIMIT'"></th>
+                                        <th width="30%"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="fs-14">
+                                        <td width="40%" class="py-2 align-middle"
+                                            [translate]="'SETTINGS.PJM_DATA.NEVER_EXPERIENCED_FINANCIAL_DOWNTURN'"></td>
+                                        <td width="30%" class="text-center py-2">
+                                            <div class="form-group mb-0">
+                                                <div class="fix-div-width">
+                                                    <div class="form-group mb-0">
+                                                        <input type="text" style="max-width: 80px;"
+                                                            name="composureRanges1"
+                                                            class="form-control d-inline-block text-center h-25"
+                                                            [class.custom-no-border]="isDefaultMatrixOpt()"
+                                                            [(ngModel)]="composureRanges['1']"
+                                                            required pattern="^[1-9][0-9]?$|^100$"
+                                                            appNumeric
+                                                            *ngIf="displayPrefrence['isEdit']"
+                                                            (keyup)="getGraphSpans(composureRanges, 'composure'); acceptanceChange()"
+                                                            [disabled]="isDefaultMatrixOpt()" />
+                                                    </div>
+                                                    <span
+                                                        *ngIf="displayPrefrence['isView']">{{composureRanges['1']}}</span>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td width="30%" class="py-2 align-middle"></td>
+                                    </tr>
+                                    <tr class="fs-14">
+                                        <td width="40%" class="py-2 align-middle"
+                                            [translate]="'SETTINGS.PJM_DATA.NO_IMPACT'"></td>
+                                        <td width="30%" class="text-center py-2">
+                                            <div class="form-group mb-0">
+                                                <input type="text" style="max-width: 80px;" name="composureRanges2"
+                                                    class="form-control d-inline-block text-center h-25"
+                                                    [class.custom-no-border]="isDefaultMatrixOpt()"
+                                                    [(ngModel)]="composureRanges['2']"
+                                                    required pattern="^[1-9][0-9]?$|^100$"
+                                                    appNumeric
+                                                    *ngIf="displayPrefrence['isEdit']"
+                                                    (keyup)="getGraphSpans(composureRanges, 'composure'); acceptanceChange()"
+                                                    [disabled]="isDefaultMatrixOpt()" />
+                                            </div>
+                                            <span *ngIf="displayPrefrence['isView']">{{composureRanges['2']}}</span>
+                                        </td>
+                                        <td width="30%" class="py-2 align-middle"></td>
+                                    </tr>
+                                    <tr class="fs-14">
+                                        <td width="40%" class="py-2 align-middle"
+                                            [translate]="'SETTINGS.PJM_DATA.OPPORTUNITY_BOUGHT_SHARES'"></td>
+                                        <td width="30%" class="text-center py-2">
+                                            <div class="form-group mb-0">
+                                                <input type="text" style="max-width: 80px;" name="composureRanges3"
+                                                    class="form-control d-inline-block text-center h-25"
+                                                    [class.custom-no-border]="isDefaultMatrixOpt()"
+                                                    [(ngModel)]="composureRanges['3']"
+                                                    required pattern="^[1-9][0-9]?$|^100$"
+                                                    appNumeric
+                                                    *ngIf="displayPrefrence['isEdit']"
+                                                    (keyup)="getGraphSpans(composureRanges, 'composure'); acceptanceChange()"
+                                                    [disabled]="isDefaultMatrixOpt()" />
+                                            </div>
+                                            <span *ngIf="displayPrefrence['isView']">{{composureRanges['3']}}</span>
+                                        </td>
+                                        <td width="30%" class="py-2 align-middle"></td>
+                                    </tr>
+                                    <tr class="fs-14">
+                                        <td width="40%" class="py-2 align-middle"
+                                            [translate]="'SETTINGS.PJM_DATA.NERVOUS_SOLD_SHARES'"></td>
+                                        <td width="30%" class="text-center py-2">
+                                            <div class="form-group mb-0">
+                                                <input type="text" style="max-width: 80px;" name="composureRanges4"
+                                                    class="form-control d-inline-block text-center h-25"
+                                                    [class.custom-no-border]="isDefaultMatrixOpt()"
+                                                    [(ngModel)]="composureRanges['4']"
+                                                    required pattern="^[1-9][0-9]?$|^100$"
+                                                    appNumeric
+                                                    *ngIf="displayPrefrence['isEdit']"
+                                                    (keyup)="getGraphSpans(composureRanges, 'composure'); acceptanceChange()"
+                                                    [disabled]="isDefaultMatrixOpt()" />
+                                            </div>
+                                            <span *ngIf="displayPrefrence['isView']">{{composureRanges['4']}}</span>
+                                        </td>
+                                        <td width="30%" class="py-2 align-middle"></td>
+                                    </tr>
+                                    <tr class="fs-14">
+                                        <td width="40%" class="py-2 align-middle"
+                                            [translate]="'SETTINGS.PJM_DATA.UNKNOWN'"></td>
+                                        <td width="30%" class="text-center py-2">
+                                            <div class="form-group mb-0">
+                                                <input type="text" style="max-width: 80px;" name="composureRanges5"
+                                                    class="form-control d-inline-block text-center h-25"
+                                                    [class.custom-no-border]="isDefaultMatrixOpt()"
+                                                    [(ngModel)]="composureRanges['5']" currencyMask
+                                                       required pattern="^[1-9][0-9]?$|^100$"
+                                                    *ngIf="displayPrefrence['isEdit']"
+                                                    (keyup)="getGraphSpans(composureRanges, 'composure'); acceptanceChange()"
+                                                    [disabled]="isDefaultMatrixOpt()" />
+                                            </div>
+                                            <span *ngIf="displayPrefrence['isView']">{{composureRanges['5']}}</span>
+                                        </td>
+                                        <td width="30%" class="py-2 align-middle"></td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <hr class="my-2" *ngIf="!accordionEnviorment['isComposure']" />
+                </div>
+            </div>
+            <!-- Footer -->
+            <div class="col-12 mb-2">
+                <div class="pjm-footer pull-right">
+                    <div class="mr-1">
+                        {{ 'SETTINGS.PJM_DATA.LICENCE_DESCRIPTION' | translate }}
+                    </div>
+                    <div class="form-group mb-0 max-groth-checkbox mr-1">
+                        <p-checkbox [(ngModel)]="pjmAcceptance" binary="true" name="pjmacceptance" #pjmacceptance="ngModel" required></p-checkbox>
+                    </div>
+                    <button *ngIf="displayPrefrence['isEdit']" class="btn btn-secondary m-0" type="button" (click)="editPJM('cancel')"
+                        [translate]="'SETTINGS.PREFERRED_SOLUTION.DETAILS.CANCEL'"></button>
+                    <button class="btn btn-success m-0" (click)=updatePJM() [disabled]="timeHorizonArray.length === 0 || saveDisable || timeHorizonArrayError !== '' || knowledgeRangesError !== '' || experienceRangesError !== ''"  [translate]="'FORM.ACTION.SAVE_CHANGES'"></button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</form>
+<ng-container *ngIf="isAddTimeHorizon">
+    <app-time-horizon-side-panel [timeHorizonArray]="timeHorizonArray" (closePanelEvent)="closeSidePanel($event)"
+        (addEvent)="onTimeZoneAdd($event)"></app-time-horizon-side-panel>
+</ng-container>
+<!-- <router-outlet></router-outlet> -->

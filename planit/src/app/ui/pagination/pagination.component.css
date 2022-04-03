@@ -1,0 +1,44 @@
+.pagination li {
+    background: #fff;
+    line-height: 1;
+    color: #789;
+    font-size: 15px;
+    font-weight: 500;
+    font-family: monospace;
+    width: 25px;
+    height: 25px;
+    line-height: 26px;
+}
+.pagination li:hover:not(.disabled),
+.pagination li.active {
+    color: #fff;
+    font-weight: 600;
+    background: #556677;
+    border-radius: 50%;
+}
+
+.pagination li a {
+    cursor: pointer;
+    display: block;
+}
+.pagination li a i{
+    font-size: inherit;
+    line-height: inherit;
+    color: inherit
+}
+.pagination li a i::before{
+    line-height: inherit;
+}
+
+.pagination li.disabled a {   
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.pagination li.isDisabled a {
+    pointer-events: none;
+  }
+
+@media (max-width: 575px) {
+  .pagination li {    padding: 0;    font-size: 13px;    line-height: 21px;     width: 20px;    height: 20px}
+}

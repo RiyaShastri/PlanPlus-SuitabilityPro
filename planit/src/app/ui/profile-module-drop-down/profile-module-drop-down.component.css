@@ -1,0 +1,17 @@
+.dropdown-common > a {
+    line-height: 27px;
+}
+
+/* responsive */
+
+@media (max-width: 1199px) {}
+
+@media (max-width: 992px) {}
+
+@media (max-width: 767px) {
+    .dropdown-common {
+        margin-top: 1rem;
+    }
+}
+
+@media (max-width: 575px) {}

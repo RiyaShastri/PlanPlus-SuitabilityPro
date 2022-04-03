@@ -1,0 +1,146 @@
+.login-main-screen {
+    background-color: #f9f9f9;
+}
+
+.loader-icon {
+    color: #fff;
+}
+
+.form-signin {
+    max-width: 360px;
+    margin: auto;
+    padding: 52px 20px 50px 20px;
+    background-color: #fff;
+    -webkit-box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.20);
+    -moz-box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.20);
+    box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.20);
+}
+
+.form-signin h1 {
+    color: #334455;
+    font-size: 30px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 500;
+    margin-bottom: 35px;
+}
+
+.form-signin p.sub_header {
+    color: #003F72;
+    font-size: 12px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 500;
+    margin-bottom: 55px;
+}
+
+.form-signin p.sub_header.sub_header_line1 {
+    margin-bottom: 0px;
+}
+
+.form-signin .form-group {
+    position: relative;
+}
+
+.form-signin .form-group .form-control::placeholder {
+    color: #9ab;
+    opacity: 1;
+}
+
+.form-signin .form-group i {
+    color: #bcd;
+}
+
+.form-signin button {
+    width: 100%;
+    margin-bottom: 30px;
+    cursor: pointer;
+}
+
+.form-signin-bottom a {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    color: #334455;
+}
+
+.planplus_logo {
+    max-width: 220px;
+    margin: 0 auto;
+    display: block;
+}
+
+.s_pro_rev {
+    width: 100%;
+    max-width: 275px;
+    display: block;
+    margin: 40px auto 20px auto;
+}
+
+@media(min-width: 992px) {
+    .login-main-screen {
+        position: relative;
+    }
+    .login-main-wrapper {
+        min-height: calc(100vh - 120px);
+        position: relative;
+        width: 100%;
+        height: 100%;
+        max-height: 100%;
+        display: table;
+        width: 100%;
+    }
+    .login-main {
+        height: calc(100vh - 121px);
+        display: table-cell;
+        vertical-align: middle;
+    }
+    .form-signin {
+        margin: 50px auto;
+    }
+}
+
+@media (max-width: 991px) {
+    .form-signin {
+        max-width: 360px;
+    }
+    .login-main-screen {
+        height: auto;
+        padding-top: 110px;
+        padding-bottom: 50px;
+    }
+    .login-main-wrapper {
+        display: table;
+        width: 100%;
+        height: 100%;
+    }
+    .login-main {
+        display: table-cell;
+        vertical-align: middle;
+    }
+}
+
+
+@media only screen and (min-width: 768px) and (max-width: 1024px) and (orientation: portrait) {
+    .login-main-screen {
+        height: calc(100vh - 60px);
+    }
+}
+
+@media(max-width: 767px) {
+    .login-main-screen {
+        height: auto;
+        padding-top: 110px;
+        padding-bottom: 50px;
+    }
+}
+
+@media (max-width: 575px) {
+    .login-main-screen {
+        height: auto;
+        padding-top: 50px;
+        padding-bottom: 50px;
+    }
+    /* .form-signin {
+        min-width: auto;
+        width: 90%;
+    } */
+}

@@ -1,0 +1,1316 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Client Dashboard</title>
+<link rel='stylesheet' href="styles/bootstrap.min.css"/>
+<link href="https://fonts.googleapis.com/css?family=Montserrat:300,400,500,600,700,800" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800" rel="stylesheet">
+<link rel='stylesheet' href="styles/ionicons.min.css"/>
+<link rel='stylesheet' href="styles/grid.css"/>
+<link rel='stylesheet' href="styles/main.css"/>
+<script src="scripts/jquery.js"></script>
+<script src="scripts/bootstrap.bundle.min.js"></script>
+<script
+	src="scripts/amcharts/amcharts3.18.6.js"></script> 
+<script
+	src="scripts/amcharts/pie.js"></script> 
+<script type="text/javascript">
+
+$(document).on('mouseenter', ".text span", function() {
+    var $this = $(this);
+    if(this.offsetWidth < this.scrollWidth && !$this.attr('title')) {
+         $this.tooltip({
+              title: $this.text(),
+              placement: "bottom"
+         });
+         $this.tooltip('show');
+    }
+});
+
+$(function() {
+	  $('[data-toggle="popover"]').popover({
+			container:'body',
+			html: true,
+	    content: function() {
+	      return $('#popover-content').html();
+	    }
+	  });
+	});
+$(function() {
+	  $('[data-toggle="goal-popover"]').popover({
+			container:'body',
+			html: true,
+	    content: function() {
+	      return $('#goal-popover-content').html();
+	    }
+	  });
+	});
+$(function() {
+	  $('[data-toggle="portfolio-popover"]').popover({
+			container:'body',
+			html: true,
+	    content: function() {
+	      return $('#portfolio-popover-content').html();
+	    }
+	  });
+	});
+	
+
+	$('.popover-dismiss').popover({
+  trigger: 'focus'
+})
+	
+</script>
+</head>
+<body style="background-color:#f4f6f8;">
+  <!-- Main Header -->
+  
+  <div class="main-header container-fluid px-0">
+
+	<div class="main-container-header"><!-- define max width -->
+
+    <!-- Header Navbar -->
+    <nav class="navbar navbar-expand sticky-top py-0 px-0" role="navigation">
+
+
+		
+		    <!-- Logo -->
+    <a href="#" class="navbar-brand logo pl-lg-2 pl-sm-2 pl-1 left-edge-logo">
+      <span class="logo-lg"><span>PlanPlus</span>Plan<i>it</i></span>
+    </a>
+      <!-- Nav links -->
+
+<div class="nav navbar-nav my-0 mr-auto h-100 left-edge-menu">
+
+        <div class="nav-item nav-link mx-1 mx-md-2 my-0 d-none d-sm-inline headerMenu "><a href="#" class="">Dashboard</a></div>
+      	<div class="nav-item nav-link d-none d-sm-inline ml-1 mr-0 mx-md-2 my-0  headerMenu  active"><a href="#">Clients</a></div>
+
+      	</div>
+      	
+<div class="nav navbar-nav ">
+        <div class="nav-item nav-link ml-0 mr-0 mx-md-2 navbar-small-device"><a class="ion-android-chat icon liveChat" href="#"></a></div>
+      	<div class="nav-item nav-link mx-0 mx-md-2  navbar-small-device"><a class="ion-help-circled icon" href="#"></a></div>
+      	<div class="nav-item nav-link mx-0  mx-md-2 navbar-small-device  "><a class="ion-ios-bell icon badge1" data-badge="4" href="#"></a></div>
+          
+          
+          <!-- User Account Menu -->
+          <div class="nav-item nav-link user user-menu d-none d-sm-inline light-menu my-0 position-sticky fit-right-edge" >
+            <!-- Menu Toggle Button -->
+            <div class=" btn-group d-none d-sm-inline light-menu advisor-name"> 
+            <div  class=" d-none d-lg-inline" data-toggle="dropdown">
+            <a href="#"  >
+              <!-- The user image in the navbar-->
+              <img src="https://almsaeedstudio.com/themes/AdminLTE/dist/img/user2-160x160.jpg" class="user-image" alt="User Image">
+              <!-- hidden-xs  the username on small devices so only the image appears. --> &nbsp;
+              <span class="d-none d-lg-inline advisor-name">Alexander Pierce</span>
+            </a>
+
+
+          <!-- Control Sidebar Toggle Button -->
+                   <div class="nav-item nav-link d-none d-lg-inline light-menu dropdown pr-0 gear-icon-space " id="advisorMenu"  >
+            <a href="#"  class="ion-gear-a gear-icon  lg-disp"></a>
+        
+          </div>
+                                       <div class="dropdown-menu dropdown-menu-right advisor-dropdown-menu align-self-end lg" aria-labelledby="advisorMenu">
+    <a class="dropdown-item font-weight-light" href="#"><div class="green-dot"></div>My profile</a>
+    <div class="dropdown-divider py-0 my-0"></div>
+    <a class="dropdown-item" href="#"><div class="empty-blue-dot"></div>Settings</a>
+    <div class="dropdown-divider py-0 my-0"></div>
+    <a class="dropdown-item" href="#"><div class="empty-blue-dot"></div>Switch to classic PlanPlus interface</a>
+        <div class="dropdown-divider py-0 my-0"></div>
+    <a class="dropdown-item" href="#"><div class="empty-blue-dot"></div>Log out</a>
+           </div>
+          </div>
+          </div>
+          <div class="btn-group nav-item nav-link d-none d-lg-inline pr-5 pl-0 light-menu ">
+           <div class="nav-item nav-link d-none d-lg-inline pr-0 light-menu dropdown"  id="langMenu"  >
+            <div class="nav-item nav-link d-none d-lg-inline pr-0 light-menu" data-toggle="dropdown">
+          	<a class="langLink langlink-size" href="#">En</a>
+           </div>
+                                             <div class="dropdown-menu dropdown-menu-right en-dropdown-menu align-self-end lg " aria-labelledby="langMenu">
+    <a class="dropdown-item font-weight-light" href="#"><div class="green-dot"></div>En</a>
+    <div class="dropdown-divider py-0 my-0"></div>
+    <a class="dropdown-item" href="#"><div class="empty-blue-dot"></div>Fr</a>
+    <div class="dropdown-divider py-0 my-0"></div>
+    <a class="dropdown-item" href="#"><div class="empty-blue-dot"></div>De</a>
+           </div>
+           </div>
+           </div>
+           <div class="btn-group  d-none d-sm-inline d-lg-none" >
+            <div class="  d-none d-sm-inline d-lg-none" data-toggle="dropdown">
+           <a href="#" >
+              <!-- The user image in the navbar-->
+              <img src="https://almsaeedstudio.com/themes/AdminLTE/dist/img/user2-160x160.jpg" class="user-image" alt="User Image">
+              </a>
+           <div class="nav-item nav-link d-none d-sm-inline d-lg-none pr-3 pl-0 light-menu dropdown" id="smallMenu">
+           <a class=" sm-disp ion-android-menu icon langLink" href="#"></a>
+
+           </div>          <div class="dropdown-menu  dropdown-menu-right mt-4 sm" aria-labelledby="smallMenu">
+          <a class="dropdown-item large-item" href="#"><div class="green-dot"></div>Clients</a>
+    <div class="dropdown-divider py-0 my-0"></div>
+        <a class="dropdown-item large-item" href="#"><div class="empty-blue-dot"></div>Dashboard</a>
+    <div class="dropdown-divider py-0 my-0"></div>
+    <a class="dropdown-item font-weight-light" href="#"><div class="empty-blue-dot"></div>My profile</a>
+    <div class="dropdown-divider py-0 my-0"></div>
+    <a class="dropdown-item" href="#"><div class="empty-blue-dot"></div>Settings</a>
+    <div class="dropdown-divider py-0 my-0"></div>
+    <a class="dropdown-item" href="#"><div class="empty-blue-dot"></div>Switch to classic PlanPlus interface</a>
+        <div class="dropdown-divider py-0 my-0"></div>
+                    <a class="dropdown-item font-weight-light" href="#"><div class="green-dot"></div>En</a>
+    <div class="dropdown-divider py-0 my-0"></div>
+    <a class="dropdown-item" href="#"><div class="empty-blue-dot"></div>Fr</a>
+    <div class="dropdown-divider py-0 my-0"></div>
+    <a class="dropdown-item" href="#"><div class="empty-blue-dot"></div>De</a>
+    <div class="dropdown-divider py-0 my-0"></div>
+    <a class="dropdown-item" href="#"><div class="empty-blue-dot"></div>Log out</a>
+           </div>
+           </div>
+           </div>
+     </div>
+     <div class="  btn-group" >
+      <div data-toggle="dropdown">
+     <div class="nav-item nav-link d-sm-none pr-3 dropdown" id="superSmallMenu">
+           <a class=" sm-disp ion-android-menu icon langLink" href="#"></a>
+           <div class="dropdown-menu  dropdown-menu-right xs" aria-labelledby="superSmallMenu">
+          <a class="dropdown-item large-item" href="#"><div class="green-dot"></div>Clients</a>
+    <div class="dropdown-divider py-0 my-0"></div>
+        <a class="dropdown-item large-item" href="#"><div class="empty-blue-dot"></div>Dashboard</a>
+    <div class="dropdown-divider py-0 my-0"></div>
+    <a class="dropdown-item font-weight-light" href="#"><div class="empty-blue-dot"></div>My profile</a>
+    <div class="dropdown-divider py-0 my-0"></div>
+    <a class="dropdown-item" href="#"><div class="empty-blue-dot"></div>Settings</a>
+    <div class="dropdown-divider py-0 my-0"></div>
+    <a class="dropdown-item" href="#"><div class="empty-blue-dot"></div>Switch to classic PlanPlus interface</a>
+        <div class="dropdown-divider py-0 my-0"></div>
+            <a class="dropdown-item font-weight-light" href="#"><div class="green-dot"></div>En</a>
+    <div class="dropdown-divider py-0 my-0"></div>
+    <a class="dropdown-item" href="#"><div class="empty-blue-dot"></div>Fr</a>
+    <div class="dropdown-divider py-0 my-0"></div>
+    <a class="dropdown-item" href="#"><div class="empty-blue-dot"></div>De</a>
+    <div class="dropdown-divider py-0 my-0"></div>
+    <a class="dropdown-item" href="#"><div class="empty-blue-dot"></div>Log out</a>
+           </div>
+           </div>
+           </div>
+           </div>
+    </nav>
+    </div> 
+  </div> 
+  
+  <div class="main-container">
+    <div class="container-fluid no-gutters px-0 " style="font-family: 'Montserrat', serif;">
+       <div class="row no-gutters pl-lg-3 pl-sm-2 pl-0 pb-0 left-edge-client-img">
+          <div class="col-xl-auto col-auto pt-1">
+          <img
+			src="https://i2.cdn.turner.com/cnnnext/dam/assets/140926165711-john-sutter-profile-image-large-169.jpg"
+			alt="" class="image--cover mx-0 overlap-profile-pic1"
+			 />
+		<img
+			src="http://static.eharmony.com/blog/wp-content/uploads/2010/04/eHarmony-Blog-profile-picture.jpg"
+			alt="" class="image--cover mr-0 overlap-profile-pic2"
+			 />
+          
+          </div>
+          <div class="col-xl-auto col-auto  pt-4 ml-0 mr-auto position-relative" >
+          <span class="client-name">
+						
+						Dennis Thompson <br> & Jeremy Lancaster
+					</span>
+          </div>
+          <div class="d-flex flex-row pt-0 pt-sm-0 pt-md-4 pt-lg-4 justify-content-around right-edge-menu">
+          <a class="p-2  nav-client-menu opt1 d-inline btn  font-weight-bold active-menu" href="#">Overview</a> <a
+						class="p-2 text-dark nav-client-menu btn  d-inline" href="#">Profile</a> <a
+						class="p-2 text-dark nav-client-menu btn  d-inline" href="#">Planning</a> <a
+						class="p-2 text-dark nav-client-menu btn  d-inline" href="#">Collaboration</a> 
+						<a class="p-2 text-dark nav-client-menu btn  d-inline" href="#">Documents</a>
+						<!-- <a class="p-2 text-dark nav-client-menu btn ion-document-text d-inline" href="#"></a> -->
+           
+          </div>
+       
+       </div>
+    
+    </div>
+ </div>
+  <div class="main-container">
+	<div class="col-container">
+	
+	<div class="row">
+	    <div class="col-md-6 col-lg-4 gutter-10">
+	        <div class="tile">
+	          <div class="container-fluid tile-padding">
+	          	<table class="borderless">
+	          	 <tr>
+				      <td class="title">Family</td><td class="title right"><button type="button" class="btn btn-default btn-circle btn-circle-sz26 btn-circle-green">2</button> <button type="button" class="btn btn-default btn-circle btn-circle-sz26 btn-circle-skyblue">4</button></td>
+				 </tr>
+	          	</table>
+	          	<table class="borderless">
+	          	<tbody>
+				  <tr>
+				      <td colspan="4">11234, Street A <br/>Nicecity, NS H2R2B8</td>
+				 </tr>
+				</tbody>
+	          	</table>
+				  <table class="table">
+
+				    <thead>
+				      <tr>
+				        <th colspan="2">Client</th>
+				        <th>Status</th>
+				        <th class="d-sm-none d-md-none d-lg-none d-xl-table-cell right">Age</th>
+				      </tr>
+				    </thead>
+				    <tbody>
+				      <tr>
+				        <td><button type="button" class="btn btn-default btn-circle btn-circle-sz26 btn-circle-blue ion-ios-person"></button></td>
+				        <td class="truncateSmall bold">Dennis Thompson</td>
+				        <td>Client1</td>
+				        <td class="d-sm-none d-md-none d-lg-none d-xl-table-cell right">50</td>
+				      </tr>
+				      <tr>
+				        <td><button type="button" class="btn btn-default btn-circle btn-circle-sz26 btn-circle-lightblue ion-ios-person"></button></td>
+				        <td class="truncateSmall bold">Jeremy Lancaster</td>
+				        <td>Client2</td>
+				        <td class="d-sm-none d-md-none d-lg-none d-xl-table-cell right">51</td>
+				      </tr>
+				      <tr>
+				        <td><button type="button" class="btn btn-default btn-circle btn-circle-sz26 btn-circle-lightblue2 ion-ios-person"></button></td>
+				        <td class="truncateSmall bold">Adele Brown</td>
+				        <td>Daughter</td>
+				        <td class="d-sm-none d-md-none d-lg-none d-xl-table-cell right">31</td>
+				      </tr>
+				    </tbody>
+				  </table>
+				 <table class="borderless">
+		          	 <tr>
+					      <td class="view-more"> &nbsp; <span class="ion-arrow-right-b "></span>&nbsp; View more</td>
+					 </tr>
+	          	 </table>
+				</div>
+	        </div>
+	    </div>
+	    
+	    <div class="col-md-6 col-lg-4 gutter-10">
+	    	<div class="tile">
+	          <div class="container-fluid tile-padding">
+ 				 <table class="borderless">
+  				 <tr>	
+				      <td colspan="5" class="title" >Collaboration center</td>
+				 </tr>
+				 </table>
+				 <table class="table">
+				 	<thead>
+							<tr>
+								<td colspan="3">&nbsp</td>
+								<td class="center"><button type="button"
+										class="btn btn-default btn-circle btn-circle-sz26 btn-circle-blue ion-ios-person"></button></td>
+								<td class="center"><button type="button"
+										class="btn btn-default btn-circle btn-circle-sz26 btn-circle-lightblue ion-ios-person"></button></td>
+							</tr>
+					</thead>
+					 <tbody>
+								<tr>
+									<td colspan="3" class="truncateSmall bold">Risk Tolerance</td>
+									<td class="center"><div class="green-dot-indicator align-center"></div></td>
+									<td class="center"><div class="orange-dot-indicator align-center"></div></td>
+								</tr>
+								<tr class="border-bottom">
+									<td colspan="3" class="truncateSmall bold">Document Vault</td>
+									<td class="center"><div class="green-dot-indicator align-center"></div></td>
+									<td class="center"><div class="blank-dot-indicator align-center"></div></td>
+								</tr>
+							</tbody>
+						</table>
+						
+						 <table class="borderless view-more-margin" >
+		          	 <tr>
+					      <td class="view-more"> <span class="ion-arrow-right-b"></span>&nbsp; View more</td>
+					 </tr>
+	          	 </table>
+					</div>
+
+	        </div>
+	    </div>
+	    <div class="col-md-12 col-lg-4 gutter-10">
+	        <div class="tile">
+	          <div class="container-fluid tile-padding">
+	          	<table class="borderless">
+	          	 <tr>
+				      <td class="title">Document center</td>
+				 </tr>
+	          	</table>
+				  <table class="table">
+				  
+				  	<thead>
+				      <tr>
+				        <th></th>
+				        <th class="center">Status</th>
+				      </tr>
+				    </thead>
+
+				    <tbody>
+				      <tr>
+				        <td class="text w-75"><span >Thompson/Lancaster Investment Plan</span></td>
+				        <td class="center"><div class="red-dot-indicator align-center"></div></td>
+				      </tr>
+				      <tr>
+				        <td class="text w-75"><span>Fidelity NorthStar Global Balanced Fund</span></td>
+				        <td class="center"><div class="blank-dot-indicator align-center"></div></td>
+				      </tr>
+				      <tr>
+				        <td class="text w-75"><span >Thompson/Lancaster Summary Review</span></td>
+				        <td class="center"><div class="orange-dot-indicator align-center"></div></td>
+				      </tr>
+				      <tr>
+				        <td class="text w-75"><span >Thompson/Lancaster Summary Review</span></td>
+				        <td class="center"><div class="green-dot-indicator align-center"></div></td>
+				      </tr>
+				    </tbody>
+				  </table>
+				  
+				 <table class="borderless">
+		          	 <tr>
+					      <td class="view-more"> &nbsp; <span class="ion-arrow-right-b"></span>&nbsp; View more</td>
+					 </tr>
+	          	 </table>
+	        </div>
+	    	</div>
+  	</div>
+	</div>
+		<div class="row">
+			<div class="col-lg-6 gutter-10">
+				<div class="tile">
+					<div class="container-fluid table-responsive tile-padding">
+						<table class="borderless w-100">
+							<tr>
+								<td class="title" width="100%">Risk tolerances</td>
+							</tr>
+						</table>
+						<table class="table">
+	 
+							<thead>
+								<tr>
+									<th scope="col" colspan="2" class="set-width-small">Client</th>
+									<th scope="col" class="move-risk-tolerance">Risk
+										Tolerance</th>
+									<th scope="col"
+										class=" d-sm-none d-md-none d-xl-table-cell disp-date">Last
+										update</th>
+									<th scope="col">Actions</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td><button type="button"
+											class="btn btn-default btn-circle btn-circle-sz26 btn-circle-blue ion-ios-person"></button>
+									</td>
+									<td class="col-auto set-width-small"><span class="truncate bold risk-tolerance-client-name"
+										data-placement="bottom"
+										data-original-title="Dennis Thompson">Dennis Thompson</span></td>
+									<td class="col-auto move-risk-tolerance"><button
+											type="button"
+											class="btn btn-default risk-btn-circle btn-circle-sz36  overlap-profile-pic1">48</button>
+										<button type="button"
+											class="btn btn-default btn-square  btn-square-blue px-4 btn-lg overlap-risk-score-square">Average</button></td>
+									<td class=" d-sm-none d-md-none d-xl-table-cell disp-date">2017.11.20</td>
+									<td class=""><div tabindex="0"  class="w-100" role="button"
+										data-toggle="popover" data-trigger="focus">&nbsp;&nbsp;&nbsp;<a
+										class="ion-android-more-vertical action-ellipses-icon-color"></a></div></td>
+								</tr>
+								<tr>
+									<td><button type="button"
+											class="btn btn-default btn-circle btn-circle-sz26 btn-circle-lightblue ion-ios-person"></button>
+									</td>
+									<td class="col-auto set-width-small"><span class="truncate bold risk-tolerance-client-name"
+										data-placement="bottom"
+										data-original-title="Jeremy Lancaster">Jeremy Lancaster</span></td>
+									<td class="col-auto move-risk-tolerance"><button
+											type="button"
+											class="btn btn-default risk-btn-circle btn-circle-sz36  overlap-profile-pic1">72</button>
+										<button type="button"
+											class="btn btn-default btn-square  btn-square-blue px-4 btn-lg overlap-risk-score-square">Very
+											High</button></td>
+									<td class=" d-sm-none d-md-none d-xl-table-cell disp-date">2017.11.20</td>
+									<td class=""><div tabindex="0"  class="w-100" role="button"
+										data-toggle="popover" data-trigger="focus">&nbsp;&nbsp;&nbsp;<a
+										class="ion-android-more-vertical action-ellipses-icon-color"></a></div></td>
+								</tr>
+
+							</tbody>
+						</table>
+						<br>
+						<table class="borderless">
+							<tr>
+								<td class="view-more">&nbsp; <span class="ion-arrow-right-b"></span>&nbsp;
+									View more
+								</td>
+							</tr>
+						</table>
+
+					</div>
+				</div>
+			</div>
+			<div class="col-lg-6 gutter-10">
+				<div class="tile">
+					<div class="container-fluid table-responsive tile-padding">
+						<table class="borderless w-100 ">
+							<tr>
+								<td colspan="3" class="title" width="70%">Tasks &
+									notifications</td>
+								<td class="title right"><button type="button"
+										class="btn btn-default btn-circle btn-circle-orange btn-circle-sz26">6</button>
+									<button type="button"
+										class="btn btn-default btn-circle btn-circle-red btn-circle-sz26">1</button></td>
+							</tr>
+						</table>
+
+						<table class="table mb-4 mb-md-3 mb-xl-4">
+							<tbody>
+								<tr>
+									<td class=""></td>
+									<td class="check "><span
+										class="ion-android-checkbox-outline"></span></td>
+									<td class="date">2017.05.12</td>
+									<td width="75%" class="text"><span >Lorem
+											ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum
+											nec sapien eu velit dignissim.</span></td>
+								</tr>
+								<tr>
+									<td class=""><div class="orange-dot-indicator"></div></td>
+									<td class="check "><span
+										class="ion-android-checkbox-outline-blank"></span></td>
+									<td class="date">2017.05.07</td>
+									<td width="75%" class="text"><span >Duis
+											lectus eros, ornare ut nulla vel, pellentesque.</span></td>
+								</tr>
+								<tr>
+									<td class=""><div class="red-dot-indicator"></div></td>
+									<td class=" check"><span
+										class="ion-android-checkbox-outline-blank"></span></td>
+									<td class="date">2017.04.28</td>
+									<td width="75%" class="text"><span >Donec
+											euismod henderit turpis, id blandit dolor.</span></td>
+								</tr>
+							</tbody>
+						</table>
+						<br>
+						<table class="borderless">
+							<tr>
+								<td class="view-more">&nbsp; <span class="ion-arrow-right-b"></span>&nbsp;
+									View more
+								</td>
+							</tr>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+	    <div class="col-sm-12 gutter-10">
+	    	<div class="tile">
+	    	<div class="container-fluid tile-padding">
+	          	<table class="table">
+	       	<thead>
+	          	 <tr>
+	          	 <td class="title pr-5 pl-0" scope="col" colspan="2">Goals</td>
+	          	 <th scope="col " class = "leftpadding" colspan="2">$/year</th>
+	          	 <th scope="col"  class="d-none d-md-table-cell d-xl-table-cell" colspan="2">Start date</th>
+	          	 <th scope="col"  class=" d-none d-md-none d-xl-table-cell" colspan="2">End date</th>
+	          	 <th scope="col"  class="d-none d-md-table-cell d-xl-table-cell" colspan="2">Funded by</th>
+	          	 <th scope="col" class="d-none d-md-table-cell d-xl-table-cell" >PlanTrac status</th>
+	          	 <th scope="col" class="center fit">Actions</th>
+				 </tr>
+				 </thead> 
+ 		 	<tbody>
+			  <tr >
+				 <td class="text pr-5 bold" scope="col" colspan="2" ><span>Lifestyle during retirement after age 60</span></td>
+				 <td class="text leftpadding"  scope="col" colspan="2" >$60,000</td>
+				 <td class="text d-none d-md-table-cell d-xl-table-cell" scope="col" colspan="2">2035</td>
+				 <td class="text d-none d-md-none d-xl-table-cell" scope="col" colspan="2" >2044</td>
+				 <td class="text d-none d-md-table-cell d-xl-table-cell" scope="col" colspan="2">Family portfolio</td>
+				 <td class="text d-none d-md-table-cell d-xl-table-cell" scope="col"  ><div class="green-dot-indicator"></div>on track</td>
+				 <td class="center fit" scope="col" ><div tabindex="0"   role="button"
+										data-toggle="goal-popover" data-trigger="focus">&nbsp;&nbsp;&nbsp;<a
+										class="ion-android-more-vertical action-ellipses-icon-color"></a></div></td>
+				 </tr>
+
+				  <tr>
+				 <td class="text pr-5 bold" scope="col" colspan="2"><span>Adele's education</span></td>
+				<td class="text leftpadding"  scope="col" colspan="2" >$25,600</td>
+				 <td class="text d-none d-md-table-cell d-xl-table-cell" scope="col" colspan="2">2018</td>
+				 <td class="text d-none d-md-none d-xl-table-cell" scope="col" colspan="2" >2021</td>
+				 <td class="text d-none d-md-table-cell d-xl-table-cell" scope="col"colspan="2"><span>Education portfolio</span></td>
+				 <td class="text d-none d-md-table-cell d-xl-table-cell" scope="col" ><div class="green-dot-indicator"></div>on track</td>
+				 <td class="center fit" scope="col" ><div tabindex="0"   role="button"
+										data-toggle="goal-popover" data-trigger="focus">&nbsp;&nbsp;&nbsp;<a
+										class="ion-android-more-vertical action-ellipses-icon-color"></a></div></td>
+				 </tr>
+				 <tr>
+				 <td class="text pr-5 bold" scope="col" colspan="2"><span>Zak's education</span></td>
+				<td class="text leftpadding"  scope="col" colspan="2" >$24,703</td>
+				 <td class="text d-none d-md-table-cell d-xl-table-cell" scope="col" colspan="2">2017</td>
+				 <td class="text d-none d-md-none d-xl-table-cell" scope="col" colspan="2">2020</td>
+				 <td class="text d-none d-md-table-cell d-xl-table-cell" scope="col" colspan="2"><span>Education portfolio</span></td>
+				 <td class="text d-none d-md-table-cell d-xl-table-cell" scope="col" ><div class="orange-dot-indicator"></div>off track</td>
+				 <td class="center fit" scope="col" ><div tabindex="0" role="button"
+										data-toggle="goal-popover" data-trigger="focus">&nbsp;&nbsp;&nbsp;<a
+										class="ion-android-more-vertical action-ellipses-icon-color"></a></div></td>
+				 </tr>
+				 <tr>
+				 <td class="text pr-5 bold" scope="col" colspan="2"><span>Home improvement</span></td>
+				 <td class="text leftpadding"  scope="col" colspan="2" >$30,000</td>
+				 <td class="text d-none d-md-table-cell d-xl-table-cell" scope="col" colspan="2">2030</td>
+				 <td class="text d-none d-md-none d-xl-table-cell" scope="col" colspan="2" class="d-md-none">2031</td>
+				 <td class="text d-none d-md-table-cell d-xl-table-cell" scope="col" colspan="2">Multiple</td>
+				 <td class="text d-none d-md-table-cell d-xl-table-cell" scope="col" ><div class="blank-dot-indicator"></div>not tracking</td>
+				 <td class="center fit" scope="col" ><div tabindex="0"  role="button"
+										data-toggle="goal-popover" data-trigger="focus">&nbsp;&nbsp;&nbsp;<a
+										class="ion-android-more-vertical action-ellipses-icon-color"></a></div></td>
+				 </tr> 
+				 </tbody>
+			</table>
+				 <table class="borderless">
+		          	 <tr>
+					      <td class="view-more"> &nbsp; <span class="ion-arrow-right-b"></span>&nbsp; View more</td>
+					 </tr>
+	          	 </table>
+		</div>
+        </div>
+	    </div>
+	 </div>
+	 <div class="row">
+	   
+	    <div class="col-md-6 h-100 gutter-10">
+	    	<div class="tile ">
+	        <div class="container-fluid">
+	          	
+	          	<table class="borderless">
+	          	 <tr>
+				      <td class="title">Net worth</td>
+				 </tr>
+				 <tr class="border_bottom">
+				      <td>
+						<span class="floatLeft currencyNoLine">$2,475,295</span>
+					      
+						  <div class="floatLeft">
+							  <table><tr><td class="tdPadding">
+							       <span class="smalltitle">Assets</span> &nbsp;<span>$1,850,000</span>
+							       &nbsp; &nbsp;<span class="smalltitle">Liabilities</span> &nbsp;<span>$304,705</span>
+						      </td></tr></table>
+					      </div>
+				      </td>
+				 </tr>
+	          	</table>
+	          	
+
+
+	          	<div class="row tile-padding">
+	          	<div class="col-lg-6 gutter-0">
+	          	<table class="customheight2">
+	          	 	<tr>
+				      <td class="subtitle-acct2">Assets</td>
+				      </tr>	
+				      <tr>
+				      <td class="subtitle-acct">Account types</td>
+				      </tr>	
+				      <tr class="stackedbar-height">
+				      <td>
+						<div class="progress">
+						 
+						  <div class="progress-bar-mauve" role="progressbar" style="width: 35%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100"></div>
+						  <div class="progress-bar progress-bar-white"  style="width: 0.5%"  aria-valuemax="100"></div>
+						  <div class="progress-bar-green" role="progressbar" style="width: 27%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"></div>
+						  <div class="progress-bar progress-bar-white"  style="width: 0.5%"  aria-valuemax="100"></div>
+						  <div class="progress-bar-cyan " role="progressbar" style="width: 15%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
+						   <div class="progress-bar progress-bar-white"  style="width: 0.5%"  aria-valuemax="100"></div>
+						  <div class="progress-bar-blue" role="progressbar" style="width: 10%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"></div>
+						   <div class="progress-bar progress-bar-white"  style="width: 0.5%"  aria-valuemax="100"></div>
+						  <div class="progress-bar-lightgrey" role="progressbar" style="width: 12%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
+						</div>
+					  </td>
+				      </tr>
+	          	</table>
+	          	<table class="table customheight">
+				    <tbody>
+				      <tr>
+				      	<td><button type="button" class="btn btn-default btn-square-small progress-bar-mauve"></button></td>
+				        <td class="truncateTiny smalltitle">Registered</td>
+				        <td class="smallcurrency right">$277,349,662</td>
+				      </tr>
+				      <tr>
+				      	<td><button type="button" class="btn btn-default btn-square-small progress-bar-green"></button></td>
+				        <td class="truncateTiny smalltitle">TFSA</td>
+				        <td class="smallcurrency right">$119,204,681</td>
+				      </tr>
+				      <tr>
+				      	<td><button type="button" class="btn btn-default btn-square-small progress-bar-cyan"></button></td>
+				        <td class="truncateTiny smalltitle">Open</td>
+				        <td class="smallcurrency right">$95,476,724</td>
+				      </tr>
+				      <tr>
+				      	<td><button type="button" class="btn btn-default btn-square-small progress-bar-blue"></button></td>
+				        <td class="truncateTiny smalltitle">Personal Use</td>
+				        <td class="smallcurrency right">$119,204,681</td>
+				      </tr>
+				      <tr>
+				      	<td><button type="button" class="btn btn-default btn-square-small progress-bar-lightgrey"></button></td>
+				        <td class="truncateTiny smalltitle">Business / Other</td>
+				        <td class="smallcurrency right">$95,476,724</td>
+				      </tr>
+				    </tbody>
+				  </table>
+	          	</div>
+	          	<div class="col-lg-6 gutter-sp">
+	          	 <table class="customheight2">
+	          	 	<tr>
+				      <td class="subtitle-acct">&nbsp;</td>
+				      </tr>	
+				      <tr>
+				      <td class="subtitle-acct">Owners</td>
+				      </tr>	
+				      <tr  class="stackedbar-height">
+				      <td>
+						<div class="progress">
+						  <div class="progress-bar-blue" role="progressbar" style="width: 65%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100"></div>
+						   <div class="progress-bar progress-bar-white"  style="width: 0.5%"  aria-valuemax="100"></div>
+						  <div class="progress-bar-cyan" role="progressbar" style="width: 15%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"></div>
+						   <div class="progress-bar progress-bar-white"  style="width: 0.5%"  aria-valuemax="100"></div>
+						  <div class="progress-bar-green" role="progressbar" style="width: 12%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
+						   <div class="progress-bar progress-bar-white"  style="width: 0.5%"  aria-valuemax="100"></div>
+						  <div class="progress-bar-mauve" role="progressbar" style="width: 8%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
+						</div>
+					  </td>
+				      </tr>
+	          	</table>
+	          	<table class="table customheight">
+				    <tbody>
+				      <tr>
+				      	<td><button type="button" class="btn btn-default btn-square-small progress-bar-blue"></button></td>
+				        <td class="truncateTiny smalltitle">Joint</td>
+				        <td class="smallcurrency right">$5,476,724</td>
+				      </tr>
+				      <tr>
+				      	<td><button type="button" class="btn btn-default btn-square-small progress-bar-cyan"></button></td>
+				        <td class="truncateTiny smalltitle">Diane</td>
+				        <td class="smallcurrency right">$759,662</td>
+				      </tr>
+				      <tr>
+				      	<td><button type="button" class="btn btn-default btn-square-small progress-bar-green"></button></td>
+				        <td class="truncateTiny smalltitle">Jeremy</td>
+				        <td class="smallcurrency right">$759,662</td>
+				      </tr>
+				      <tr>
+				      	<td><button type="button" class="btn btn-default btn-square-small progress-bar-mauve"></button></td>
+				        <td class="truncateTiny smalltitle">Family Members</td>
+				        <td class="smallcurrency right">$759,662</td>
+				      </tr>
+				    </tbody>
+				  </table>
+	          	</div>
+	          	</div>
+				 <table class="borderless">
+		          	 <tr>
+					      <td class="view-more"> &nbsp; <span class="ion-arrow-right-b"></span>&nbsp; View more</td>
+					 </tr>
+	          	 </table>
+	        </div>
+	        </div>
+	    </div>
+	 
+	    <div class="col-md-6 h-100 gutter-10">
+	    	<div class="tile ">
+	        <div class="container-fluid">
+	          	<table class="borderless">
+	          	 <tr>
+				      <td class="title">Investments</td><td></td>
+				 </tr>
+	          	 <tr class="border_bottom">
+				      <td class="currency">$1,475,295</td><td></td>
+				 </tr>
+	          	</table>
+
+	          	<div class="row tile-padding">
+	          	<div class="col-lg-6 gutter-0">
+	          	<table class="customheight2">
+	          	 	<tr>
+				      <td>&nbsp;</td>
+				      </tr>	
+				      <tr>
+				      <td class="subtitle-acct" >Managed / Unmangaed</td>
+				      </tr>	
+				      <tr class="stackedbar-height">
+				      <td>
+						<div class="progress">
+						  <div class="progress-bar progress-bar-purple"  style="width: 70%"  aria-valuemax="100"></div>
+						  <div class="progress-bar progress-bar-white"  style="width: 0.5%"  aria-valuemax="100"></div>
+						  <div class="progress-bar progress-bar-green"  style="width: 30%" aria-valuemax="100"></div>
+						  <div class="progress-bar progress-bar-orange"  style="width: 0%"  aria-valuemax="100"></div>
+						</div>
+					  </td>
+				      </tr>
+	          	</table>
+	          	<table class="table customheight">
+				    <tbody>
+				      <tr>
+				      	<td><button type="button" class="btn btn-default btn-square-small btn-square-purple"></button></td>
+				        <td class="smalltitle">Managed</td>
+				        <td class="smallcurrency right">$277,349,662</td>
+				      </tr>
+				      <tr>
+				      	<td><button type="button" class="btn btn-default btn-square-small btn-square-green"></button></td>
+				        <td class="smalltitle">Unmanaged</td>
+				        <td class="smallcurrency right">$119,204,681</td>
+				      </tr>
+				    </tbody>
+				  </table>
+	          	</div>
+	          	<div class="col-lg-6 gutter-sp">
+	          	 <table class="customheight2">
+	          	 	<tr>
+				      <td class="subtitle-acct">&nbsp;</td>
+				      </tr>	
+				      <tr>
+				      <td class="subtitle-acct">Planned for</td>
+				      </tr>	
+				      <tr  class="stackedbar-height">
+				      <td>
+						<div class="progress">
+						  <div class="progress-bar progress-bar-blue"  style="width: 35%"  aria-valuemax="100"></div>
+						  <div class="progress-bar progress-bar-white"  style="width: 0.5%"  aria-valuemax="100"></div>
+						  <div class="progress-bar progress-bar-skyblue"  style="width: 65%" aria-valuemax="100"></div>
+						  <div class="progress-bar progress-bar-orange"  style="width: 0%"  aria-valuemax="100"></div>
+						</div>
+					  </td>
+				      </tr>
+	          	</table>
+	          	<table class="table customheight">
+				    <tbody>
+				      <tr>
+				      	<td><button type="button" class="btn btn-default btn-square-small btn-square-blue"></button></td>
+				        <td class="truncateTiny smalltitle">Planned for</td>
+				        <td class="smallcurrency right">$119,204,681</td>
+				      </tr>
+				      <tr>
+				      	<td><button type="button" class="btn btn-default btn-square-small btn-square-green"></button></td>
+				        <td class="truncateTiny smalltitle">Not planned for</td>
+				        <td class="smallcurrency right">$277,349,662</td>
+				      </tr>
+				    </tbody>
+				  </table>
+	          	</div>
+	          	</div>
+				 <table class="borderless investmentTile-view-more-margin">
+		          	 <tr>
+					      <td class="view-more"> &nbsp; <span class="ion-arrow-right-b"></span>&nbsp; View more</td>
+					 </tr>
+	          	 </table>
+	        </div>
+	        </div>
+	    </div>
+	 </div>	 
+	 <div class="row">
+	    <div class="col-sm-12 gutter-10">
+	    		<div class="tile">
+				<div class="container-fluid table-responsive tile-padding">
+		          	<table class="table">
+					<thead>
+				      <tr>
+			          	<td class="title pr-5 pl-0" scope="col" colspan="2">Portfolios</td>
+				        <th scope="col" class="d-none d-md-none d-xl-table-cell">Client</th>
+				        <th scope="col" class="d-none d-md-none d-xl-table-cell">Risk Level</th>
+				        <th scope="col" class="d-none d-md-none d-xl-table-cell">Goals funded</th>
+				        <th scope="col" class="d-md-table-cell d-xl-table-cell">Investment Strategy</th>
+				        <th scope="col" class="d-md-table-cell d-xl-table-cell">Total assets</th>
+				        <th scope="col" class="d-md-table-cell d-xl-table-cell">Actions</th>
+				      </tr>
+				    </thead>
+
+				    <tbody>
+				      <tr>
+						<td class="text d-md-table-cell d-xl-table-cell" scope="col" colspan="2"><b><span>Family portfolio</b></span></td>
+						<td class="text d-none d-md-none d-xl-table-cell" scope="col" ><span>
+							<button type="button" class="btn btn-default btn-circle btn-circle-sz26 btn-circle-blue ion-ios-person"></button>
+							<button type="button" class="btn btn-default btn-circle btn-circle-sz26 btn-circle-lightblue ion-ios-person"></button>
+							</span></td>
+						<td class="text d-none d-md-none d-xl-table-cell" scope="col"><button type="button" class="btn btn-default btn-square  btn-square-portfolios px-4 btn-lg">Low</button></td>
+						<td class="text d-none d-md-none d-xl-table-cell" scope="col" ><span>Multiple</span></td>
+						<td class="text d-md-table-cell d-xl-table-cell" scope="col"><span>Income &amp; Growth</span></td>
+						<td class="text d-md-table-cell d-xl-table-cell " scope="col">$749,662.00</td>
+					 	<td class="d-md-table-cell d-xl-table-cell center fit"><div tabindex="0"  class="w-100" role="button"
+										data-toggle="portfolio-popover" data-trigger="focus">&nbsp;&nbsp;&nbsp;<a
+										class="ion-android-more-vertical action-ellipses-icon-color"></a></div></td>
+				      </tr>
+				      <tr>
+						<td class="text d-md-table-cell d-xl-table-cell" scope="col" colspan="2"><span><b>Dream portfolio</span></td>
+						<td  class="text d-none d-md-none d-xl-table-cell" scope="col"><span>
+							<button type="button" class="btn btn-default btn-circle btn-circle-sz26 btn-circle-blue ion-ios-person"></button>
+							<button type="button" class="btn btn-default btn-circle btn-circle-sz26 btn-circle-lightblue ion-ios-person"></button>
+						</span></td>
+						<td class="text d-none d-md-none d-xl-table-cell" scope="col"><button type="button" class="btn btn-default btn-square  btn-square-portfolios px-4 btn-lg">Average</button></td>
+						<td class="text d-none d-md-none d-xl-table-cell" scope="col"><span>Home Improvement</span></td>
+						<td class="text d-md-table-cell d-xl-table-cell" scope="col"><span>Balanced</span></td>
+						<td class="text d-md-table-cell d-xl-table-cell" scope="col">$749,662.00</td>
+					<td class=" d-md-table-cell d-xl-table-cell center fit"><div tabindex="0"  class="w-100" role="button"
+										data-toggle="portfolio-popover" data-trigger="focus">&nbsp;&nbsp;&nbsp;<a
+										class="ion-android-more-vertical action-ellipses-icon-color"></a></div></td>
+				      </tr>
+				      <tr>
+						<td class="text d-md-table-cell d-xl-table-cell" scope="col" colspan="2"><span data-toggle="tooltip"
+										data-placement="bottom"
+										title="Absolutely insane portfolio"><b>Absolutely insane portfolio</b></span></td>
+						<td  class="text d-none d-md-none d-xl-table-cell" scope="col"><span>
+							<button type="button" class="btn btn-default btn-circle btn-circle-sz26 btn-circle-blue ion-ios-person"></button>
+							<button type="button" class="btn btn-default btn-circle btn-circle-sz26 btn-circle-lightblue ion-ios-person"></button>
+						</span></td>
+						<td class="text d-none d-md-none d-xl-table-cell" scope="col"><button type="button" class="btn btn-default btn-square  btn-square-portfolios px-4 btn-lg">Very High</button></td>
+						<td class="text d-none d-md-none d-xl-table-cell" scope="col"><span >Lifestyle during retirement</span></td>
+						<td class="text d-md-table-cell d-xl-table-cell" scope="col"><span>Aggressive Growth</span></td>
+						<td class="text d-md-table-cell d-xl-table-cell " scope="col">$749,662.00</td>
+						<td class=" d-md-table-cell d-xl-table-cell center fit"><div tabindex="0"  class="w-100" role="button"
+										data-toggle="portfolio-popover" data-trigger="focus">&nbsp;&nbsp;&nbsp;<a
+										class="ion-android-more-vertical action-ellipses-icon-color"></a></div></td>
+				      </tr>
+				    </tbody>
+				    </table>
+					<table class="borderless">
+					<tr>
+						<td class="view-more"> &nbsp; <span class="ion-arrow-right-b"></span>&nbsp; View more</td>
+					</tr>
+					</table>
+	          	</div>
+	        </div>
+	    </div>
+	 </div>	 
+	 <div class="row">
+	    <div class="col-sm-12 gutter-10">
+	    <div class="tile" >
+	    <div class="container-fluid tile-padding">
+	    <table class="borderless pb-2">
+	          	 <tr class="border-bottom pt-5">
+				      <td class="title">Asset allocation</td><td class="title center"></td>
+				 </tr>
+	          	
+	          	</table>
+	    <div class="row ">
+	    	<div class="col-12 col-lg-6 ">
+	    	<div class="row align-items-start">
+	    	
+	    	<div class="col-12 col-sm-8">
+
+	    	 	<div class="row">
+	    	 	
+	    	  	<div class="col-6 content ">
+	    	  		<div></div>
+	    	  	</div>
+	    	  	<div class="col-2 subtitle pl-0 pb-0" >
+	    	  		Current
+	    	  	</div>
+	    	  	<div class="col-4 content pb-2">
+	    	  		
+	    	  	</div>
+	    	  	</div>
+
+	    	 	<div class="row">
+	    	 	
+	    	  	<div class="col-6 content pt-2">
+	    	  		<div></div>
+	    	  	</div>
+	    	  	
+	    	  	<div class="col-2 content bottom-line pb-2 pt-2 center asset-allocation-title">
+	    	  		%
+	    	  	</div>
+	    	  	<div class="col-4 content bottom-line pb-2 pt-2 right asset-allocation-title">
+	    	  		$
+	    	  	</div>
+	    	  	</div>
+	    	  		    	  	
+	    	 	<div class="row">
+	    	 	
+	    	  	<div class="col-6 content pt-2">
+	    	  		<div><span class="mauve-square mr-2 p-0"></span><span class="text-nowrap bold">Cash</span></div>
+	    	  	</div>
+	    	  	
+	    	  	<div class="col-2 content bottom-line pb-2 pt-2 center">
+	    	  		62
+	    	  	</div>
+	    	  	<div class="col-4 content bottom-line pb-2 pt-2 right">
+	    	  		$277,349,662
+	    	  	</div>
+	    	  	</div>
+	    	 	<div class="row">
+	    	 	
+	    	  	<div class="col-6 content pt-2">
+	    	  		<div><span class="green-square mr-2 "></span><span class="text-nowrap bold">Fixed incomed</span></div>
+	    	  	</div>
+	    	  	
+	    	  	<div class="col-2 content bottom-line pb-2 pt-2 center" >
+	    	  		21
+	    	  	</div>
+	    	  	<div class="col-4 content bottom-line pb-2 pt-2 right">
+	    	  		$119,204,681
+	    	  	</div>
+	    	  	</div>	    	  	
+	    	 	<div class="row">
+	    	 	
+	    	  	<div class="col-6 content pt-2">
+	    	  		<div><span class="cyan-square mr-2 "></span><span class="text-nowrap bold">Equity</span></div>
+	    	  	</div>
+	    	  	
+	    	  	<div class="col-2 content bottom-line pb-2 pt-2 center" >
+	    	  		17
+	    	  	</div>
+	    	  	<div class="col-4 content bottom-line pb-2 pt-2 right">
+	    	  		$95,476,724
+	    	  	</div>
+	    	  	</div>	    	  	
+	    	
+
+	    	</div>
+	    	<div class="col-12 col-sm-4 pt-5 pr-0">
+	  		<div class="chartContainer h-100 w-100 py-5 py-md-0">
+            	<div id="chartdiv1" style="height:177px"></div>
+            </div>
+			</div>
+	    	</div>
+	    	</div>
+	    	
+	    	<div class="col-12 col-lg-6 ">
+	    	<div class="row align-items-start">
+	    	
+	    	<div class="col-12 col-sm-8 col-md-8">
+
+	    	 	<div class="row">
+	    	 	
+	    	  	<div class="col-6 content ">
+	    	  		<div></div>
+	    	  	</div>
+	    	  	<div class="col-2 subtitle pl-0 pb-0" >
+	    	  		Target
+	    	  	</div>
+	    	  	<div class="col-4 content pb-2">
+	    	  		
+	    	  	</div>
+	    	  	</div>
+
+	    	 	<div class="row">
+	    	 	
+	    	  	<div class="col-6 content pt-2">
+	    	  		<div></div>
+	    	  	</div>
+	    	  	
+	    	  	<div class="col-2 content bottom-line pb-2 pt-2 center asset-allocation-title">
+	    	  		%
+	    	  	</div>
+	    	  	<div class="col-4 content bottom-line pb-2 pt-2 right asset-allocation-title">
+	    	  		$
+	    	  	</div>
+	    	  	</div>
+	    	  	
+	    	 	<div class="row">
+	    	 	
+	    	  	<div class="col-6 content pt-2">
+	    	  		<div class="hide-asset-type"><span class="mauve-square mr-2 p-0"></span><span class="text-nowrap bold">Cash</span></div>
+	    	  	</div>
+	    	  	
+	    	  	<div class="col-2 content bottom-line pb-2 pt-2 center" >
+	    	  		62
+	    	  	</div>
+	    	  	<div class="col-4 content bottom-line pb-2 pt-2 right">
+	    	  		$277,349,662
+	    	  	</div>
+	    	  	</div>
+	    	 	<div class="row">
+	    	 	
+	    	  	<div class="col-6 content pt-2">
+	    	  		<div class="hide-asset-type"><span class="green-square mr-2 p-0"></span><span class="text-nowrap bold">Fixed incomed</span></div>
+	    	  	</div>
+	    	  	
+	    	  	<div class="col-2 content bottom-line pb-2 pt-2 center" >
+	    	  		21
+	    	  	</div>
+	    	  	<div class="col-4 content bottom-line pb-2 pt-2 right">
+	    	  		$119,204,681
+	    	  	</div>
+	    	  	</div>	    	  	
+	    	 	<div class="row">
+	    	 	
+	    	  	<div class="col-6 content pt-2">
+	    	  		<div class="hide-asset-type"><span class="cyan-square mr-2 p-0"></span><span class="text-nowrap bold">Equity</span></div>
+	    	  	</div>
+	    	  	
+	    	  	<div class="col-2 content bottom-line pb-2 pt-2 center" >
+	    	  		17
+	    	  	</div>
+	    	  	<div class="col-4 content bottom-line pb-2 pt-2 right">
+	    	  		$95,476,724
+	    	  	</div>
+	    	  	</div>	    	  	
+	    		
+	    	</div>
+	    	
+	    	<div class="col-12 col-sm-4 col-md-4 pt-5 pr-0">
+		  		<div class="chartContainer h-100 w-100 py-md-0">
+	            	<div id="chartdiv2" style="height:177px"></div>
+	            </div>
+			</div>
+	    	</div>
+	    	</div>
+	   	 </div>
+	    </div>
+	    </div>
+	    </div>
+	 </div>
+
+  	</div> <!-- end of col-container of tiles -->
+</div> <!-- end of main-container -->
+   <!-- loaded popover content -->
+       <!-- Risk Profile Tile Action -->
+		<table id="popover-content"   class="table  risk-tolerance-action-table ">
+		
+			<tbody class="table border-top-0">
+				<tr class="risk-tolerance-action">
+					<td><button type="button"
+							class="btn btn-default btn-circle btn-circle-sz22 btn-circle-green "><i class="ion-eye icon position-relative center-icon"></i></button>
+						<span class="text-uppercase risk-tolerance-action-spacing font-weight-bold">view results</span></td>
+
+				</tr>
+				<tr class="risk-tolerance-action">
+					<td><button type="button"
+							class="btn btn-default btn-circle btn-circle-sz22 btn-circle-green "><i class="ion-android-send icon position-relative center-icon"></i></button>
+						<span class="text-uppercase risk-tolerance-action-spacing font-weight-bold">send invite</span></td>
+
+				</tr>
+				<tr class=" risk-tolerance-action">
+					<td><button type="button"
+							class="btn btn-default btn-circle btn-circle-sz22 btn-circle-green "><i class="ion-android-notifications icon position-relative center-icon"></i></button>
+						<span class="text-uppercase risk-tolerance-action-spacing font-weight-bold">send reminder</span></td>
+
+				</tr>
+				<tr class=" risk-tolerance-action">
+					<td><button type="button"
+							class="btn btn-default btn-circle btn-circle-sz22 btn-circle-green "><i class="ion-android-clipboard icon position-relative center-icon"></i></button>
+						<span class="text-uppercase risk-tolerance-action-spacing font-weight-bold">complete questionnaire</span></td>
+
+				</tr>
+			</tbody>
+		</table>
+
+  <!-- Goal Tile Action -->
+           <table id="goal-popover-content"   class="table  risk-tolerance-action-table ">
+		
+			<tbody class="table border-top-0">
+				<tr class="risk-tolerance-action">
+					<td><button type="button"
+							class="btn btn-default btn-circle btn-circle-sz22 btn-circle-green "><i class="ion-android-create icon position-relative center-icon"></i></button>
+						<span class="text-uppercase risk-tolerance-action-spacing font-weight-bold">Edit Goal</span></td>
+
+				</tr>
+				<tr class="risk-tolerance-action">
+					<td><button type="button"
+							class="btn btn-default btn-circle btn-circle-sz22 btn-circle-green "><i class="ion-pie-graph icon position-relative center-icon"></i></button>
+						<span class="text-uppercase risk-tolerance-action-spacing font-weight-bold">Edit Goal Revenues</span></td>
+
+				</tr>
+				<tr class=" risk-tolerance-action">
+					<td><button type="button"
+							class="btn btn-default btn-circle btn-circle-sz22 btn-circle-green "><i class="ion-link icon position-relative center-icon"></i></button>
+						<span class="text-uppercase risk-tolerance-action-spacing font-weight-bold">Link portfolios to goals</span></td>
+
+				</tr>
+				<tr class=" risk-tolerance-action">
+					<td><button type="button"
+							class="btn btn-default btn-circle btn-circle-sz22 btn-circle-green "><i class="ion-stats-bars icon position-relative center-icon"></i></button>
+						<span class="text-uppercase risk-tolerance-action-spacing font-weight-bold">goal results</span></td>
+
+				</tr>
+				
+				<tr class=" risk-tolerance-action">
+					<td><button type="button"
+							class="btn btn-default btn-circle btn-circle-sz22 btn-circle-green "><i class="ion-ios-eye icon position-relative center-icon"></i></button>
+						<span class="text-uppercase risk-tolerance-action-spacing font-weight-bold">view plan trac</span></td>
+
+				</tr>
+			</tbody>
+		</table>
+   
+   <!-- Portfolio Tile Action -->
+    <table id="portfolio-popover-content"   class="table  risk-tolerance-action-table ">
+		
+			<tbody class="table border-top-0">
+				<tr class="risk-tolerance-action">
+					<td><button type="button"
+							class="btn btn-default btn-circle btn-circle-sz22 btn-circle-green "><i class="ion-chevron-right icon position-relative center-icon"></i></button>
+						<span class="text-uppercase risk-tolerance-action-spacing font-weight-bold">Edit Portfolio</span></td>
+
+				</tr>
+				<tr class="risk-tolerance-action">
+					<td><button type="button"
+							class="btn btn-default btn-circle btn-circle-sz22 btn-circle-green "><i class="ion-pie-graph icon position-relative center-icon"></i></button>
+						<span class="text-uppercase risk-tolerance-action-spacing font-weight-bold">Edit Asset Allocation</span></td>
+
+				</tr>
+				<tr class=" risk-tolerance-action">
+					<td><button type="button"
+							class="btn btn-default btn-circle btn-circle-sz22 btn-circle-green "><i class="ion-link icon position-relative center-icon"></i></button>
+						<span class="text-uppercase risk-tolerance-action-spacing font-weight-bold">Link portfolios to goals</span></td>
+
+				</tr>
+				
+				
+				
+			</tbody>
+		</table>
+   
+		<script>
+   $(function () {
+	   $('[data-toggle="tooltip"]').tooltip()
+
+   });
+	 var chartData = {
+			"type" : "pie",
+			
+			"innerRadius" : "87%",
+			"precision" : 2,
+			"balloonText" : "$[[value]]",
+			"labelText":"",
+			"startRadius" : "50%",
+			"colors" : ["#9999ff", "#BBDD66", "#66ccee"],
+			"gradientRatio" : [],
+			"hoverAlpha" : 0.64,
+			"labelTickAlpha" : 0,
+			"outlineAlpha" : 0,
+			"startDuration" : 0.8,
+			"autoMargins" : false,
+			"marginTop" : 0,
+			"marginBottom" : 40,
+			"marginLeft" : 0,
+			"marginRight" : 0,
+			"pullOutRadius" : 0,
+			"startEffect" : "easeOutSine",
+			"titleField" : "category",
+			"valueField" : "column-1",
+			"accessibleTitle" : "",
+			"theme" : "dark",
+			"listeners":[{
+				"event":"rendered",
+				"method":handleRendered
+			}],
+			"allLabels" : [{
+			    "text": "$856.83K",
+			    "align": "center",
+			    "bold": false,
+			    "size":22,
+			    "y":50,
+			    "id":"text1"
+			  
+			  }, {
+			    "text": "Total",
+			    "align": "center",
+			    "bold": false,
+			    "y":30,
+			    	"color":"#aabbcc",
+			    	 "size":14,
+			    	 "id":"text2"
+		
+			  }],
+			"balloon" : {
+				"offsetX" : 0,
+				"offsetY" : 0
+			},
+			"titles" : [],
+			"dataProvider" : [
+			    {
+			        "category": "Cash",
+			        "column-1": 277349662
+			      },
+			      {
+			        "category": "Fixed Income",
+			        "column-1": 119204681
+			      },
+			      {
+			        "category": "Equity",
+			        "column-1": 95476724
+			      }
+			    ]
+		}
+
+		var chart = AmCharts.makeChart("chartdiv1", chartData);
+	
+	 var chartData2 = {
+				"type" : "pie",
+				
+				"innerRadius" : "87%",
+				"precision" : 2,
+				"balloonText" : "$[[value]]",
+				"labelText":"",
+				"startRadius" : "50%",
+				"colors" : ["#9999ff", "#BBDD66", "#66ccee"],
+				"gradientRatio" : [],
+				"hoverAlpha" : 0.64,
+				"labelTickAlpha" : 0,
+				"outlineAlpha" : 0,
+				"startDuration" : 0.8,
+				"autoMargins" : false,
+				"marginTop" : 0,
+				"marginBottom" : 40,
+				"marginLeft" : 0,
+				"marginRight" : 0,
+				"pullOutRadius" : 0,
+				"startEffect" : "easeOutSine",
+				"titleField" : "category",
+				"valueField" : "column-1",
+				"accessibleTitle" : "",
+				"theme" : "dark",
+				"listeners":[{
+					"event":"rendered",
+					"method":handleRendered
+				}],
+				"allLabels" : [{
+				    "text": "$856.83K",
+				    "align": "center",
+				    "bold": false,
+				    "size":22,
+				    "y":50,
+				    "id":"text1"
+				  
+				  }, {
+				    "text": "Total",
+				    "align": "center",
+				    "bold": false,
+				    "y":30,
+				    	"color":"#aabbcc",
+				    	 "size":14,
+				    	 "id":"text2"
+			
+				  }],
+				"balloon" : {
+					"offsetX" : 0,
+					"offsetY" : 0
+				},
+				"titles" : [],
+				"dataProvider" : [
+				    {
+				        "category": "Cash",
+				        "column-1": 277349662
+				      },
+				      {
+				        "category": "Fixed Income",
+				        "column-1": 119204681
+				      },
+				      {
+				        "category": "Equity",
+				        "column-1": 95476724
+				      }
+				    ]
+			}
+
+			var chart2 = AmCharts.makeChart("chartdiv2", chartData2);
+	 
+   	function handleRendered(){
+   		$("[font-family]").removeAttr("font-family");
+   	}
+
+	 </script>
+</body>
+</html>

@@ -1,0 +1,30 @@
+.form-group .form-control,
+.ui-inputtext {
+    height: auto;
+}
+
+.information-lable {
+    font-size: 14px;
+    color: #788588;
+}
+
+@media (max-width: 992px) {
+    .information-main-div .row {
+        margin-top: 10px;
+    }
+
+}
+@media (max-width: 450px) {
+    .information-main-div{
+        overflow-x: auto;
+    }
+    .information-main-div .scroll-responsive-wrap{
+        width: 420px;
+    }
+}
+@media (max-width: 320px) {
+    .cal-fix p-calendar div.ui-datepicker {
+        left: inherit !important;
+        right: calc(100% - 135px) !important;
+    }
+}

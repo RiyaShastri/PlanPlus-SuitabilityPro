@@ -1,0 +1,45 @@
+:host {
+    background:#fff;
+    position: fixed;
+    left: auto;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 30%;
+    min-width: 250px;
+    z-index: 100; 
+}
+
+.side-form {
+    overflow: visible !important;
+}
+
+.modal-body {
+    height: 10rem;
+}
+
+.modal-header {
+    padding: 0 1rem;
+}
+
+.modal-header .sidebar_action_icon {
+    margin-right: 0 !important;
+}
+
+.modal-footer {
+    height: 45px;
+    border-top: 0px;
+}
+
+.modal-footer>div .btn {
+    margin-bottom: 0px;
+}
+
+.custom-form-label.add-new-value-label {
+    line-height: 25px;
+}
+
+.select-value-checkbox p-checkbox {
+    display: flex;
+    padding: 3px 0;
+}

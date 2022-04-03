@@ -1,0 +1,42 @@
+<div class="add-client side-form">
+  <form name="form" #f="ngForm" novalidate>
+    <div class="box">
+      <div class="box-header">
+        <span class="sidebar_title" [translate]="'SETTINGS.PJM_DATA.ADD_A_TIME_HORIZON'"></span>
+        <span (click)="closePanel()" class="sidebar_action_icon ion-md-close-circle float-right"></span>
+      </div>
+
+      <div class="box-body">
+        <div class="row">
+
+          <div class="col-12">
+            <div class="form-group">
+              <label class="custom-form-label" [translate]="'SETTINGS.PJM_.TIME_HORIZONE.TIME_HORIZONE'"></label>
+              <p-dropdown (onChange)=filterScoreOptions() [options]="timeHorizonDropDownArray" name="timeHorizon" [(ngModel)]="timeHorizonObj['timeHorizon']"
+                #maritalStatus="ngModel" required optionLabel="name" placeholder="Select time horizon"></p-dropdown>
+            </div>
+          </div>
+          <div class="col-12">
+            <div class="form-group">
+              <label class="custom-form-label" [translate]="'SETTINGS.PJM_.TIME_HORIZONE.SUITABILITY_SCORE_LIMIT'"></label>
+              <p-dropdown [options]="scoreArray" name="suitabilityScore" [(ngModel)]="timeHorizonObj['suitabilityScore']"
+                #maritalStatus="ngModel" required optionLabel="text" placeholder="Select suitability score"></p-dropdown>
+            </div>
+            <p *ngIf="incorrectScore" class="text-error">{{ 'SETTINGS.PJM_.TIME_HORIZONE.SELECT_VALID_SUITABILITY_SCORE' | translate }}</p>
+          </div>
+        </div>
+
+      </div>
+      <div class="box-footer">
+        <div class="form-group text-right">
+          <button (click)="closePanel()" type="button" class="btn btn-small btn-secondary btn-fixwidth mr-2"
+            [translate]="'FORM.ACTION.CANCEL'"></button>
+
+          <button type="button" [disabled]="f.form.invalid" class="btn btn-small btn-success pl-4 pr-4" [translate]="'SETTINGS.PJM_.TIME_HORIZONE.ADD_TIME_HORIZON'"
+
+            (click)="saveTimeHorizon()"></button>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>

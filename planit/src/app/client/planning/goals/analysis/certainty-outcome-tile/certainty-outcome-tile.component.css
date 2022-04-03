@@ -1,0 +1,5 @@
+.table.success-likelihood-table>thead>tr>th {
+    border-bottom: 1px solid #dee2e6;
+    border-top: 1px solid #dee2e6;
+}
+.table.success-likelihood-table > tbody > tr:last-child > td {border-bottom: none !important;}

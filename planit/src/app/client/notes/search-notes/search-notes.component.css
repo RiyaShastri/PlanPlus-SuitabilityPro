@@ -1,0 +1,26 @@
+:host {z-index: 9}
+
+.view-button i {
+    float: left;
+    width: 20px;
+    height: 20px;
+    background: #88aa33;
+    border-radius: 50%;
+    line-height: 20px;
+    text-align: center;
+    color: #fff;
+    font-size: 15px;
+    margin: 2px 7px 0 0;
+}
+.table.search-note-table {
+    max-width: 100%;
+    width: 100%;
+}
+@media (max-width: 350px) {
+.table.search-note-table  td {
+    font-size: 10px;
+}
+.table.search-note-table > thead > tr > th {
+    font-size: 12px;
+}
+}

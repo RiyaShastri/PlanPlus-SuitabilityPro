@@ -1,0 +1,251 @@
+<header class="navbar navbar-expand sticky-top bg-header" role="navigation" *ngIf="!isBranding"
+    [style.background-color]="getColours('bg', 'color1',true)">
+    <div class="main-container">
+
+        <div id="watermark">
+        <p *ngIf="isBeta">{{ 'HEADER.BETA' | translate }}</p>
+        </div>
+
+        <!-- Logo -->
+        <a class="navbar-brand d-flex align-items-center">
+            <!-- <img src="assets/images/logo/s_pro_trans.png" class="s_pro_trans"> -->
+            <img [src]="dftImageSrc" class="s_pro_trans" width="150" height="35">
+        </a>
+        <a class="navbar-brand d-flex align-items-center">
+                    <img [src]="custImageSrc" class="s_pro_trans" width="150" height="35" *ngIf="hasCustLogo && advisorRegion != '0001'">
+        </a>
+
+        <div class="navbar-collapse">
+            <!-- Nav links -->
+            <ul class="navbar-nav left-navbar mr-auto hidden-xs-down">
+                <li class="nav-item" routerLinkActive="active">
+                    <a *ngIf="!isClient" [routerLink]="['/advisor', 'dashboard']" [translate]="'HEADER.DASHBOARD'" [style.color]="getColours('text', 'color1',true)"
+                        [style.background]="isDashboard ? getColours('bg', 'color2', true)
+                    : null"></a>
+                  <a *ngIf="isClient" [routerLink]="['/client/' + clientId + '/dashboard']" [translate]="'HEADER.DASHBOARD'" [style.color]="getColours('text', 'color1',true)"
+                     [style.background]="isDashboard ? getColours('bg', 'color2', true)
+                    : null"></a>
+                </li>
+                <li class="nav-item" >
+                    <a *ngIf="!isClient" [routerLink]="['/advisor/dashboard/client-search']" [translate]="'HEADER.CLIENTS'" [style.color]="getColours('text', 'color1',true)"
+                        >
+                    </a>
+                  <a *ngIf="isClient" [routerLink]="['/client/' + clientId + '/dashboard/client-search']" [translate]="'HEADER.CLIENTS'" [style.color]="getColours('text', 'color1',true)"
+                     ></a>
+                </li>
+            </ul>
+
+            <ul class="navbar-nav right-navbar ml-auto">
+                <li class="nav-item">
+                    <a class="ion-md-chatboxes top-chat" [attr.href]="liveChatUrl" *ngIf="accessRights['LIVECHAT'] && accessRights['LIVECHAT']['accessLevel'] > 0"
+                        target="_blank" [style.color]="getColours('text', 'color1',true)"></a>
+                </li>
+                <li class="nav-item">
+                    <a class="ion-md-help-circle" href="https://www.planplusglobal.com/Help" target="_blank" [style.color]="getColours('text', 'color1',true)"></a>
+                </li>
+                <li class="nav-item" routerLinkActive="active">
+                    <a [routerLink]="['/task-notification']" *ngIf="taskDigits > 0" class="ion-ios-notifications top-bell" [ngClass]="{'more99': taskDigits === '99+'}" [style.color]="getColours('text', 'color1',true)" attr.data-badge="{{taskDigits}}"></a>
+                    <a [routerLink]="['/task-notification']" *ngIf="taskDigits == 0" class="ion-ios-notifications top-bell" [style.color]="getColours('text', 'color1',true)"></a>
+                </li>
+
+                <!-- User Account Menu -->
+                <li class="nav-item user-menu" [style.background-color]="getColours('bg', 'color2',true)">
+                    <div class="user-profile">
+                        <div class="user-main custom-dropdown" id="advisorMenu">
+                            <div class="user-box" #menuOpenRef (click)="menuOpen = !menuOpen">
+                                <div class="user-img hidden-xs-down h-40px" *ngIf="(plannerDetail | json) !== '{}' && !plannerDetail['avatar']">
+                                    <span class="advisor-icon ion-ios-person"></span>
+                                </div>
+                                <div class="user-img hidden-xs-down h-40px" *ngIf="(plannerDetail | json) !== '{}' && plannerDetail['avatar']">
+                                    <img class="user-image" [src]="plannerDetail['avatar']"/>
+                                </div>
+                                <span *ngIf="plannerName" class="user-name hidden-md-down" [style.color]="getColours('text', 'color2',true)">{{plannerName}}</span>
+                                <a class="ion-ios-settings hidden-md-down" [style.color]="getColours('text', 'color2',true)"></a>
+                                <a class="ion-md-menu hidden-lg-up" [style.color]="getColours('text', 'color2',true)"></a>
+                            </div>
+                            <div class="menu-wrapper bg-header custom-dropdown-menu branding-menu show" #menuListRef
+                                [hidden]="!menuOpen" [style.background-color]="getColours('bg', 'color1',true)">
+                                <ul>
+                                    <li class="hidden-lg-up">
+                                        <a  *ngIf="!isClient"  [routerLink]="['/advisor', 'dashboard']" [translate]="'HEADER.DASHBOARD'"
+                                            class="dropdown-item" routerLinkActive="active" [style.color]="getColours('text', 'color1',true)"></a>
+                                      <a  *ngIf="isClient"  [routerLink]="['/client/' + clientId + '/dashboard']" [translate]="'HEADER.DASHBOARD'"
+                                          class="dropdown-item" routerLinkActive="active" [style.color]="getColours('text', 'color1',true)"></a>
+                                    </li>
+                                    <li class="hidden-lg-up">
+                                        <a  *ngIf="!isClient" [routerLink]="['/advisor/dashboard/client-search']" [translate]="'HEADER.CLIENTS'"
+                                            class="dropdown-item" routerLinkActive="active" [style.color]="getColours('text', 'color1',true)"></a>
+                                      <a *ngIf="isClient" [routerLink]="['/client/' + clientId + '/dashboard/client-search']" [translate]="'HEADER.CLIENTS'"
+                                         class="dropdown-item" routerLinkActive="active" [style.color]="getColours('text', 'color1',true)"></a>
+                                    </li>
+                                    <li>
+                                        <ng-container *ngTemplateOutlet="menuHtml;context:{'menus': menus, 'isSubMenu' : 'false'}"></ng-container>
+                                    </li>
+                                    <ng-container *ngIf="translate.getLangs().length > 1">
+                                        <li class="hidden-lg-up" *ngFor="let lang of translate.getLangs(); let i = index;">
+                                            <a class="dropdown-item" [ngClass]="{'active': lang === languageToShow}"
+                                                (click)="changeLanguage(lang)" [style.color]="getColours('text', 'color1',true)">
+                                                {{lang}}
+                                            </a>
+                                        </li>
+                                    </ng-container>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="language custom-dropdown hidden-md-down" ngbDropdown *ngIf="translate.getLangs().length > 1">
+                        <div class="language-text" ngbDropdownToggle id="langMenu">
+                            <a [style.color]="getColours('text', 'color2',true)">{{languageToShow}}</a>
+                        </div>
+
+                        <div class="custom-dropdown-menu" ngbDropdownMenu aria-labelledby="langMenu">
+                            <ul>
+                                <li *ngFor="let lang of translate.getLangs()">
+                                    <a class="dropdown-item" [ngClass]="{'active': lang === languageToShow}" (click)="changeLanguage(lang)"
+                                        [style.color]="getColours('text', 'color2',true)">
+                                        {{lang}}
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="no_extra_lang hidden-md-down" *ngIf="translate.getLangs().length === 1"></div>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="header-after" [style.background-color]="getColours('bg', 'color2',true)"></div>
+</header>
+
+<header class="navbar navbar-expand sticky-top branding bg-header" role="navigation" *ngIf="isBranding"
+    [style.background-color]="getColours(bgColours, 'color1')" [ngClass]="{'banner-bg-clr-header': addClass}">
+    <div class="main-container">
+        <!-- Logo -->
+        <a class="navbar-brand d-flex align-items-center">
+            <img [src]="logoSrc ? logoSrc : 'assets/images/logo/s_pro_trans.png'" class="s_pro_trans" width="150" height="35">
+        </a>
+        <a class="navbar-brand d-flex align-items-center"  *ngIf="hasCustLogo">
+            <img [src]="custLogoSrc" class="s_pro_trans" width="150" height="35">
+        </a>
+
+        <div class="navbar-collapse">
+            <!-- Nav links -->
+            <ul class="navbar-nav left-navbar mr-auto hidden-xs-down">
+                <li class="nav-item">
+                    <a [translate]="'HEADER.DASHBOARD'" href="javascript:void(0)" [style.color]="getColours(textColours, 'color1')"></a>
+                </li>
+                <li class="nav-item" [ngClass]="isClient ? 'active' : ''">
+                    <a [translate]="'HEADER.CLIENTS'" href="javascript:void(0)" [style.color]="getColours(textColours, 'color1')">
+                    </a>
+                </li>
+            </ul>
+
+            <ul class="navbar-nav right-navbar ml-auto">
+                <li class="nav-item">
+                    <a class="ion-md-chatboxes top-chat" href="javascript:void(0)" [style.color]="getColours(textColours, 'color1')"></a>
+                </li>
+                <li class="nav-item">
+                    <a class="ion-md-help-circle" href="javascript:void(0)" [style.color]="getColours(textColours, 'color1')"></a>
+                </li>
+                <li class="nav-item">
+                    <a [routerLink]="['/task-notification']" class="ion-ios-notifications top-bell" *ngIf="taskDigits > 0" [ngClass]="{'more99': taskDigits === '99+'}" [style.color]="getColours('textColours', 'color1')" attr.data-badge="{{taskDigits}}"></a>
+                    <a [routerLink]="['/task-notification']" class="ion-ios-notifications top-bell" *ngIf="taskDigits == 0" [style.color]="getColours('textColours', 'color1')"></a>
+                </li>
+
+                <!-- User Account Menu -->
+                <li class="nav-item user-menu" [style.background-color]="getColours(bgColours, 'color2')">
+                    <div class="user-profile">
+                        <div class="user-main custom-dropdown" id="advisorMenu">
+                            <div class="user-box" #menuOpenRef (click)="menuOpen = !menuOpen">
+                                <div class="user-img hidden-xs-down h-40px">
+                                    <span class="advisor-icon ion-ios-person"></span>
+                                </div>
+                                <span *ngIf="plannerName" class="user-name hidden-md-down" [style.color]="getColours(textColours, 'color2')">{{plannerName}}</span>
+                                <a class="ion-ios-settings hidden-md-down" [style.color]="getColours(textColours, 'color2')"></a>
+                                <a class="ion-md-menu hidden-lg-up" [style.color]="getColours(textColours, 'color2')"></a>
+                            </div>
+                            <div class="menu-wrapper bg-header custom-dropdown-menu branding-menu show" #menuListRef
+                                [hidden]="!menuOpen" [style.background-color]="getColours(bgColours, 'color1')">
+                                <ul>
+                                    <li class="hidden-lg-up">
+                                        <a [translate]="'HEADER.DASHBOARD'" class="dropdown-item" routerLinkActive="active"
+                                            [style.color]="getColours(textColours, 'color1')"></a>
+                                    </li>
+                                    <li class="hidden-lg-up">
+                                        <a [translate]="'HEADER.CLIENTS'" class="dropdown-item" routerLinkActive="active"
+                                            [style.color]="getColours(textColours, 'color1')"></a>
+                                    </li>
+                                    <li>
+                                        <ng-container *ngTemplateOutlet="menuHtml;context:{'menus': menus, 'isSubMenu' : 'false'}"></ng-container>
+                                    </li>
+                                    <ng-container *ngIf="translate.getLangs().length > 1">
+                                        <li class="hidden-lg-up" *ngFor="let lang of translate.getLangs(); let i = index;">
+                                            <a class="dropdown-item" [ngClass]="{'active': lang === languageToShow}"
+                                                [style.color]="getColours(textColours, 'color1')">
+                                                {{lang}}
+                                            </a>
+                                        </li>
+                                    </ng-container>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="language custom-dropdown hidden-md-down" ngbDropdown *ngIf="translate.getLangs().length > 1">
+                        <div class="language-text" ngbDropdownToggle id="langMenu">
+                            <a [style.color]="getColours(textColours, 'color2')">{{languageToShow}}</a>
+                        </div>
+
+                        <div class="custom-dropdown-menu" ngbDropdownMenu aria-labelledby="langMenu">
+                            <ul>
+                                <li *ngFor="let lang of translate.getLangs()">
+                                    <a class="dropdown-item" [ngClass]="{'active': lang === languageToShow}"
+                                        [style.color]="getColours(textColours, 'color2')">
+                                        {{lang}}
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="no_extra_lang hidden-md-down" *ngIf="translate.getLangs().length === 1"></div>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="header-after" [style.background-color]="getColours(bgColours, 'color2')"></div>
+</header>
+
+<ng-template #menuHtml let-menus="menus" let-isSubMenu="isSubMenu">
+    <ul [ngClass]="{'sub-menu': isSubMenu === 'true'}" [ngStyle]="{
+        'border-top':'1px',
+        'border-top-style': 'solid',
+        'border-top-color':getColours('bg', 'color2', true)
+    }">
+        <li *ngFor="let menu of menus; let i = index" (click)="menu.template = !menu.template" [ngStyle]="{
+            'border-bottom':'1px',
+            'border-bottom-style': 'solid',
+            'border-bottom-color':getColours('bg', 'color2', true)
+        }">
+            <a *ngIf="!menu.isLink && menu.link !== '' && !isBranding" (click)="menu.link.call()" class="dropdown-item"
+                [translate]="menu.text" routerLinkActive="active" [style.color]="getColours('text', 'color1', true)"
+                [ngStyle]="hovered === i ? getBackgroundstyleObj() : {}" (mouseover)="hovered = i" (mouseout)="hovered = -1;checkActive($event)"></a>
+            <a *ngIf="(!menu.isLink && menu.link === '') || isBranding" class="dropdown-item" [translate]="menu.text"
+                routerLinkActive="active" [style.color]="getColours(textColours, 'color1')" [ngStyle]="hovered === i ? getBackgroundstyleObj() : {}"
+                (mouseover)="hovered = i" (mouseout)="hovered = -1;checkActive($event)"></a>
+            <a *ngIf="menu.isLink && !isBranding" [routerLink]="menu.link" class="dropdown-item" [translate]="menu.text"
+                routerLinkActive="active" [style.color]="getColours('text', 'color1',true)" [ngStyle]="hovered === i ? getBackgroundstyleObj() : {}"
+                (mouseover)="hovered = i" (mouseout)="hovered = -1;checkActive($event)"></a>
+            <!-- [ngStyle]="{
+                    background: (hovered === i) ? getBackgroundstyleObj() : ''
+            }" -->
+            <!-- [ngStyle]="{hovered === i ? getBackgroundstyleObj('color2') : {}, clicked === i ? getBackgroundstyleObj('color2') : {}}"  -->
+            <!-- <ng-container *ngIf="menu.childMenus.length > 0">
+                <i class="cursor-p" [ngClass]="menu.template ? 'ion-ios-arrow-up' : 'ion-ios-arrow-down'"></i>
+                <section [hidden]="!menu.template">
+                    <ng-container *ngTemplateOutlet="menuHtml;context:{'menus': menu.childMenus, 'isSubMenu' : 'true'}"></ng-container>
+                </section>
+            </ng-container> -->
+        </li>
+    </ul>
+</ng-template>

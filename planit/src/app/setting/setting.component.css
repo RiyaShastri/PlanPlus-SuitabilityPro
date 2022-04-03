@@ -1,0 +1,11 @@
+.top-nav {
+    background: #f5f6f7;
+}
+
+.top-nav h1 {
+    font-size: 28px;
+    color: #345;
+    font-weight: 500;
+    font-family: 'Montserrat', sans-serif;
+    padding: 20px 0px 0px;
+}

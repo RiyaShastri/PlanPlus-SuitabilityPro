@@ -1,0 +1,32 @@
+<div class="client-search side-form side-form-medium">
+    <div class="box">
+        <div class="box-header">
+            <span class="sidebar_title">
+                {{ 
+                    (searchSpouse) ? 
+                    ('ADVISOR.DASHBOARD.CLIENTS_TILE.SEARCH_SPOUSE' | translate) : 
+                    ('ADVISOR.DASHBOARD.CLIENTS_TILE.SEARCH_CLIENTS' | translate) 
+                }}
+            </span>
+            <p class="d-flex pull-right">
+                <a class="btn-add mr-3 cursor-p" *ngIf="accessRights['CLI18']['accessLevel'] === 3 && !searchSpouse"
+                    (click)="addClient()">
+                    <i class="ion-md-add-circle"></i>
+                    <span> {{'ADVISOR.DASHBOARD.CLIENTS_TILE.ADD_CLIENT' | translate }} </span>
+                </a>
+                <span (click)="back(); closeButtonDisable = true"
+                    class="sidebar_action_icon ion-md-close-circle"></span>
+            </p>
+        </div>
+        <div class="box-body">
+            <app-clients-tile [isSidePanel]=true></app-clients-tile>
+        </div>
+        <div class="box-footer">
+            <div class="form-group text-right">
+                <button (click)="back(); closeButtonDisable = true" type="button"
+                    class="btn btn-small btn-secondary btn-fixwidth mr-2" [translate]="'FORM.ACTION.CANCEL'"
+                    [disabled]="closeButtonDisable"></button>
+            </div>
+        </div>
+    </div>
+</div>

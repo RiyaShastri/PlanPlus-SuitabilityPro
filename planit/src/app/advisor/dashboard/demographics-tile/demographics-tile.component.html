@@ -1,0 +1,42 @@
+<div class="panel">
+        <div class="d-flex flex-wrap panel-header">
+            <h4 [translate]="'ADVISOR.DASHBOARD.DEMOGRAPHICS_TILE.TITLE'"></h4>
+        </div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-12">
+                    <table class="table demographics-table" *ngIf="demograpghicsData">
+                        <thead>
+                            <tr>
+                                <th width="120">&nbsp;</th>
+                                <th class="age fw-600 hidden-xs-down">{{'CUSTOM.AGE' | translate}}</th>
+                                <th>&nbsp;</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of demograpghicsData">
+                                <td width="120" class="text-center">
+                                    <span class="total-percent">{{item['clientsPercentage'] | number : '0.0-0'}}%</span>
+                                </td>
+                                <td class="age fw-400 hidden-xs-down" width="120">
+                                    <span *ngIf="item.displayOrder == 1">> {{item.ageMin}}</span>
+                                    <span *ngIf="item.displayOrder > 1 && item.ageMin > 0"> {{item.ageMin}} - {{item.ageMax}}</span>
+                                    <span *ngIf="item.ageMin==0">< {{item.ageMax}}</span>
+                                </td>
+                                <td>
+                                  <div class="graphics-list">
+                                    <div class="men-icon" *ngFor="let person  of [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17]" [ngClass]="{'active' :  person <= item['shadingFactor']  }">
+                                        <i  class="ion-md-man"></i>
+                                    </div>     
+                                    <!-- <div class="men-icon" *ngFor="let person  of [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17]" [ngClass]="{'active' :  person <= calcShadingFactor(item['clientsPercentage'], 17)  }">
+                                        <i  class="ion-md-man"></i>
+                                    </div> -->
+                                  </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>

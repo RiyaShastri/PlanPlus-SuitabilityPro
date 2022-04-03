@@ -1,0 +1,14 @@
+<div ngbDropdown class="dropdown-common family-dropdown m-0">
+  <a id="familyDropdown" class="text-uppercase" ngbDropdownToggle>
+      <i class="ion-md-arrow-dropdown fs-18"></i>
+  </a>
+  <div ngbDropdownMenu aria-labelledby="familyDropdown">
+      <ul>
+          <li *ngFor="let member of portfolioList"> 
+              <a class="dropdown-item overflow-text" [ngClass]="{ 'active' : portfolioId === member.id }" (click)=" portfolioClick(member.id)">
+                  <span></span>{{member.description}}
+              </a>
+          </li>
+      </ul>
+  </div>
+</div>

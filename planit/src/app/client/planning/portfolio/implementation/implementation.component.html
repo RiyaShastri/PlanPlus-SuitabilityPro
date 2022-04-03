@@ -1,0 +1,189 @@
+<div class="bg-white pt-4 pb-4">
+    <div class="container portfolio-detail">
+        <app-portfolio-header [currentPage]="currentPage" [clientId]="clientId" [portfolioId]="portfolioId" [goalId]="goalId" isEditableRoute="false"
+            [detailsLoaded]="portfoliosLoaded" (switchPortfolio)="switchPortfolio($event)"></app-portfolio-header>
+        <form name="form" (ngSubmit)="updatePortfolioDetail(f)" #f="ngForm" novalidate>
+            <div class="mt-4 row portfolio-detail-flex">
+                <div class="col-lg-6 col-sm-12 order-sm-1 order-md-1">
+                    <ng-container *ngIf="allocationResponse">
+                        <app-allocation [currentPage]="currentPage" [clientId]="clientId" [portfolioId]="portfolioId" [allocationResponse]="allocationResponse"
+                            [currentCashPercent]="currentCashPercent" [implementedPercentTotal]="allocationResponse.allocations[0]['implementedTotal']"
+                            [isCustomSolution]="isCustomSolution"></app-allocation>
+                    </ng-container>
+                </div>
+                <div class="col-lg-6 col-sm-12 order-sm-2 order-md-2">
+                    <div class="row d-flex justify-content-center align-items-center">
+                        <div class="col-lg-7">
+                            <h6 class="fw-700 d-inline">
+                                {{'PORTFOLIO.IMPLEMENTATION.PORTFOLIO_SUITABILITY_SCORE' | translate}}
+                                <ng-container *ngIf="portfolioDetailResponse && portfolioDetailResponse['suitabilityScore'] && portfolioDetailResponse['pjmResponse'] && (portfolioDetailResponse['suitabilityScore'] > portfolioDetailResponse['pjmResponse']['pjmRecommendedScore'])">
+                                    <span class="ion-ios-alert" [ngbTooltip]="keyWarning" #warning="ngbTooltip" triggers="manual" placement="bottom" (click)="warning.open()"></span>
+                                    <ng-template #keyWarning>
+                                        <p>
+                                            <p>{{'PORTFOLIO.DETAIL.WARNINGS_LABEL' | translate }} {{portfolioDetailResponse['pjmResponse']['pjmRecommendedScore']}}</p>
+                                            <p class="text-right m-0 p-0">
+                                                <button class="btn btn-secondary btn-small m-0" (click)="warning.close()" [translate]="'RISK_RESULTS_PAGE.WARNING.CLOSE'"></button>
+                                            </p>
+                                    </ng-template>
+                                </ng-container>
+                            </h6>
+                        </div>
+                        <div class="col-lg-5 text-right" *ngIf="portfolioDetailResponse">
+                            <div class="badge-wrapper badge-lg justify-content-end">
+                                <span *ngIf="portfolioDetailResponse['suitabilityScore'] === 0">N/A</span>
+                                <img *ngIf="portfolioDetailResponse['suitabilityScore'] > 0" src="assets/images/suitability_badge/PPG Badge_{{portfolioDetailResponse['suitabilityScore']}}.png">
+                                <!-- <span class="badge-number">
+                                    {{portfolioDetailResponse['suitabilityScore']}}
+                                </span>
+                                <span class="badge-text">{{portfolioDetailResponse['suitabilityBand']}}</span> -->
+                            </div>
+                        </div>
+                    </div>
+                    <hr class="mb-1" />
+                    <div class="row">
+                        <div class="col-12 text-right">
+                            <label class="fs-12 fw-600 text-secondary" [translate]="'PORTFOLIO.IMPLEMENTATION.INVESTMENT_POLICY'"></label>
+                            <span class="fs-14 fw-500">{{portfolioDetailResponse['suitabilityBand']}}</span>
+                        </div>
+                        <div class="col-12" id="custom">
+                            <h6 class="fw-700 d-inline-block ">
+                                {{'PORTFOLIO.IMPLEMENTATION.IMPLEMENTATION_SOLUTION' | translate}}
+                                <ng-container *ngIf="(isReviewedCount >= 12) || displaySolutionRangeWarning()">
+                                    <span class="ion-ios-alert" [ngbTooltip]="keyWarning" #warning="ngbTooltip" triggers="manual" placement="bottom" (click)="warning.open()"></span>
+                                    <ng-template #keyWarning>
+                                        <p *ngIf="(isReviewedCount >= 12)">{{'PORTFOLIO_ALLOCATION.WARNING.IMPLEMENTATION_SOLUTION_WARNING' | translate}} </p>
+                                        <p *ngIf="displaySolutionRangeWarning()">
+                                            {{'PORTFOLIO_ALLOCATION.WARNING.IMPLEMENTATION_SOLUTION_OUT_OF_RANGE_WARNING' | translate}} </p>
+                                        <p class="text-right m-0 p-0">
+                                            <button class="btn btn-secondary btn-small m-0" (click)="warning.close();" [translate]="'PORTFOLIO_ALLOCATION.WARNING.CLOSE'"></button>
+                                        </p>
+                                    </ng-template>
+                                </ng-container>
+                            </h6>
+                            <div class="d-inline-block ml-3" *ngIf="accessRights['IMPL_QUESTION'] && accessRights['IMPL_QUESTION']['accessLevel'] > 0">
+                                <h4 class="fs-12 fw-700 ff-OpenSans" *ngIf="portfolioDetailResponse['questionReviewedDate']">
+                                    {{portfolioDetailResponse['totalQuestionsReviewed']}} {{'PORTFOLIO.IMPLEMENTATION.IMPLEMENTATION_SOLUTION_DATE_STAMP' | translate}}
+                                    {{portfolioDetailResponse['questionReviewedDate']}}
+                                </h4>
+                            </div>
+                            <hr />
+                        </div>
+                        <div class="col-12">
+                            <table class="table impl-table">
+                                <thead>
+                                    <tr>
+                                        <th class="p-0 fs-12" [translate]="'PORTFOLIO.TABLE.SUITABLE_SOLUTION'"></th>
+                                        <th class="p-0 fs-12" [translate]="'PORTFOLIO.TABLE.SUITABILITY_RANGE'"></th>
+                                        <th class="p-0 fs-12" width="50"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let solution of recommendedSolution; let i = index;">
+                                        <td class="pt-0">
+                                            <p class="p-0 m-0" *ngIf="solution.description; else noData">
+                                                <span class="d-block">{{solution.description}}</span>
+                                                <span class="d-block" *ngIf="!isCustomSolution">({{solution['solutionFamilyName']}})</span>
+                                            </p>
+                                        </td>
+                                        <td class="pt-0">
+                                            <p class="m-0 p-0" *ngIf="solution.low !== '' && solution.high !== ''; else noData">
+                                                <span *ngIf="!solution.mappedSolution">{{solution.low}} - {{solution.high}}
+                                                </span>
+                                                <img class="w-100px" *ngIf="solution['mappedSolution']" src="assets/images/mapping_seal/FinaMetrica_score-range-logo_{{solution['low']}}-{{solution['high']}}.png">
+                                            </p>
+                                        </td>
+                                        <td class="text-center pr-0 pt-0">
+
+                                            <div class="dropdown-relative">
+                                                <button type="button" class="btn-floating" (click)="changeSolutionAction(i)">
+                                                    <span class="ion-md-more"></span>
+                                                </button>
+                                                <div [id]="'dropdownSolutionAction'+i" class="dropdown-solution-action dropdown-floating hide-ele">
+                                                    <ul class="floating-dropdown">
+                                                        <ng-container *ngIf="accessRights['IMPL_QUESTION'] && accessRights['IMPL_QUESTION']['accessLevel'] > 0">
+                                                            <li (click)="changeSolutionAction(i)" *ngIf="portfolioDetailResponse">
+                                                                <a class="action-list" routerLink="edit-questions">
+                                                                    <i class="ion-md-clipboard action-list"></i>
+                                                                    <span class="action-list" [translate]="'PORTFOLIO.IMPLEMENTATION.EDIT_QUESTIONS'"></span>
+                                                                </a>
+                                                            </li>
+                                                        </ng-container>
+                                                        <li (click)="changeSolutionAction(i)" *ngIf="portfolioDetailResponse && (portfolioDetailResponse['questionReviewed'] || accessRights['IMPL_QUESTION'] &&accessRights['IMPL_QUESTION']['accessLevel'] === 0)">
+                                                            <a class="action-list" [routerLink]="['/client',clientId,'planning','portfolios',portfolioId,'implementation','apply-solution']">
+                                                                <i class="ion-md-locate action-list"></i>
+                                                                <span class="action-list" [translate]="'PORTFOLIO.IMPLEMENTATION.APPLY_SOLUTION'"></span>
+                                                            </a>
+                                                        </li>
+                                                        <li class="not-active" *ngIf="portfolioDetailResponse && ! (portfolioDetailResponse['questionReviewed'] || accessRights['IMPL_QUESTION'] && accessRights['IMPL_QUESTION']['accessLevel'] === 0)">
+                                                            <a class="action-list">
+                                                                <i class="ion-md-locate action-list"></i>
+                                                                <span class="action-list" [translate]="'PORTFOLIO.IMPLEMENTATION.APPLY_SOLUTION'"></span>
+                                                            </a>
+                                                        </li>
+                                                        <ng-container *ngIf="accessRights['FFS01']['accessLevel'] > 0">
+                                                            <li (click)="changeSolutionAction(i)" *ngIf="solution['solutionUrl'] && solution['solutionUrl'] !== null">
+                                                                <a class="action-list" (click)="navigateToSolutionInfo(solution['solutionUrl'])">
+                                                                    <i class="ion-md-eye action-list"></i>
+                                                                    <span class="action-list" [translate]="'PORTFOLIO.IMPLEMENTATION.SOLUTION_INFO'"></span>
+                                                                </a>
+                                                            </li>
+                                                            <li class="not-active" *ngIf="!solution['solutionUrl'] || solution['solutionUrl'] === null">
+                                                                <a class="action-list">
+                                                                    <i class="ion-md-eye action-list"></i>
+                                                                    <span class="action-list" [translate]="'PORTFOLIO.IMPLEMENTATION.SOLUTION_INFO'"></span>
+                                                                </a>
+                                                            </li>
+                                                        </ng-container>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <ng-template #noData>N/A</ng-template>
+                        </div>
+                    </div>
+                    <div class="row mt-4">
+                        <div class="col-12">
+                            <div *ngIf="accessRights['CLI07'] && accessRights['CLI07']['accessLevel'] > 0">
+                                <app-manage-accounts *ngIf="isCustomSolution" id="account" [clientId]="clientId" [portfolioId]="portfolioId" [selectedAccounts]="selectedAccounts">
+                                </app-manage-accounts>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-4">
+                        <div class="col-12">
+                            <h6 class="fw-700 d-inline">
+                                {{'PORTFOLIO.IMPLEMENTATION.CONSIDERATION' | translate}}
+                            </h6>
+                            <hr />
+                            <p> {{ 'PORTFOLIO.IMPLEMENTATION.CONSIDERATION_DETAIL' | translate }}</p>
+                        </div>
+                        <div class="col-12">
+                            <div class="form-group">
+                                <textarea name="considerations" class="form-control txt-implementation" [(ngModel)]="portfolioImp['considerations']" #considerations="ngModel"
+                                    placeholder="{{ 'PORTFOLIO.IMPLEMENTATION.CONSIDERATION_TEXT' | translate }}"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <div *ngIf="accessRights['CLI07'] && accessRights['CLI07']['accessLevel'] > 0">
+                        <app-manage-products [clientId]="clientId" [portfolioId]="portfolioId"></app-manage-products>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 text-right">
+                <button type="button" class="btn btn-secondary btn-fixwidth mr-2" (click)="cancelDisable = true; cancelChanges()" [disabled]="cancelDisable">{{ 'FORM.ACTION.CANCEL' | translate }}</button>
+                <button type="submit" class="btn btn-success" [disabled]="saveDisable">{{ 'FORM.ACTION.SAVE_CHANGES' | translate }}</button>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="view-side-form">
+    <router-outlet></router-outlet>
+</div>

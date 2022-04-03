@@ -1,0 +1,114 @@
+<div class="panel pb-0">
+    <div class="d-flex flex-wrap panel-header mb-2">
+        <h4 [translate]="'ADVISOR.DASHBOARD.TASK_NOTIFICATION_TILE.TITLE'"></h4>
+        <div class="d-flex ml-auto" *ngIf="messageBadges">
+
+            <span *ngIf="messageBadges['NOTIFICATION']['total'] > 0 && messageBadges['TASK']['total'] === 0" class="initials btn-circle-orange mr-2 cursor-p"
+                [ngbTooltip]="notification" placement="bottom" triggers="click" #system="ngbTooltip">
+                {{ messageBadges['NOTIFICATION']['total'] > 99 ? '99+' : messageBadges[ 'NOTIFICATION'][ 'total'] }}
+            </span>
+            <span *ngIf="messageBadges['NOTIFICATION']['total'] > 0 && messageBadges['TASK']['total'] > 0" class="initials btn-circle-orange mr-2 cursor-p"
+                [ngbTooltip]="notification" placement="bottom" triggers="click" #system="ngbTooltip" (click)="manual.close();">
+                {{ messageBadges['NOTIFICATION']['total'] > 99 ? '99+' : messageBadges[ 'NOTIFICATION'][ 'total'] }}
+            </span>
+            <span *ngIf="messageBadges['TASK']['total'] > 0 && messageBadges['NOTIFICATION']['total'] === 0" class="initials btn-circle-red cursor-p"
+                [ngbTooltip]="task" placement="bottom" triggers="click" #manual="ngbTooltip">
+                {{ messageBadges['TASK']['total'] > 99 ? '99+' : messageBadges[ 'TASK'][ 'total'] }}
+            </span>
+            <span *ngIf="messageBadges['TASK']['total'] > 0 && messageBadges['NOTIFICATION']['total'] > 0" class="initials btn-circle-red cursor-p"
+                [ngbTooltip]="task" placement="bottom" triggers="click" #manual="ngbTooltip" (click)="system.close();">
+                {{ messageBadges['TASK']['total'] > 99 ? '99+' : messageBadges[ 'TASK'][ 'total'] }}
+            </span>
+
+            <!-- <span class="initials btn-circle-orange mr-2 cursor-p" *ngIf="messageBadges['NOTIFICATION']['total'] > 0" [ngbTooltip]="notification"
+                    placement="bottom" triggers="click" #system="ngbTooltip" (click)="manual.close();">
+                    {{ messageBadges['NOTIFICATION']['total'] <=9 ? messageBadges[ 'NOTIFICATION'][ 'total'] : '99+' }} </span>
+    
+                        <span class="initials btn-circle-red cursor-p" *ngIf="messageBadges['TASK']['total'] > 0" [ngbTooltip]="task" placement="bottom"
+                            triggers="click" #manual="ngbTooltip" (click)="system.close();">{{ messageBadges['TASK']['total']
+                            <=9 ? messageBadges[ 'TASK'][ 'total'] : '99+' }}</span> -->
+
+            <ng-template #notification>
+                <p class="mb-2">{{messageBadges['NOTIFICATION']['total']}} {{ 'ADVISOR.DASHBOARD.TASK_NOTIFICATION_TILE.NOTIFICATION' |translate }}</p>
+                <p class="mb-2">
+                    <span class="txt_lbl">{{messageBadges['NOTIFICATION'].pastDue}} {{'ADVISOR.DASHBOARD.TASK_NOTIFICATION_TILE.PAST_DUE' | translate}}</span>
+                </p>
+                <p class="mb-0">
+                    <span class="txt_lbl">{{messageBadges['NOTIFICATION'].todayDue}} {{'ADVISOR.DASHBOARD.TASK_NOTIFICATION_TILE.DUE_TODAY' | translate}}</span>
+                </p>
+            </ng-template>
+            <ng-template #task>
+                <p class="mb-2">{{messageBadges['TASK']['total']}} {{'ADVISOR.DASHBOARD.TASK_NOTIFICATION_TILE.TASK' | translate}}</p>
+                <p class="mb-2">
+                    <span class="txt_lbl">{{messageBadges['TASK'].pastDue}} {{'ADVISOR.DASHBOARD.TASK_NOTIFICATION_TILE.PAST_DUE' | translate}}</span>
+                </p>
+                <p class="mb-0">
+                    <span class="txt_lbl">{{messageBadges['TASK'].todayDue}} {{'ADVISOR.DASHBOARD.TASK_NOTIFICATION_TILE.DUE_TODAY' | translate }}</span>
+                </p>
+            </ng-template>
+        </div>
+    </div>
+    <div class="panel-body">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th colspan="5">&nbsp;</th>
+                </tr>
+            </thead>
+            <tbody>
+                <ng-container *ngIf="taskLoaded && tasks.length > 0">
+                    <tr *ngFor="let task of tasks; index as taskIndex">
+                        <td valign="middle" width="6%">
+                            <div class="mr-1 mt-1" [ngClass]="{'orange-dot-indicator' : (task.type === 'NOTIFICATION'), 'red-dot-indicator' : (task.type === 'TASK') }"></div>
+                        </td>
+                        <td width="9%">
+                            <div class="d-flex align-items-center">
+                                <div class="checkbox-wrapper mr-3">
+                                    <div class="form-group mb-0" *ngIf="task.editable">
+                                        <p-checkbox name="group1{{task.id}}" [(ngModel)]="task.complete" binary="true" (onChange)="checked($event, task); task.checkselect = !task.checkselect"></p-checkbox>
+                                    </div>
+                                    <p class="m-0" *ngIf="!task.editable">
+                                        <i class="ion-md-checkbox-outline fs-22"></i>
+                                    </p>
+                                </div>
+                            </div>
+                        </td>
+                        <td width="30%" class="text-center text-sm-left">
+                            {{task.dueDate | date: 'yyyy.MM.dd' }}
+                        </td>
+                        <td width="20%" class="text-left">
+                            <span class="ellipsis-text ellipsis-small" [appNoOverflowTooltip]="SelectTooltip(task)" triggers="manual" placement="bottom">
+                                <ng-container *ngIf="task.client1_name && task.client1_lastName && task.client2_lastName!='' && task.client2_lastName !== null && task.client2_name!='' && task.client2_name !== null; else singleClient">
+                                    <ng-container *ngIf="task.client1_lastName == task.client2_lastName; else diffLastName">
+                                        {{task.client1_lastName}}
+                                    </ng-container>
+                                </ng-container>
+                                <ng-template #diffLastName>
+                                    {{task.client1_lastName + ' / ' + task.client2_lastName}}
+                                </ng-template>
+                                <ng-template #singleClient>
+                                    {{task.client1_lastName}}
+                                </ng-template>
+                            </span>
+                        </td>
+                        <td width="35%" class="text-left task-last-tooltip">
+                            <span class="ellipsis-text" [appNoOverflowTooltip]="task.detail" triggers="manual" placement="bottom">{{task.detail}}</span>
+                        </td>
+                    </tr>
+                </ng-container>
+                <ng-container *ngIf="taskLoaded && tasks.length === 0">
+                    <tr>
+                        <td colspan="5" class="no-record text-center">
+                            <i class="ion-ios-alert mr-2"></i>{{'NO_RESULTS' | translate}}
+                        </td>
+                    </tr>
+                </ng-container>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="panel-footer">
+        <a [routerLink]="['/task-notification']" class="btn btn-link ion-md-arrow-dropright" [translate]="'CUSTOM.VIEW_MORE'"></a>
+    </div>
+
+</div>

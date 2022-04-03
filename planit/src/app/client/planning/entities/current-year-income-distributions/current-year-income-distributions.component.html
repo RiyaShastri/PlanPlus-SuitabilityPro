@@ -1,0 +1,207 @@
+<div class="bg-white pt-4 pb-4">
+    <div class="container">
+        <form name="form" #f="ngForm">
+            <app-entities-header [clientId]="clientId" currentPage="currentYear" [entityId]="entityId" (switchEntity)="changeEntity($event)"
+                (switchScenario)="changeScenario($event)"></app-entities-header>
+            <div class="row">
+                <div class="col-12">
+                    <app-entities-table [clientId]="clientId" [entitiesList]="entitiesList" [isAllEntities]='false'>
+                    </app-entities-table>
+                </div>
+            </div>
+            <div class="row mt-5">
+                <div class="col-12 col-md-6 pr-lg-5 pb-3">
+                    <h4 class="fw-700" [translate]="'ENTITY.CURRENT_YEAR_INCOME'"></h4>
+                    <hr>
+                    <table class="current-year-income-table table entity_table">
+                        <thead>
+                            <tr>
+                                <th width="40%">
+                                    <span [translate]="'ENTITY.DESCRIPTION_OF_INCOME'"></span>
+                                </th>
+                                <th width="30%" class="text-right">
+                                    <span [translate]="'ENTITY.FEDERAL'"></span>
+                                </th>
+                                <th width="30%" class="text-right">
+                                    <span [translate]="'ENTITY.PROVINCIAL'"></span>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <ng-container *ngIf="currentYearIncomeData && currentYearIncomeData.length > 0">
+                                <tr *ngFor="let income of currentYearIncomeData; index as i">
+                                    <td width="40%" class="py-2">
+                                        <span [ngClass]="{'total-text-bold': income['ssid'] === SSID['NET_CORPORATE_INCOME']}" [appNoOverflowTooltip]="'ENTITY.SSID.' + income['ssid'] | translate"
+                                            class="text-truncate income-distribution-tooltip entity-text-truncate" triggers="manual"
+                                            placement="bottom">{{ 'ENTITY.SSID.' + income['ssid'] | translate}}</span>
+                                    </td>
+                                    <td class="text-right py-2" width="30%">
+                                        <div *ngIf="income['ssid'] !== SSID['NET_CORPORATE_INCOME'] && income['federal'] !== null && !income['readOnly']" class="form-group mb-0"
+                                            [ngClass]="{'has-error': federal.errors && f.submitted }">
+                                            <input type="text" name="federal{{i}}" [(ngModel)]="income['federal']" #federal="ngModel" class="form-control d-inline-block text-right w-75 h-25"
+                                                [textMask]="{mask: currencyMask}" appNumeric required (input)="checkActiveBusinessIncome('federal', i);calculateCurrentData()">
+                                        </div>
+                                        <span *ngIf="income['ssid'] == SSID['NET_CORPORATE_INCOME'] && income['federal'] !== null">
+                                            <b>{{income['federal'] | currency:clientData['currencyCode'] : 'symbol-narrow':'1.0-0'}}</b>
+                                        </span>
+                                        <span *ngIf="income['ssid'] != SSID['NET_CORPORATE_INCOME'] && income['federal'] !== null && income['readOnly']">{{income['federal'] | currency:clientData['currencyCode'] : 'symbol-narrow':'1.0-0'}}</span>
+                                    </td>
+                                    <td class="text-right py-2" width="30%">
+                                        <div *ngIf="income['ssid'] !== SSID['NET_CORPORATE_INCOME'] && income['provincial'] !== null && !income['readOnly']" class="form-group mb-0"
+                                            [ngClass]="{'has-error': provincial.errors && f.submitted }">
+                                            <input type="text" name="provincial{{i}}" [(ngModel)]="income['provincial']" #provincial="ngModel" class="form-control d-inline-block text-right w-75 h-25"
+                                                [textMask]="{mask: currencyMask}" appNumeric required (input)="checkActiveBusinessIncome('provincial', i);calculateCurrentData()">
+                                        </div>
+                                        <span *ngIf="income['ssid'] !== SSID['NET_CORPORATE_INCOME'] && income['provincial'] !== null && income['readOnly']">
+                                            {{income['provincial'] | currency:clientData['currencyCode'] : 'symbol-narrow':'1.0-0'}}
+                                        </span>
+                                        <span *ngIf="income['ssid'] == SSID['NET_CORPORATE_INCOME'] && income['federal'] !== null">
+                                            <b>{{income['federal'] | currency:clientData['currencyCode'] : 'symbol-narrow':'1.0-0'}}</b>
+                                        </span>
+                                    </td>
+                                </tr>
+                            </ng-container>
+                            <ng-container *ngIf="currentYearIncomeData && currentYearIncomeData.length === 0">
+                                <tr>
+                                    <td colspan="3" class="no-record text-center">
+                                        <i class="ion-ios-alert mr-2"></i>{{'NO_RESULTS' | translate}}
+                                    </td>
+                                </tr>
+                            </ng-container>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-12 col-md-6">
+                    <h4 class="fw-700" [translate]="'ENTITY.CURRENT_YEAR_DISTRIBUTION'"></h4>
+                    <hr>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th width="40%">
+                                    <span [translate]="'ENTITY.SHARE_CLASS'"></span>
+                                </th>
+                                <th width="30%" class="text-center">
+                                    <span [translate]="'ENTITY.AMOUNT'"></span>
+                                </th>
+                                <th width="30%" class="text-center">
+                                    <span [translate]="'ENTITY.ORDER'"></span>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <ng-container *ngIf="currentYearDistributions && currentYearDistributions.length > 0">
+                                <tr class="py-2" *ngFor="let distribution of currentYearDistributions; index as j">
+                                    <td width="40%">
+                                        <span [appNoOverflowTooltip]="distribution.description" class="text-truncate income-distribution-tooltip" triggers="manual"
+                                            placement="bottom">{{distribution.description}}</span>
+                                    </td>
+                                    <td class="text-center py-2" width="30%">
+                                        <div class="form-group mb-0" [ngClass]="{'has-error': amount.errors && f.submitted }">
+                                            <input type="text" name="amount{{j}}" [(ngModel)]="distribution['amount']" #amount="ngModel" class="form-control d-inline-block text-right w-75 h-25"
+                                                [textMask]="{mask: currencyMask}" appNumeric required (input)="calculateCurrentData()">
+                                        </div>
+                                    </td>
+                                    <td class="text-center py-2" width="30%">
+                                        <div class="form-group mb-0 h-25">
+                                            <p-dropdown class="text-left" [options]="orderList" name="order{{j}}" [(ngModel)]="distribution['orderId']" #order="ngModel"
+                                                placeholder="{{'ENTITY.ORDER_PLACEHOLDER' | translate}}" (onChange)="calculateCurrentData()">
+                                                <ng-template let-selectedOrder pTemplate="selectedItem">
+                                                    <span>{{ 'ENTITY.SOURCE_TYPE.' + selectedOrder.ssid | translate }}</span>
+                                                </ng-template>
+                                                <ng-template let-order pTemplate="item">
+                                                    <div class="ui-helper-clearfix">
+                                                        <span>{{ 'ENTITY.SOURCE_TYPE.' + order.ssid | translate }}</span>
+                                                    </div>
+                                                </ng-template>
+                                            </p-dropdown>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </ng-container>
+                            <ng-container *ngIf="currentYearDistributions && currentYearDistributions.length === 0">
+                                <tr>
+                                    <td colspan="3" class="no-record text-center">
+                                        <i class="ion-ios-alert mr-2"></i>{{'NO_RESULTS' | translate}}
+                                    </td>
+                                </tr>
+                            </ng-container>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="row mt-5">
+                <div class="col-12">
+                    <h4 class="fw-700" [translate]="'ENTITY.RETAINED_EARNINGS'"></h4>
+                    <hr>
+                </div>
+                <div class="col-12" *ngIf="retainedEarnings">
+                    <div class="distribution-wrapper d-flex">
+                        <div class="left-side">
+                            <div class="table-header table-row">
+                                <span class="retainedDescription" [translate]="'ENTITY.DESCRIPTION'"></span>
+                                <span class="retainedAmount" [translate]="'ENTITY.AMOUNT'"></span>
+                            </div>
+                            <div class="table-row" *ngFor="let salaryDetail of retainedEarnings['retainedEarningsPayloads']['salaryDetailsBuilder']">
+                                <span class="retainedDescription text-truncate d-block" [ngClass]="{ 'total-text-bold' : salaryDetail['ssid'] === SSID['TOTAL_RETAINED_TAX'] || salaryDetail['ssid'] === SSID['TOTAL_DISTRIBUTION']}"
+                                    triggers="manual" [appNoOverflowTooltip]="'ENTITY.SSID.' + [salaryDetail.ssid] | translate"
+                                    placement="bottom">{{ 'ENTITY.SSID.' + [salaryDetail.ssid] | translate }}</span>
+                                <span class="retainedAmount" [ngClass]="{ 'total-text-bold' : salaryDetail['ssid'] === SSID['TOTAL_RETAINED_TAX'] || salaryDetail['ssid'] === SSID['TOTAL_DISTRIBUTION']}">
+                                    {{ salaryDetail.value | currency:clientData['currencyCode'] : 'symbol-narrow':'1.0-0'}}
+                                </span>
+
+                            </div>
+                        </div>
+                        <div class="middle-side">
+                            <div class="table-header table-row">
+                                <div class="table-row-wrapper text-center">
+                                    <ng-container *ngFor="let data of retainedEarnings['salaryDetails'];let i=index">
+                                        <div class="value-wrapper">
+                                            <span class="retainedAmount text-truncate d-block" triggers="manual" [appNoOverflowTooltip]="data['personName']" placement="bottom">{{data['personName']}}</span>
+                                        </div>
+                                    </ng-container>
+                                </div>
+                            </div>
+                            <ng-container *ngFor="let data of retainedEarnings['retainedEarningsPayloads']['salaryDetailsBuilder']; let i=index">
+                                <div class="table-row">
+                                    <div class="table-row-wrapper text-center">
+                                        <ng-container *ngFor="let person of retainedEarnings['salaryDetails']; let j=index">
+                                            <ng-container *ngIf="(person['salaryDetailsBuilders'][i] && person['salaryDetailsBuilders'][i]['ssid'] === data['ssid']);else noData">
+                                                <div class="value-wrapper form-group" *ngIf="person['salaryDetailsBuilders'][i]['ssid'] !== SSID['TOTAL_RETAINED_TAX'] && person['salaryDetailsBuilders'][i]['ssid'] !== SSID['TOTAL_DISTRIBUTION'] && !person['salaryDetailsBuilders'][i]['readOnly']">
+                                                    <input type="text" name="salary{{i}}{{j}}" [(ngModel)]="person['salaryDetailsBuilders'][i]['value']" #salary="ngModel" class="form-control text-right d-inline-block va-middle"
+                                                        [textMask]="{mask: currencyMask}" appNumeric required (input)="calculateCurrentData()">
+                                                </div>
+                                                <div class="value-wrapper form-group" *ngIf="person['salaryDetailsBuilders'][i]['ssid'] === SSID['TOTAL_RETAINED_TAX'] || person['salaryDetailsBuilders'][i]['ssid'] === SSID['TOTAL_DISTRIBUTION']">
+                                                    <span>
+                                                        <b>{{person['salaryDetailsBuilders'][i]['value'] | currency:clientData['currencyCode']
+                                                            : 'symbol-narrow':'1.0-0' }}</b>
+                                                    </span>
+                                                </div>
+                                                <div *ngIf="person['salaryDetailsBuilders'][i]['ssid'] !== SSID['TOTAL_RETAINED_TAX'] && person['salaryDetailsBuilders'][i]['ssid'] !== SSID['TOTAL_DISTRIBUTION'] && person['salaryDetailsBuilders'][i]['readOnly']"
+                                                    class="value-wrapper">
+                                                    <span>{{ person['salaryDetailsBuilders'][i]['value'] | currency:clientData['currencyCode']
+                                                        : 'symbol-narrow':'1.0-0'}}</span>
+                                                </div>
+                                                <ng-template #noData>
+                                                    <div class="value-wrapper">
+                                                        <span>&nbsp;</span>
+                                                    </div>
+                                                </ng-template>
+                                            </ng-container>
+                                        </ng-container>
+                                    </div>
+                                </div>
+                            </ng-container>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="form-group text-right mb-0 mt-3">
+                        <button (click)="back(); closeButtonDisable=true" type="button" class="btn btn-secondary mb-0 mr-2" [disabled]="closeButtonDisable">{{ 'FORM.ACTION.CANCEL' | translate }}</button>
+                        <button type="submit" (click)="saveButtonDisabled = true; updateIncomeDistribution();" value="submit" class="btn btn-success mb-0"
+                            [disabled]="f.form.invalid || saveButtonDisabled">{{ 'FORM.ACTION.SAVE_CHANGES' | translate }}</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

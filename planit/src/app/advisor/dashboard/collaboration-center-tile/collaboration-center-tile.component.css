@@ -1,0 +1,10 @@
+.disable-link i,
+.disable-link span {
+    color: #ced8e2 !important;
+}
+
+.floating-dropdown li.disable-link,
+.floating-dropdown li.disable-link span,
+.floating-dropdown li.disable-link i {
+    cursor: not-allowed !important;
+}

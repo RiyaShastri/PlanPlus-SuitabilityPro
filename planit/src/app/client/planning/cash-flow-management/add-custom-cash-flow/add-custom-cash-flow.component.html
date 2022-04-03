@@ -1,0 +1,66 @@
+<div class="add-client side-form">
+  <form name="form" #f="ngForm" novalidate (ngSubmit)="addItem() && f.form.valid">
+    <div class="box">
+      <div class="box-header">
+        <span class="sidebar_title" [translate]="'CASH_FLOW_MANAGEMENT.ADD_A_CASH_FLOW_ITEM'"></span>
+        <span (click)="closePanel()" class="sidebar_action_icon ion-md-close-circle float-right"></span>
+      </div>
+
+      <div class="box-body">
+        <div class="row">
+          <div class="col-12">
+
+            <div class="form-group" [ngClass]="{ 'has-error': !desc.valid && (desc.dirty || desc.touched || f.submitted)}">
+              <label class="custom-form-label" [translate]="'CASH_FLOW_MANAGEMENT.DESCRIPTION'"></label>
+              <input type="text" class="form-control" name="desc" [(ngModel)]="obj['desc']" pattern="^[a-zA-Z][\w\d\s]*"
+                #desc="ngModel" required placeholder="{{'CASH_FLOW_MANAGEMENT.ENTER_DESCRIPTION' | translate }}"/>
+            </div>
+
+            <div class="form-group" [ngClass]="{ 'has-error': !category.valid && (category.dirty || category.touched || f.submitted)}">
+              <label class="custom-form-label" [translate]="'CASH_FLOW_MANAGEMENT.CATEGORY'"></label>
+              <p-dropdown [options]="categories" name="category" [(ngModel)]="obj['category']" #category="ngModel"
+                required optionLabel="description" placeholder="{{'CASH_FLOW_MANAGEMENT.CHOOSE_A_CATEGORY' | translate }}"></p-dropdown>
+            </div>
+
+            <div class="form-group">
+                <div class="d-inline-block custom-form-check">
+                    <p-checkbox name="joint" [(ngModel)]="obj['joint']" binary="true" #joint="ngModel"></p-checkbox>
+                    <label class="ml-2 custom-form-label d-inline" [translate]="'CASH_FLOW_MANAGEMENT.JOINT'"></label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="d-inline-block custom-form-check">
+                    <p-checkbox name="tax" [(ngModel)]="obj['hasTaxImpact']" binary="true" #tax="ngModel"></p-checkbox>
+                    <label class="ml-2 custom-form-label d-inline" [translate]="'CASH_FLOW_MANAGEMENT.IMPACTS_TAX_CALC'"></label>
+                </div>
+            </div>
+
+            <div class="form-group" [ngClass]="{ 'has-error': !clientAmount.valid && (clientAmount.dirty || clientAmount.touched || f.submitted)}">
+              <label class="custom-form-label" [translate]="'CASH_FLOW_MANAGEMENT.CLIENT_AMOUNT'"></label>
+              <input type="text" class="form-control text-right" name="clientAmount" [(ngModel)]="obj['clientAmount']"
+              [textMask]="{mask: currencyMask}" appNumeric pattern="^[0-9][0-9]*(.[0-9]{0,1})?$|^100$" #clientAmount="ngModel"
+                required placeholder="{{currencyPrefix}}0.00"/>
+            </div>
+
+            <div class="form-group" *ngIf="client2 && !obj['joint']" [ngClass]="{ 'has-error': !spouseAmount.valid && (spouseAmount.dirty || spouseAmount.touched || f.submitted)}">
+              <label class="custom-form-label" [translate]="'CASH_FLOW_MANAGEMENT.SPOUSE_AMOUNT'"></label>
+              <input type="text" class="form-control text-right" name="spouseAmount" [(ngModel)]="obj['spouseAmount']"
+              [textMask]="{mask: currencyMask}" appNumeric pattern="^[0-9][0-9]*(.[0-9]{0,1})?$|^100$" #spouseAmount="ngModel" required placeholder="{{currencyPrefix}}0.00"/>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <div class="box-footer">
+        <div class="form-group text-right">
+          <button (click)="closePanel()" type="button" class="btn btn-small btn-secondary btn-fixwidth mr-2"
+            [translate]="'FORM.ACTION.CANCEL'"></button>
+
+          <button type="submit" [disabled]="f.form.invalid" class="btn btn-small btn-success pl-4 pr-4" [translate]="'FORM.ACTION.SAVE'"></button>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>

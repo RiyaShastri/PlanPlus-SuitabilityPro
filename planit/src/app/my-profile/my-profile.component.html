@@ -1,0 +1,44 @@
+<div class="top-nav">
+    <div class="container">
+        <div class="row m-0">
+            <div class="col-12">
+                <h1 [translate]="'MY_PROFILE.TITLE'"></h1>
+            </div>
+            <div class="clearfix"></div>
+            <div class="col-12">
+                <hr class="my-3">
+            </div>
+            <div class="col-12">
+                <ul class="nav nav-tabs" role="tablist">
+                    <li class="nav-item">
+                        <a [routerLink]="['/my-profile/about-me']" class="nav-link" data-toggle="tab" routerLinkActive="active" [translate]="'MY_PROFILE.TAB.ABOUT_ME'"></a>
+                    </li>
+                    <li class="nav-item">
+                      <a [routerLink]="['/my-profile/subscriptions']" class="nav-link" data-toggle="tab" routerLinkActive="active" [translate]="'MY_PROFILE.TAB.SUBSCRIPTIONS'"></a>
+                    </li>
+                    <li class="nav-item" *ngIf="accessRights['WEB11']['accessLevel'] === 3">
+                        <ng-container *ngIf="isSSO; else changePwd">
+                                <a [href]="environment.SSOChangePassword" class="nav-link" data-toggle="tab" [translate]="'MY_PROFILE.TAB.CHANGE_PASSWORD'"></a>
+                        </ng-container>
+                        <ng-template #changePwd>
+                            <a [routerLink]="['/my-profile/change-password']" class="nav-link" data-toggle="tab" routerLinkActive="active" [translate]="'MY_PROFILE.TAB.CHANGE_PASSWORD'"></a>
+                        </ng-template>
+                    </li>
+                    <li class="nav-item" *ngIf="accessRights['REG_BRAND_ADMN']['accessLevel'] > 1 && showBranding">
+                        <a [routerLink]="['/my-profile/branding']" class="nav-link" data-toggle="tab" routerLinkActive="active" [translate]="'MY_PROFILE.TAB.BRANDING'"></a>
+                    </li>
+                    <li class="nav-item" *ngIf="accessRights['LICAGREE']['accessLevel'] > 0">
+                        <a [routerLink]="['/my-profile/licence-agreement']" class="nav-link" data-toggle="tab" routerLinkActive="active" [translate]="'MY_PROFILE.TAB.LICENCE_AGREEMENT'"></a>
+                    </li>
+                    <li class="nav-item">
+                        <a [routerLink]="['/my-profile/privacy']" class="nav-link" data-toggle="tab" routerLinkActive="active" [translate]="'MY_PROFILE.TAB.PRIVACY_POLICY'"></a>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-12">
+                <hr class="my-3">
+            </div>
+        </div>
+    </div>
+</div>
+<router-outlet></router-outlet>

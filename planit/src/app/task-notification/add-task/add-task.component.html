@@ -1,0 +1,34 @@
+<div class="side-form">
+    <form name="form" #f="ngForm" (ngSubmit)="!saveButtonDisable && f.form.valid" novalidate>
+        <div class="box">
+            <div class="box-header">
+                <span class="sidebar_title" [translate]="'TASK_NOTIFICATION.ADD_TASK.TITLE.ADD_A_TASK'"></span>
+                <span (click)="back(); closeButtonDisable = true" class="sidebar_action_icon ion-md-close-circle float-right"></span>
+            </div>
+            <div class="box-body">
+                <div class="form-group" [ngClass]="{'has-error': taskType.errors && (taskType.dirty || taskType.touched || f.submitted)}">
+                    <label class="custom-form-label" [translate]="'TASK_NOTIFICATION.ADD_TASK.TYPE'"></label>
+                    <p-dropdown placeholder="Select a type" [options]="taskTypes" name="taskType" [(ngModel)]="taskObj.taskType" #taskType="ngModel"
+                        optionLabel="label" required></p-dropdown>
+                </div>
+                <div class="form-group" [ngClass]="{'has-error': dueDate.errors && (dueDate.dirty || dueDate.touched || f.submitted)}">
+                    <label class="custom-form-label" [translate]="'TASK_NOTIFICATION.ADD_TASK.DUE_DATE'"></label>
+                    <p-calendar name="dueDate" [(ngModel)]="taskObj.dueDate" #dueDate="ngModel" [showIcon]="true" [monthNavigator]="true" required='true'
+                        [yearNavigator]="true" yearRange="1900:2020" dateFormat="yy-mm-dd" required></p-calendar>
+                </div>
+                <div class="form-group" [ngClass]="{'has-error': detail.errors && (detail.dirty || detail.touched || f.submitted)}">
+                    <label class="custom-form-label" [translate]="'TASK_NOTIFICATION.ADD_TASK.DESCRIPTION'"></label>
+                    <textarea type="text" name="detail" [(ngModel)]="taskObj.detail" #detail="ngModel" class="form-control middle-input" rows="100"
+                        cols="100" required></textarea>
+                </div>
+            </div>
+            <div class="box-footer">
+                <div class="form-group text-right mb-0">
+                    <button type="button" (click)="back(); closeButtonDisable = true" class="btn btn-secondary btn-small mb-0 mr-2" 
+                    [translate]="'FORM.ACTION.CANCEL'" [disabled]="closeButtonDisable"></button>
+                    <button type="submit" value="submit" (click)="addNewTask(f); saveButtonDisable = true" [disabled]="!f.form.valid || saveButtonDisable" class="btn btn-success btn-small m-0" [translate]="'FORM.ACTION.SAVE'"></button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

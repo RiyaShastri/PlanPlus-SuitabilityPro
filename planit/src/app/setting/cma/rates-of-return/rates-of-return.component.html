@@ -1,0 +1,383 @@
+<form name="form" (ngSubmit)="saveChanges(f) && f.form.valid" #f="ngForm" novalidate>
+    <div class="row">
+        <div class="col-lg-10 col-md-8 col-sm-10 col-12">
+
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="form-group">
+                        <label class="custom-form-label"
+                            [translate]="'SETTINGS.PREFERRED_SOLUTION.SOLUTION_FAMILY.COUNTRY'"></label>
+                        <p-dropdown [options]="countries" name="countryList" [(ngModel)]="country"
+                            #countryList="ngModel" required optionLabel="country" placeholder="{{ 'FORM.PLACEHOLDER.SELECT_A_COUNTRY' | translate }}"
+                            (onChange)="getClassData(); acceptanceChange()"></p-dropdown>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="custom-form-label"
+                            [translate]="'SETTINGS.PREFERRED_SOLUTION.SOLUTION_FAMILY.REGION'"></label>
+                        <p-dropdown [options]="regions" name="regionList" [(ngModel)]="region" #regionList="ngModel"
+                            required optionLabel="regionDescr" placeholder="{{ 'FORM.PLACEHOLDER.SELECT_REGION' | translate }}"
+                            (onChange)="getClassData();acceptanceChange()">
+                        </p-dropdown>
+                    </div>
+                </div>
+            </div>
+
+            <!-- <div class="form-group">
+                <label class="custom-form-label" [translate]="'SETTINGS.PREFERRED_SOLUTION.SOLUTION_FAMILY.REGION'"></label>
+                <div class="tree-select-custom">
+                    <tree-select name="regionList" idField="regionCode" [multiple]="false" [allowFilter]="false"
+                        [items]="regionArray" placeholder="Select a region" textField="regionName" childrenField="childRegions"
+                        [(ngModel)]="region" #regionList="ngModel" [allowParentSelection]="true" expandMode="All"
+                        required class=""></tree-select>
+                    <div class="tree-select-custom-caret-down">
+                        <span class="fa fa-fw fa-caret-down"></span>
+                    </div>
+                </div>
+            </div> -->
+
+            <p class="fw-400 fs-15" [translate]="'RATES_OF_RETURN.DEFINE_CMA'"></p>
+            <div class="mb-0">
+                <fieldset class="form-group">
+                    <legend class="fw-600 fs-14 legend-width" [translate]="'RATES_OF_RETURN.METHOD'"></legend>
+                    <div class="form-check d-flex">
+                        <span>
+                            <p-radioButton
+                                (onClick)="methodologyChange('Real rates'); cmaAcceptance = false; acceptanceChange()"
+                                name="methodology" value="Real rates" [(ngModel)]="methodology"
+                                #methodologyCMA="ngModel" [disabled]="editDisabled || !isEditable"></p-radioButton>
+                            <span [translate]="'RATES_OF_RETURN.REAL_RATES'"></span>
+                        </span>
+                        <span>
+                            <p-radioButton
+                                (onClick)="methodologyChange('Nominal rates'); cmaAcceptance = false; acceptanceChange()"
+                                name="methodology" value="Nominal rates" [(ngModel)]="methodology"
+                                #methodologyCMA="ngModel" [disabled]="editDisabled || !isEditable"></p-radioButton>
+                            <span [translate]="'RATES_OF_RETURN.NOMINAL_RATES'"></span>
+                        </span>
+                    </div>
+                </fieldset>
+            </div> 
+
+            <div class="mb-0">
+                <fieldset class="form-group">
+                    <legend class="fw-600 fs-14 legend-width" [translate]="'RATES_OF_RETURN.RTA'"></legend>
+                    <div class="form-check d-flex">
+                        <span>
+                            <p-radioButton (onClick)="rateChange('Default'); acceptanceChange()" name="ratesToApply"
+                                value="Default" [(ngModel)]="ratesToApply" [disabled]="editDisabled || !isEditable">
+                            </p-radioButton>
+                            <span [translate]="'RATES_OF_RETURN.DEFAULT'"></span>
+                        </span>
+                        <span>
+                            <p-radioButton (onClick)="rateChange('Custom'); acceptanceChange()" name="ratesToApply"
+                                value="Custom" [(ngModel)]="ratesToApply" [disabled]="editDisabled || !isEditable">
+                            </p-radioButton>
+                            <span [translate]="'RATES_OF_RETURN.CUSTOM'"></span>
+                        </span>
+                    </div>
+                </fieldset>
+            </div>
+
+            <div class="mb-0">
+                <fieldset class="form-group">
+                    <legend class="fw-600 fs-14 legend-width" [translate]="'RATES_OF_RETURN.INFLATION'"></legend>
+                    <div class="form-check d-flex">
+                        <span>
+                            <p-radioButton   [(ngModel)]="inflation.type" (ngModelChange)="inflationToApply('Default');acceptanceChange();updateDiff()" name="inflation"
+                                value="Default" [disabled]="editDisabled || !isEditable">
+                            </p-radioButton>
+                            <span [translate]="'RATES_OF_RETURN.DEFAULT'"></span>
+                            <span>- {{inflation.defRate| number}}%</span>
+                        </span>
+                        <span>
+                            <p-radioButton name="inflation" value="Custom" [(ngModel)]="inflation.type"
+                                           [disabled]="editDisabled || !isEditable" (ngModelChange)="acceptanceChange();updateDiff()"></p-radioButton>
+                            <span [translate]="'RATES_OF_RETURN.CUSTOM'"></span>
+                            <ng-container *ngIf="inflation.type === 'Custom'">
+                                <span *ngIf="editDisabled || !isEditable">
+                                    - {{ inflation.custRate | number: '1.0-0' }}%
+                                </span>
+                                <span *ngIf="!editDisabled && isEditable" class="va-middle form-group"
+                                      [ngClass]="{'has-error': !custRate.valid && (custRate.dirty || custRate.touched || f.submitted) }">
+                                    <input class="custom-rate-input d-sm-inline form-control text-left"
+                                        [customMin]="0" [customMax]="100"
+                                        (blur)="inflationToApply('Custom')"
+                                        [(ngModel)]="inflation.custRate" (ngModelChange)="acceptanceChange();updateDiff()"
+                                        name="customInflation" #custRate="ngModel" [textMask]="{mask: percentMask1}" appNumeric
+                                        placeholder="0%" required />
+                                </span>
+                            </ng-container>
+                        </span>
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+        <div *ngIf="!editDisabled" class="col-lg-2 edit-button-responsive col-12 text-right">
+            <a *ngIf="!isEditable" (click)="this.isEditable = !this.isEditable;" href="javascript:void(0)"
+                class="btn btn-success btn-small p-lr-25 ml-auto mb-0" [translate]="'PORTFOLIO.ACTION.EDIT'"></a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <hr>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="table-responsive text-nowrap">
+                <table class="table  ff-Montserrat fs-15 rates-of-return">
+                    <thead>
+                        <tr>
+                            <th style="width: 20%" class="text-left fw-600" [translate]="'RATES_OF_RETURN.ASSET_CLASS'">
+                            </th>
+
+                            <th *ngIf="(methodology === 'Nominal rates' || 'Real rates') && (ratesToApply === 'Default')"
+                                style="width: 6%" class="text-center fw-600" [translate]="'RATES_OF_RETURN.DEF_STDEV'">
+                            </th>
+                            <th *ngIf="ratesToApply === 'Custom'" style="width: 6%" class="text-center"
+                                [translate]="'RATES_OF_RETURN.CUS_STDEV'"></th>
+                            <th style="width: 6%" class="text-center fw-600" [translate]="'RATES_OF_RETURN.DEF_REAL'">
+                            </th>
+                            <th *ngIf="(methodology === 'Real rates') && (ratesToApply === 'Custom')" style="width: 6%"
+                                class="text-center fw-600" [translate]="'RATES_OF_RETURN.CUS_REAL'"></th>
+                            <th style="width: 10%" class="text-center fw-600"
+                                [translate]="'RATES_OF_RETURN.DEF_NOM_FWD'"></th>
+                            <th *ngIf="(methodology === 'Nominal rates') && (ratesToApply === 'Custom')"
+                                style="width: 10%" class="text-center fw-600"
+                                [translate]="'RATES_OF_RETURN.CUS_NOM_FWD'"></th>
+                            <th *ngIf="(methodology === 'Nominal rates') && (ratesToApply === 'Custom')"
+                                style="width: 8%" class="text-center fw-600" [translate]="'RATES_OF_RETURN.NOM_ADJ'">
+                            </th>
+                            <th *ngIf="(methodology === 'Real rates') && (ratesToApply === 'Custom')" style="width: 8%"
+                                class="text-center fw-600" [translate]="'RATES_OF_RETURN.REAL_ADJ'"></th>
+                            <th style="width: auto" class="text-left mr-2 fw-600" [translate]="'RATES_OF_RETURN.NOTES'">
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <ng-container *ngFor="let assetClass of assetClasses;let i = index;">
+                            <tr>
+                                <td style="width: 25%">
+                                    <!-- <div class="d-flex form-group mb-0 text-left" [ngClass]="assetClass.isIncluded ? 'pl-0' : 'pl-4'"> -->
+                                    <div class="d-flex form-group mb-0 text-left pl-0">
+                                           
+                                        <p-checkbox (ngModelChange)="assetRollup(assetClass); acceptanceChange()"
+                                            name="assetInclude_{{i}}" [(ngModel)]="assetClass.checked"
+                                            [value]="assetClass.checked" binary="true"
+                                            [disabled]="editDisabled || !isEditable" *ngIf='disableCMACheckbox'></p-checkbox>
+                                           
+                                        <div class="ml-2 d-block">
+                                            <span
+                                                class="fw-400">{{('SSID_LABELS.' + assetClass['ssid']) | translate }}</span>
+                                            <p *ngIf="assetClass['printCode']" class="pb-0 mb-0 fs-12 fw-300">
+                                                {{ 'BENCHMARKS.' + assetClass['printCode'] | translate }}</p>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td *ngIf="(methodology === 'Nominal rates' || 'Real rates') && (ratesToApply === 'Default')"
+                                    style="width: 6%" class="text-center">
+                                    {{ assetClass.defaultSTDEV | number: '1.0-2' }}%
+                                </td>
+                                <td *ngIf="ratesToApply === 'Custom'" style="width: 6%" class="text-center">
+                                    <!-- Custom STDEV  view mode-->
+                                    <span *ngIf="!isEditable">
+                                        {{ assetClass.customSTDEV | number: '1.0-2' }}%
+                                    </span>
+                                    <!-- Custom STDEV  edit mode-->
+                                    <div *ngIf="isEditable" class="form-group text-center mb-0"
+                                        [ngClass]="{'has-error': !customSTDEV.valid && (customSTDEV.dirty || customSTDEV.touched || f.submitted) }">
+                                        <input type="text" style="max-width: 85px;"
+                                            class="form-control d-inline-block text-center h-25 va-middle"
+                                            (ngModelChange)="cmaAcceptance=false; acceptanceChange()" [customMin]="0"
+                                            [customMax]="100" [(ngModel)]="assetClass.customSTDEV" name="customSTDEV_{{i}}"
+                                            #customSTDEV="ngModel" [textMask]="{mask: percentMask}" appNumeric placeholder="0.00%" required />
+                                    </div>
+                                </td>
+                                <td class="text-center">{{ assetClass.defaultReal | number: '1.0-2' }}%</td>
+                                <td *ngIf="(methodology === 'Real rates') && (ratesToApply === 'Custom')"
+                                    style="width: 6%" class="text-center">
+                                    <!-- Custom Real rates  view mode-->
+                                    <span *ngIf="!isEditable">
+                                        {{ assetClass.customReal | number: '1.0-2' }}%
+                                    </span>
+                                    <!-- Custom Real rates  edit mode-->
+                                    <div *ngIf="isEditable" class="form-group text-center mb-0"
+                                        [ngClass]="{'has-error': !customReal.valid && (customReal.dirty || customReal.touched || f.submitted) }">
+                                        <input type="text" style="max-width: 85px;"
+                                            class="form-control d-inline-block text-center h-25 va-middle"
+                                               [(ngModel)]="assetClass.customReal" (ngModelChange)="cmaAcceptance=false; acceptanceChange();updateDiff()" [customMin]="0"
+                                            [customMax]="100" name="customReal_{{i}}"
+                                            #customReal="ngModel" placeholder="0.00%" [textMask]="{mask: percentMask}" appNumeric required (change)="updateDiff()" />
+                                    </div>
+                                </td>
+
+                                <td class="text-center">{{ assetClass.defaultNominalFwd | number: '1.0-2' }}%</td>
+                                <td *ngIf="(methodology === 'Nominal rates') && (ratesToApply === 'Custom')"
+                                    style="width: 6%" class="text-center">
+                                    <!-- Custom Nominal rates fwd  view mode-->
+                                    <span *ngIf="!isEditable">
+                                        {{ assetClass.customNominalFwd | number: '1.0-2' }}%
+                                    </span>
+                                    <!-- Custom Nominal rates fwd  edit mode h-25-->
+                                    <div *ngIf="isEditable" class="form-group text-center mb-0"
+                                        [ngClass]="{'has-error': !customNominalFwd.valid && (customNominalFwd.dirty || customNominalFwd.touched || f.submitted) }">
+                                        <input type="text" style="max-width: 85px;"
+                                            class="form-control d-inline-block text-center h-25 va-middle"
+                                            [(ngModel)]="assetClass.customNominalFwd" (ngModelChange)="cmaAcceptance=false; acceptanceChange();updateDiff()" [customMin]="0"
+                                            [customMax]="100" name="customNominalFwd_{{i}}" #customNominalFwd="ngModel" placeholder="0.00%"
+                                            [textMask]="{mask: percentMask}" appNumeric required (change)="updateDiff()" />
+                                    </div>
+                                </td>
+
+                                <td *ngIf="(methodology === 'Nominal rates') && (ratesToApply === 'Custom')"
+                                    style="width: 6%" class="text-center">
+                                    {{ assetClass.nominalAdjustment > 0 ? '+' : '' }}{{ assetClass.nominalAdjustment | number: '1.0-2' }}%
+                                </td>
+                                <td *ngIf="(methodology === 'Real rates') && (ratesToApply === 'Custom')"
+                                    style="width: 6%" class="text-center">
+                                    {{ assetClass.realAdjustment > 0 ? '+' : '' }}{{ assetClass.realAdjustment | number: '1.0-2' }}%
+                                </td>
+                                <td style="width: auto" class="text-left mr-2">
+                                    <span *ngIf="!isEditable &&  ratesToApply !== 'Default'">
+                                        {{ assetClass.notes }}
+                                    </span>
+                                  <span *ngIf="ratesToApply === 'Default'" class="text-wrap">
+                                        {{ "BENCHNOTES." + assetClass.printCode | translate }}
+                                    </span>
+                                    <div *ngIf="isEditable && (ratesToApply === 'Custom')"
+                                        class="form-group text-center mb-0">
+                                        <input type=text
+                                            class="form-control text-left d-inline-block va-middle notes-input-control"
+                                            name="notes_{{i}}" [(ngModel)]="assetClass.notes" #notes="ngModel"
+                                            (ngModelChange)="cmaAcceptance=false; acceptanceChange()">
+                                    </div>
+                                   
+                                </td>
+                                <td *ngIf="assetClass.childClass.length > 0" style="width: auto;  border-style:hidden" >
+                                    <i class="cursor-p float-left" (click)="showChild=!showChild" 
+                                                    [ngClass]="showChild ? 'ion-ios-arrow-up' : 'ion-ios-arrow-down' "></i>
+                                </td>
+                            </tr>
+                            <ng-container *ngFor="let childClass of assetClass.childClass;let j = index;">
+                                <tr *ngIf='showChild'>
+                                    <td style="width: 25%">
+                                        <!-- <div class="d-flex form-group mb-0 text-left" [ngClass]="childClass.isIncluded ? 'pl-0' : 'pl-4'"> -->
+                                        <div class="d-flex form-group mb-0 text-left pl-4">
+                                            <p-checkbox (ngModelChange)="assetRollup(childClass); acceptanceChange()"
+                                                name="assetInclude_{{i + '-' + j}}" [(ngModel)]="childClass.checked"
+                                                [value]="childClass.checked" binary="true"
+                                                [disabled]="editDisabled || !isEditable" *ngIf='disableCMACheckbox'></p-checkbox>
+                                            <div class="ml-2 d-block">
+                                                <span
+                                                    class="fw-400">{{('SSID_LABELS.' + childClass['ssid']) | translate }}</span>
+                                              <p *ngIf="childClass['printCode']" class="pb-0 mb-0 fs-12 fw-300">
+                                                {{ 'BENCHMARKS.' + childClass['printCode'] | translate }}</p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td *ngIf="(methodology === 'Nominal rates' || 'Real rates') && (ratesToApply === 'Default')"
+                                        style="width: 6%" class="text-center">
+                                        {{ childClass.defaultSTDEV | number: '1.0-2' }}%</td>
+                                    <td *ngIf="ratesToApply === 'Custom'" style="width: 6%" class="text-center">
+                                        <!-- Custom STDEV  view mode-->
+                                        <span *ngIf="!isEditable">
+                                            {{ childClass.customSTDEV | number: '1.0-2' }}%
+                                        </span>
+                                        <!-- Custom STDEV  edit mode-->
+                                        <div *ngIf="isEditable" class="form-group text-center mb-0"
+                                            [ngClass]="{'has-error': !customSTDEV.valid && (customSTDEV.dirty || customSTDEV.touched || f.submitted) }">
+                                            <input type="text" style="max-width: 85px;"
+                                                class="form-control d-inline-block text-center h-25 va-middle"
+                                                (ngModelChange)="cmaAcceptance=false; acceptanceChange()"
+                                                [customMin]="0" [customMax]="100" [(ngModel)]="childClass.customSTDEV" name="customSTDEV_{{i}}{{j}}"
+                                                #customSTDEV="ngModel" [textMask]="{mask: percentMask}" appNumeric placeholder="0.00%" required />
+                                        </div>
+                                    </td>
+                                    <td class="text-center">{{ childClass.defaultReal | number: '1.0-2' }}%</td>
+                                    <td *ngIf="(methodology === 'Real rates') && (ratesToApply === 'Custom')"
+                                        style="width: 6%" class="text-center">
+                                        <!-- Custom Real rates  view mode-->
+                                        <span *ngIf="!isEditable">
+                                            {{ childClass.customReal | number: '1.0-2' }}%
+                                        </span>
+                                        <!-- Custom Real rates  edit mode-->
+                                        <div *ngIf="isEditable" class="form-group text-center mb-0"
+                                            [ngClass]="{'has-error': !customReal.valid && (customReal.dirty || customReal.touched || f.submitted) }">
+                                            <input type="text" style="max-width: 85px;"
+                                                class="form-control d-inline-block text-center h-25 va-middle"
+                                                [(ngModel)]="childClass.customReal" (ngModelChange)="cmaAcceptance=false; acceptanceChange();updateDiff()"
+                                                [customMin]="0" [customMax]="100" name="customReal_{{i}}{{j}}"
+                                                #customReal="ngModel" placeholder="0.00%" [textMask]="{mask: percentMask}" appNumeric
+                                                required (change)="updateDiff()"/>
+                                        </div>
+                                    </td>
+
+                                    <td class="text-center">{{ childClass.defaultNominalFwd | number: '1.0-2' }}%</td>
+                                    <td *ngIf="(methodology === 'Nominal rates') && (ratesToApply === 'Custom')"
+                                        style="width: 6%" class="text-center">
+                                        <!-- Custom Nominal rates fwd  view mode-->
+                                        <span *ngIf="!isEditable">
+                                            {{ childClass.customNominalFwd | number: '1.0-2' }}%
+                                        </span>
+                                        <!-- Custom Nominal rates fwd  edit mode h-25-->
+                                        <div *ngIf="isEditable" class="form-group text-center mb-0"
+                                            [ngClass]="{'has-error': !customNominalFwd.valid && (customNominalFwd.dirty || customNominalFwd.touched || f.submitted) }">
+                                            <input type="text" style="max-width: 85px;"
+                                                class="form-control d-inline-block text-center h-25 va-middle"
+                                                [(ngModel)]="childClass.customNominalFwd" (ngModelChange)="cmaAcceptance=false; acceptanceChange();updateDiff()"
+                                                [customMin]="0" [customMax]="100" name="customNominalFwd_{{i}}{{j}}" #customNominalFwd="ngModel"
+                                                placeholder="0.00%" [textMask]="{mask: percentMask}" appNumeric required />
+                                        </div>
+                                    </td>
+
+                                    <td *ngIf="(methodology === 'Nominal rates') && (ratesToApply === 'Custom')"
+                                        style="width: 6%" class="text-center">
+                                        {{ childClass.nominalAdjustment > 0 ? '+' : '' }}{{ childClass.nominalAdjustment | number: '1.0-2' }}%
+                                    </td>
+                                    <td *ngIf="(methodology === 'Real rates') && (ratesToApply === 'Custom')"
+                                        style="width: 6%" class="text-center">
+                                        {{ childClass.realAdjustment > 0 ? '+' : '' }}{{ childClass.realAdjustment | number: '1.0-2' }}%
+                                    </td>
+                                    <td style="width: auto" class="text-left mr-2">
+                                            <span *ngIf="!isEditable &&  ratesToApply !== 'Default'">
+                                        {{ childClass.notes }}
+                                    </span>
+                                      <span *ngIf="ratesToApply === 'Default'" class="text-wrap">
+                                        {{ "BENCHNOTES." + childClass.printCode | translate }}
+                                    </span>
+                                        <div *ngIf="isEditable && (ratesToApply === 'Custom')"
+                                            class="form-group text-center mb-0">
+                                            <input type=text
+                                                class="form-control text-left d-inline-block va-middle notes-input-control"
+                                                name="notes_{{i}}{{j}}" [(ngModel)]="childClass.notes" #notes="ngModel"
+                                                (ngModelChange)="cmaAcceptance=false; acceptanceChange()">
+                                        </div>
+                                    </td>
+                                </tr>
+                            </ng-container>
+                        </ng-container>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 d-flex justify-content-end mt-3 flex-wrap">
+            <div class="form-group  mb-0 d-flex align-items-center text-right">
+                <label
+                    class="order-sm-1 order-md-0 order-1 custom-form-label d-inline-block va-middle mr-lg-2 ml-md-2 ml-2 mr-md-2  fs-14 fw-400 cma-acceptance"
+                    [translate]="'RATES_OF_RETURN.CMA_ACCEPT'"></label>
+                <p-checkbox class="d-inline-block mt--10px" [(ngModel)]="ratesOfReturnResponse.cmaAcceptanceRor"
+                    [value]="ratesOfReturnResponse.cmaAcceptanceRor" binary="true" name="cmaAcceptance"
+                    styleClass="va-top"></p-checkbox>
+            </div>
+            <div class="form-group d-flex align-self-center mb-0 ml-2 flex-shrink-1 text-right">
+                <button *ngIf="isEditable" type="button" value="cancel" (click)="cancelChanges()"
+                    class="btn btn-secondary btn-fixwidth  mr-2" [translate]="'FORM.ACTION.CANCEL'"></button>
+                <button [disabled]="f.form.invalid || saveDisable" type="submit" class="btn btn-success btn-fixwidth"
+                    [translate]="'FORM.ACTION.SAVE_CHANGES'"></button>
+            </div>
+        </div>
+    </div>
+</form>

@@ -1,0 +1,1403 @@
+<div class="licence-container">
+    <div class="main-container">
+        <div class="row">
+            <div class="col-12">
+                <div class="pull-right d-inline-block va-middle">
+                    <button type="button" (click)="isEditable = !isEditable" [translate]="'PORTFOLIO.ACTION.EDIT'"
+                        class="btn btn-success btn-small p-lr-25 text-capitalize"
+                        *ngIf="!isEditable && canCreateCustom"></button>
+                </div>
+            </div>
+            <!-- <div class="col-12">
+                <div class="pull-right expand-button d-flex">
+                    <a (click)="allExpanded = !allExpanded" class="ml-auto">
+                        <span *ngIf="!allExpanded" [translate]="'ACCORDIAN.EXPAND_ALL'"></span>
+                        <span *ngIf="allExpanded" [translate]="'ACCORDIAN.COLLAPSE_ALL'"></span>
+                        <i [ngClass]="{'ion-ios-arrow-down' : allExpanded, 'ion-ios-arrow-up': !allExpanded}"></i>
+                    </a>
+                </div>
+            </div> -->
+        </div>
+        <form name="form" #f="ngForm" novalidate>
+            <div class="branding" *ngIf="brandingDetails">
+                <p-accordion [multiple]=true>
+                    <!-- Start Site Banner-->
+                    <div class='mb-4' *ngIf="accessRights['REG_BRAND_ADMN_Ban']['accessLevel'] > 1" >
+                        <div class="row">
+                            <div class="col-10">
+                                <p-header>
+                                    <h4 class="mt-2 fw-700" [translate]="'BRANDING.SECTION.SITE_BANNER'"></h4>
+                                </p-header>
+                            </div>
+                            <div class="col-2">
+                                <div class="pull-right expand-button d-flex">
+                                    <a (click)="expandSelection = !expandSelection" class="ml-auto">
+                                        <span *ngIf="!expandSelection" [translate]="'ACCORDIAN.EXPAND_ALL'"></span>
+                                        <span *ngIf="expandSelection" [translate]="'ACCORDIAN.COLLAPSE_ALL'"></span>
+                                        <i
+                                            [ngClass]="{'ion-ios-arrow-down' : !expandSelection, 'ion-ios-arrow-up': expandSelection}"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            
+                        </div>
+                        <hr>
+                        <p-accordionTab [selected]=expandSelection>
+                            <p-header>
+                                <h3 class="fs-12 fw-700" [translate]="'BRANDING.SECTION.BANNER_BRANDING'"></h3>
+                            </p-header>
+                            <div class="row p-3">
+                                <div class="col-12 col-lg-12 col-xl-2">
+                                    <p class="mb-0">{{ 'BRANDING.FORMAT' | translate }} {{bannerImageFormat}} -
+                                        {{ 'BRANDING.TRANSPARENT' | translate}}</p>
+                                    <p>{{ 'BRANDING.SIZE' | translate }} {{bannerImageWidth}} x {{bannerImageHeight}}
+                                        {{ 'BRANDING.PIXELS' | translate }}</p>
+                                </div>
+                                <div class="col-12 col-xl-10">
+                                    <div class="form-group form-check d-flex">
+                                        <p-radioButton name="bannerBranding" value={{BRANDING.DEFAULT}} label="Default"
+                                            [(ngModel)]="brandingDetails['bannerBranding'].selection"
+                                            #bannerBranding="ngModel" required [disabled]="!isEditable"
+                                            (ngModelChange)="bannerBrandingChange('bannerBranding')">
+                                        </p-radioButton>
+                                    </div>
+                                    <div class="default-header">
+                                        <app-header [isBranding]=true
+                                            [bgColours]="brandingDetails['bannerBgColors'].selection == BRANDING.DEFAULT ? brandingDetails['bannerBgColors'].bannerBgDefaultColors : brandingDetails['bannerBgColors'].bannerBgCustomColors"
+                                            [textColours]="brandingDetails['bannerTextColors'].selection == BRANDING.DEFAULT ? brandingDetails['bannerTextColors'].bannerTextDefaultColors : brandingDetails['bannerTextColors'].bannerTextCustomColors"
+                                            [logoSrc]="url + brandingDetails['bannerBranding'].defaultImagePath">
+                                        </app-header>
+                                    </div>
+
+                                    <div class="form-group form-check d-flex">
+                                        <p-radioButton name="bannerBranding" value={{BRANDING.CUSTOM}} label="Custom"
+                                            [(ngModel)]="brandingDetails['bannerBranding'].selection"
+                                            #bannerBranding="ngModel" required [disabled]="!isEditable"
+                                            (ngModelChange)="bannerBrandingChange('bannerBranding')">
+                                        </p-radioButton>
+                                    </div>
+                                    <table><tr><td>
+                                        <div class="custom-header">
+                                            <app-header #header [isBranding]=true
+                                                [bgColours]="brandingDetails['bannerBgColors'].selection == BRANDING.DEFAULT ? brandingDetails['bannerBgColors'].bannerBgDefaultColors : brandingDetails['bannerBgColors'].bannerBgCustomColors"
+                                                [textColours]="brandingDetails['bannerTextColors'].selection == BRANDING.DEFAULT ? brandingDetails['bannerTextColors'].bannerTextDefaultColors : brandingDetails['bannerTextColors'].bannerTextCustomColors"
+                                                [logoSrc]="url + brandingDetails['bannerBranding'].defaultImagePath"
+                                                [custLogoSrc]="brandingDetails['bannerBranding'].customImagePath">
+                                            </app-header>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="ml-auto p-2" >
+                                            <a href="javascript:void(0)" class="swap-icon" *ngIf="isEditable"
+                                                (click)="langBanner(brandingDetails['bannerBranding'].selection, 1)">
+                                                <i class="ion-md-swap"></i>
+                                            </a>
+                                            <a href="javascript:void(0)" class="swap-icon" *ngIf="!isEditable">
+                                                <i class="ion-md-swap"></i>
+                                            </a>
+                                        </div>
+                                    </td></tr></table>
+
+                                    <!-- <div class="d-flex">
+                                                                            <app-header #header [isBranding]=true [defaultColours]='' [customColours]='bannerBGcustColours'
+                                                                                [type]="'Custom'" [logoSrc]="brandingDetails['bannerBranding'].customImagePath"></app-header>
+                                                                            <div class="ml-3 d-flex align-items-center">
+                                                                                <div class="cover-page-close">
+                                                                                    <i *ngIf="brandingDetails['bannerBranding'].customImagePath && isEditable" class="ion-md-close-circle cursor-p"
+                                                                                        (click)="removeSelected(1)"></i>
+                                                                                    <i *ngIf="!brandingDetails['bannerBranding'].customImagePath || !isEditable" class="ion-md-close-circle disabled-link"></i>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div> -->
+                                </div>
+                                <div class="col-12 mt-4">
+                                    <div class="pull-right">
+                                        <button type="button"
+                                            *ngIf="brandingDetails['bannerBranding'].selection == BRANDING.DEFAULT || !isEditable"
+                                            class="btn btn-success btn-small p-lr-25 disabled-link text-capitalize"
+                                            [translate]="'BRANDING.UPLOAD'"></button>
+                                        <button type="button"
+                                            *ngIf="brandingDetails['bannerBranding'].selection == BRANDING.CUSTOM && isEditable"
+                                            class="btn btn-success btn-small p-lr-25 btn-small text-capitalize"
+                                            (click)="open(content, 1)" [translate]="'BRANDING.UPLOAD'"></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </p-accordionTab>
+                        <p-accordionTab [selected]=expandSelection>
+                            <p-header>
+                                <h3 class="fs-12 fw-700" [translate]="'BRANDING.SECTION.BANNER_BACKGROUND_COLOURS'">
+                                </h3>
+                            </p-header>
+                            <div class="row p-3">
+                                <div class="col-12 col-lg-1 col-xl-2">
+                                    <span></span>
+                                </div>
+                                <div class="col-12 col-lg-10 form-group mb-0">
+                                    <div class="row">
+                                        <div class="col-12 col-xl-6">
+                                            <!--  Default -->
+                                            <div class="d-flex flex-column mb-3 mb-md-0">
+                                                <p-radioButton name="bannerBGcolour" value={{BRANDING.DEFAULT}}
+                                                    label="Default"
+                                                    [(ngModel)]="brandingDetails['bannerBgColors'].selection"
+                                                    #bannerBGcolour="ngModel" required [disabled]="!isEditable"
+                                                    (ngModelChange)="brandingDetailChange('bannerBgColors')">
+                                                </p-radioButton>
+                                                <app-rgb-color-table [isEditable]="isEditable"
+                                                    [displayTypeVertical]=true
+                                                    [colours]="brandingDetails['bannerBgColors'].bannerBgDefaultColors"
+                                                    [forDefault]=true
+                                                    [typeSelected]="brandingDetails['bannerBgColors'].selection">
+                                                </app-rgb-color-table>
+
+                                            </div>
+                                            <!-- Default -->
+                                        </div>
+                                        <div class="col-12 col-xl-6">
+                                            <!-- Custom -->
+                                            <div class="d-flex flex-column mt-5 mt-xl-0">
+                                                <p-radioButton name="bannerBGcolour" value={{BRANDING.CUSTOM}}
+                                                    label="Custom"
+                                                    [(ngModel)]="brandingDetails['bannerBgColors'].selection"
+                                                    #bannerBGcolour="ngModel" required [disabled]="!isEditable"
+                                                    (ngModelChange)="brandingDetailChange('bannerBgColors')">
+                                                </p-radioButton>
+                                                <app-rgb-color-table [isEditable]="isEditable" [isEditable]="isEditable"
+                                                    [displayTypeVertical]=true
+                                                    [colours]="brandingDetails['bannerBgColors'].bannerBgCustomColors"
+                                                    [forDefault]=false
+                                                    [typeSelected]="brandingDetails['bannerBgColors'].selection">
+                                                </app-rgb-color-table>
+                                            </div>
+                                            <!-- Custom -->
+                                        </div>
+                                        <div class="col-12 pt-4">
+                                            <app-header [isBranding]=true [addClass]=true
+                                                [bgColours]="brandingDetails['bannerBgColors'].selection == BRANDING.DEFAULT ? brandingDetails['bannerBgColors'].bannerBgDefaultColors : brandingDetails['bannerBgColors'].bannerBgCustomColors"
+                                                [logoSrc]="imageSrc"
+                                                [textColours]="brandingDetails['bannerTextColors'].selection == BRANDING.DEFAULT ? brandingDetails['bannerTextColors'].bannerTextDefaultColors : brandingDetails['bannerTextColors'].bannerTextCustomColors">
+                                            </app-header>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </p-accordionTab>
+                        <p-accordionTab [selected]=expandSelection>
+                            <p-header>
+                                <h3 class="fs-12 fw-700" [translate]="'BRANDING.SECTION.BANNER_TEXT_COLOURS'"></h3>
+                            </p-header>
+                            <div class="row p-3">
+                                <div class="col-12 col-md-2">
+                                    <span></span>
+                                </div>
+                                <div class="col-12 col-md-10 form-group mb-0">
+                                    <div class="row">
+                                        <div class="col-12 col-md-6">
+                                            <!--  Default -->
+                                            <div class="d-flex flex-column mb-3 mb-md-0">
+                                                <p-radioButton name="bannerTextColour" value={{BRANDING.DEFAULT}}
+                                                    label="Default"
+                                                    [(ngModel)]="brandingDetails['bannerTextColors'].selection"
+                                                    #bannerTextColour="ngModel" required [disabled]="!isEditable"
+                                                    (ngModelChange)="brandingDetailChange('bannerTextColors')">
+                                                </p-radioButton>
+                                                <app-rgb-color-table [isEditable]="isEditable"
+                                                    [displayTypeVertical]=true
+                                                    [colours]="brandingDetails['bannerTextColors'].bannerTextDefaultColors"
+                                                    [forDefault]=true [typeSelected]="bannerTextColour">
+                                                </app-rgb-color-table>
+
+                                            </div>
+                                            <!-- Default -->
+                                        </div>
+                                        <div class="col-12 col-md-6">
+                                            <!-- Custom -->
+                                            <div class="d-flex flex-column">
+                                                <p-radioButton name="bannerTextColour" value={{BRANDING.CUSTOM}}
+                                                    label="Custom"
+                                                    [(ngModel)]="brandingDetails['bannerTextColors'].selection"
+                                                    #bannerTextColour="ngModel" required [disabled]="!isEditable"
+                                                    (ngModelChange)="brandingDetailChange('bannerTextColors')">
+                                                </p-radioButton>
+                                                <app-rgb-color-table [isEditable]="isEditable"
+                                                    [displayTypeVertical]=true
+                                                    [colours]="brandingDetails['bannerTextColors'].bannerTextCustomColors"
+                                                    [forDefault]=false
+                                                    [typeSelected]="brandingDetails['bannerTextColors'].selection">
+                                                </app-rgb-color-table>
+                                            </div>
+                                            <!-- Custom -->
+                                        </div>
+                                        <div class="col-12 pt-4">
+                                            <app-header [isBranding]=true [addClass]=true
+                                                [bgColours]="brandingDetails['bannerBgColors'].selection == BRANDING.DEFAULT ? brandingDetails['bannerBgColors'].bannerBgDefaultColors : brandingDetails['bannerBgColors'].bannerBgCustomColors"
+                                                [logoSrc]="imageSrc"
+                                                [textColours]="brandingDetails['bannerTextColors'].selection == BRANDING.DEFAULT ? brandingDetails['bannerTextColors'].bannerTextDefaultColors : brandingDetails['bannerTextColors'].bannerTextCustomColors">
+                                            </app-header>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </p-accordionTab>
+                    </div>
+                    <!-- End Site Banner-->
+                    <!-- Start Report -->
+                    <div class='mb-4' *ngIf="accessRights['REG_BRAND_ADMN_Rpt']['accessLevel'] > 1">
+                        <div class="row">
+                            <div class="col-10">
+                                <p-header>
+                                    <h4 class="mt-2 fw-700" [translate]="'BRANDING.SECTION.REPORT'"></h4>
+                                </p-header>
+                            </div>
+                            <div class="col-2">
+                                <div class="pull-right expand-button d-flex">
+                                    <a (click)="expandReport = !expandReport" class="ml-auto">
+                                        <span *ngIf="!expandReport" [translate]="'ACCORDIAN.EXPAND_ALL'"></span>
+                                        <span *ngIf="expandReport" [translate]="'ACCORDIAN.COLLAPSE_ALL'"></span>
+                                        <i [ngClass]="{'ion-ios-arrow-down' : !expandReport, 'ion-ios-arrow-up': expandReport}"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            
+                        </div>
+                        <hr>
+                        <p-accordionTab [selected]=expandReport>
+                            <p-header>
+                                <h3 class="fs-12 fw-700" [translate]="'BRANDING.SECTION.CORPORATE_LOGO_REPORTS'"></h3>
+                            </p-header>
+                            <div class="row p-3">
+                                <div class="col-12 col-md-2">
+                                    <span></span>
+                                </div>
+                                <div class="col-12 col-md-10 form-group mb-0">
+                                    <div class="row align-items-center">
+                                        <div class="mr-5 mb-3 image-wrap">
+                                            <!--  Default -->
+                                            <div class="mb-1">
+                                                <p-radioButton name="corporateLogoType" value={{BRANDING.DEFAULT}}
+                                                    label="Default"
+                                                    [(ngModel)]="brandingDetails['corporateLogoForReports'].selection"
+                                                    #corporateLogoType="ngModel" required [disabled]="!isEditable"
+                                                    (ngModelChange)="brandingDetailChange('corporateLogoForReports')">
+                                                </p-radioButton>
+                                            </div>
+                                            <div class="corporate-logo"
+                                                [style.background-color]="brandingDetails['corporateLogoForReports'].defaultImagePath ? '#ffffff' : '#e0e0e0'">
+                                                <span
+                                                    *ngIf="!brandingDetails['corporateLogoForReports'].defaultImagePath">{{ 'BRANDING.NO_IMAGE_UPLOADED' | translate }}</span>
+                                                <img *ngIf="brandingDetails['corporateLogoForReports'].defaultImagePath"
+                                                    [src]="url + brandingDetails['corporateLogoForReports'].defaultImagePath"
+                                                    width="100%" height="100%">
+                                            </div>
+                                            <!-- Default -->
+                                        </div>
+                                        <div class="mr-3 mb-3 image-wrap">
+                                            <!-- Custom -->
+                                            <div class="mb-1">
+                                                <p-radioButton name="corporateLogoType" value={{BRANDING.CUSTOM}}
+                                                    label="Custom"
+                                                    [(ngModel)]="brandingDetails['corporateLogoForReports'].selection"
+                                                    #corporateLogoType="ngModel" required [disabled]="!isEditable"
+                                                    (ngModelChange)="brandingDetailChange('corporateLogoForReports')">
+                                                </p-radioButton>
+                                            </div>
+                                            <div class="corporate-logo"
+                                                [style.background-color]="brandingDetails['corporateLogoForReports'].customImagePath ? '#ffffff' : '#e0e0e0'">
+                                                <span
+                                                    *ngIf="!brandingDetails['corporateLogoForReports'].customImagePath">{{ 'BRANDING.NO_IMAGE_UPLOADED' | translate }}</span>
+                                                <img *ngIf="brandingDetails['corporateLogoForReports'].customImagePath"
+                                                    [src]="brandingDetails['corporateLogoForReports'].customImagePath"
+                                                    width="100%" height="100%">
+                                            </div>
+                                            <!-- Custom -->
+                                        </div>
+                                        <!-- <div class="mr-3 align-self-center">
+                                                                                        <div class="cover-page-close">
+                                                                                            <i *ngIf="brandingDetails['corporateLogoForReports'].customImagePath && isEditable" class="ion-md-close-circle cursor-p"
+                                                                                                (click)="removeSelected(2)"></i>
+                                                                                            <i *ngIf="!brandingDetails['corporateLogoForReports'].customImagePath || !isEditable" class="ion-md-close-circle disabled-link"></i>
+                                                                                        </div>
+                                                                                    </div> -->
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12 text-right">
+                                            <button type="button"
+                                                *ngIf="brandingDetails['corporateLogoForReports'].selection == BRANDING.DEFAULT || !isEditable"
+                                                class="btn btn-success btn-small p-lr-25 disabled-link text-capitalize"
+                                                [translate]="'BRANDING.UPLOAD'"></button>
+                                            <button type="button"
+                                                *ngIf="brandingDetails['corporateLogoForReports'].selection == BRANDING.CUSTOM && isEditable"
+                                                class="btn btn-success btn-small p-lr-25 text-capitalize"
+                                                (click)="open(content, 2)" [translate]="'BRANDING.UPLOAD'"></button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </p-accordionTab>
+                        <p-accordionTab [selected]=expandReport>
+                            <p-header>
+                                <h3 class="fs-12 fw-700" [translate]="'BRANDING.SECTION.REPORT_TEXT_COLOUR'"></h3>
+                            </p-header>
+                            <div class="row p-3">
+                                <div class="col-12 col-md-2">
+                                    <span></span>
+                                </div>
+                                <div class="col-12 col-md-10 form-group mb-0">
+                                    <div class="row">
+                                        <div class="col-12 col-md-6">
+                                            <!--  Default -->
+                                            <div class="d-flex flex-column mb-3 mb-md-0">
+                                                <p-radioButton name="reportTextColourType" value={{BRANDING.DEFAULT}}
+                                                    label="Default"
+                                                    [(ngModel)]="brandingDetails['reportTextColor'].selection"
+                                                    #reportTextColourType="ngModel" required [disabled]="!isEditable"
+                                                    (ngModelChange)="brandingDetailChange('reportTextColor')">
+                                                </p-radioButton>
+                                                <app-rgb-color-table [isEditable]="isEditable"
+                                                    [displayTypeVertical]=true
+                                                    [colours]="brandingDetails['reportTextColor'].defaultReportTextColors"
+                                                    [forDefault]=true
+                                                    [typeSelected]="brandingDetails['reportTextColor'].selection">
+                                                </app-rgb-color-table>
+
+                                            </div>
+                                            <!-- Default -->
+                                        </div>
+                                        <div class="col-12 col-md-6">
+                                            <!-- Custom -->
+                                            <div class="d-flex flex-column">
+                                                <p-radioButton name="reportTextColourType" value={{BRANDING.CUSTOM}}
+                                                    label="Custom"
+                                                    [(ngModel)]="brandingDetails['reportTextColor'].selection"
+                                                    #reportTextColourType="ngModel" required [disabled]="!isEditable"
+                                                    (ngModelChange)="brandingDetailChange('reportTextColor')">
+                                                </p-radioButton>
+                                                <app-rgb-color-table [isEditable]="isEditable"
+                                                    [displayTypeVertical]=true
+                                                    [colours]="brandingDetails['reportTextColor'].customReportTextColors"
+                                                    [forDefault]=false
+                                                    [typeSelected]="brandingDetails['reportTextColor'].selection">
+                                                </app-rgb-color-table>
+                                            </div>
+                                            <!-- Custom -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </p-accordionTab>
+                        <p-accordionTab [selected]=expandReport>
+                            <p-header>
+                                <h3 class="fs-12 fw-700" [translate]="'BRANDING.SECTION.REPORT_SHADING_COLOUR'"></h3>
+                            </p-header>
+                            <div class="row report-shading-colour-wrap">
+                                <div class="col-xl-2 col-12">
+                                    <span></span>
+                                </div>
+                                <div class="col-xl-10 col-12 form-group mb-0">
+                                    <div class="row p-3">
+                                        <div class="col-12 col-md-6">
+                                            <div class="d-flex flex-column mb-3 mb-md-0">
+                                                <p-radioButton name="reportShadingColourType" value={{BRANDING.DEFAULT}}
+                                                    label="Default"
+                                                    [(ngModel)]="brandingDetails['reportShadingColor'].selection"
+                                                    #reportShadingType="ngModel" required [disabled]="!isEditable"
+                                                    (ngModelChange)="brandingDetailChange('reportShadingColor')">
+                                                </p-radioButton>
+                                                <app-rgb-color-table [isEditable]="isEditable"
+                                                    [displayTypeVertical]=false
+                                                    [colours]="brandingDetails['reportShadingColor'].defaultReportShadingColors"
+                                                    [forDefault]=true
+                                                    [typeSelected]="brandingDetails['reportShadingColor'].selection">
+                                                </app-rgb-color-table>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 col-md-6">
+                                            <div class="d-flex flex-column">
+                                                <p-radioButton name="reportShadingColourType" value={{BRANDING.CUSTOM}}
+                                                    label="Custom"
+                                                    [(ngModel)]="brandingDetails['reportShadingColor'].selection"
+                                                    #reportShadingType="ngModel" required [disabled]="!isEditable"
+                                                    (ngModelChange)="brandingDetailChange('reportShadingColor')">
+                                                </p-radioButton>
+                                                <app-rgb-color-table [isEditable]="isEditable"
+                                                    [displayTypeVertical]=false
+                                                    [colours]="brandingDetails['reportShadingColor'].customReportShadingColors"
+                                                    [forDefault]=false
+                                                    [typeSelected]="brandingDetails['reportShadingColor'].selection">
+                                                </app-rgb-color-table>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </p-accordionTab>
+                        <p-accordionTab [selected]=expandReport>
+                            <p-header>
+                                <h3 class="fs-12 fw-700" [translate]="'BRANDING.SECTION.REPORT_DISCLAIMER_1'"></h3>
+                            </p-header>
+                            <div class="row p-3">
+                                <div class="col-2">
+                                    <span></span>
+                                </div>
+                                <div class="col-10">
+                                    <div class="form-group mb-0">
+                                        <div class="form-check d-flex">
+                                            <p-radioButton name="reportDisclaimertype1" value={{BRANDING.DEFAULT}}
+                                                label="Default"
+                                                [(ngModel)]="brandingDetails['reportDisclaimer1'].selection"
+                                                #reportDisclaimertype1="ngModel" required [disabled]="!isEditable"
+                                                (ngModelChange)="brandingDetailChange('reportDisclaimer1')">
+                                            </p-radioButton>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                        <div class="d-flex align-items-center">
+                                            <div>
+                                                <p>{{brandingDetails['reportDisclaimer1'].defaultDisclaimer}}</p>
+                                            </div>
+                                            <div class="ml-auto p-2">
+                                                <a href="javascript:void(0)" class="swap-icon"
+                                                    (click)="translateText(brandingDetails['reportDisclaimer1'].defaultDisclaimer, 0)">
+                                                    <i class="ion-md-swap"></i>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <p-radioButton name="reportDisclaimertype1" value={{BRANDING.CUSTOM}}
+                                                label="Custom"
+                                                [(ngModel)]="brandingDetails['reportDisclaimer1'].selection"
+                                                #reportDisclaimertype1="ngModel" required [disabled]="!isEditable"
+                                                (ngModelChange)="brandingDetailChange('reportDisclaimer1')">
+                                            </p-radioButton>
+                                        </div>
+                                        <div class="d-flex align-items-center">
+                                            <div class="w-100">
+                                                <input class="form-control" type="text" name="reportCustomDisclaimer_1"
+                                                    [(ngModel)]="brandingDetails['reportDisclaimer1'].customDisclaimer"
+                                                    required
+                                                    [disabled]="(brandingDetails['reportDisclaimer1'].selection == BRANDING.CUSTOM && !isEditable) || brandingDetails['reportDisclaimer1'].selection == BRANDING.DEFAULT">
+                                            </div>
+                                            <div class="ml-auto p-2">
+                                                <a href="javascript:void(0)" class="swap-icon"
+                                                    (click)="translateText(brandingDetails['reportDisclaimer1'].customDisclaimer, 1)">
+                                                    <i class="ion-md-swap"></i>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 pt-3">
+                                    <div class="pull-right d-inline-block va-middle">
+                                        <a routerLink="report-disclaimer-selection" [translate]="'BRANDING.REPORT_LIST'"
+                                            class="btn btn-success btn-small p-lr-25 text-capitalize"></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </p-accordionTab>
+                        <p-accordionTab [selected]=expandReport>
+                            <p-header>
+                                <h3 class="fs-12 fw-700" [translate]="'BRANDING.SECTION.REPORT_DISCLAIMER_2'"></h3>
+                            </p-header>
+                            <div class="row p-3">
+                                <div class="col-2">
+                                    <span></span>
+                                </div>
+                                <div class="col-10">
+                                    <div class="form-group mb-0">
+                                        <div class="form-check d-flex">
+                                            <p-radioButton name="reportDisclaimertype2" value={{BRANDING.DEFAULT}}
+                                                label="Default"
+                                                [(ngModel)]="brandingDetails['reportDisclaimer2'].selection"
+                                                #reportDisclaimertype2="ngModel" required [disabled]="!isEditable"
+                                                (ngModelChange)="brandingDetailChange('reportDisclaimer2')">
+                                            </p-radioButton>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                        <div class="d-flex align-items-center">
+                                            <div>
+                                                <p>{{brandingDetails['reportDisclaimer2'].defaultDisclaimer}}</p>
+                                            </div>
+                                            <div class="ml-auto p-2">
+                                                <a href="javascript:void(0)" class="swap-icon"
+                                                    (click)="translateText(brandingDetails['reportDisclaimer2'].defaultDisclaimer, 0)">
+                                                    <i class="ion-md-swap"></i>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <p-radioButton name="reportDisclaimertype2" value={{BRANDING.CUSTOM}}
+                                                label="Custom"
+                                                [(ngModel)]="brandingDetails['reportDisclaimer2'].selection"
+                                                #reportDisclaimertype2="ngModel" required [disabled]="!isEditable"
+                                                (ngModelChange)="brandingDetailChange('reportDisclaimer2')">
+                                            </p-radioButton>
+                                        </div>
+                                        <div class="d-flex align-items-center">
+                                            <div class="w-100">
+                                                <input class="form-control" type="text" name="reportCustomDisclaimer_2"
+                                                    [(ngModel)]="brandingDetails['reportDisclaimer2'].customDisclaimer"
+                                                    required
+                                                    [disabled]="(brandingDetails['reportDisclaimer2'].selection == BRANDING.CUSTOM && !isEditable) || brandingDetails['reportDisclaimer2'].selection == BRANDING.DEFAULT">
+                                            </div>
+                                            <div class="ml-auto p-2">
+                                                <a href="javascript:void(0)" class="swap-icon"
+                                                    (click)="translateText(brandingDetails['reportDisclaimer2'].customDisclaimer, 1)">
+                                                    <i class="ion-md-swap"></i>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 pt-3">
+                                    <div class="pull-right d-inline-block va-middle">
+                                        <a routerLink="report-disclaimer-selection" [translate]="'BRANDING.REPORT_LIST'"
+                                            class="btn btn-success btn-small p-lr-25 text-capitalize"></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </p-accordionTab>
+                    </div>
+                    <!-- End Report -->
+                    <!-- Start Document -->
+                    <div class='mb-4' *ngIf="accessRights['REG_BRAND_ADMN_Doc']['accessLevel'] > 1">
+                        <div class="row">
+                            <div class="col-10">
+                                <p-header>
+                                    <h4 class="mt-2 fw-700" [translate]="'BRANDING.SECTION.DOCUMENT'"></h4>
+                                </p-header>
+                            </div>
+                            <div class="col-2">
+                                <div class="pull-right expand-button d-flex">
+                                    <a (click)="expandDocument = !expandDocument" class="ml-auto">
+                                        <span *ngIf="!expandDocument" [translate]="'ACCORDIAN.EXPAND_ALL'"></span>
+                                        <span *ngIf="expandDocument" [translate]="'ACCORDIAN.COLLAPSE_ALL'"></span>
+                                        <i [ngClass]="{'ion-ios-arrow-down' : !expandDocument, 'ion-ios-arrow-up': expandDocument}"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
+                        <p-accordionTab [selected]=expandDocument>
+                            <p-header>
+                                <h3 class="fs-12 fw-700" [translate]="'BRANDING.SECTION.COVER_PAGE_IMAGE_1'"></h3>
+                            </p-header>
+                            <div class="row cover-page-image-wrap">
+                                <div class="col-lg-2 col-12">
+                                    <div class="p-3">
+                                        <p class="mb-0">{{ 'BRANDING.FORMAT' | translate }} {{coverPageFormat}}</p>
+                                        <p>{{ 'BRANDING.SIZE' | translate }} {{coverPageHeight}} x {{coverPageWidth}}
+                                            {{ 'BRANDING.PIXELS' | translate }}</p>
+                                    </div>
+                                </div>
+                                <div class="col-lg-10 col-12 form-group mb-0">
+                                    <div class="row align-items-center">
+                                        <div class="mr-3 mb-3">
+                                            <div class="cover-image"
+                                                [style.background-color]="brandingDetails['coverPageImage1'].defaultImagePath ? '#ffffff' : '#e0e0e0'">
+                                                <span
+                                                    *ngIf="!brandingDetails['coverPageImage1'].defaultImagePath">{{ 'BRANDING.NO_IMAGE_UPLOADED' | translate }}
+                                                </span>
+                                                <img *ngIf="brandingDetails['coverPageImage1'].defaultImagePath"
+                                                    [src]="url + brandingDetails['coverPageImage1'].defaultImagePath"
+                                                    width="100%" height="100%">
+                                            </div>
+                                            <div class="mt-1">
+                                                <p-radioButton name="coverPageImage_type_1" value={{BRANDING.DEFAULT}}
+                                                    label="Default"
+                                                    [(ngModel)]="brandingDetails['coverPageImage1'].selection"
+                                                    #coverPageImage_type_1="ngModel" required [disabled]="!isEditable"
+                                                    (ngModelChange)="brandingDetailChange('coverPageImage1')">
+                                                </p-radioButton>
+                                            </div>
+                                        </div>
+                                        <div class="mr-3 mb-3">
+                                            <div class="cover-image"
+                                                [style.background-color]="brandingDetails['coverPageImage1'].customImagePath ? '#ffffff' : '#e0e0e0'">
+                                                <span
+                                                    *ngIf="!brandingDetails['coverPageImage1'].customImagePath">{{ 'BRANDING.NO_IMAGE_UPLOADED' | translate }}
+                                                </span>
+                                                <img *ngIf="brandingDetails['coverPageImage1'].customImagePath"
+                                                    [src]="brandingDetails['coverPageImage1'].customImagePath"
+                                                    width="100%" height="100%">
+                                            </div>
+                                            <div class="mt-1">
+                                                <p-radioButton name="coverPageImage_type_1" value={{BRANDING.CUSTOM}}
+                                                    label="Custom"
+                                                    [(ngModel)]="brandingDetails['coverPageImage1'].selection"
+                                                    #coverPageImage_type_1="ngModel" required [disabled]="!isEditable"
+                                                    (ngModelChange)="brandingDetailChange('coverPageImage1')">
+                                                </p-radioButton>
+                                            </div>
+                                        </div>
+                                        <!-- <div class="mr-3 mb-3">
+                                                                                        <div class="cover-page-close mt-0">
+                                                                                            <i *ngIf="brandingDetails['coverPageImage1'].customImagePath && isEditable" class="ion-md-close-circle cursor-p"
+                                                                                                (click)="removeSelected(3)"></i>
+                                                                                            <i *ngIf="!brandingDetails['coverPageImage1'].customImagePath || !isEditable" class="ion-md-close-circle disabled-link"></i>
+                                                                                        </div>
+                                                                                    </div> -->
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12 text-right">
+                                            <a routerLink="document-cover-page-selection"
+                                                class="btn btn-success btn-small p-lr-25 mr-3 text-capitalize"
+                                                [translate]="'BRANDING.DOCUMENT_LIST'"></a>
+                                            <button type="button"
+                                                *ngIf="brandingDetails['coverPageImage1'].selection == BRANDING.DEFAULT || !isEditable"
+                                                class="btn btn-success btn-small p-lr-25 mr-3 disabled-link text-capitalize"
+                                                [translate]="'BRANDING.UPLOAD'"></button>
+                                            <button type="button"
+                                                *ngIf="brandingDetails['coverPageImage1'].selection == BRANDING.CUSTOM && isEditable"
+                                                class="btn btn-success btn-small p-lr-25 mr-3 text-capitalize"
+                                                (click)="open(content, 3)" [translate]="'BRANDING.UPLOAD'"></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </p-accordionTab>
+                        <p-accordionTab [selected]=expandDocument>
+                            <p-header>
+                                <h3 class="fs-12 fw-700" [translate]="'BRANDING.SECTION.COVER_PAGE_IMAGE_2'"></h3>
+                            </p-header>
+                            <div class="row cover-page-image-wrap">
+                                <div class="col-lg-2 col-12">
+                                    <div class="p-3">
+                                        <p class="mb-0">{{ 'BRANDING.FORMAT' | translate }} {{coverPageFormat}}</p>
+                                        <p>{{ 'BRANDING.SIZE' | translate }} {{coverPageHeight}} x {{coverPageWidth}}
+                                            {{ 'BRANDING.PIXELS' | translate }}</p>
+                                    </div>
+                                </div>
+                                <div class="col-lg-10 col-12 form-group mb-0">
+                                    <div class="row align-items-center">
+                                        <div class="mr-3 mb-3">
+                                            <div class="cover-image"
+                                                [style.background-color]="brandingDetails['coverPageImage2'].defaultImagePath ? '#ffffff' : '#e0e0e0'">
+                                                <span
+                                                    *ngIf="!brandingDetails['coverPageImage2'].defaultImagePath">{{ 'BRANDING.NO_IMAGE_UPLOADED' | translate }}
+                                                </span>
+                                                <img *ngIf="brandingDetails['coverPageImage2'].defaultImagePath"
+                                                    [src]="url + brandingDetails['coverPageImage2'].defaultImagePath"
+                                                    width="100%" height="100%">
+                                            </div>
+                                            <div class="mt-1">
+                                                <p-radioButton name="coverPageImage_type_2" value={{BRANDING.DEFAULT}}
+                                                    label="Default"
+                                                    [(ngModel)]="brandingDetails['coverPageImage2'].selection"
+                                                    #coverPageImage_type_2="ngModel" required [disabled]="!isEditable"
+                                                    (ngModelChange)="brandingDetailChange('coverPageImage2')">
+                                                </p-radioButton>
+                                            </div>
+                                        </div>
+                                        <div class="mr-3 mb-3">
+                                            <div class="cover-image"
+                                                [style.background-color]="brandingDetails['coverPageImage2'].customImagePath ? '#ffffff' : '#e0e0e0'">
+                                                <span
+                                                    *ngIf="!brandingDetails['coverPageImage2'].customImagePath">{{ 'BRANDING.NO_IMAGE_UPLOADED' | translate }}
+                                                </span>
+                                                <img *ngIf="brandingDetails['coverPageImage2'].customImagePath"
+                                                    [src]="brandingDetails['coverPageImage2'].customImagePath"
+                                                    width="100%" height="100%">
+                                            </div>
+                                            <div class="mt-1">
+                                                <p-radioButton name="coverPageImage_type_2" value={{BRANDING.CUSTOM}}
+                                                    label="Custom"
+                                                    [(ngModel)]="brandingDetails['coverPageImage2'].selection"
+                                                    #coverPageImage_type_2="ngModel" required [disabled]="!isEditable"
+                                                    (ngModelChange)="brandingDetailChange('coverPageImage2')">
+                                                </p-radioButton>
+                                            </div>
+                                        </div>
+                                        <!-- <div class="mr-3 mb-3">
+                                                                                            <div class="cover-page-close mt-0">
+                                                                                                <i *ngIf="brandingDetails['coverPageImage2'].customImagePath && isEditable" class="ion-md-close-circle cursor-p"
+                                                                                                    (click)="removeSelected(4)"></i>
+                                                                                                <i *ngIf="!brandingDetails['coverPageImage2'].customImagePath || !isEditable" class="ion-md-close-circle disabled-link"></i>
+                                                                                            </div>
+                                                                                        </div> -->
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12 text-right">
+                                            <a routerLink="document-cover-page-selection"
+                                                class="btn btn-success btn-small p-lr-25 mr-3 text-capitalize"
+                                                [translate]="'BRANDING.DOCUMENT_LIST'"></a>
+                                            <button type="button"
+                                                *ngIf="brandingDetails['coverPageImage2'].selection == BRANDING.DEFAULT || !isEditable"
+                                                class="btn btn-success btn-small p-lr-25 mr-3 disabled-link text-capitalize"
+                                                [translate]="'BRANDING.UPLOAD'"></button>
+                                            <button type="button"
+                                                *ngIf="brandingDetails['coverPageImage2'].selection == BRANDING.CUSTOM && isEditable"
+                                                class="btn btn-success btn-small p-lr-25 mr-3 text-capitalize"
+                                                (click)="open(content, 4)" [translate]="'BRANDING.UPLOAD'"></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </p-accordionTab>
+                        <p-accordionTab [selected]=expandDocument>
+                            <p-header>
+                                <h3 class="fs-12 fw-700" [translate]="'BRANDING.SECTION.COVER_PAGE_TEXT_FORMAT'"></h3>
+                            </p-header>
+                            <div class="row">
+                                <div class="col-2"></div>
+                                <div class="col-10 form-group">
+                                    <div class="d-flex cover-page-text-format-wrap">
+                                        <div class="cover-page-text-format-img">
+                                            <div class="cover-image"
+                                                [style.background-color]="brandingDetails['coverPageTextFormat'].leftAlignImagePath ? '#ffffff' : '#e0e0e0'">
+                                                <img *ngIf="brandingDetails['coverPageTextFormat'].leftAlignImagePath"
+                                                    [src]="brandingDetails['coverPageTextFormat'].leftAlignImagePath"
+                                                    width="100%" height="100%">
+                                            </div>
+                                            <div class="d-flex flex-column mb-3 mb-md-0 mt-1 align-items-center">
+                                                <p-radioButton name="coverPageTextFormat" value={{BRANDING.DEFAULT}}
+                                                    label="Left"
+                                                    [(ngModel)]="brandingDetails['coverPageTextFormat'].selection"
+                                                    #coverPageTextFormat="ngModel" required [disabled]="!isEditable">
+                                                </p-radioButton>
+                                            </div>
+                                        </div>
+                                        <div class="cover-page-text-format-img">
+                                            <div class="cover-image"
+                                                [style.background-color]="brandingDetails['coverPageTextFormat'].centerAlignImagePath ? '#ffffff' : '#e0e0e0'">
+                                                <img *ngIf="brandingDetails['coverPageTextFormat'].centerAlignImagePath"
+                                                    [src]="brandingDetails['coverPageTextFormat'].centerAlignImagePath"
+                                                    width="100%" height="100%">
+                                            </div>
+                                            <div class="d-flex flex-column mb-3 mt-1 mb-md-0 align-items-center">
+                                                <p-radioButton name="coverPageTextFormat" value={{BRANDING.CUSTOM}}
+                                                    label="Centred"
+                                                    [(ngModel)]="brandingDetails['coverPageTextFormat'].selection"
+                                                    #coverPageTextFormat="ngModel" required [disabled]="!isEditable">
+                                                </p-radioButton>
+                                            </div>
+                                        </div>
+                                        <div class="cover-page-text-format-img">
+                                            <div class="cover-image"
+                                                [style.background-color]="brandingDetails['coverPageTextFormat'].highAlignImagePath ? '#ffffff' : '#e0e0e0'">
+                                                <img *ngIf="brandingDetails['coverPageTextFormat'].highAlignImagePath"
+                                                    [src]="brandingDetails['coverPageTextFormat'].highAlignImagePath"
+                                                    width="100%" height="100%">
+                                            </div>
+                                            <div class="d-flex flex-column mb-3 mt-1 mb-md-0 align-items-center">
+                                                <p-radioButton name="coverPageTextFormat" value=2 label="High"
+                                                    [(ngModel)]="brandingDetails['coverPageTextFormat'].selection"
+                                                    #coverPageTextFormat="ngModel" required [disabled]="!isEditable">
+                                                </p-radioButton>
+                                            </div>
+                                        </div>
+                                        <div class="cover-page-text-format-img">
+                                            <div class="cover-image"
+                                                [style.background-color]="brandingDetails['coverPageTextFormat'].lowAlignImagePath ? '#ffffff' : '#e0e0e0'">
+                                                <img *ngIf="brandingDetails['coverPageTextFormat'].lowAlignImagePath"
+                                                    [src]="brandingDetails['coverPageTextFormat'].lowAlignImagePath"
+                                                    width="100%" height="100%">
+                                            </div>
+                                            <div class="d-flex flex-column mb-3 mt-1 mb-md-0 align-items-center">
+                                                <p-radioButton name="coverPageTextFormat" value=3 label="Low"
+                                                    [(ngModel)]="brandingDetails['coverPageTextFormat'].selection"
+                                                    #coverPageTextFormat="ngModel" required [disabled]="!isEditable">
+                                                </p-radioButton>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </p-accordionTab>
+                        <p-accordionTab [selected]=expandDocument>
+                            <p-header>
+                                <h3 class="fs-12 fw-700" [translate]="'BRANDING.SECTION.COVER_PAGE_TEXT_COLOUR'"></h3>
+                            </p-header>
+                            <div class="row p-3">
+                                <div class="col-12 col-md-2">
+                                    <span></span>
+                                </div>
+                                <div class="col-12 col-md-10 form-group mb-0">
+                                    <div class="row">
+                                        <div class="col-12 col-md-6">
+                                            <!--  Default -->
+                                            <div class="d-flex flex-column mb-3 mb-md-0">
+                                                <p-radioButton name="coverPageTextColour" value={{BRANDING.DEFAULT}}
+                                                    label="Default"
+                                                    [(ngModel)]="brandingDetails['coverPageTextColor'].selection"
+                                                    #coverTextColour="ngModel" required [disabled]="!isEditable"
+                                                    (ngModelChange)="brandingDetailChange('coverPageTextColor')">
+                                                </p-radioButton>
+                                                <app-rgb-color-table [isEditable]="isEditable"
+                                                    [displayTypeVertical]=true
+                                                    [colours]="brandingDetails['coverPageTextColor'].coverTextDefaultColors"
+                                                    [forDefault]=true
+                                                    [typeSelected]="brandingDetails['coverPageTextColor'].selection">
+                                                </app-rgb-color-table>
+
+                                            </div>
+                                            <!-- Default -->
+                                        </div>
+                                        <div class="col-12 col-md-6">
+                                            <!-- Custom -->
+                                            <div class="d-flex flex-column">
+                                                <p-radioButton name="coverPageTextColour" value={{BRANDING.CUSTOM}}
+                                                    label="Custom"
+                                                    [(ngModel)]="brandingDetails['coverPageTextColor'].selection"
+                                                    #coverTextColour="ngModel" required [disabled]="!isEditable"
+                                                    (ngModelChange)="brandingDetailChange('coverPageTextColor')">
+                                                </p-radioButton>
+                                                <app-rgb-color-table [isEditable]="isEditable"
+                                                    [displayTypeVertical]=true
+                                                    [colours]="brandingDetails['coverPageTextColor'].coverTextCustomColors"
+                                                    [forDefault]=false
+                                                    [typeSelected]="brandingDetails['coverPageTextColor'].selection">
+                                                </app-rgb-color-table>
+                                            </div>
+                                            <!-- Custom -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </p-accordionTab>
+                        <p-accordionTab [selected]=expandDocument>
+                            <p-header>
+                                <h3 class="fs-12 fw-700" [translate]="'BRANDING.SECTION.GRAPH_COLOUR_PALETTE'"></h3>
+                            </p-header>
+                            <div class="row">
+                                <div class="col-xl-2 col-12">
+                                    <span></span>
+                                </div>
+                                <div class="col-xl-10 col-12 form-group mb-0">
+                                    <div class="row p-3">
+                                        <div class="col-12 col-md-6">
+                                            <div class="d-flex flex-column mb-3 mb-md-0">
+                                                <p-radioButton name="graphPaletteType" value={{BRANDING.DEFAULT}}
+                                                    label="Default"
+                                                    [(ngModel)]="brandingDetails['graphColorPalette'].selection"
+                                                    #graphColourPalette="ngModel" required [disabled]="!isEditable"
+                                                    (ngModelChange)="brandingDetailChange('graphColorPalette')">
+                                                </p-radioButton>
+                                                <app-rgb-color-table [isEditable]="isEditable"
+                                                    [displayTypeVertical]=false
+                                                    [colours]="brandingDetails['graphColorPalette'].defaultGraphColorPalette"
+                                                    [forDefault]=true
+                                                    [typeSelected]="brandingDetails['graphColorPalette'].selection">
+                                                </app-rgb-color-table>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 col-md-6">
+                                            <div class="d-flex flex-column"
+                                                [ngClass]="{ 'color-custom-table-wrap': brandingDetails['graphColorPalette'].selection == BRANDING.CUSTOM }">
+                                                <p-radioButton name="graphPaletteType" value={{BRANDING.CUSTOM}}
+                                                    label="Custom"
+                                                    [(ngModel)]="brandingDetails['graphColorPalette'].selection"
+                                                    #graphColourPalette="ngModel" required [disabled]="!isEditable"
+                                                    (ngModelChange)="brandingDetailChange('graphColorPalette')">
+                                                </p-radioButton>
+                                                <app-rgb-color-table [isEditable]="isEditable"
+                                                    [displayTypeVertical]=false
+                                                    [colours]="brandingDetails['graphColorPalette'].customGraphColorPalette"
+                                                    [forDefault]=false
+                                                    [typeSelected]="brandingDetails['graphColorPalette'].selection">
+                                                </app-rgb-color-table>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 mt-4" *ngIf="accessRights['REG_BRAND_ADMN_Thm']['accessLevel'] > 1">
+                                            <div class="pull-right">
+                                                <button type="button"
+                                                    *ngIf="brandingDetails['graphColorPalette'].selection == BRANDING.DEFAULT || !isEditable"
+                                                    class="btn btn-success btn-small p-lr-25 mr-3 disabled-link text-capitalize"
+                                                    [translate]="'BRANDING.CHOOSE_A_THEME'"></button>
+                                                <button type="button"
+                                                    *ngIf="brandingDetails['graphColorPalette'].selection == BRANDING.CUSTOM && isEditable"
+                                                    class="btn btn-success btn-small p-lr-25 mr-3 text-capitalize"
+                                                    (click)="chooseTheme()"
+                                                    [translate]="'BRANDING.CHOOSE_A_THEME'"></button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </p-accordionTab>
+                        <p-accordionTab [selected]=expandDocument>
+                            <p-header>
+                                <h3 class="fs-12 fw-700" [translate]="'BRANDING.SECTION.COVER_PAGE_ELEMENTS'"></h3>
+                            </p-header>
+                            <div class="row">
+                                <div class="col-12 col-md-2">
+                                    <span></span>
+                                </div>
+                                <div class="col-12 col-md-10 mb-0 form-group">
+                                    <div class="col-5 form-check d-flex">
+                                        <p-radioButton name="coverPageElementsType" value={{BRANDING.DEFAULT}}
+                                            label="Default" [(ngModel)]="brandingDetails['coverPageElements'].selection"
+                                            #coverTextColour="ngModel" required [disabled]="!isEditable"
+                                            (ngModelChange)="brandingDetailChange('coverPageElements')">
+                                        </p-radioButton>
+                                    </div>
+                                    <div class="col-5 form-check d-flex">
+                                        <p-radioButton name="coverPageElementsType" value={{BRANDING.CUSTOM}}
+                                            label="Custom" [(ngModel)]="brandingDetails['coverPageElements'].selection"
+                                            #coverTextColour="ngModel" required [disabled]="!isEditable"
+                                            (ngModelChange)="brandingDetailChange('coverPageElements')">
+                                        </p-radioButton>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row"
+                                *ngFor="let element of brandingDetails['coverPageElements'].coverPageDefaultElements; index as i;">
+                                <div class="col-12 col-md-2">
+                                    <span></span>
+                                </div>
+                                <div class="col-12 col-md-10 form-group">
+                                    <div class="col-5 form-check d-flex">
+                                        <p-checkbox name="default_element_{{i}}" [value]="element" [label]="element"
+                                            [required]="true"
+                                            [(ngModel)]="brandingDetails['coverPageElements'].coverPageDefaultElements"
+                                            disabled labelStyleClass="elements-text"></p-checkbox>
+                                    </div>
+                                    <div class="col-5 form-check d-flex">
+                                        <p-checkbox name="custom_element_{{i}}" [value]="element" [label]="element"
+                                            [required]="true"
+                                            [(ngModel)]="brandingDetails['coverPageElements'].coverPageCustomElements"
+                                            labelStyleClass="elements-text"
+                                            [disabled]="(brandingDetails['coverPageElements'].selection == BRANDING.CUSTOM && !isEditable) || brandingDetails['coverPageElements'].selection == BRANDING.DEFAULT">
+                                        </p-checkbox>
+                                    </div>
+                                </div>
+                            </div>
+                        </p-accordionTab>
+                        <p-accordionTab [selected]=expandDocument>
+                            <p-header>
+                                <h3 class="fs-12 fw-700" [translate]="'BRANDING.SECTION.DOCUMENT_DISCLAIMER_1'"></h3>
+                            </p-header>
+                            <div class="row p-3">
+                                <div class="col-2">
+                                    <span></span>
+                                </div>
+                                <div class="col-10">
+                                    <div class="form-group mb-0">
+                                        <div class="form-check d-flex">
+                                            <p-radioButton name="docDisclaimertype1" value={{BRANDING.DEFAULT}}
+                                                label="Default"
+                                                [(ngModel)]="brandingDetails['documentDisclaimer1'].selection"
+                                                #docDisclaimertype1="ngModel" required [disabled]="!isEditable"
+                                                (ngModelChange)="brandingDetailChange('documentDisclaimer1')">
+                                            </p-radioButton>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                        <div class="d-flex align-items-center">
+                                            <div>
+                                                <p>{{brandingDetails['documentDisclaimer1'].defaultDisclaimer}}</p>
+                                            </div>
+                                            <div class="ml-auto p-2">
+                                                <a href="javascript:void(0)" class="swap-icon"
+                                                    (click)="translateText(brandingDetails['documentDisclaimer1'].defaultDisclaimer, 0)">
+                                                    <i class="ion-md-swap"></i>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <p-radioButton name="docDisclaimertype1" value={{BRANDING.CUSTOM}}
+                                                label="Custom"
+                                                [(ngModel)]="brandingDetails['documentDisclaimer1'].selection"
+                                                #docDisclaimertype1="ngModel" required [disabled]="!isEditable"
+                                                (ngModelChange)="brandingDetailChange('documentDisclaimer1')">
+                                            </p-radioButton>
+                                        </div>
+                                        <div class="d-flex align-items-center">
+                                            <div class="w-100">
+                                                <input class="form-control form-control-height-120" type="text"
+                                                    name="docCustomDisclaimer_1"
+                                                    [(ngModel)]="brandingDetails['documentDisclaimer1'].customDisclaimer"
+                                                    required
+                                                    [disabled]="(brandingDetails['documentDisclaimer1'].selection == BRANDING.CUSTOM && !isEditable) || brandingDetails['documentDisclaimer1'].selection == BRANDING.DEFAULT">
+                                            </div>
+                                            <div class="ml-auto p-2">
+                                                <a href="javascript:void(0)" class="swap-icon"
+                                                    (click)="translateText(brandingDetails['documentDisclaimer1'].customDisclaimer, 1)">
+                                                    <i class="ion-md-swap"></i>
+                                                </a>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="col-12 pt-3">
+                                    <div class="pull-right d-inline-block va-middle">
+                                        <a routerLink="document-disclaimer-selection"
+                                            [translate]="'BRANDING.DOCUMENT_LIST'"
+                                            class="btn btn-success btn-small p-lr-25 text-capitalize"></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </p-accordionTab>
+                        <p-accordionTab [selected]=expandDocument>
+                            <p-header>
+                                <h3 class="fs-12 fw-700" [translate]="'BRANDING.SECTION.DOCUMENT_DISCLAIMER_2'"></h3>
+                            </p-header>
+                            <div class="row p-3">
+                                <div class="col-2">
+                                    <span></span>
+                                </div>
+                                <div class="col-10">
+                                    <div class="form-group mb-0">
+                                        <div class="form-check d-flex">
+                                            <p-radioButton name="docDisclaimertype2" value={{BRANDING.DEFAULT}}
+                                                label="Default"
+                                                [(ngModel)]="brandingDetails['documentDisclaimer2'].selection"
+                                                #docDisclaimertype2="ngModel" required [disabled]="!isEditable"
+                                                (ngModelChange)="brandingDetailChange('documentDisclaimer2')">
+                                            </p-radioButton>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                        <div class="d-flex align-items-center">
+                                            <div>
+                                                <p>{{brandingDetails['documentDisclaimer2'].defaultDisclaimer}}</p>
+                                            </div>
+                                            <div class="ml-auto p-2">
+                                                <a href="javascript:void(0)" class="swap-icon"
+                                                    (click)="translateText(brandingDetails['documentDisclaimer2'].defaultDisclaimer, 0)">
+                                                    <i class="ion-md-swap"></i>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <p-radioButton name="docDisclaimertype2" value={{BRANDING.CUSTOM}}
+                                                label="Custom"
+                                                [(ngModel)]="brandingDetails['documentDisclaimer2'].selection"
+                                                #docDisclaimertype2="ngModel" required [disabled]="!isEditable"
+                                                (ngModelChange)="brandingDetailChange('documentDisclaimer2')">
+                                            </p-radioButton>
+                                        </div>
+                                        <div class="d-flex align-items-center">
+                                            <div class="w-100">
+                                                <input class="form-control form-control-height-120" type="text"
+                                                    name="docCustomDisclaimer_2"
+                                                    [(ngModel)]="brandingDetails['documentDisclaimer2'].customDisclaimer"
+                                                    required
+                                                    [disabled]="(brandingDetails['documentDisclaimer2'].selection == BRANDING.CUSTOM && !isEditable) || brandingDetails['documentDisclaimer2'].selection == BRANDING.DEFAULT">
+                                            </div>
+                                            <div class="ml-auto p-2">
+                                                <a href="javascript:void(0)" class="swap-icon"
+                                                    (click)="translateText(brandingDetails['documentDisclaimer2'].customDisclaimer, 1)">
+                                                    <i class="ion-md-swap"></i>
+                                                </a>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="col-12 pt-3">
+                                    <div class="pull-right d-inline-block va-middle">
+                                        <a routerLink="document-disclaimer-selection"
+                                            [translate]="'BRANDING.DOCUMENT_LIST'"
+                                            class="btn btn-success btn-small p-lr-25 text-capitalize"></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </p-accordionTab>
+                    </div>
+                    <!-- End Document -->
+
+                    <!-- Start Client Portal -->
+                    <div class='mb-4' *ngIf="accessRights['REG_BRAND_ADMN_CP']['accessLevel'] > 1">
+                        <div class="row">
+                            <div class="col-10">
+                                <p-header>
+                                    <h4 class="mt-2 fw-700" [translate]="'BRANDING.SECTION.CLIENT_PORTAL'"></h4>
+                                </p-header>
+                            </div>
+                            <div class="col-2">
+                                <div class="pull-right expand-button d-flex">
+                                    <a (click)="expandClientPortal = !expandClientPortal" class="ml-auto">
+                                        <span *ngIf="!expandClientPortal" [translate]="'ACCORDIAN.EXPAND_ALL'"></span>
+                                        <span *ngIf="expandClientPortal" [translate]="'ACCORDIAN.COLLAPSE_ALL'"></span>
+                                        <i [ngClass]="{'ion-ios-arrow-down' : !expandClientPortal, 'ion-ios-arrow-up': expandClientPortal}"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
+                        <p-accordionTab [selected]=expandClientPortal>
+                            <p-header>
+                                <h3 class="fs-12 fw-700" [translate]="'BRANDING.SECTION.MIPLANPLUS_BRANDING'"></h3>
+                            </p-header>
+                            <div class="row p-3">
+                                <div class="col-xl-2 col-12">
+                                    <p class="mb-0">{{ 'BRANDING.FORMAT' | translate }} {{bannerImageFormat}} -
+                                        {{ 'BRANDING.TRANSPARENT' | translate}}</p>
+                                    <p>{{ 'BRANDING.SIZE' | translate }} {{bannerImageWidth}} x {{bannerImageHeight}}
+                                        {{ 'BRANDING.PIXELS' | translate }} </p>
+                                </div>
+
+                                <div class="col-xl-10 col-12">
+                                    <div class="form-group mb-0">
+                                        <div class="form-check d-flex">
+                                            <p-radioButton name="miBrandingBannerType" value={{BRANDING.DEFAULT}}
+                                                label="Default"
+                                                [(ngModel)]="brandingDetails['miPlanPlusBranding'].selection"
+                                                #miBrandingBannerType="ngModel" required [disabled]="!isEditable"
+                                                (ngModelChange)="brandingDetailChange('miPlanPlusBranding')">
+                                            </p-radioButton>
+                                        </div>
+                                        <div class="form-check d-flex">
+                                            <p-radioButton name="miBrandingBannerType" value={{BRANDING.CUSTOM}}
+                                                label="Custom"
+                                                [(ngModel)]="brandingDetails['miPlanPlusBranding'].selection"
+                                                #miBrandingBannerType="ngModel" required [disabled]="!isEditable"
+                                                (ngModelChange)="brandingDetailChange('miPlanPlusBranding')">
+                                            </p-radioButton>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="pull-right d-inline-block va-middle">
+                                        <button type="button"
+                                            *ngIf="brandingDetails['miPlanPlusBranding'].selection == BRANDING.DEFAULT"
+                                            [translate]="'BRANDING.UPLOAD'"
+                                            class="btn btn-success btn-small p-lr-25 disabled-link text-capitalize"></button>
+                                        <button type="button"
+                                            *ngIf="brandingDetails['miPlanPlusBranding'].selection == BRANDING.CUSTOM"
+                                            (click)="open(content, 5)" [translate]="'BRANDING.UPLOAD'"
+                                            class="btn btn-success btn-small p-lr-25 text-capitalize"></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </p-accordionTab>
+                        <p-accordionTab [selected]=expandClientPortal>
+                            <p-header>
+                                <h3 class="fs-12 fw-700"
+                                    [translate]="'BRANDING.SECTION.MIPLANPLUS_BANNER_BACKGROUND_COLOURS'"></h3>
+                            </p-header>
+                            <div class="row p-3">
+                                <div class="col-2">
+                                    <span></span>
+                                </div>
+                                <div class="col-10 form-group mb-0">
+                                    <div class="row">
+                                        <div class="col-12 col-md-6">
+                                            <!--  Default -->
+                                            <div class="d-flex flex-column mb-3 mb-md-0">
+                                                <p-radioButton name="miBannerBGcolour" value={{BRANDING.DEFAULT}}
+                                                    label="Default"
+                                                    [(ngModel)]="brandingDetails['miPlanPlusBannerBgColors'].selection"
+                                                    #miBannerBGcolour="ngModel" required [disabled]="!isEditable"
+                                                    (ngModelChange)="brandingDetailChange('miPlanPlusBannerBgColors')">
+                                                </p-radioButton>
+                                                <app-rgb-color-table [isEditable]="isEditable"
+                                                    [displayTypeVertical]=true
+                                                    [colours]="brandingDetails['miPlanPlusBannerBgColors'].defaultMiPlanPlusBannerBgColor"
+                                                    [forDefault]=true
+                                                    [typeSelected]="brandingDetails['miPlanPlusBannerBgColors']">
+                                                </app-rgb-color-table>
+
+                                            </div>
+                                            <!-- Default -->
+                                        </div>
+                                        <div class="col-12 col-md-6">
+                                            <!-- Custom -->
+                                            <div class="d-flex flex-column">
+                                                <p-radioButton name="miBannerBGcolour" value={{BRANDING.CUSTOM}}
+                                                    label="Custom"
+                                                    [(ngModel)]="brandingDetails['miPlanPlusBannerBgColors'].selection"
+                                                    #miBannerBGcolour="ngModel" required [disabled]="!isEditable"
+                                                    (ngModelChange)="brandingDetailChange('miPlanPlusBannerBgColors')">
+                                                </p-radioButton>
+                                                <app-rgb-color-table [isEditable]="isEditable"
+                                                    [displayTypeVertical]=true
+                                                    [colours]="brandingDetails['miPlanPlusBannerBgColors'].customMiPlanPlusBannerBgColor"
+                                                    [forDefault]=false
+                                                    [typeSelected]="brandingDetails['miPlanPlusBannerBgColors'].selection">
+                                                </app-rgb-color-table>
+                                            </div>
+                                            <!-- Custom -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </p-accordionTab>
+                        <p-accordionTab [selected]=expandClientPortal>
+                            <p-header>
+                                <h3 class="fs-12 fw-700" [translate]="'BRANDING.SECTION.MIPLANPLUS_BANNER_TEXT_COLOUR'">
+                                </h3>
+                            </p-header>
+                            <div class="row p-3">
+                                <div class="col-2">
+                                    <span></span>
+                                </div>
+                                <div class="col-10 form-group mb-0">
+                                    <div class="row">
+                                        <div class="col-12 col-md-6">
+                                            <!--  Default -->
+                                            <div class="d-flex flex-column mb-3 mb-md-0">
+                                                <p-radioButton name="miBannerTextColour" value={{BRANDING.DEFAULT}}
+                                                    label="Default"
+                                                    [(ngModel)]="brandingDetails['miPlanPlusBannerTextColor'].selection"
+                                                    #miBannerTextColour="ngModel" required [disabled]="!isEditable"
+                                                    (ngModelChange)="brandingDetailChange('miPlanPlusBannerTextColor')">
+                                                </p-radioButton>
+                                                <app-rgb-color-table [isEditable]="isEditable"
+                                                    [displayTypeVertical]=true
+                                                    [colours]="brandingDetails['miPlanPlusBannerTextColor'].defaultMiPlanPlusBannerTextColors"
+                                                    [forDefault]=true
+                                                    [typeSelected]="brandingDetails['miPlanPlusBannerTextColor'].selection">
+                                                </app-rgb-color-table>
+
+                                            </div>
+                                            <!-- Default -->
+                                        </div>
+                                        <div class="col-12 col-md-6">
+                                            <!-- Custom -->
+                                            <div class="d-flex flex-column">
+                                                <p-radioButton name="miBannerTextColour" value={{BRANDING.CUSTOM}}
+                                                    label="Custom"
+                                                    [(ngModel)]="brandingDetails['miPlanPlusBannerTextColor'].selection"
+                                                    #miBannerTextColour="ngModel" required [disabled]="!isEditable"
+                                                    (ngModelChange)="brandingDetailChange('miPlanPlusBannerTextColor')">
+                                                </p-radioButton>
+                                                <app-rgb-color-table [isEditable]="isEditable"
+                                                    [displayTypeVertical]=true
+                                                    [colours]="brandingDetails['miPlanPlusBannerTextColor'].customMiPlanPlusBannerTextColors"
+                                                    [forDefault]=false
+                                                    [typeSelected]="brandingDetails['miPlanPlusBannerTextColor'].selection">
+                                                </app-rgb-color-table>
+                                            </div>
+                                            <!-- Custom -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </p-accordionTab>
+                        <p-accordionTab [selected]=expandClientPortal>
+                            <p-header>
+                                <h3 class="fs-12 fw-700" [translate]="'BRANDING.SECTION.MIPLANPLUS_SITE_COLOURS'"></h3>
+                            </p-header>
+                            <div class="row p-3">
+                                <div class="col-2">
+                                    <span></span>
+                                </div>
+                                <div class="col-10 form-group mb-0">
+                                    <div class="row">
+                                        <div class="col-12 col-md-6">
+                                            <!--  Default -->
+                                            <div class="d-flex flex-column mb-3 mb-md-0">
+                                                <p-radioButton name="miSiteColours" value={{BRANDING.DEFAULT}}
+                                                    label="Default"
+                                                    [(ngModel)]="brandingDetails['miPlanPlusSiteColors'].selection"
+                                                    #miSiteColours="ngModel" required [disabled]="!isEditable"
+                                                    (ngModelChange)="brandingDetailChange('miPlanPlusSiteColors')">
+                                                </p-radioButton>
+                                                <app-rgb-color-table [isEditable]="isEditable"
+                                                    [displayTypeVertical]=true
+                                                    [colours]="brandingDetails['miPlanPlusSiteColors'].defaultMiPlanPlusSiteColors"
+                                                    [forDefault]=true
+                                                    [typeSelected]="brandingDetails['miPlanPlusSiteColors'].selection">
+                                                </app-rgb-color-table>
+
+                                            </div>
+                                            <!-- Default -->
+                                        </div>
+                                        <div class="col-12 col-md-6">
+                                            <!-- Custom -->
+                                            <div class="d-flex flex-column">
+                                                <p-radioButton name="miSiteColours" value={{BRANDING.CUSTOM}}
+                                                    label="Custom"
+                                                    [(ngModel)]="brandingDetails['miPlanPlusSiteColors'].selection"
+                                                    #miSiteColours="ngModel" required [disabled]="!isEditable"
+                                                    (ngModelChange)="brandingDetailChange('miPlanPlusSiteColors')">
+                                                </p-radioButton>
+                                                <app-rgb-color-table [isEditable]="isEditable"
+                                                    [displayTypeVertical]=true
+                                                    [colours]="brandingDetails['miPlanPlusSiteColors'].customMiPlanPlusSiteColors"
+                                                    [forDefault]=false
+                                                    [typeSelected]="brandingDetails['miPlanPlusSiteColors'].selection">
+                                                </app-rgb-color-table>
+                                            </div>
+                                            <!-- Custom -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </p-accordionTab>
+                    </div>
+                    <!-- End Client Portal -->
+                    <!-- Start Value Discovery App -->
+                    <div class='mb-4' *ngIf="accessRights['REG_BRAND_ADMN_VApp']['accessLevel'] > 1">
+                        <div class="row">
+                            <div class="col-10">
+                                <p-header>
+                                    <h4 class="mt-2 fw-700" [translate]="'BRANDING.SECTION.VALUES_DISCOVERY_APP'"></h4>
+                                </p-header>
+                            </div>
+                            <div class="col-2">
+                                <div class="pull-right expand-button d-flex">
+                                    <a (click)="expandValueApp = !expandValueApp" class="ml-auto">
+                                        <span *ngIf="!expandValueApp" [translate]="'ACCORDIAN.EXPAND_ALL'"></span>
+                                        <span *ngIf="expandValueApp" [translate]="'ACCORDIAN.COLLAPSE_ALL'"></span>
+                                        <i [ngClass]="{'ion-ios-arrow-down' : !expandValueApp, 'ion-ios-arrow-up': expandValueApp}"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
+                        <p-accordionTab [selected]=expandValueApp>
+                            <p-header>
+                                <h3 class="fs-12 fw-700" [translate]="'BRANDING.SECTION.VALUES_DISCOVERY_APP_LOGO'">
+                                </h3>
+                            </p-header>
+                        </p-accordionTab>
+                        <p-accordionTab [selected]=expandValueApp>
+                            <p-header>
+                                <h3 class="fs-12 fw-700" [translate]="'BRANDING.SECTION.VALUES_DISCOVERY_APP_COLOURS'">
+                                </h3>
+                            </p-header>
+                        </p-accordionTab>
+                        <p-accordionTab [selected]=expandValueApp>
+                            <p-header>
+                                <h3 class="fs-12 fw-700" [translate]="'BRANDING.SECTION.VALUES_DISCOVERY_APP_LOGO'">
+                                </h3>
+                            </p-header>
+                        </p-accordionTab>
+
+                    </div>
+                    <!-- End Value Discovery App -->
+                </p-accordion>
+            </div>
+            <div class="form-group text-right mt-4" *ngIf="isEditable">
+                <button type="button" (click)="cancelChanges()" value="cancel"
+                    class="btn btn-secondary btn-small mr-4 p-lr-25" [translate]="'FORM.ACTION.CANCEL'"></button>
+                <button type="submit" (click)="updateBranding()" value="submit"
+                    class="btn btn-success btn-small p-lr-25" [translate]="'FORM.ACTION.SAVE'"
+                    [disabled]="saveDisable"></button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<ng-template #content let-c="close" let-d="dismiss">
+    <div class="modal-header">
+        <span class="modal-title" id="modal-basic-title">{{title}}</span>
+        <span (click)="d('Cross click')" class="sidebar_action_icon ion-md-close-circle">
+        </span>
+    </div>
+    <form name="form" #f="ngForm" novalidate>
+        <div class="modal-body">
+            <div class="form-group center">
+                <app-image-upload maxFiles="1" maxSize="2" iconClass="ion-ios-person"
+                    (fileSelected)="uploadImage($event)" [isBrandingLogo]="isBrandingLogo" [popupType]="popupType">
+                </app-image-upload>
+            </div>
+
+        </div>
+    </form>
+    <div class="modal-footer">
+        <div class="form-group text-right mb-0">
+            <button class="btn btn-secondary btn-small mr-2" type="button" (click)="d('Cross click')"
+                [translate]="'FORM.ACTION.CANCEL'"></button>
+            <button type="submit" [disabled]="!f.form.valid" class="btn btn-success btn-small"
+                (click)="submitModal(); c('Save click');" [translate]="'FORM.ACTION.SAVE'"></button>
+        </div>
+    </div>
+</ng-template>
+
+<router-outlet></router-outlet>

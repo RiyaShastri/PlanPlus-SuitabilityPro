@@ -1,0 +1,151 @@
+<div class="side-form">
+    <form name="form" #f="ngForm" novalidate>
+        <div class="box">
+            <div class="box-header">
+                <span class="sidebar_title" [translate]="'PORTFOLIOS.ACTIONS.ADD_PORTFOLIO'"></span>
+                <span (click)="back(1); closeButtonDisable = true" class="sidebar_action_icon ion-md-close-circle"></span>
+            </div>
+            <br />
+            <div class="box-body">
+                <div class="form-group" [ngClass]="{'has-error': !description.valid && (description.dirty || description.touched || f.submitted)}">
+                    <label class=custom-form-label [translate]="'PORTFOLIOS.NAME'"></label>
+                    <input type="text" class="form-control" name="description" [(ngModel)]="portfolio.description"
+                        #description="ngModel" required />
+                </div>
+                <div class="form-group">
+                	<ng-container *ngIf="accessRights['CLI02']['accessLevel'] > 0">
+	                    <h4 class="text-right" *ngIf="hasGoals && showLinkGoals">
+	                        <a (click)="addPortfolio(f, 1, 1);f.reset();saveDisable = true" class="fs-12 text-icon-wrapper">
+	                            <i class="action_icon ion-md-link"></i>
+	                            <span class="text-lbl icon-left">{{ 'PORTFOLIO.ACTION.LINK_GOALS' | translate }}</span>
+	                        </a>
+	                    </h4>
+                    </ng-container>
+                </div>
+                <ng-container  *ngIf="accessRights['CLI05']['accessLevel'] == 0">
+                    <div class="row">
+                        <div class="col-12">
+                            <table class="table investor-table text-left">
+                                <thead>
+                                    <tr>
+                                        <th width="60%" [colSpan]="investorList.length > 1 ? 2 : ''" class="pl-0 pr-0 fs-18 title-dark align-middle">
+                                            {{ 'PORTFOLIO.TABLE.INVESTOR' | translate}}
+                                            <ng-container *ngIf="!selectDecisionMaker && investorList.length > 1">
+                                                <span class="ion-ios-alert" [ngbTooltip]="keyWarning" #warning="ngbTooltip" triggers="manual"
+                                                placement="bottom auto" (click)="warning.open()"></span>
+                                                <ng-template #keyWarning>
+                                                    <p>{{ 'PORTFOLIO.ADD_INVESTOR.INVESTOR_WARNING' | translate}}</p>
+                                                    <p class="text-right m-0 p-0">
+                                                        <button class="btn btn-secondary btn-small m-0" (click)="warning.close()" [translate]="'RISK_RESULTS_PAGE.WARNING.CLOSE'"></button>
+                                                    </p>
+                                                </ng-template>
+                                            </ng-container>
+                                        </th>
+                                        <th width="40%" class="pl-0 pr-0" class="text-right">
+                                            <a class="btn-add" *ngIf="!isGrayOut" (click)="addInvestor()">
+                                                <i class="ion-md-add-circle"></i>
+                                                <span [translate]="'PORTFOLIO.ADD_INVESTOR.TITLE'"></span>
+                                            </a>
+                                            <a class="btn-add isDisabled" *ngIf="isGrayOut">
+                                                <i class="ion-md-add-circle"></i>
+                                                <span [translate]="'PORTFOLIO.ADD_INVESTOR.TITLE'"></span>
+                                            </a>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="secondary-header" *ngIf="investorList.length > 0">
+                                        <td width="20%" class="align-top" [translate]="'PORTFOLIO.TABLE.DECISION_MAKER'"
+                                            *ngIf="investorList.length > 1"></td>
+                                        <td width="40%" class="align-top pl-0 pr-0" [translate]="'PORTFOLIO.TABLE.INVESTOR'"></td>
+                                        <td width="40%" class="align-top text-right pr-0" [translate]="'PORTFOLIO.TABLE.INVESTED'"></td>
+                                    </tr>
+
+                                    <tr *ngFor="let investor of investorList; let i = index;">
+                                        <td width="20%" *ngIf="investorList.length > 1">
+                                            <div class="form-group">
+                                                <p-radioButton name="decision_maker" [value]="investor.personalDetails.id" [(ngModel)]="decisionMaker"
+                                                    required [disabled]="!selectDecisionMaker"></p-radioButton>
+                                            </div>
+                                        </td>
+                                        <td width="40%" class="pt-2 pb-2" [ngClass]="{'text-center': investorList.length > 1}">
+                                            <div class="d-flex align-items-center" *ngIf="investorList.length >= 1">
+                                                <div class="member-avatar-wrapper">
+                                                    <span *ngIf="!investor.personalDetails.avatar" class="initials mr-2" [ngClass]="investor.personalDetails.btnColor">
+                                                        {{investor.personalDetails.btnInitials}}</span>
+                                                    <img class="initials bg-transparent" height="50" *ngIf="investor.personalDetails.avatar" [src]="investor.personalDetails.avatar"
+                                                        (error)="investor.personalDetails.avatar = null" />
+                                                </div>
+                                                <span class="ml-2 fw-400 investor_name"> {{investor.personalDetails.firstName}}</span>
+                                            </div>
+                                        </td>
+                                        <td  class="py-2 pr-0 text-right align-top" *ngIf="i == 0">
+                                            <div class="form-group mb-0">
+                                                <input *ngIf="i === 0" class="form-control d-inline-block text-right h-25"
+                                                    name="allocationPercent{{i}}" #allocationPercent="ngModel"
+                                                    [textMask]="{mask: currencyMask}" appNumeric [(ngModel)]="investment"
+                                                    required />
+                                            </div>
+                                        </td>
+                                        <td class="py-2 text-right invested-td-width border-0" *ngIf="i !== 0" ></td>
+                                    </tr>
+                                    <ng-container *ngIf="investorList.length === 0">
+                                        <tr>
+                                            <td colspan="3" class="no-investors">
+                                                {{ 'PORTFOLIO.ADD_INVESTOR.NO_INVESTORS' | translate }}
+                                            </td>
+                                        </tr>
+                                    </ng-container>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </ng-container>
+              <ng-container *ngIf="accessRights['CLI02']['accessLevel'] == 0">
+                    <div class="row mt-5">
+                        <div class="col-12">
+                            <h4 class="title-dark">{{ 'PORTFOLIO.TIME_HORIZON' | translate }}</h4>
+                        </div>
+                        <div class="col-12">
+                            <hr class="my-2" />
+                        </div>
+                        <div class="col-12">
+                            <span class="fs-14 fw-400">
+                                {{ 'PORTFOLIO.TIME_HORIZON_DESCRIPTION' | translate }}
+                            </span>
+                        </div>
+                    </div>
+                    <div class="row my-3 d-flex">
+                        <div class="col-9">
+                            <div class="form-group mb-0">
+                                <p-dropdown [options]="timeHorizonDropdownArray" name="timeHorizon" [(ngModel)]="portfolio.timeHorizonObj"
+                                    #timeHorizon="ngModel" required optionLabel="displayText" placeholder="Select number of year"></p-dropdown>
+                            </div>
+                        </div>
+                        <div class="col-3 align-self-center">
+                            <p class="mb-0 ff-Montserrat fs-14" [translate]="'PORTFOLIO.YEARS'"></p>
+                        </div>
+                    </div>
+              </ng-container>
+            </div>
+            <div class="box-footer">
+                <div class="form-group text-right pt-2">
+                    <button class="btn btn-secondary btn-small mr-2" type="button" (click)="back(1); closeButtonDisable = true" [translate]="'FORM.ACTION.CANCEL'"
+                    [disabled]="closeButtonDisable"></button>
+
+                    <button [disabled]="!f.form.valid || saveDisable" type="button" class="btn btn-small btn-success" (click)="addPortfolio(f, 0, 1); f.reset();saveDisable = true"
+                        [translate]="'FORM.ACTION.SAVE'"></button>
+                    <div class="btn-group btn-save btn-custom-split" ngbDropdown role="group" placement="top-right"
+                        aria-label="Button group with nested dropdown">
+                        <button [disabled]="!f.form.valid || saveDisable" class="btn btn-small btn-success dropdown-toggle-split"
+                            ngbDropdownToggle></button>
+                        <div class="dropdown-menu btn-dropDown-top" ngbDropdownMenu>
+                            <button class="dropdown-item" (click)="addPortfolio(f, 0, 1); f.reset();saveDisable = true" [translate]="'FORM.ACTION.SAVE'"></button>
+                            <button class="dropdown-item" (click)="addPortfolio(f, 0, 2); f.reset();saveDisable = true" [translate]="'FORM.ACTION.SAVE/EDIT'"></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

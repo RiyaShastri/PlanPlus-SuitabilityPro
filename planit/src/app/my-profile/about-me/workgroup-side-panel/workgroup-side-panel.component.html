@@ -1,0 +1,103 @@
+<div class="side-form">
+    <form name="form" (ngSubmit)="f.form.valid && submitForm()" #f="ngForm" novalidate>
+        <div class="box">
+            <div class="box-header">
+                <span class="sidebar_title" [translate]="'ABOUT_ME.WORKGROUP'"></span>
+                <span (click)="back(); closeButtonDisable = true" class="sidebar_action_icon ion-md-close-circle float-right"></span>
+            </div>
+
+            <div class="box-body">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="form-group"
+                            [ngClass]="{ 'has-error': !workgroup_name.valid && (workgroup_name.dirty || workgroup_name.touched || f.submitted)}">
+                            <label class="custom-form-label"
+                                [translate]="'ABOUT_ME.WORKGROUP_FORM.WORKGROUP_NAME'"></label>
+                            <input type="text" class="form-control" name="workgroup_name"
+                                [(ngModel)]="workgroupDetails['description']" #workgroup_name="ngModel" required />
+                        </div>
+                        <div class="d-flex align-items-center">
+                            <div class="form-group w-100">
+                                <label class="custom-form-label"
+                                    [translate]="'ABOUT_ME.WORKGROUP_FORM.INVITE_NEW_MEMBER'"></label>
+                                <input type="text" class="form-control" placeholder="Enter new member's USER ID"
+                                    name="new_user" [(ngModel)]="newUserID" #new_user="ngModel" />
+                            </div>
+                            <span class="ml-3 mr-0 mb-0">
+                                <a *ngIf="newUserID !== ''" class="btn-add" (click)="addUser()">
+                                    <i class="ion-md-add-circle mr-0"></i>
+                                </a>
+                                <a *ngIf="newUserID == ''" class="btn-add disabled-link" disabled>
+                                    <i class="ion-md-add-circle mr-0"></i>
+                                </a>
+                            </span>
+                        </div>
+                        <p *ngIf="userNotFoundError" class="text-error"
+                            [translate]="'ABOUT_ME.WORKGROUP_FORM.USER_NOT_FOUND_ERROR'"></p>
+                        <p *ngIf="alreadyMemberError" class="text-error"
+                            [translate]="'ABOUT_ME.WORKGROUP_FORM.ALREADY_MEMBER_ERROR'"></p>
+                        <div class="form-group">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <td [translate]="'ABOUT_ME.WORKGROUP_FORM.MEMBERS'" width="50%"></td>
+                                        <td [translate]="'ABOUT_ME.WORKGROUP_FORM.USER_ID'" width="40%"></td>
+                                        <td width="10%"></td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <ng-container
+                                        *ngIf="workgroupDetails['members'] && workgroupDetails['members'].length > 0">
+                                        <tr *ngFor="let member of workgroupDetails['members']; index as i">
+                                            <td width="50%">
+                                                <div class="d-flex">
+                                                    <div class="client-avatars hidden-xs-down mr-2">
+                                                        <div class="client-img client-icon" *ngIf="member.avtar">
+                                                            <img [src]="member.avtar" alt="" class=""
+                                                                (error)="member.avtar = null" />
+                                                        </div>
+                                                        <span *ngIf="!member.avtar" alt=""
+                                                            class="client-icon client ion-ios-person"></span>
+                                                    </div>
+                                                    <span class="align-self-center"
+                                                        [ngClass]="{'grayed-out-text' : member.status == 3 || member.status == 0}">
+                                                        {{member.firstName}} {{member.lastName}}
+                                                    </span>
+                                                </div>
+                                            </td>
+                                            <td width="40%">
+                                                <span
+                                                    [ngClass]="{'grayed-out-text' : member.status == 3 || member.status == 0}">
+                                                    {{member.memberId}}
+                                                </span>
+                                            </td>
+                                            <td width="10%">
+                                                <a class="fs-12" (click)="removeUser(member)">
+                                                    <i class="ion-md-close-circle delete-portfolio"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    </ng-container>
+                                    <tr *ngIf="!workgroupDetails['members'] || workgroupDetails['members'].length == 0">
+                                        <td colspan="3" class="no-record text-center">
+                                            <i class="ion-ios-alert mr-2"></i>{{'NO_RESULTS' | translate}}
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="box-footer">
+                <div class="form-group text-right">
+                    <button type="button" (click)="back(); closeButtonDisable = true" value="cancel"
+                        class="btn btn-secondary btn-small mr-4 p-lr-25" [translate]="'FORM.ACTION.CANCEL'" [disabled]="closeButtonDisable"></button>
+                    <button type="submit" value="submit" [disabled]="f.form.invalid"
+                        class="btn btn-success btn-small p-lr-25" [translate]="'FORM.ACTION.SAVE'"></button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

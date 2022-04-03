@@ -1,0 +1,356 @@
+<div class="row" *ngIf="familyMembersRisk && accessRights">
+
+    <div class="col-12">
+        <table class="table table-wrap" [ngClass]="{'top-border' : !isTile}">
+            <thead>
+                <tr>
+                    <th>{{isTile ? ('CUSTOM.CLIENT' | translate) : ('RISK_TOLERANCE_PAGE.TABLE.HEADING.FAMILY_MEMBER' |
+                        translate)}}</th>
+                    <th *ngIf="isTile" [translate]="'RISK_TOLERANCE_PAGE.TABLE.HEADING.RISK_TOLERANCE'"></th>
+                    <th *ngIf="!isTile" class="hidden-md-down" [translate]="'RISK_TOLERANCE_PAGE.TABLE.HEADING.INVITE_SENT'"></th>
+                    <th class="hidden-xs-down" [translate]="'RISK_TOLERANCE_PAGE.TABLE.HEADING.LAST_UPDATE'"></th>
+                    <th *ngIf="!isTile" class="hidden-xs-down" [translate]="'RISK_TOLERANCE_PAGE.TABLE.HEADING.QUESTIONNAIRE'"></th>
+                    <th *ngIf="!isTile" [translate]="'RISK_TOLERANCE_PAGE.TABLE.HEADING.RISK_TOLERANCE'"></th>
+                    <th [ngClass]="{'text-center w-50px' : !isTile}" [translate]="'RISK_TOLERANCE_PAGE.TABLE.HEADING.ACTIONS'"></th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <ng-container *ngIf="familyMembersRisk.length > 0">
+                    <tr *ngFor="let member of familyMembersRisk; let i = index; let last = last">
+                        <td>
+                            <div class="d-flex">
+                                <app-member-avatar [initials]="member.personalDetails.btnInitials" [relationClass]="member.personalDetails.btnColor"
+                                    avatarClass="initials" [avatarUrl]="member.personalDetails.avatar">
+                                </app-member-avatar>
+                                <span class="align-self-center" [ngClass]="{'fw-700 pl-md-3 pl-1' : isTile}">{{member.personalDetails.firstName}}
+                                    {{member.personalDetails.lastName}}</span>
+                            </div>
+                        </td>
+                        <td *ngIf="isTile">
+                            <div *ngIf="member.agreedScore && member.agreedScore > 0; else tbdRiskTolerance">
+                                <span class="fw-500">
+                                    {{member.agreedScore}}
+                                </span>
+                                <!-- <span class="badge-text">{{riskScoreBadge(member.agreedScore).label}}</span> -->
+                            </div>
+                            <ng-template #tbdRiskTolerance><span class="tbd-lbl"></span></ng-template>
+                        </td>
+                        <td class="hidden-md-down" *ngIf="!isTile">
+                            <div *ngIf="member.inviteSentDate && member.invited; else notAvailable">
+                                {{member.inviteSentDate | date:'yyyy.MM.dd'}}
+                            </div>
+                        </td>
+                        <td class="hidden-xs-down">
+                            <div *ngIf="member.questionnaireType && member.reviewDate; else notAvailable">
+                                <!-- <div *ngIf="member.completedDate !== null; else ansPending">
+                                    {{member.completedDate | date:'yyyy.MM.dd'}}
+                                </div> -->
+                                <div *ngIf="member.reviewDate !== null; else ansPending">
+                                    {{member.reviewDate | date:'yyyy.MM.dd'}}
+                                </div>
+                                <ng-template #ansPending>
+                                    {{'RISK_TOLERANCE_PAGE.TABLE.PENDING' | translate}}
+                                    <span class="ion-ios-alert" *ngIf="member['isPending']"></span>
+                                </ng-template>
+                            </div>
+                        </td>
+                        <td class="hidden-xs-down" *ngIf="!isTile">
+                            <div *ngIf="member.questionnaireType && member.completed; else notAvailable">
+                                {{member.questionnaireType}}
+                            </div>
+                        </td>
+                        <ng-template #notAvailable>N/A</ng-template>
+                        <td *ngIf="!isTile">
+                            <div *ngIf="member.agreedScore && member.agreedScore > 0; else tbdRiskTolerance">
+                                <span class="fw-500">
+                                    {{member.agreedScore}}
+                                </span>
+                                <!-- <span class="badge-text">{{riskScoreBadge(member.agreedScore).label}}</span> -->
+                            </div>
+                            <ng-template #tbdRiskTolerance><span class="tbd-lbl"></span></ng-template>
+                        </td>
+                        <td class="text-center pr-0  w-50px">
+                            <div class="dropdown-relative">
+                                <button type="button" class="btn-floating" (click)="changeRiskAction(i)">
+                                    <span class="ion-md-more"></span>
+                                </button>
+                                <div [id]="'dropdownRiskAction'+i" class="dropdown-risk-action dropdown-floating hide-ele">
+                                    <ul class="floating-dropdown">
+                                        <ng-container *ngIf=" (member.personalDetails.relation == PERSON_RELATION.CLIENT1 ||  member.personalDetails.relation == PERSON_RELATION.CLIENT2)">
+                                            
+                                            <li *ngIf="member.showQuestionnairePopup && (!member.completed || !member.experienceCompleted || !member.kycCompleted) && accessRights['RISKTOLERCLIENT']['accessLevel'] > 0
+                                            && (!member.pending)">
+                                                <button type="button" class="btn-floating sub-menu" (click)="changeQuestionnaire(i, 'sendInvite'); changeRiskAction(i);">
+                                                    <i class="ion-md-send sub-menu"></i>
+                                                    <span [translate]="'RISK_TOLERANCE_PAGE.TABLE.ACTIONS.SEND_INVITE'" class="sub-menu"></span>
+                                                </button>
+                                            </li>
+                                            
+                                            <li *ngIf="!member.showQuestionnairePopup && (!member.completed || !member.experienceCompleted || !member.kycCompleted)  && accessRights['RISKTOLERCLIENT']['accessLevel'] > 0
+                                            && (!member.pending)" (click)="changeRiskAction(i)">
+                                                <a class="sub-menu" (click)="sendInvite(member)">
+                                                    <i class="ion-md-send sub-menu"></i>
+                                                    <span [translate]="'RISK_TOLERANCE_PAGE.TABLE.ACTIONS.SEND_INVITE'" class="sub-menu"></span>
+                                                </a>
+                                            </li>
+                                            
+                                           <li *ngIf="(accessRights['RISKTOLERCLIENT']['accessLevel'] > 0) && (member.pending || (member.completed && member.experienceCompleted && member.kycCompleted)) "  class="disable-link">
+                                                <a class="sub-menu">
+                                                    <i class="ion-md-send sub-menu"></i>
+                                                    <span [translate]="'RISK_TOLERANCE_PAGE.TABLE.ACTIONS.SEND_INVITE'" class="sub-menu"></span>
+                                                </a>
+                                            </li>
+
+                                            <li *ngIf="member.pending  && accessRights['RISKTOLERCLIENT']['accessLevel'] > 0 " (click)="changeRiskAction(i)">
+                                                <a (click)="sendReminder(member)" class="action-list">
+                                                    <i class="ion-md-notifications action-list"></i>
+                                                    <span class="action-list" [translate]="'RISK_TOLERANCE_PAGE.TABLE.ACTIONS.SEND_REMINDER'"></span>
+                                                </a>
+                                            </li>
+
+                                            
+                                            <li *ngIf="!member.pending  && accessRights['RISKTOLERCLIENT']['accessLevel'] > 0 && member.inviteSentDate > member.reviewDate " (click)="changeRiskAction(i)">
+                                                <a (click)="sendReminder(member)" class="action-list">
+                                                    <i class="ion-md-notifications action-list"></i>
+                                                    <span class="action-list" [translate]="'RISK_TOLERANCE_PAGE.TABLE.ACTIONS.SEND_REMINDER'"></span>
+                                                </a>
+                                            </li>
+
+                                            <li *ngIf="!member.pending  && accessRights['RISKTOLERCLIENT']['accessLevel'] > 0 " class="disable-link">
+                                                <a class="sub-menu">
+                                                    <i class="ion-md-notifications sub-menu"></i>
+                                                    <span class="sub-menu" [translate]="'RISK_TOLERANCE_PAGE.TABLE.ACTIONS.SEND_REMINDER'"></span>
+                                                </a> 
+                                            </li>
+
+                                            <li *ngIf="accessRights['KYCINVITE']['accessLevel'] > 0 && (member.locked || member.kycCompleted || member.experienceCompleted)">
+                                                <button type="button" class="btn-floating" (click)="changeQuestionnaire(i, 'unlock-reset'); changeRiskAction(i);">
+                                                    <i class="ion-ios-unlock sub-menu"></i>
+                                                    <span [translate]="'RISK_TOLERANCE_PAGE.TABLE.ACTIONS.UNLOCK_RESET'" class="sub-menu"></span>
+                                                </button>
+                                            </li>
+
+                                            <li *ngIf="!accessRights['KYCINVITE']['accessLevel'] > 0 &&  (member.locked || member.kycCompleted || member.experienceCompleted)" (click)="changeRiskAction(i)">
+                                                <a (click)="resetAndUnlock(member,false)" class="action-list">
+                                                    <i class="ion-ios-unlock action-list"></i>
+                                                    <span class="action-list" [translate]="'RISK_TOLERANCE_PAGE.TABLE.ACTIONS.UNLOCK_RESET'"></span>
+                                                </a>
+                                            </li>
+
+                                            <li *ngIf="(!member.locked && !member.kycCompleted && !member.experienceCompleted)" class="disable-link">
+                                                <a class="sub-menu">
+                                                    <i class="ion-ios-unlock sub-menu"></i>
+                                                    <span [translate]="'RISK_TOLERANCE_PAGE.TABLE.ACTIONS.UNLOCK_RESET'" class="sub-menu"></span>
+                                                </a>
+                                            </li>
+
+                                            <li (click)="changeRiskAction(i); changeQuestionnaire(i, 'completeQuestionnaire')"
+                                                *ngIf="member.showQuestionnairePopup && (!member.completed || !member.experienceCompleted || !member.kycCompleted)">
+                                                <a class="sub-menu">
+                                                    <i class="ion-md-clipboard sub-menu"></i>
+                                                    <span [translate]="'RISK_TOLERANCE_PAGE.TABLE.ACTIONS.COMPLETE_QUEST'" class="sub-menu"></span>
+                                                </a>
+                                            </li>
+                                            <li (click)="changeRiskAction(i)" *ngIf="!member.showQuestionnairePopup && (!member.completed || !member.experienceCompleted || !member.kycCompleted)">
+                                                <a class="sub-menu" (click)="completeQuestionnaire(member,member.personalDetails.region)">
+                                                    <i class="ion-md-clipboard sub-menu"></i>
+                                                    <span [translate]="'RISK_TOLERANCE_PAGE.TABLE.ACTIONS.COMPLETE_QUEST'" class="sub-menu"></span>
+                                                </a>
+                                            </li>
+                                            <li *ngIf="member.completed && member.experienceCompleted && member.kycCompleted" class="disable-link">
+                                                <a class="sub-menu">
+                                                    <i class="ion-md-clipboard sub-menu"></i>
+                                                    <span [translate]="'RISK_TOLERANCE_PAGE.TABLE.ACTIONS.COMPLETE_QUEST'" class="sub-menu"></span>
+                                                </a>
+                                            </li>
+
+                                            <li (click)="changeRiskAction(i)" *ngIf="member.completed">
+                                                <a class="action-list" [routerLink]="['/client', clientId , 'profile', 'risk-tolerance', member.personalDetails.id, 'results']">
+                                                    <i class="ion-md-eye action-list"></i>
+                                                    <span class="action-list" [translate]="'RISK_TOLERANCE_PAGE.TABLE.ACTIONS.RISK_TOLERANCE_RESULTS'"></span>
+                                                </a>
+                                            </li>
+
+                                            <li class="disable-link" *ngIf="!member.completed">
+                                                <a class="action-list">
+                                                    <i class="ion-md-eye action-list"></i>
+                                                    <span class="action-list" [translate]="'RISK_TOLERANCE_PAGE.TABLE.ACTIONS.RISK_TOLERANCE_RESULTS'"></span>
+                                                </a>
+                                            </li>
+
+                                            <li (click)="changeRiskAction(i)" *ngIf="member.experienceCompleted">
+                                                <a class="action-list" [routerLink]="['/client', clientId , 'profile', 'risk-tolerance', member.personalDetails.id, 'experience']">
+                                                    <i class="ion-md-eye action-list"></i>
+                                                    <span class="action-list" [translate]="'RISK_TOLERANCE_PAGE.TABLE.ACTIONS.EXPERIENCE'"></span>
+                                                </a>
+                                            </li>
+
+                                            <li class="disable-link" *ngIf="!member.experienceCompleted">
+                                                <a class="action-list">
+                                                    <i class="ion-md-eye action-list"></i>
+                                                    <span class="action-list" [translate]="'RISK_TOLERANCE_PAGE.TABLE.ACTIONS.EXPERIENCE'"></span>
+                                                </a>
+                                            </li>
+
+                                            <li (click)="changeRiskAction(i)" *ngIf="member.kycCompleted">
+                                                <a class="action-list" [routerLink]="['/client', clientId , 'profile', 'risk-tolerance', member.personalDetails.id, 'know-your-client']">
+                                                    <i class="ion-md-eye action-list"></i>
+                                                    <span class="action-list" [translate]="'RISK_TOLERANCE_PAGE.TABLE.ACTIONS.KNOW_YOUR_CLIENT'"></span>
+                                                </a>
+                                            </li>
+
+                                            <li class="disable-link" *ngIf="!member.kycCompleted">
+                                                <a class="action-list">
+                                                    <i class="ion-md-eye action-list"></i>
+                                                    <span class="action-list" [translate]="'RISK_TOLERANCE_PAGE.TABLE.ACTIONS.KNOW_YOUR_CLIENT'"></span>
+                                                </a>
+                                            </li>
+
+
+
+                                            
+                                        </ng-container>
+
+                                        <ng-container *ngIf=" member.personalDetails.relation !== PERSON_RELATION.CLIENT1 && member.personalDetails.relation !== PERSON_RELATION.CLIENT2">
+                                            <li (click)="changeRiskAction(i)" *ngIf="member.completed">
+                                                <a class="action-list" [routerLink]="['/client', clientId , 'profile', 'risk-tolerance', member.personalDetails.id, 'results']">
+                                                    <i class="ion-md-eye action-list"></i>
+                                                    <span class="action-list" [translate]="'RISK_TOLERANCE_PAGE.TABLE.ACTIONS.RISK_TOLERANCE_RESULTS'"></span>
+                                                </a>
+                                            </li>
+
+                                            <li class="disable-link" *ngIf="!member.completed">
+                                                <a class="action-list">
+                                                    <i class="ion-md-eye action-list"></i>
+                                                    <span class="action-list" [translate]="'RISK_TOLERANCE_PAGE.TABLE.ACTIONS.RISK_TOLERANCE_RESULTS'"></span>
+                                                </a>
+                                            </li>
+
+                                            <li class="disable-link" *ngIf="!member.completed">
+                                                <a class="action-list">
+                                                    <i class="ion-md-eye"></i>
+                                                    <span [translate]="'RISK_TOLERANCE_PAGE.TABLE.ACTIONS.EXPERIENCE'"></span>
+                                                </a>
+                                            </li>
+
+                                            <li (click)="changeRiskAction(i)" *ngIf="member.completed">
+                                                <a class="action-list" [routerLink]="['/client', clientId , 'profile', 'risk-tolerance', member.personalDetails.id, 'know-your-client']">
+                                                    <i class="ion-md-eye action-list"></i>
+                                                    <span class="action-list" [translate]="'RISK_TOLERANCE_PAGE.TABLE.ACTIONS.KNOW_YOUR_CLIENT'"></span>
+                                                </a>
+                                            </li>
+
+                                            <li class="disable-link" *ngIf="!member.completed">
+                                                <a class="action-list">
+                                                    <i class="ion-md-eye action-list"></i>
+                                                    <span class="action-list" [translate]="'RISK_TOLERANCE_PAGE.TABLE.ACTIONS.KNOW_YOUR_CLIENT'"></span>
+                                                </a>
+                                            </li>
+                                        </ng-container>
+
+                                        <!--
+                                        <ng-container *ngIf="accessRights['RISKTOLERCLIENT']['accessLevel'] !== 3">
+                                            <li class="disable-link">
+                                                <a>
+                                                    <i class="ion-md-send"></i>
+                                                    <span [translate]="'RISK_TOLERANCE_PAGE.TABLE.ACTIONS.SEND_INVITE'"></span>
+                                                </a>
+                                            </li>
+                                            <li class="disable-link">
+                                                <a>
+                                                    <i class="ion-md-notifications"></i>
+                                                    <span [translate]="'RISK_TOLERANCE_PAGE.TABLE.ACTIONS.SEND_REMINDER'"></span>
+                                                </a>
+                                            </li>
+                                            <li class="disable-link">
+                                                <a>
+                                                    <i class="ion-ios-unlock"></i>
+                                                    <span [translate]="'RISK_TOLERANCE_PAGE.TABLE.ACTIONS.UNLOCK_RESET'"></span>
+                                                </a>
+                                            </li>
+                                            <li class="disable-link">
+                                                <a>
+                                                    <i class="ion-md-clipboard"></i>
+                                                    <span [translate]="'RISK_TOLERANCE_PAGE.TABLE.ACTIONS.COMPLETE_QUEST'"></span>
+                                                </a>
+                                            </li>
+                                            <li class="disable-link">
+                                                <a>
+                                                    <i class="ion-md-eye"></i>
+                                                    <span [translate]="'RISK_TOLERANCE_PAGE.TABLE.ACTIONS.VIEW_RESULTS'"></span>
+                                                </a>
+                                            </li>
+                                        </ng-container>
+                                        -->
+                                    </ul>
+                                </div>
+
+                                <div [id]="'dropdownQuestionnaire'+i" class="dropdown-floating hide-ele">
+                                    <div class="floating-dropdown p-0">
+                                        <h6 class="sub-menu" [translate]="changeQuestionnaireHeader"></h6>
+                                        <form name="form" #f="ngForm" novalidate>
+                                            <div class="floating-body">
+                                                <div class="form-group border-0 p-0 mt-2 sub-menu" *ngIf="accessRights['KYCINVITE']['accessLevel'] > 0">
+                                                    <p-checkbox name="questionnaire" binary="true"  [disabled] = "disableAction(member,'questionnaireOption')" label="Risk tolerance"
+                                                        [(ngModel)]="member.questionnaire"></p-checkbox>
+                                                </div>
+                                                <fieldset [disabled] = "disableAction(member,'questionnaireOption')">
+                                                    <div class="form-check " *ngIf="changeQuestionnaireType !== 'unlock-reset' && accessRights['FM10']['accessLevel'] > 0 && member.primaryClient"
+                                                        [ngClass]="{'ml-3': accessRights['KYCINVITE']['accessLevel'] > 0 , 'disabled-gray-out': disableAction(member,'questionnaireOption')}">
+                                                        <input type="radio" [disabled] = "disableAction(member,'questionnaireOption')" class="form-check-input sub-menu" name="optradio" id="optradio1"
+                                                            value="2" [(ngModel)]="selectedQuestionnaire" (ngModelChange)="QuestionnaireTypeOnChange(2,i)" required
+                                                            #FMquestionnaire="ngModel">
+                                                        <label class="form-check-label sub-menu" for="optradio1" [translate]="'RISK_TOLERANCE_PAGE.TABLE.ACTIONS.FINAMETRICA_10'"></label>
+                                                    </div>
+                                                    <div class="form-check" *ngIf="changeQuestionnaireType !== 'unlock-reset'  && accessRights['FM25']['accessLevel'] > 0 && member.primaryClient"
+                                                        [ngClass]="{'ml-3': accessRights['KYCINVITE']['accessLevel'] > 0 , 'disabled-gray-out': disableAction(member,'questionnaireOption')}">
+                                                        <input type="radio" [disabled] = "disableAction(member,'questionnaireOption')" class="form-check-input sub-menu" name="optradio" id="optradio2"
+                                                            value="1" [(ngModel)]="selectedQuestionnaire" (ngModelChange)="QuestionnaireTypeOnChange(1,i)" required
+                                                            #FMquestionnaire="ngModel">
+                                                        <label class="form-check-label sub-menu" for="optradio2" [translate]="'RISK_TOLERANCE_PAGE.TABLE.ACTIONS.FINAMETRICA_25'"></label>
+                                                    </div>
+                                                </fieldset>
+                                                <div class="form-group border-0 p-0 sub-menu">
+                                                    <p-checkbox name="isExperienceSelected" [disabled] = "disableAction(member,'experienceOption')" binary="true" label="Experience"
+                                                        [(ngModel)]="member.experienceDefault" #exp></p-checkbox>
+                                                </div>
+                                                <div class="form-group border-0 p-0 sub-menu" *ngIf="accessRights['KYCINVITE']['accessLevel'] > 0">
+                                                    <p-checkbox name="isKYCSelected" binary="true" [disabled] = "disableAction(member,'kycOption')" label="Know your client (KYC)"
+                                                        [(ngModel)]="member.kycDefault" #kyc></p-checkbox>
+                                                </div>
+                                            </div>
+                                            <div class="form-group text-right mb-0 p-2 sub-menu">
+                                                <button class="btn btn-secondary btn-small mb-0 sub-menu" (click)="changeQuestionnaire(i);"
+                                                    [translate]="'FORM.ACTION.CANCEL'"></button>
+                                                <button *ngIf="changeQuestionnaireType == 'sendInvite'" type="submit"
+                                                    class="btn btn-success btn-small mb-0 sub-menu" [disabled]="!f.form.valid"
+                                                    (click)="sendInvite(member); changeQuestionnaire(i);"
+                                                    [translate]="'FORM.ACTION.SEND'"></button>
+                                                <button *ngIf="changeQuestionnaireType == 'completeQuestionnaire'" type="submit"
+                                                    class="btn btn-success btn-small mb-0 sub-menu" [disabled]="!f.form.valid"
+                                                    (click)="completeQuestionnaire(member,member.personalDetails.region); changeQuestionnaire(i);"
+                                                    [translate]="'FORM.ACTION.COMPLETE'"></button>
+                                                <button *ngIf="changeQuestionnaireType == 'unlock-reset' && accessRights['KYCINVITE']['accessLevel'] > 0"
+                                                    type="submit" class="btn btn-success btn-small mb-0 sub-menu" [disabled]="!f.form.valid || member.questionnaire.length == 0"
+                                                    (click)="resetAndUnlock(member,true); changeQuestionnaire(i);"
+                                                    [translate]="'FORM.ACTION.SAVE'"></button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </ng-container>
+                <ng-container *ngIf="familyMembersRisk.length === 0">
+                    <tr>
+                        <td colspan="7" class="no-record text-center">
+                            <i class="ion-ios-alert mr-2"></i>{{'NO_RESULTS' | translate}}
+                        </td>
+                    </tr>
+                </ng-container>
+            </tbody>
+        </table>
+    </div>
+</div>

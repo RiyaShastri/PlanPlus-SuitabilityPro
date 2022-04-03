@@ -1,0 +1,65 @@
+<div class="side-form">
+    <form name="form" (ngSubmit)="f.form.valid && submitForm()" #f="ngForm" novalidate>
+        <div class="box">
+            <div class="box-header">
+                <span class="sidebar_title">{{type == 1 ? ('BRANDING.COVER_PAGE_SELECTION' | translate) : (type == 2 ?
+                    ('BRANDING.DOC_DISCLAIMER_SELECTION' | translate) : ('BRANDING.REPORT_DISCLAIMER_SELECTION' |
+                    translate))}}</span>
+                <span (click)="back(); closeButtonDisable = true" class="sidebar_action_icon ion-md-close-circle float-right"></span>
+            </div>
+
+            <div class="box-body">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th width="60%" class="pr-1">{{type == 1 || type == 2 ? ('BRANDING.DOCUMENT_NAME' |
+                                translate) : ('BRANDING.REPORT_NAME' | translate)}}</th>
+                            <th width="20%" class="pr-2 text-center"> {{type == 1 ? ('BRANDING.COVER_PAGE' | translate)
+                                : ('BRANDING.DISCLAIMER' | translate)}} 1</th>
+                            <th width="20%" class="pr-2 text-center"> {{type == 1 ? ('BRANDING.COVER_PAGE' | translate) :
+                                ('BRANDING.DISCLAIMER' | translate)}} 2</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <ng-container *ngIf="list.length > 0">
+                            <tr *ngFor="let item of list; index as i">
+                                <td width="60%" class="pr-1">{{item.name}}</td>
+                                <td width="20%" class="pr-2 text-center">
+                                    <div class="form-group form-check d-flex justify-content-center" *ngIf="type == 1">
+                                        <p-radioButton name="coverPage_{{i}}" value=1 [(ngModel)]="item.coverPageType" required></p-radioButton>
+                                    </div>
+                                    <div class="form-group form-check d-flex justify-content-center" *ngIf="type == 2">
+                                        <p-radioButton name="disclaimer_{{i}}" value=1 [(ngModel)]="item.disclaimerType" required></p-radioButton>
+                                    </div>
+                                    <div class="form-group form-check d-flex justify-content-center" *ngIf="type == 3">
+                                        <p-radioButton name="disclaimer_{{i}}" value=1 [(ngModel)]="item.disclaimerType" required></p-radioButton>
+                                    </div>
+                                </td>
+                                <td width="20%" class="pr-2 text-center">
+                                    <div class="form-group form-check d-flex justify-content-center" *ngIf="type == 1">
+                                        <p-radioButton name="coverPage_{{i}}" value=2 [(ngModel)]="item.coverPageType" required></p-radioButton>
+                                    </div>
+                                    <div class="form-group form-check d-flex justify-content-center" *ngIf="type == 2">
+                                        <p-radioButton name="disclaimer_{{i}}" value=2 [(ngModel)]="item.disclaimerType" required></p-radioButton>
+                                    </div>
+                                    <div class="form-group form-check d-flex justify-content-center" *ngIf="type == 3">
+                                        <p-radioButton name="disclaimer_{{i}}" value=2 [(ngModel)]="item.disclaimerType" required></p-radioButton>
+                                    </div>
+                                </td>
+                            </tr>
+                        </ng-container>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="box-footer">
+                <div class="form-group text-right">
+                    <button type="button" (click)="back(); closeButtonDisable = true" value="cancel" class="btn btn-secondary btn-small mr-4 p-lr-25"
+                        [translate]="'FORM.ACTION.CANCEL'" [disabled]="closeButtonDisable"></button>
+                    <button type="submit" value="submit" [disabled]="f.form.invalid" class="btn btn-success btn-small p-lr-25"
+                        [translate]="'FORM.ACTION.SAVE'"></button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

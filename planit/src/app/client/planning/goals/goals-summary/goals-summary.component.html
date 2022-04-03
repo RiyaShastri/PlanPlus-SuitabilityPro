@@ -1,0 +1,216 @@
+<div class="bg-white pt-4 pb-4">
+    <div class="container">
+        <app-goals-header [currentPage]="'summary'" [clientId]="clientId"></app-goals-header>
+        <div class="row">
+            <div class="col-12 mb-2 d-flex" *ngIf="accessRights['CLI02']['accessLevel'] > 0">
+                <a class="btn-add" routerLink="add-goal">
+                    <i class="ion-md-add-circle"></i>
+                    <span [translate]="'GOALS.SUMMARY.ADD_GOALS'"></span>
+                </a>
+                <span *ngIf="accessRights['SCENARIOACCESS']['accessLevel'] > 0" class="dropdown-common mt-1 sort-dropdown ml-auto">
+                    <app-common-drop-down class="dropdown-right" [itemList]="scenarioObject" [defaultSelected]="selectedScenario" dropDownLabel=""
+                        (OnSelect)="onSelectScenario($event)"></app-common-drop-down>
+                </span>
+            </div>
+    
+            <div class="clearfix"></div>
+            <div class="sort-box col-6">
+                <div class="dropdown-common mt-1 sort-dropdown">
+                    <app-common-drop-down [itemList]="viewBy" [defaultSelected]="selectedViewBy" dropDownLabel="VIEW BY"
+                        (OnSelect)="filteViewBy($event)"></app-common-drop-down>
+                </div>
+            </div>
+
+            <div class="sort-box col-6 text-right">
+                <div class="sort-dropdown">
+                    <div class="sort-dropdown-w-ico">
+                        <i class="ion-md-funnel"></i>
+                        <app-common-drop-down class="dropdown-right" [itemList]="sortBy"
+                            [defaultSelected]="selectedSortBy" dropDownLabel="SORT BY" (OnSelect)="sortingBy($event)">
+                        </app-common-drop-down>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12">
+                <hr />
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th width="35%" [translate]="'ADD_GOALS.GOAL_DESCRIPTION'"></th>
+                            <th width="10%" [translate]="'GOAL.ANALYSIS.LABEL.AMOUNT'"></th>
+                            <th width="8%" [translate]="'GOAL.ANALYSIS.LABEL.START'"></th>
+                            <th width="8%" [translate]="'GOAL.ANALYSIS.LABEL.END'"></th>
+                            <th width="8%" class="hidden-sm-down" [translate]="'REVENUES.INDEX'"></th>
+                            <th width="15%" class="hidden-sm-down" [translate]="'CUSTOM.FUNDED_BY'"></th>
+                            <!-- <th width="10%" class="hidden-sm-down" [translate]="'CUSTOM.PLANTRAC_STATUS'"
+                                *ngIf="accessRights['PLANTRAC']['accessLevel'] > 0"></th> -->
+                            <th width="3%"> &nbsp;</th>
+                            <th width="3%"> &nbsp;</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <ng-container *ngIf="allPortfolio && goalsList && goalsList.length > 0">
+                            <ng-container *ngFor="let item of goalsList;let i=index">
+                                <tr>
+                                    <td width="35%">{{item.description}}</td>
+                                    <td width="10%">
+                                        {{item.amountPerYear | currency: clientData['currencyCode']:'symbol-narrow':'1.0-0'}}
+
+                                        <span *ngIf="item.curCode !== clientData['currencyCode']"
+                                            class="ion-ios-alert f-blue fs-18" [ngbTooltip]="amtInformation"
+                                            placement="bottom" triggers="click" #system="ngbTooltip">
+                                        </span>
+
+                                        <ng-template #amtInformation>
+                                            <p> {{ 'GOALS.AMOUNT_IN' | translate }}
+                                                {{ currencyDescription['description']}}</p>
+                                        </ng-template>
+                                    </td>
+                                    <td width="8%" *ngIf="selectedViewBy.id === 1">{{item.goalStartYear}} </td>
+                                    <td width="8%" *ngIf="selectedViewBy.id === 2">{{item.tier1ClientStartAge}}
+                                        {{ (item.tier1SpouseStartAge !== 0) ? '/' + item.tier1SpouseStartAge : ''}}
+                                    </td>
+                                    <td width="8%" *ngIf="selectedViewBy.id === 1">
+                                        {{ (item.goalTiers.length > 1) ? item.goalTier1EndYear: item.goalEndYear}} </td>
+                                    <td width="8%" *ngIf="selectedViewBy.id === 2">{{item.tier1ClientEndAge}}
+                                        {{ (item.tier1SpouseEndAge !== 0) ? '/' + item.tier1SpouseEndAge: '' }} </td>
+                                    <td width="8%" class="hidden-sm-down">{{item.indexRate}}%</td>
+                                    <td width="15%" class="hidden-sm-down">
+                                        <span *ngIf="item.linkedPortfolios.length > 1" class="d-flex">
+                                            {{ 'GOALS.MULTIPLE' | translate }}
+                                            <span [ngbTooltip]="multipleGoals" #multiple="ngbTooltip" placement="bottom"
+                                                triggers="click"
+                                                class="ion-md-more-horizontal action-ellipses-icon-color pt-1 pl-1"></span>
+                                        </span>
+                                        <ng-template #multipleGoals>
+                                            <ng-container *ngFor="let funded of item.linkedPortfolios; let i = index">
+                                                <p>{{allPortfolio[funded]}}</p>
+                                            </ng-container>
+                                        </ng-template>
+                                        <span *ngIf="item.linkedPortfolios.length == 1" class="d-flex">
+                                            <span class="text-truncate fixed-span" [appNoOverflowTooltip]="allPortfolio[item.linkedPortfolios[0]]">{{allPortfolio[item.linkedPortfolios[0]]}}</span>
+                                        </span>
+                                    </td>
+<!--                                     <td width="10%" class="hidden-sm-down" *ngIf="accessRights['PLANTRAC']['accessLevel'] > 0">
+                                        <div class="green-dot-indicator"></div>{{ 'GOALS.ON_TRACK' | translate}}
+                                    </td> -->
+                                    <td width="3%" class="text-center">
+                                        <div class="dropdown-relative">
+                                            <button type="button" class="btn-floating" (click)="changeAction(i)">
+                                                <span class="ion-md-more"></span>
+                                            </button>
+                                            <div [id]="'dropdownGoalAction'+i"
+                                                class="dropdown-goal-action dropdown-floating hide-ele">
+                                                <ul class="floating-dropdown">
+                                                    <li *ngIf="item.allowEdit && accessRights['CLI02']['accessLevel'] > 0">
+                                                        <a class="action-list"
+                                                            [routerLink]="['/client', clientId, 'planning','goals', item.key, 'edit-goal']">
+                                                            <i class="ion-md-create action-list"></i>
+                                                            <span class="action-list"> {{'GOALS.SUMMARY.EDIT_GOAL' | translate}}
+                                                            </span>
+                                                        </a>
+                                                    </li>
+                                                    <ng-container *ngIf="item.allowEdit">
+                                                        <li (click)="changeAction(i)" *ngxPermissionsOnly="'ADVISOR'">
+                                                            <a [routerLink]="['link-portfolios-to-goals']" class="action-list">
+                                                                <i class="ion-md-link action-list"></i>
+                                                                <span class="action-list" [translate]="'GOALS.SUMMARY.LINK_PORTFOLIOS_TO_GOALS'"></span>
+                                                            </a>
+                                                        </li>
+                                                    </ng-container>
+                                                    <li>
+                                                        <a class="action-list"
+                                                            [routerLink]="['/client', clientId, 'planning', 'goals', item.key, 'savings']">
+                                                            <i class="ion-ios-eye action-list"></i>
+                                                            <span class="action-list">{{'GOALS.SUMMARY.VIEW_SAVINGS' | translate}}</span>
+                                                        </a>
+                                                    </li>
+                                                    <li *ngIf="accessRights['PEN01']['accessLevel'] > 0">
+                                                        <a class="action-list"
+                                                            [routerLink]="['/client', clientId, 'planning','goals', item.key, 'revenues']">
+                                                            <i class="ion-ios-eye action-list"></i>
+                                                            <span class="action-list">{{'GOALS.SUMMARY.VIEW_REVENUES' | translate}}</span>
+                                                        </a>
+                                                    </li>
+                                                    <li *ngIf="accessRights['MODGL']['accessLevel'] > 0">
+                                                        <a class="action-list"
+                                                            [routerLink]="['/client', clientId, 'planning','goals', item.key, 'analysis']">
+                                                            <i class="ion-ios-eye action-list"></i>
+                                                            <span class="action-list">{{'GOALS.SUMMARY.VIEW_ANALYSIS' | translate}}</span>
+                                                        </a>
+                                                    </li>
+
+  <!--                                                   <li *ngIf="accessRights['PLANTRAC']['accessLevel'] > 0"> 
+                                                        <a class="action-list"
+                                                            [routerLink]="['/client', clientId, 'planning','goals', item.key, 'plantrac']">
+                                                            <i class="fa fa-line-chart action-list"></i>
+                                                            <span class="action-list">{{'GOALS.SUMMARY.PLANTRAC' | translate}}</span>
+                                                        </a>
+                                                    </li> -->
+                                                    <li *ngIf="item.allowEdit" class="delete-btn" (click)="delete(item.key)">
+                                                        <a [routerLink]="" class="action-list">
+                                                            <i class="ion-md-close-circle action-list"></i>
+                                                            <span class="action-list">{{'GOALS.SUMMARY.DELETE_GOAL' | translate}}</span>
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td width="3%" class="text-right">
+                                        <i class="cursor-p ion-ios-arrow-down"
+                                            [ngClass]="item.template ? 'ion-ios-arrow-up' : 'ion-ios-arrow-down'"
+                                            (click)="item.template=!item.template"></i>
+                                    </td>
+                                </tr>
+                                <ng-template [ngIf]="item.template && item.goalTiers.length > 1">
+                                    <tr *ngFor="let tier of item.goalTiers; let i= index;">
+                                        <ng-container *ngIf="i !== 0">
+                                            <td width="35%" class="border-top-0"></td>
+                                            <td width="10%">
+                                                {{tier.amount | currency: clientData['currencyCode']:'symbol-narrow':'1.0-0'}}
+                                            </td>
+                                            <td *ngIf="selectedViewBy.id===1" width="8%">{{tier.startYear}} </td>
+                                            <td *ngIf="selectedViewBy.id===1" width="8%">{{tier.endYear}} </td>
+
+                                            <td *ngIf="selectedViewBy.id===2" width="8%">{{tier.clientstartAge }}
+                                                {{(tier.spousestartAge !== 0) ? ' / '+ tier.spousestartAge : "" }}
+                                            </td>
+                                            <td *ngIf="selectedViewBy.id===2" width="8%">{{tier.clientEndAge}}
+                                                {{(tier.spouseEndAge !== 0) ? ' / '+ tier.spouseEndAge : "" }} </td>
+
+                                            <td width="8%" class="hidden-sm-down"> &nbsp;</td>
+                                            <td width="15%" class="hidden-sm-down"> &nbsp;</td>
+<!--                                             <td width="10%" class="hidden-sm-down" *ngIf="accessRights['PLANTRAC']['accessLevel'] > 0">
+                                                &nbsp;</td> -->
+                                            <td width="3%" class="text-right">&nbsp;</td>
+                                            <td width="3%" class="text-right">&nbsp;</td>
+                                        </ng-container>
+                                    </tr>
+                                </ng-template>
+                            </ng-container>
+                        </ng-container>
+                        <ng-container *ngIf="goalsList && goalsList.length === 0">
+                            <tr>
+                                <td colspan="9" class="no-record text-center">
+                                    <i class="ion-ios-alert mr-2"></i>{{'NO_RESULTS' | translate}}
+                                </td>
+                            </tr>
+                        </ng-container>
+                    </tbody>
+                </table>
+            </div>
+            <ng-container *ngIf="goalsList && dataProviderList.length > 0">
+                <div class="col-12">
+                    <app-timeline-chart [clientData]="clientData" titleName="{{ 'GRAPH.GOAL_MAP' | translate }}" [dataProviderList]="dataProviderList" [goalList]="graphGoalList" [goalListAmount]="graphGoalListAmount"
+                    (OnSelect)="goalMapChange($event)" [selectedDropdownOption]="selectedDropdownOption"></app-timeline-chart>
+                </div>
+            </ng-container>
+        </div>
+    </div>
+</div>
+<div class="view-side-form">
+    <router-outlet></router-outlet>
+</div>

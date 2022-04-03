@@ -1,0 +1,17 @@
+{
+  "SSID_LABELS": {
+    "A_ASSCAT042": "Short Term",
+    "A_ASSCAT044": "Fixed Income",
+    "A_ASSCAT045": "Canadian Equities",
+    "A_ASSCAT050": "Emerging Markets Equities",
+    "A_ASSCAT062": "Foreign Developed Market Equities"
+
+  },	
+  "RISK_RESULTS_PAGE": {
+		"ADJUSTED_SCORE": {
+			"DESCRIPTION": "Having regard to where you differed from those with similar risk tolerance as shown above, it is recommended that your risk score be adjusted from {{calculatedScore}} to {{adjustedScore}}.",
+			"TITLE": "Adjusted risk score"
+		}
+  }
+  
+}

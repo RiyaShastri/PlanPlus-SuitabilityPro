@@ -1,0 +1,21 @@
+[
+	{"value" : "en", "text" : "English"},
+	{"value" : "fr", "text" : "Français"},
+	{"value" : "zh", "text" : "Chinese Traditional"},
+	{"value" : "es", "text" : "Spanish"},
+	{"value" : "ja", "text" : "Japanese"},
+	{"value" : "de", "text" : "German"},
+	{"value" : "el", "text" : "Greek"},
+	{"value" : "it", "text" : "Italian"},
+	{"value" : "pt", "text" : "Portugese"},
+	{"value" : "hu", "text" : "Hungarian"},
+	{"value" : "zs", "text" : "Chinese Simplified"},
+	{"value" : "ru", "text" : "Russian"},
+	{"value" : "nl", "text" : "Dutch"},
+	{"value" : "id", "text" : "Indonesian"},
+	{"value" : "bg", "text" : "Bulgarian"},
+	{"value" : "cs", "text" : "Czech"},
+	{"value" : "th", "text" : "Thai"},
+	{"value" : "ms", "text" : "Malay"},
+	{"value" : "iw", "text" : "Hebrew"}
+]

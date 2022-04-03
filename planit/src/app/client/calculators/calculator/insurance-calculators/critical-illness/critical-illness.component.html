@@ -1,0 +1,223 @@
+<div class="side-form side-form-large side-form-full-width">
+    <form name="form" #f="ngForm">
+        <div class="box">
+            <div class="box-header">
+                <span class="sidebar_title">{{ 'CALCULATOR.CALCULATORS_TITLE' | translate }}</span>
+                <span (click)="back()" class="sidebar_action_icon ion-md-close-circle float-right"></span>
+            </div>
+            <div class="box-body">
+                <div class="critical-illness-cal calculator-wrap calculator-row-alignment-wrapper" *ngIf="criticalIllness && criticalIllness['calculatorType']">
+                    <div class="row">
+                        <div class="col-12">
+                            <app-calculator-header [clientId]="clientId" currentCalculator="insurance-calculator"></app-calculator-header>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="form-group d-flex d-inline-block drop-down-wrap mb-3">
+                                <div class="mr-3 w-25 form-group mb-0" [ngClass]="{'has-error' : f.submitted && !scenarioList.valid}">
+                                    <p-dropdown [options]="scenarioLists" name="scenarioList" [(ngModel)]="selectedScenario" #scenarioList="ngModel" optionLabel="value" placeholder="{{'CALCULATOR.PLACEHOLDER.SELECT_A_SCENARIO' | translate}}" required (onChange)="changeScenario()"></p-dropdown>
+                                </div>
+                                <button type="button" (click)="setData()" class="m-0 align-content-center btn btn-small btn-secondary mr-2" [translate]="'CALCULATOR.LOAD'"></button>
+                                <span class="pt-2 align-content-center ml-auto save-date-wrap">
+                                    {{ 'CALCULATOR.DATE_SAVED' | translate }} {{ criticalIllness['lastUpdated'] ? criticalIllness['lastUpdated']
+                                    : 'N/A' }}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 col-lg-6">
+                            <h4 class="cal-title fw-700 fs-14">{{ 'CALCULATOR.CRITICAL_ILLNESS.CRITICAL_ILLNESS_BENEFITS_TITLE' | translate }}</h4>
+                            <div class="row">
+                                <div class="col-6 col-sm-4 col-md-4 col-lg-6">
+                                    <div class="form-group mb-0">
+                                        <span class="align-content-center">{{ 'CALCULATOR.LONG_TERM.CURRENT_AGE' | translate }}</span>
+                                    </div>
+                                </div>
+                                <div class="col-6 col-sm-5 col-md-4 col-lg-6">
+                                    <div class="form-group" [ngClass]="{ 'has-error': !currentAge.valid && (f.submitted || currentAge.dirty) }">
+                                        <input type="text" class="w-75 form-control text-center" name="currentAge" [(ngModel)]="criticalIllness['ciCurrentBenefitsResponse']['currentAge']" #currentAge="ngModel" (input)="onChangeCalculation()" />
+                                    </div>
+                                    <p *ngIf="criticalIllness['errors'] && criticalIllness['errors']['currentAge']" class="text-error mb-1"> {{criticalIllness['errors']['currentAge']}} </p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6 col-sm-4 col-md-4 col-lg-6">
+                                    <div class="form-group mb-0">
+                                        <span class="align-content-center">{{ 'CALCULATOR.CRITICAL_ILLNESS.CURRENT_EARNED_INCOME' | translate }}</span>
+                                    </div>
+                                </div>
+                                <div class="col-6 col-sm-5 col-md-4 col-lg-6">
+                                    <div class="form-group" [ngClass]="{ 'has-error': !currentEarnedIncome.valid && (f.submitted || currentEarnedIncome.dirty) }">
+                                        <input type="text" class="w-75 form-control text-center" name="currentEarnedIncome" [(ngModel)]="criticalIllness['ciCurrentBenefitsResponse']['currentEarnedIncome']" #currentEarnedIncome="ngModel" [textMask]="{mask: currencyMask}" appNumeric (input)="onChangeCalculation()"
+                                        />
+                                    </div>
+                                    <p *ngIf="criticalIllness['errors'] && criticalIllness['errors']['currentEarnedIncome']" class="text-error mb-1"> {{criticalIllness['errors']['currentEarnedIncome']}} </p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6 col-sm-4 col-md-4 col-lg-6">
+                                    <div class="form-group mb-0">
+                                        <span class="align-content-center">{{ 'CALCULATOR.CRITICAL_ILLNESS.YEARS_TO_REPLACE_INCOME' | translate }}</span>
+                                    </div>
+                                </div>
+                                <div class="col-6 col-sm-5 col-md-4 col-lg-6">
+                                    <div class="form-group" [ngClass]="{ 'has-error': !yearsToReplaceIncome.valid && (f.submitted || yearsToReplaceIncome.dirty) }">
+                                        <input type="text" class="w-75 form-control text-center" name="yearsToReplaceIncome" [(ngModel)]="criticalIllness['ciCurrentBenefitsResponse']['replaceIncomeToAge']" #yearsToReplaceIncome="ngModel" (input)="onChangeCalculation()" />
+                                    </div>
+                                    <p *ngIf="criticalIllness['errors'] && criticalIllness['errors']['replaceIncomeToAge']" class="text-error mb-1"> {{criticalIllness['errors']['replaceIncomeToAge']}} </p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6 col-sm-4 col-md-4 col-lg-6">
+                                    <div class="form-group mb-0">
+                                        <span class="align-content-center">{{ 'CALCULATOR.CRITICAL_ILLNESS.INFLATION_RATE' | translate }}</span>
+                                    </div>
+                                </div>
+                                <div class="col-6 col-sm-5 col-md-4 col-lg-6">
+                                    <div class="form-group" [ngClass]="{ 'has-error': !inflation.valid  && (f.submitted || inflation.dirty) }">
+                                        <input type="text" class="w-75 form-control text-center" name="inflation" [(ngModel)]="criticalIllness['ciCurrentBenefitsResponse']['inflation']" #inflation="ngModel" [customMax]="100" [customMin]="0" [textMask]="{mask: percentMask}" appNumeric (input)="onChangeCalculation()"
+                                        />
+                                    </div>
+                                    <p *ngIf="criticalIllness['errors'] && criticalIllness['errors']['inflation']" class="text-error mb-1"> {{criticalIllness['errors']['inflation']}} </p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6 col-sm-4 col-md-4 col-lg-6">
+                                    <div class="form-group mb-0">
+                                        <span class="align-content-center">{{ 'CALCULATOR.CRITICAL_ILLNESS.AFTER_TAX_RATE_OF_RETURN' | translate }}</span>
+                                    </div>
+                                </div>
+                                <div class="col-6 col-sm-5 col-md-4 col-lg-6">
+                                    <div class="form-group" [ngClass]="{ 'has-error': !rateOfReturn.valid && (f.submitted || rateOfReturn.dirty) }">
+                                        <input type="text" class="w-75 form-control text-center" name="rateOfReturn" [(ngModel)]="criticalIllness['ciCurrentBenefitsResponse']['afterTaxRateOfReturn']" #rateOfReturn="ngModel" [customMax]="100" [customMin]="0" [textMask]="{mask: percentMask}"
+                                            appNumeric (input)="onChangeCalculation()" />
+                                    </div>
+                                    <p *ngIf="criticalIllness['errors'] && criticalIllness['errors']['afterTaxRateOfReturn']" class="text-error mb-1"> {{criticalIllness['errors']['afterTaxRateOfReturn']}} </p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6 col-sm-4 col-md-4 col-lg-6">
+                                    <div class="form-group mb-0">
+                                        <span class="align-content-center">{{ 'CALCULATOR.CRITICAL_ILLNESS.LUMP_SUM_COST' | translate }}</span>
+                                    </div>
+                                </div>
+                                <div class="col-6 col-sm-5 col-md-4 col-lg-6">
+                                    <div class="form-group" [ngClass]="{ 'has-error': !lumpSumCost.valid && (f.submitted || lumpSumCost.dirty) }">
+                                        <input type="text" class="w-75 form-control text-center" name="lumpSumCost" [(ngModel)]="criticalIllness['ciCurrentBenefitsResponse']['lumpSumCosts']" #lumpSumCost="ngModel" (ngModelChange)="calculateAmount()" [textMask]="{mask: currencyMask}" appNumeric
+                                            (input)="onChangeCalculation()" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6 col-sm-4 col-md-4 col-lg-6">
+                                    <div class="form-group mb-0">
+                                        <span class="align-content-center">{{ 'CALCULATOR.CRITICAL_ILLNESS.CURRENT_INSURANCE_COVERAGE' | translate }}</span>
+                                    </div>
+                                </div>
+                                <div class="col-6 col-sm-5 col-md-4 col-lg-6">
+                                    <div class="form-group" [ngClass]="{ 'has-error': !insuranceCoverage.valid && (f.submitted || insuranceCoverage.dirty) }">
+                                        <input type="text" class="w-75 form-control text-center" name="insuranceCoverage" #insuranceCoverage="ngModel" [(ngModel)]="criticalIllness['ciCurrentBenefitsResponse']['currentInsuranceCoverage']" [textMask]="{mask: currencyMask}" appNumeric (ngModelChange)="calculateAmount()"
+                                            (input)="onChangeCalculation()" />
+                                    </div>
+                                    <p *ngIf="criticalIllness['errors'] && criticalIllness['errors']['currentInsuranceCoverage']" class="text-error mb-1"> {{criticalIllness['errors']['currentInsuranceCoverage']}} </p>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-6 col-sm-4 col-md-4 col-lg-6">
+                                    <div class="form-group mb-0">
+                                        <span class="align-content-center">{{ 'CALCULATOR.CRITICAL_ILLNESS.OTHER_LUMP_SUM_BENEFITS' | translate }}</span>
+                                    </div>
+                                </div>
+                                <div class="col-6 col-sm-5 col-md-4 col-lg-6">
+                                    <div class="form-group" [ngClass]="{ 'has-error': !lumpSumBenefits.valid && (f.submitted || lumpSumBenefits.dirty)}">
+                                        <input type="text" class="w-75 form-control text-center" name="lumpSumBenefits" #lumpSumBenefits="ngModel" [(ngModel)]="criticalIllness['ciCurrentBenefitsResponse']['lumpSumBenefits']" [textMask]="{mask: currencyMask}" appNumeric (ngModelChange)="calculateAmount()"
+                                            (input)="onChangeCalculation()" />
+                                    </div>
+                                    <p *ngIf="criticalIllness['errors'] && criticalIllness['errors']['lumpSumBenefits']" class="text-error mb-1"> {{criticalIllness['errors']['lumpSumBenefits']}} </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-lg-6">
+                            <div class="analysis-wrap">
+                                <div class="table-responsive">
+                                    <table class="table table-borderless">
+                                        <thead>
+                                            <tr class="text-right">
+                                                <th class="text-left">{{'CALCULATOR.LONG_TERM.ANALYSIS' | translate}}</th>
+                                                <th>&nbsp;</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr class="text-right">
+                                                <td class="text-left">{{ 'CALCULATOR.CRITICAL_ILLNESS.FUNDS_NEEDED_TO_REPLACE_INCOME' | translate }}</td>
+                                                <td>{{criticalIllness['ciAnalysisResponse']['fundsToReplaceIncome'] | currency:clientData['currencyCode']:'symbol-narrow':'1.0-0'}}</td>
+                                            </tr>
+                                            <tr class="text-right">
+                                                <td class="text-left">{{ 'CALCULATOR.CRITICAL_ILLNESS.LUMP_SUM_COST' | translate }}</td>
+                                                <td>{{criticalIllness['ciCurrentBenefitsResponse']['lumpSumCosts'] | currency:clientData['currencyCode']:'symbol-narrow':'1.0-0'}}</td>
+                                            </tr>
+                                            <tr class="text-right">
+                                                <td class="text-left">{{ 'CALCULATOR.CRITICAL_ILLNESS.LESS_LUMP_SUM_BENEFITS' | translate }}</td>
+                                                <td class="under-line">{{criticalIllness['ciCurrentBenefitsResponse']['lumpSumBenefits'] | currency:clientData['currencyCode']:'symbol-narrow':'1.0-0'}}</td>
+                                            </tr>
+                                            <tr class="text-right">
+                                                <td class="text-left">
+                                                    <b>{{ 'CALCULATOR.CRITICAL_ILLNESS.TOTAL_FUNDS_REQUIRED' | translate }}</b>
+                                                </td>
+                                                <td><b>{{criticalIllness['ciAnalysisResponse']['totalCapitalRequired'] | currency:clientData['currencyCode']:'symbol-narrow':'1.0-0'}}</b></td>
+                                            </tr>
+                                            <tr class="text-right">
+                                                <td class="text-left"></td>
+                                                <td> </td>
+                                            </tr>
+
+                                            <tr class="text-right">
+                                                <td class="text-left">{{ 'CALCULATOR.CRITICAL_ILLNESS.CURRENT_INSURANCE_COVERAGE' | translate }}</td>
+                                                <td>{{criticalIllness['ciCurrentBenefitsResponse']['currentInsuranceCoverage'] | currency:clientData['currencyCode']:'symbol-narrow':'1.0-0'}}</td>
+                                            </tr>
+                                            <tr class="text-right">
+                                                <td class="text-left">{{ 'CALCULATOR.CRITICAL_ILLNESS.OTHER_LUMP_SUM_BENEFITS' | translate }}</td>
+                                                <td class="under-line">{{criticalIllness['ciCurrentBenefitsResponse']['lumpSumBenefits'] | currency:clientData['currencyCode']:'symbol-narrow':'1.0-0'}}</td>
+                                            </tr>
+
+                                            <tr class="text-right">
+                                                <td class="text-left">
+                                                    <b>{{ 'CALCULATOR.CRITICAL_ILLNESS.TOTAL_FUNDS_AVAILABLE' | translate }}</b>
+                                                </td>
+                                                <td class="under-line"><b>{{criticalIllness['ciAnalysisResponse']['totalCapitalAvailable'] | currency:clientData['currencyCode']:'symbol-narrow':'1.0-0'}}</b></td>
+                                            </tr>
+
+                                            <tr class="text-right">
+                                                <td class="text-left">
+                                                    <b>{{ 'CALCULATOR.CRITICAL_ILLNESS.SHORTFALL' | translate }}</b>
+                                                </td>
+                                                <td><b>{{criticalIllness['ciAnalysisResponse']['shortFall'] | currency:clientData['currencyCode']:'symbol-narrow':'1.0-0'}}</b></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="graph-wrap">
+                                <div id="shortFallGraph" style="height:400px;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="box-footer button-responsive">
+                <div class="form-group text-right calculator-save-button-wrap">
+                    <button type="button" [disabled]="isError" class="btn btn-small btn-primary btn-fixwidth btn-report" (click)="generateReport()">{{ 'CALCULATOR.REPORT' | translate }}</button>
+                    <button type="button" (click)="back()" class="btn btn-small btn-secondary btn-fixwidth mr-2">{{'FORM.ACTION.CANCEL' | translate }}</button>
+                    <button type="submit" [disabled]="isError || f.form.invalid" class="btn btn-small btn-success pl-4 pr-4" (click)="saveData(f)" [translate]="'FORM.ACTION.SAVE'"></button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<ng-container *ngIf="isCalculatorReportSidePanelOpen">
+    <app-calculator-report-side-panel (closePanelEvent)="closePanel()" [calculatorData]="reportObject" [clientId]="clientId" type="critical-illness" [selectedScenario]="selectedScenario['key']"></app-calculator-report-side-panel>
+</ng-container>
+<router-outlet></router-outlet>

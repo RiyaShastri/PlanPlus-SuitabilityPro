@@ -1,0 +1,327 @@
+<div class="row">
+    <div class="col-12 col-md-8">
+        <h3 class="fs-18 fw-700 d-inline-block pb-5" [translate]="'GOAL.ANALYSIS.PANEL.HIGH_LEVEL_ANALYSIS'"></h3>
+        <table class="table goal-analysis" *ngIf="currentScenarioData">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th></th>
+                    <th class="text-right" *ngIf="accessRights['CURRSCENARIO']['accessLevel'] > 0">
+                        <span class="level bg-purple"></span>
+                    </th>
+
+                    <th class="text-right">
+                        <span class="level bg-green hidden-sm-down"></span>
+                    </th>
+                </tr>
+                <tr>
+                    <th [translate]="'GOAL.ANALYSIS.LABEL.PRESENT_VALUE'" [translateParams]="{currency: currency}"></th>
+                    <th></th>
+                    <th class="text-right" [translate]="'GOAL.ANALYSIS.LABEL.CURRENT_SITUATION'"
+                        *ngIf="accessRights['CURRSCENARIO']['accessLevel'] > 0"></th>
+                    <th class="text-right hidden-sm-down sync-contain">
+                        <div class="text-right hidden-sm-down">
+                            <span (click)="onSync()" class="text-right hidden-sm-down"
+                                [translate]="'GOAL.ANALYSIS.LABEL.STRATEGY_SCENARIO'"><i class="ion-md-sync"></i></span>
+                        </div>
+                    </th>
+
+
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of highLevelAnalysis">
+                    <td class="fw-700" [translate]="item.title"></td>
+                    <td>
+                        <span class="fw-700">{{item.sign}}</span>
+                    </td>
+                    <td class="text-right" *ngIf="accessRights['CURRSCENARIO']['accessLevel'] > 0">
+                        <span [ngClass]="{'fw-700' : item.sign === '=', 'orange-text': item.positive !== undefined && item.positive === 'false'}">{{item.current |
+                            currency:clientData['currencyCode']:'symbol-narrow':'1.0-0'}} </span>
+                    </td>
+                    <td class="text-right hidden-sm-down">
+                        <span [ngClass]="{'fw-700' : item.sign === '=', 'orange-text': item.alternatepositive !== undefined && item.alternatepositive === 'false' && item.alternate !== '-'}">{{ item.alternate !== '-' ?
+                            (item.alternate | currency:clientData['currencyCode']:'symbol-narrow':'1.0-0') :
+                            item.alternate}} </span>
+                    </td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td class="border-0 pb-0" [translate]="'GOAL.ANALYSIS.LABEL.INCOME_GOAL'"></td>
+                    <td class="border-0 pb-0"></td>
+                    <td class="text-right border-0 pr-0 pt-1 pb-0" colspan="2">
+                        <table>
+                            <tbody>
+                                <ng-container *ngFor="let tier of [1,2,3]">
+                                    <tr
+                                        *ngIf="tier == 1 || 
+                                        (currentScenarioData['incomeAlternative'] && currentScenarioData['incomeAlternative']['incomeGoalTier' + tier] > 0) || 
+                                        (alternateScenarioData && alternateScenarioData['incomeAlternative']['incomeGoalTier' + tier])">
+                                        <td class="text-right border-0 p-0"
+                                            *ngIf="accessRights['CURRSCENARIO']['accessLevel'] > 0">
+                                            <span
+                                                *ngIf="currentScenarioData['incomeAlternative'] && (tier == 1 || currentScenarioData['incomeAlternative']['incomeGoalTier' + tier] > 0)">
+                                                {{currentScenarioData['incomeAlternative']['incomeGoalTier' + tier] |
+                                                currency:clientData['currencyCode']:'symbol-narrow':'1.0-0'}}
+                                                ({{currentScenarioData['incomeAlternative']['from' +
+                                                tier]}}/{{currentScenarioData['incomeAlternative']['to' + tier]}})
+                                            </span>
+                                        </td>
+
+                                        <td class="text-right border-0 p-0 hidden-sm-down"
+                                            *ngIf="alternateScenarioData && alternateScenarioData['incomeAlternative']">
+                                            <span
+                                                *ngIf="alternateScenarioData['incomeAlternative'] && (tier == 1 || alternateScenarioData['incomeAlternative']['incomeGoalTier' + tier] > 0)">
+                                                {{alternateScenarioData['incomeAlternative']['incomeGoalTier' + tier] |
+                                                currency:clientData['currencyCode']:'symbol-narrow':'1.0-0'}}
+                                                ({{alternateScenarioData['incomeAlternative']['from' +
+                                                tier]}}/{{alternateScenarioData['incomeAlternative']['to' +
+                                                tier]}})
+                                            </span>
+                                        </td>
+                                        <!-- <td class="text-right border-0 p-0" *ngIf="!alternateScenarioData && !alternateScenarioData['incomeAlternative']">
+                                            <span *ngIf="tier == 1 || currentScenarioData['incomeAlternative']['incomeGoalTier' + tier] > 0">
+                                                -
+                                            </span>
+                                        </td> -->
+                                    </tr>
+                                </ng-container>
+                            </tbody>
+                        </table>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="border-0 pt-1 pb-0" [translate]="'GOAL.ANALYSIS.LABEL.INCOME_AVAILABLE'"></td>
+                    <td class="border-0 pt-1 pb-0"></td>
+                    <td class="text-right border-0 pr-0 pt-1 pb-0" colspan="2">
+                        <table>
+                            <tbody>
+                                <ng-container *ngFor="let tier of [1,2,3]">
+                                    <tr
+                                        *ngIf="tier == 1 || 
+                                    (currentScenarioData['incomeAlternative'] && currentScenarioData['incomeAlternative']['goalTier' + tier] > 0) || 
+                                    (alternateScenarioData && alternateScenarioData['incomeAlternative']['goalTier' + tier])">
+                                        <td class="text-right border-0 p-0"
+                                            *ngIf="accessRights['CURRSCENARIO']['accessLevel'] > 0">
+                                            <span
+                                                *ngIf="currentScenarioData['incomeAlternative'] && (tier == 1 || currentScenarioData['incomeAlternative']['goalTier' + tier] > 0)">
+                                                {{currentScenarioData['incomeAlternative']['goalTier' + tier] |
+                                                currency:clientData['currencyCode']:'symbol-narrow':'1.0-0'}}
+                                                ({{currentScenarioData['incomeAlternative']['from' +
+                                                tier]}}/{{currentScenarioData['incomeAlternative']['to' + tier]}})
+                                            </span>
+                                        </td>
+                                        <td class="text-right border-0 p-0 hidden-sm-down"
+                                            *ngIf="alternateScenarioData">
+                                            <span
+                                                *ngIf="alternateScenarioData['incomeAlternative'] && (tier == 1 || alternateScenarioData['incomeAlternative']['goalTier' + tier] > 0)">
+                                                {{alternateScenarioData['incomeAlternative']['goalTier' + tier] |
+                                                currency:clientData['currencyCode']:'symbol-narrow':'1.0-0'}}
+                                                ({{alternateScenarioData['incomeAlternative']['from' +
+                                                tier]}}/{{alternateScenarioData['incomeAlternative']['to' +
+                                                tier]}})
+                                            </span>
+                                        </td>
+                                        <!-- <td class="text-right border-0 p-0" *ngIf="!alternateScenarioData">
+                                            <span *ngIf="tier == 1 || currentScenarioData['incomeAlternative']['goalTier' + tier] > 0">
+                                                -
+                                            </span>
+                                        </td> -->
+                                    </tr>
+                                </ng-container>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+    <div class="col-12 col-md-4">
+        <div class="row">
+            <div class="col-6 col-md-12 " *ngIf="accessRights['CURRSCENARIO']['accessLevel'] > 0">
+                <div id="currentChartDiv" style="height:250px; width:100%; display: inline-block;"></div>
+            </div>
+            <div class="col-6 col-md-12" *ngIf="alternateScenarioData">
+                <div id="alternateChartDiv" style="height:250px; width:100%; display: inline-block;"></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-12">
+        <table class="table goal-analysis hidden-md-up" *ngIf="alternateScenarioData">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th></th>
+                    <th class="text-right">
+                        <span class="level bg-green"></span>
+                    </th>
+                </tr>
+                <tr>
+                    <th [translate]="'GOAL.ANALYSIS.LABEL.PRESENT_VALUE'" [translateParams]="{currency: currency}"></th>
+                    <th></th>
+                    <th class="text-right" [translate]="'GOAL.ANALYSIS.LABEL.STRATEGY_SCENARIO'"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of highLevelAnalysis">
+                    <td class="fw-700" [translate]="item.title"></td>
+                    <td>
+                        <span class="fw-700">{{item.sign}}</span>
+                    </td>
+                    <td class="text-right">
+                        <span [ngClass]="{'fw-700' : item.sign === '='}">{{ item.alternate !== '-' ?
+                            (item.alternate | currency:clientData['currencyCode']:'symbol-narrow':'1.0-0') :
+                            item.alternate}} </span>
+                    </td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td class="border-0 pb-0" [translate]="'GOAL.ANALYSIS.LABEL.INCOME_GOAL'"></td>
+                    <td class="border-0 pb-0"></td>
+                    <td class="text-right border-0 pr-0 pt-1 pb-0">
+                        <table>
+                            <tbody>
+                                <ng-container *ngFor="let tier of [1,2,3]">
+                                    <tr
+                                        *ngIf="tier == 1 || 
+                                            (currentScenarioData['incomeAlternative'] && currentScenarioData['incomeAlternative']['goalTier' + tier]) ||
+                                            (alternateScenarioData && alternateScenarioData['incomeAlternative']['goalTier' + tier])">
+                                        <td class="text-right border-0 p-0" *ngIf="alternateScenarioData">
+                                            <span
+                                                *ngIf="tier == 1 || alternateScenarioData['incomeAlternative']['goalTier' + tier] > 0">
+                                                {{alternateScenarioData['incomeAlternative']['goalTier' + tier] |
+                                                currency:clientData['currencyCode']:'symbol-narrow':'1.0-0'}}
+                                                ({{alternateScenarioData['incomeAlternative']['from' +
+                                                tier]}}/{{alternateScenarioData['incomeAlternative']['to' +
+                                                tier]}})
+                                            </span>
+                                        </td>
+                                        <!-- <td class="text-right border-0 p-0" *ngIf="!alternateScenarioData">
+                                                    <span *ngIf="tier == 1 || currentScenarioData['incomeAlternative']['goalTier' + tier] > 0">
+                                                        -
+                                                    </span>
+                                                </td> -->
+                                    </tr>
+                                </ng-container>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="border-0 pt-1 pb-0" [translate]="'GOAL.ANALYSIS.LABEL.INCOME_AVAILABLE'"></td>
+                    <td class="border-0 pt-1 pb-0"></td>
+                    <td class="text-right border-0 pr-0 pt-1 pb-0">
+                        <table>
+                            <tbody>
+                                <ng-container *ngFor="let tier of [1,2,3]">
+                                    <tr
+                                        *ngIf="tier == 1 || 
+                                                (currentScenarioData['incomeAlternative'] && currentScenarioData['incomeAlternative']['incomeGoalTier' + tier]) ||
+                                                (alternateScenarioData && alternateScenarioData['incomeAlternative']['incomeGoalTier' + tier])">
+                                        <td class="text-right border-0 p-0"
+                                            *ngIf="alternateScenarioData && alternateScenarioData['incomeAlternative']">
+                                            <span
+                                                *ngIf="tier == 1 || alternateScenarioData['incomeAlternative']['incomeGoalTier' + tier] > 0">
+                                                {{alternateScenarioData['incomeAlternative']['incomeGoalTier' + tier] |
+                                                currency:clientData['currencyCode']:'symbol-narrow':'1.0-0'}}
+                                                ({{alternateScenarioData['incomeAlternative']['from' +
+                                                tier]}}/{{alternateScenarioData['incomeAlternative']['to' +
+                                                tier]}})
+                                            </span>
+                                        </td>
+                                        <!-- <td class="text-right border-0 p-0" *ngIf="!alternateScenarioData && !alternateScenarioData['incomeAlternative']">
+                                                    <span *ngIf="tier == 1 || currentScenarioData['incomeAlternative']['incomeGoalTier' + tier] > 0">
+                                                        -
+                                                    </span>
+                                                </td> -->
+                                    </tr>
+                                </ng-container>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+
+
+    <div class="col-12 col-md-8">
+        <hr />
+        <h3 class="fs-18 fw-700 d-inline-block" [translate]="'GOAL.ANALYSIS.PANEL.SUMMARY_ASSUMPTIONS'"></h3>
+        <hr />
+        <table class="table summary-of-assumptions-table">
+            <thead>
+                <tr>
+                    <th class="pb-0 summary-of-assumptions-table-first-th"></th>
+                    <th class="hidden-sm-down"></th>
+                    <th class="text-right pb-0" *ngIf="accessRights['CURRSCENARIO']['accessLevel'] > 0">
+                        <span [translate]="'GOAL.ANALYSIS.LABEL.CURRENT_SITUATION'"></span>
+                        <a class="text-icon-wrapper" (click)="openAssumptions('current')" *ngIf="assumptionsData">
+                            <i class="ion-ios-arrow-forward "></i>
+                        </a>
+                    </th>
+                    <th class="text-right pb-0">
+                        <span [translate]="'GOAL.ANALYSIS.LABEL.STRATEGY_SCENARIO'"></span>
+                        <a class="text-icon-wrapper" (click)="openAssumptions('strategy')" *ngIf="assumptionsData">
+                            <i class="ion-ios-arrow-forward "></i>
+                        </a>
+                    </th>
+
+                </tr>
+                <!-- <tr>
+                    <td width="60%" class="border-0">Portfolio</td>
+                    <td class="text-right border-0">Current</td>
+                    <td class="border-0"></td>
+                    <td class="text-right border-0">Target</td>
+                    <td class="border-0"></td>
+                </tr> -->
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="border-0 pb-2 pt-2" [translate]="'GOAL.ANALYSIS.LABEL.INVESTMENT_STRATEGY'"></td>
+                    <td class="hidden-sm-down"></td>
+                    <td *ngIf="accessRights['CURRSCENARIO']['accessLevel'] > 0" class="text-right border-0 pb-2 pt-2">
+                        {{currentAssumptions['portfolio']}}</td>
+                    <td class="text-right border-0 pb-2 pt-2">{{strategyAssumptions['portfolio']}}</td>
+                </tr>
+                <tr>
+                    <td class="border-0 pb-2 pt-2" [translate]="'GOAL.ANALYSIS.LABEL.RETURN_ON_ASSETS'"></td>
+                    <td class="hidden-sm-down"></td>
+                    <td *ngIf="accessRights['CURRSCENARIO']['accessLevel'] > 0" class="text-right border-0 pb-2 pt-2">
+                        {{currentAssumptions['returnOnAssets']}}</td>
+                    <td class="text-right border-0 pb-2 pt-2">{{strategyAssumptions['returnOnAssets']}}</td>
+                </tr>
+                <tr>
+                    <td class="border-0 pb-2 pt-2" [translate]="'GOAL.ANALYSIS.LABEL.STANDARD_DEVIATION'"></td>
+                    <td class="hidden-sm-down"></td>
+                    <td *ngIf="accessRights['CURRSCENARIO']['accessLevel'] > 0" class="text-right border-0 pb-2 pt-2">
+                        {{currentAssumptions['standardDeviation']}}</td>
+                    <td class="text-right border-0 pb-2 pt-2">{{strategyAssumptions['standardDeviation']}}</td>
+                </tr>
+                <tr>
+                    <td class="border-0 pb-2 pt-2" [translate]="'GOAL.ANALYSIS.LABEL.AVERAGE_TAX'"></td>
+                    <td class="hidden-sm-down"></td>
+                    <td *ngIf="accessRights['CURRSCENARIO']['accessLevel'] > 0" class="text-right border-0 pb-2 pt-2">
+                        {{currentAssumptions['taxRate']/100 | percent: '1.1-1'}}</td>
+                    <td class="text-right border-0 pb-2 pt-2">{{strategyAssumptions['taxRate']/100 | percent: '1.1-1'}}
+                    </td>
+                </tr>
+                <tr *ngIf="retirementGoal">
+                    <td class="border-0 pb-2 pt-2" [translate]="'GOAL.ANALYSIS.LABEL.FULL_TAX'"></td>
+                    <td class="hidden-sm-down"></td>
+                    <td *ngIf="accessRights['CURRSCENARIO']['accessLevel'] > 0" class="text-right border-0 pb-2 pt-2">
+                        {{currentAssumptions['fullTax'] | translate}}</td>
+                    <td class="text-right border-0 pb-2 pt-2">{{strategyAssumptions['fullTax'] | translate}}</td>
+                </tr>
+
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="view-side-form">
+    <router-outlet></router-outlet>
+</div>

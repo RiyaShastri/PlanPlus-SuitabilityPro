@@ -1,0 +1,45 @@
+<div class="row pt-2">
+  <div class="col-12 col-md-6 text-left"  *ngIf="accessRights['CURRSCENARIO']['accessLevel'] > 0" >
+   		<div *ngIf="accessRights['PORTANALYSIS']['accessLevel'] > 0">
+        	<h3 class="fs-16 fw-700  pull-left" [translate]="'GOAL.ANALYSIS.LABEL.CURRENT_SITUATION'"></h3>
+        </div>
+   		<div *ngIf="accessRights['PORTANALYSIS']['accessLevel'] == 0">
+        	<h3 class="fs-16 fw-700  pull-left" [translate]="'PORTFOLIO_ALLOCATION.CURRENT'"></h3>
+        </div>
+    <div *ngIf="!noData" id="currentFevUnfevDiv"
+         style="height:400px;  width:400px; display: inline-block;margin-left: 0px;margin-right: 0px;"></div>
+    <div *ngIf="noData" class="no-record text-center position-relative"
+         style="height:50px;  width:100%; display: inline-block;margin-left: 0px;margin-right: 0px;">
+      <p class="no_data_graph"><i class="ion-ios-alert mr-2"></i>{{'NO_RESULTS' | translate}}</p>
+    </div>
+  </div>
+  <!-- <div class="col-12 col-md-6 text-left" *ngxPermissionsOnly="'ADVISOR'"> -->
+  <div class="col-12 col-md-6 text-left">
+   	<div *ngIf="accessRights['PORTANALYSIS']['accessLevel'] == 0 && hasSolution">
+       	 <h3 class="fs-16 fw-700  pull-left" [translate]="'PORTFOLIO.ANALYTICS.LABEL.IMPLEMENTATION'"></h3>
+        </div>
+    	<div *ngIf="accessRights['PORTANALYSIS']['accessLevel'] == 0 && !hasSolution">
+       	 <h3 class="fs-16 fw-700  pull-left" [translate]="'PORTFOLIO.ANALYTICS.LABEL.TARGET'"></h3>
+        </div>
+    	<div *ngIf="accessRights['PORTANALYSIS']['accessLevel'] > 0">
+       	 <h3 class="fs-16 fw-700  pull-left" [translate]="'GOAL.ANALYSIS.LABEL.STRATEGY_SITUATION'"></h3>
+        </div>
+    <div *ngIf="!noStrategyData" id="alternativeFevUnfevDiv"
+         style="height:400px; width:400px; display: inline-block;margin-left: 0px;margin-right: 0px;"></div>
+    <div *ngIf="noStrategyData" class="no-record text-center position-relative"
+         style="height:50px;  width:100%; display: inline-block;margin-left: 0px;margin-right: 0px;">
+      <p class="no_data_graph"><i class="ion-ios-alert mr-2"></i>{{'NO_RESULTS' | translate}}</p>
+    </div>
+  </div>
+
+  <div  class="col-12 text-center mt-3">
+    <div *ngIf="titles && !noData">
+      <div class="pr-2 d-inline-block" *ngFor="let title of titles; index as i">
+        <span class="square asset_indicator" [style.background]="chartColors[i]"></span>
+        <span class="asset_lbl fs-16 fw-500">{{title | translate}}</span>
+      </div>
+    </div>
+  </div>
+
+ 
+</div>

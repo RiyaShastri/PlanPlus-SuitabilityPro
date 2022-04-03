@@ -1,0 +1,82 @@
+<div class="side-form" *ngIf="accessRights['CLIVALUES']['accessLevel'] > 0">
+    <div class="box">
+        <div class="box-header">
+            <span class="sidebar_title" [translate]="'ENGAGEMENT.SELECT_VALUES'"></span>
+            <span class="float-right">
+                <a *ngIf="customValues.length < 5" (click)="open(content)" class="d-inline-block va-middle btn-add">
+                    <i class="ion-md-add-circle fs-22 d-inline-block va-middle"></i>
+                    <span class="d-inline-block va-middle fs-12" [translate]="'ENGAGEMENT.ADD_A_VALUE'"></span>
+                </a>
+                <a *ngIf="customValues.length >= 5" class="d-inline-block va-middle btn-add disabled-link">
+                    <i class="ion-md-add-circle fs-22 d-inline-block va-middle"></i>
+                    <span class="d-inline-block va-middle fs-12" [translate]="'ENGAGEMENT.ADD_A_VALUE'"></span>
+                </a>
+                <span (click)="back(); closeButtonDisable = true" class="sidebar_action_icon ion-md-close-circle d-inline-block va-middle pl-4"></span>
+            </span>
+        </div>
+        <form name="form" (ngSubmit)="f.form.valid && selectValues();" #f="ngForm" novalidate>
+            <div class="box-body" *ngIf="memberDetails">
+                <p>{{'ENGAGEMENT.SELECT_VALUES_LABEL.PART_1' | translate}} <span class="fw-600">{{memberDetails.firstName}} {{memberDetails.lastName}}</span> {{'ENGAGEMENT.SELECT_VALUES_LABEL.PART_2' | translate}}</p>
+                <div class="row">
+                    <div [ngClass]="{'col-6': allValues.length>columnLength, 'col-12': allValues.length<=columnLength}">
+                        <div class="form-group mb-1 select-value-checkbox" *ngFor="let value of allValues | slice:0:columnLength; index as i">
+                            <p-checkbox *ngIf="value.custom === false" name="selectedValues" [value]="value.id" [label]="value.text" inputId="value_{{value.id}}" [(ngModel)]="selectedValues">
+                            </p-checkbox>
+                        </div>
+                    </div>
+                    <div class="col-6" *ngIf="allValues.length>columnLength">
+                        <div class="form-group mb-1 select-value-checkbox" *ngFor="let value of allValues | slice:columnLength; index as i">
+                            <p-checkbox *ngIf="value.custom === false" name="selectedValues" [value]="value.id" [label]="value.text" inputId="value_{{value.id}}" [(ngModel)]="selectedValues">
+                            </p-checkbox>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div [ngClass]="{'col-6': customValues.length>1, 'col-12': customValues.length<=1}">
+                        <div class="form-group mb-1 select-value-checkbox" *ngFor="let value of customValues; index as i">
+                            <p-checkbox *ngIf="i%2 == 0" name="selectedValues" [value]="value.id" [label]="value.text" inputId="value_{{value.id}}" [(ngModel)]="selectedValues">
+                            </p-checkbox>
+                        </div>
+                    </div>
+                    <div class="col-6" *ngIf="customValues.length>1">
+                        <div class="form-group mb-1 select-value-checkbox" *ngFor="let value of customValues; index as i">
+                            <p-checkbox *ngIf="i%2 !== 0" name="selectedValues" [value]="value.id" [label]="value.text" inputId="value_{{value.id}}" [(ngModel)]="selectedValues">
+                            </p-checkbox>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="box-footer">
+                <div class="form-group text-right">
+                    <button class="btn btn-secondary btn-small mr-2" type="button" (click)="back(); closeButtonDisable = true" [disabled]="closeButtonDisable" [translate]="'FORM.ACTION.CANCEL'"></button>
+                    <button type="submit" class="btn btn-success btn-small" [disabled]="!f.form.valid || saveDisabled" [translate]="'FORM.ACTION.SAVE'"></button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<ng-template #content let-c="close" let-d="dismiss">
+    <div class="modal-header">
+        <span class="modal-title" id="modal-basic-title" [translate]="'ENGAGEMENT.ADD_A_VALUE'"></span>
+        <span (click)="d('Cross click')" class="sidebar_action_icon ion-md-close-circle">
+        </span>
+    </div>
+    <form name="form" #f="ngForm" novalidate>
+        <div class="modal-body">
+            <div class="form-group" [ngClass]="{'has-error': !description.valid && (description.dirty || description.touched)}">
+                <label class="custom-form-label add-new-value-label" [translate]="'ENGAGEMENT.DESCRIPTION'"></label>
+                <input type="text" class="form-control" name="description" [(ngModel)]="newValue" [maxLength]="40" #description="ngModel" pattern="^[a-zA-Z][a-zA-Z ]*$"
+                    required />
+            </div>
+
+        </div>
+        <div class="modal-footer">
+            <div class="form-group text-right">
+                <button class="btn btn-secondary btn-small mr-2" type="button" (click)="d('Cross click'); closeModal();" [translate]="'FORM.ACTION.CANCEL'"></button>
+                <button type="submit" [disabled]="!f.form.valid || addButtonDisabled" class="btn btn-success btn-small" (click)="addValue(); c('Save click');"
+                    [translate]="'FORM.ACTION.SAVE'"></button>
+            </div>
+        </div>
+    </form>
+</ng-template>

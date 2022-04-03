@@ -1,0 +1,229 @@
+<div class="bg-white pt-4 pb-4 document-bg">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h1 [translate]="'CLIENT_OVERVIEW.DOCUMENT_CENTER'"></h1>
+                <hr>
+                <div class="row">
+                    <div class="col-lg-6 col-12">
+                        <p class="content" [translate]="'CONTENT.DOCUMENT_CONTENT'"></p>
+                    </div>
+                </div>
+                <hr class="mt-4">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6 col-12">
+                <div class="d-md-flex flex-sm-column flex-md-row  justify-content-md-start">
+                    <div routerLink="generate" class="document-box text-center cursor-p mr-sm-2 mr-md-4" *ngIf="accessRights['WEB07']['accessLevel'] === 3 && !isReadOnly">
+                        <span [translate]="'CUSTOM.GENERATE_DOCUMENT'"></span>
+                        <i class="ion-md-add-circle"></i>
+                    </div>
+                    <div class="document-box text-center not-active mr-sm-2 mr-md-4" *ngIf="isReadOnly">
+                        <span [translate]="'CUSTOM.GENERATE_DOCUMENT'"></span>
+                        <i class="ion-md-add-circle"></i>
+                    </div>
+                    <div routerLink="upload" class="document-box text-center cursor-p" *ngIf="!isReadOnly &&  accessRights['DOCUPLOAD']['accessLevel'] >1">
+                        <span [translate]="'CUSTOM.UPLOAD_DOCUMENT'"></span>
+                        <i class="ion-md-cloud-upload"></i>
+                    </div>
+                    <div class="document-box text-center not-active" *ngIf="isReadOnly">
+                        <span [translate]="'CUSTOM.UPLOAD_DOCUMENT'"></span>
+                        <i class="ion-md-cloud-upload"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6 col-12">
+                <div class="form-group mt-lg-5 mt-md-0 mt-3">
+                    <div class="input-group">
+                        <input type="text" [(ngModel)]="searchString" placeholder="Search document" class="form-control"
+                            (keyup)="serachDocument()">
+                        <div class="input-group-addon">
+                            <i class="ion-md-search"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="filter-main d-flex flex-wrap flex-sm-column flex-md-row">
+                    <div class="filter-box mr-md-auto">
+                        <app-common-drop-down [itemList]="filterBy" [defaultSelected]="selectedFilter" dropDownLabel="Filter BY"
+                            (OnSelect)="getFilterDocument($event)"></app-common-drop-down>
+                    </div>
+                    <div class="sort-box ml-md-auto">
+                        <i class="ion-md-funnel"></i>
+                        <div class="dropdown-common mt-1 sort-dropdown">
+                            <app-common-drop-down [itemList]="sortBy" class="dropdown-right" [defaultSelected]="selectedSort"
+                                dropDownLabel="Sort By" (OnSelect)="getSortDocument($event)"></app-common-drop-down>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+
+
+            <div class="col-12">
+                <hr>
+
+                <table class="table document-table">
+                    <thead>
+                        <tr>
+                            <th [translate]="'TABLE.DOCUMENT'" class="doc-title"></th>
+                            <th width="15%" [translate]="'TABLE.ADDED'" class="hidden-md-down"></th>
+                            <th class="doc-status" [translate]="'TABLE.STATUS'"></th>
+                            <th width="15%" class="text-left hidden-md-down" [translate]="'TABLE.SHARED'"></th>
+                            <th width="20%" class="text-left hidden-xs-down" [translate]="'TABLE.VIEWEDBY'"></th>
+                            <th width="50" class="text-center" [translate]="'TABLE.ACTIONS'"> <i *ngIf="!isDownloaded"
+                                    aria-hidden="true" class="fa fa-spinner fa-pulse loader-icon"></i></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <ng-container *ngIf="documentTypes.length === 0">
+                            <!-- <img height="25px" src="/assets/images/loader.gif" /> -->
+                            <tr>
+                                <td colspan="6" class="no-record text-center">
+                                    <i class="ion-ios-alert mr-2"></i>{{'NO_RESULTS' | translate}}
+                                </td>
+                            </tr>
+                        </ng-container>
+                        <ng-container *ngFor="let category of documentTypes;let i = index;">
+                            <tr>
+                                <td colspan="6" class="document-title">{{'DOCUMENT.GENERATE_DOCUMENT.TYPE_NAMES.' +category | translate}}</td>
+                            </tr>
+                            <ng-container *ngIf="documentList[category].length > 0">
+                                <tr *ngFor="let document of documentList[category];let j = index; let last = last">
+                                    <td class="doc-title">
+                                        {{document.documentName}}
+                                        <span class="new" *ngIf="document.newDocument" [translate]="'CUSTOM.NEW'">new</span>
+                                    </td>
+                                    <td width="15%" class="text-left fw-400 hidden-md-down">
+                                        {{document.created | date:'yyyy.MM.dd'}}
+                                    </td>
+                                    <td width="15%" class="text-left doc-status">
+                                        <span class="circle {{document.color}} mr-2"></span> {{document.docStatus}}
+                                    </td>
+                                    <td width="15%" class="text-left hidden-md-down">
+                                        <div *ngIf="document.sharedDate; else notShared">{{document.sharedDate |
+                                            date:'yyyy.MM.dd'}}</div>
+                                        <ng-template #notShared>N/A</ng-template>
+                                    </td>
+                                    <td width="20%" class="text-left hidden-xs-down">
+                                        <!-- <ng-container *ngIf="document.sharedDate && document.viewedBy"> -->
+                                        <ng-container *ngIf="document.viewedBy; else noViewby">
+                                            <app-member-avatar [initials]="document.viewedByMember.firstName[0] + document.viewedByMember.lastName[0]"
+                                                [relationClass]="document.viewedByMember.btnColor" avatarClass="initials"
+                                                [avatarUrl]="document.viewedByMember.avatar"></app-member-avatar>
+                                            <span class="ml-2">{{document.viewedByMember.firstName + ' ' +
+                                                document.viewedByMember.lastName}}</span>
+                                        </ng-container>
+                                        <ng-template #noViewby>N/A</ng-template>
+                                    </td>
+                                    <td width="50" class="text-center">
+                                        <div class="dropdown-relative" [ngClass]="{'dropdown-up' : last || (documentList[category].length - 3 < j+1 )}">
+                                            <button type="button" class="btn-floating" [disabled]="!isDownloaded"
+                                                (click)="changeDocumentAction(i,j)">
+                                                <span class="ion-md-more"></span>
+                                            </button>
+                                            <div [id]="'dropdownDocumentAction_'+i+'_'+j" class="dropdown-document-action dropdown-floating hide-ele">
+                                                <ul class="floating-dropdown">
+                                                    <li (click)="changeDocumentAction(i,j)">
+                                                        <a class="action-list" [routerLink]="['rename', document.documentID]">
+                                                            <i class="ion-md-create action-list"></i>
+                                                            <span [translate]="'CUSTOM.RE_NAME'" class="action-list"></span>
+                                                        </a>
+                                                    </li>
+                                                    <li (click)="changeDocumentAction(i,j)">
+                                                        <a class="action-list" (click)="downloadClientDocument(document.documentID)">
+                                                            <i class="ion-md-download action-list"></i>
+                                                            <span [translate]="'CUSTOM.DOWNLOAD'" class="action-list"></span>
+                                                        </a>
+                                                    </li>
+                                                    <li (click)="changeDocumentAction(i,j)" *ngIf=" !document.sharedDate && accessRights['DOCSHARE']['accessLevel'] >1"
+                                                        [ngClass]="{'not-active': document.status !== 'COMPLETE'}">
+                                                        <a class="action-list" (click)="shareClientDocument(document.documentType, document.documentID)"
+                                                            *ngIf="document.status === 'COMPLETE'; else notSharable">
+                                                            <i class="ion-md-share-alt action-list"></i>
+                                                            <span [translate]="'CUSTOM.SHARED'" class="action-list"></span>
+                                                        </a>
+                                                        <ng-template #notSharable>
+                                                            <i class="ion-md-share-alt action-list"></i>
+                                                            <span [translate]="'CUSTOM.SHARED'" class="action-list"></span>
+                                                        </ng-template>
+                                                    </li>
+                                                    <li (click)="changeDocumentAction(i,j)" *ngIf=" document.sharedDate && accessRights['DOCSHARE']['accessLevel'] >1"
+                                                        [ngClass]="">
+                                                        <a class="action-list" (click)="unshareClientDocument(document.documentID)"
+                                                            *ngIf="notUnSharable">
+                                                            <i class="ion-md-share-alt action-list"></i>
+                                                            <span [translate]="'CUSTOM.UNSHARED'" class="action-list"></span>
+                                                        </a>
+                                                        <ng-template #notUnSharable>
+                                                            <i class="ion-md-share-alt action-list"></i>
+                                                            <span [translate]="'CUSTOM.UNSHARED'" class="action-list"></span>
+                                                        </ng-template>
+                                                    </li>
+                                                    <li (click)="changeDocumentAction(i,j)" *ngIf=" document.sharedDate"
+                                                        [ngClass]="">
+                                                        <a class="action-list" [routerLink]="[document.viewedBy ? document.viewedBy : document.clinum,'send-reminder',document.documentType, document.documentID]"
+                                                            *ngIf="sendReminder">
+                                                            <i class="ion-md-notifications action-list"></i>
+                                                            <span [translate]="'CUSTOM.SEND_REMINDER'" class="action-list"></span>
+                                                        </a>
+                                                        <ng-template #sendReminder>
+                                                            <i class="ion-md-notifications action-list"></i>
+                                                            <span [translate]="'CUSTOM.SEND_REMINDER'" class="action-list"></span>
+                                                        </ng-template>
+                                                    </li>
+                                                    <li (click)="changeUpdateStatus(i,j);">
+                                                        <a class="sub-menu">
+                                                            <i class="ion-md-sync sub-menu"></i>
+                                                            <span [translate]="'CUSTOM.UPDATE_STATUS'" class="sub-menu"></span>
+                                                        </a>
+                                                    </li>
+                                                    <li class="delete-btn" (click)="changeDocumentAction(i,j)" [ngClass]="{'not-active': document.status !== 'IN_PROGRESS'}">
+                                                        <a class="action-list" (click)="deleteDocument(document.documentID)"
+                                                            *ngIf="document.status === 'IN_PROGRESS'; else notDeletable">
+                                                            <i class="ion-md-close-circle action-list"></i>
+                                                            <span [translate]="'CUSTOM.DELETE'" class="action-list"></span>
+                                                        </a>
+                                                        <ng-template #notDeletable>
+                                                            <i class="ion-md-close-circle action-list"></i>
+                                                            <span [translate]="'CUSTOM.DELETE'" class="action-list"></span>
+                                                        </ng-template>
+                                                    </li>
+                                                </ul>
+                                            </div>
+
+                                            <div [id]="'dropdownUpdateStatus_'+i+'_'+j" class="dropdown-status-action dropdown-floating hide-ele">
+                                                <ul class="floating-dropdown">
+                                                    <ng-container *ngFor="let item of filterBy;let k = index;">
+                                                        <li *ngIf="k!==0 && !item.lowVersion && item.canUpdate" (click)="changeUpdateStatus(i,j)">
+                                                            <a (click)="updateDocumentStatus(document.documentID,item.id)" class="action-list">
+                                                                <span class="circle {{statusData[item.id]['color']}}  mr-2 action-list"></span>
+                                                                <span class="action-list">{{'DOCUMENT.FILTER_OPTIONS.' +item.id | translate}}</span>
+                                                            </a>
+                                                        </li>
+                                                    </ng-container>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </ng-container>
+                            <ng-container *ngIf="documentList[category].length === 0">
+                                <tr>
+                                    <td colspan="6" class="no-document text-center">
+                                        <i class="ion-ios-alert mr-2"></i>{{'NO_RESULTS' | translate}}
+                                    </td>
+                                </tr>
+                            </ng-container>
+
+                        </ng-container>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="view-side-form">
+    <router-outlet></router-outlet>
+</div>

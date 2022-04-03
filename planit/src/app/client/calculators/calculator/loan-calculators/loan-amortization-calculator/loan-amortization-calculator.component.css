@@ -1,0 +1,47 @@
+.loan-amortization-div {
+    font-weight: 500 !important;
+}
+
+.loan-amortize-cal-div .col-12>.row {
+    -ms-flex-align: center !important;
+    align-items: center !important;
+    margin-bottom: 8px;
+}
+
+span .ion-md-calculator {
+    cursor: pointer;
+    color: #99bb44;
+}
+
+.retain-radiobutton-wrap p-radiobutton {
+    margin-top: -3px;
+}
+
+.retain-radiobutton-wrap .form-group .form-check {
+    width: 48% !important;
+}
+
+.loan-amortize-cal-div p-calendar .ui-calendar .ui-inputtext,
+.loan-amortize-cal-div p-dropdown .ui-dropdown .ui-inputtext {
+    text-align: center;
+}
+
+.loan-amortize-cal-div .payment-increase-wrap span {
+    margin: 0 10px;
+}
+@media(max-width: 991px) {
+    .amount-borrow-order-wrap{
+        order: 2
+    }
+}
+@media(max-width: 760px) {
+    .retain-radiobutton-wrap .form-group .form-check {
+        width: 65% !important;
+    }
+}
+
+@media(max-width: 685px) {
+    .retain-radiobutton-wrap .form-group .form-check {
+        width: 100% !important;
+    }
+}

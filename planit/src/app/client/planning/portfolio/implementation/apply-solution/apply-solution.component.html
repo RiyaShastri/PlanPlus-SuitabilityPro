@@ -1,0 +1,132 @@
+<div class="side-form">
+    <div class="box">
+        <div class="box-header">
+            <span class="sidebar_title" [translate]="'APPLY_SOLUTION.TITLE'"></span>
+            <span class="sidebar_action_icon ion-md-close-circle float-right" (click)="back(); closeButtonDisable = true"></span>
+        </div>
+        <div class="box-body">
+
+            <div class="row">
+                <div class="col-12">
+                    <h6 class="text-left fs-12 fw-600 d-inline">
+                        {{'PORTFOLIO.DETAIL.PORTFOLIO_SUITABILITY_SCORE' | translate}}
+                    </h6>
+                </div>
+                <div class="col-12">
+                    <div class="badge-wrapper">
+                        <span *ngIf="suitabilityScore === 0">N/A</span>
+                        <img *ngIf="suitabilityScore > 0" src="assets/images/suitability_badge/PPG Badge_{{suitabilityScore}}.png">
+                    </div>
+                </div>
+                <div class="col-12 form-group pt-4" *ngIf="showSearchField">
+                    <label class="custom-form-label" [translate]="'APPLY_SOLUTION.SOLUTION_FAMILY'"></label>
+                    <div class="input-group">
+                        <input type="text" placeholder="Start typing to filter by solution family" [(ngModel)]="searchString" (input)="getPortfolioSolution()"
+                            class="form-control">
+                        <div class="input-group-addon">
+                            <i class="ion-md-search"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12" *ngIf="accessRights['CLI07']['accessLevel'] > 0">
+                    <a (click)="customClick()" class="fs-12 text-icon-wrapper float-right cursor-p">
+                        <i class="current-edit ion-md-pie"></i>
+                        <span class="text-lbl icon-left" [translate]="'APPLY_SOLUTION.CUSTOM_SOLUTION'"></span>
+                    </a>
+                </div>
+                <div class="col-12 pt-2">
+                    <div class="d-flex justify-content-end">
+                        <div class="d-inline-block mr-15">
+                            <span class="square OK"></span>
+                            <span class="ff-OpenSans fs-12 fw-600 legend" [translate]="'APPLY_SOLUTION.SUITABLE'"></span>
+                        </div>
+                        <div class="d-inline-block">
+                            <span class="square MarginalUpper"></span>
+                            <span class="ff-OpenSans fs-12 fw-600 legend" [translate]="'APPLY_SOLUTION.MARGINALLY_SUITABLE'"></span>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="col-12 pt-2">
+                    <h5 class="fw-600" [translate]="'APPLY_SOLUTION.SUITABLE_RISK'"></h5>
+                    <hr />
+                </div>
+                <div class="col-12 pt-2">
+                    <div class="chartMarginallyLow-wrapper">
+                        <app-solution-graph (selectedSolution)="selectedSolution($event)" [solutionData]="this.solutionData['OK']" [implementedSolutionId]="implementedSolutionId"
+                            [suitabilityScore]="suitabilityScore"></app-solution-graph>
+                    </div>
+                </div>
+                <div class="col-12 pt-2">
+                    <div class="form-group mb-0">
+                        <div id="moreDetai" class="hide-ele more-detail-wrapper">
+                            <p-accordion>
+                                <p-accordionTab>
+                                    <p-header>
+                                        <h5 class="fw-600" [translate]="'APPLY_SOLUTION.MARGINALLY_SUITABLE_LOW'"></h5>
+                                        <hr>
+                                    </p-header>
+                                    <div class="pt-2">
+                                        <app-solution-graph (selectedSolution)="selectedSolution($event)" [solutionData]="this.solutionData['MarginalLower']" [implementedSolutionId]="implementedSolutionId"
+                                            [suitabilityScore]="suitabilityScore"></app-solution-graph>
+
+                                    </div>
+                                </p-accordionTab>
+
+                                <p-accordionTab>
+                                    <p-header>
+                                        <h5 class="fw-600" [translate]="'APPLY_SOLUTION.MARGINALLY_SUITABLE_HIGH'"></h5>
+                                        <hr>
+                                    </p-header>
+                                    <div class="pt-2">
+                                        <app-solution-graph (selectedSolution)="selectedSolution($event)" [solutionData]="this.solutionData['MarginalUpper']" [implementedSolutionId]="implementedSolutionId"
+                                            [suitabilityScore]="suitabilityScore"></app-solution-graph>
+
+                                    </div>
+                                </p-accordionTab>
+
+                                <p-accordionTab>
+                                    <p-header>
+                                        <h5 class="fw-600" [translate]="'APPLY_SOLUTION.TOO_LITTLE_RISK'"></h5>
+                                        <hr>
+                                    </p-header>
+                                    <div class="pt-2">
+                                        <app-solution-graph (selectedSolution)="selectedSolution($event)" [solutionData]="this.solutionData['TooLittle']" [implementedSolutionId]="implementedSolutionId"
+                                            [suitabilityScore]="suitabilityScore"></app-solution-graph>
+
+                                    </div>
+                                </p-accordionTab>
+
+                                <p-accordionTab>
+                                    <p-header>
+                                        <h5 class="fw-600" [translate]="'APPLY_SOLUTION.TOO_MUCH_RISK'"></h5>
+                                    </p-header>
+                                    <div class="pt-2">
+                                        <app-solution-graph (selectedSolution)="selectedSolution($event)" [solutionData]="this.solutionData['TooMuch']" [implementedSolutionId]="implementedSolutionId"
+                                            [suitabilityScore]="suitabilityScore"></app-solution-graph>
+
+                                    </div>
+                                </p-accordionTab>
+                            </p-accordion>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <hr class="mt-2 mb-1">
+                    <i class="ion-ios-medical finaMetrica-icon"></i>
+                    <span class="fs-14 fw-600" [translate]="'APPLY_SOLUTION.MAPPED_BY_FINAMETRICA'"></span>
+                    <br>
+                    <a class="moredetail-button cursor-p" (click)="toggle();isDetailExpand = !isDetailExpand ">
+                        <span *ngIf="isDetailExpand" [translate]="'PLANNING.LESS_DETAIL'"> </span>
+                        <span *ngIf="!isDetailExpand" [translate]="'PLANNING.MORE_DETAIL'"> </span>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="box-footer">
+            <div class="form-group text-right">
+                <button (click)="back(); closeButtonDisable = true" type="button" class="btn btn-small btn-secondary mr-2" [disabled]="closeButtonDisable">{{ 'FORM.ACTION.CANCEL' | translate }}</button>
+            </div>
+        </div>
+    </div>
+</div>

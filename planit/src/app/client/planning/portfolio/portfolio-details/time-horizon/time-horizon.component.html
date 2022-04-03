@@ -1,0 +1,24 @@
+<div class="mt-3">
+    <h6 class="fw-700" [translate]="'PORTFOLIO.DETAIL.TIME_HORIZON'"></h6>
+    <hr/>
+    <ng-container *ngxPermissionsOnly="['ADVISOR']">
+        <p class="mb-0" *ngIf="timeHorizoneDetail">{{timeHorizoneDetail}}</p>
+    </ng-container>
+    <ng-container  *ngxPermissionsOnly="['PROFILER']">
+        <div class=" mr-5 time-horizon" *ngIf="selectedTimeHorizon">
+           
+                    <p class="mr-5" [translate]="'PORTFOLIO.DETAIL.TIME_HORIZON_ACCORDIN_DESC'"></p>
+                    <div class="composure-box" *ngIf="!isEditableRoute">
+                        <ul class="composure-list">
+                            <li class="active">{{selectedTimeHorizon['description']}}</li>
+                        </ul>
+                    </div>
+                    <div *ngIf="isEditableRoute && timeHorizons">
+                        <div class="form-group w-300">
+                            <p-dropdown [options]="timeHorizons" optionLabel="description" name="selectedTimeHorizon" [(ngModel)]="selectedTimeHorizon" (onChange)="changeTimeHorizon(selectedTimeHorizon)"></p-dropdown>
+                        </div>
+                    </div>
+        
+        </div>
+    </ng-container>
+</div>

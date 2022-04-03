@@ -1,0 +1,298 @@
+<div class="add-client side-form">
+    <div class="box">
+
+        <div class="box-header">
+            <span class="sidebar_title" [translate]="'PLANTRAC.SIDE_PANEL.TITLE'"></span>
+            <span (click)="closePanel()" class="sidebar_action_icon ion-md-close-circle float-right"></span>
+        </div>
+
+        <div class="box-body" *ngIf="planTracDetails && planTracDetails.length > 0 && timePeriodOptions.length > 0">
+            <div class="row">
+                <div class="col-12">
+                    <span class="pull-right">
+                        <app-common-drop-down class="dropdown-right" [itemList]="timePeriodOptions"
+                            [defaultSelected]="selectedTimePeriod" dropDownLabel="Time Period"
+                            (OnSelect)="changeTimePeriod($event)"></app-common-drop-down>
+                    </span>
+                </div>
+                <div class="col-12 title-section fs-14 fw-500" [ngClass]="{'border-bottom-0': viewBy === plantracViewByOptions.TYPE}">
+                    <span class="pull-left" *ngIf="viewBy === plantracViewByOptions.ACCOUNT">
+                        <div class="d-inline d-inline-block" *ngIf="ownerList && ownerList.length > 0">
+                            <span class="d-flex client-avatars">
+                                <ng-container *ngFor="let owner of ownerList | slice:0:1">
+                                    <span class="initials d-inline-block" *ngIf="!owner['avatar']"
+                                        [ngClass]="{'spouse': owner.relation == PERSON_RELATION.CLIENT2, 'childs': owner.relation == PERSON_RELATION.SON || owner.relation == PERSON_RELATION.DAUGHTER}">
+                                        {{owner.firstName[0] + owner.lastName[0]}}</span>
+                                    <img class="initials bg-transparent" height="50" *ngIf="owner['avatar']"
+                                        [src]="owner['avatar']" (error)="owner['avatar']=null" />
+                                </ng-container>
+                            </span>
+                        </div>
+                        <span class="ml-2 d-inline-block fw-400">{{planTracDetails[0]['accountDesc']}}</span>
+                    </span>
+                    <span
+                        [ngClass]="{'pull-right': viewBy === plantracViewByOptions.ACCOUNT, 'pull-left': viewBy === plantracViewByOptions.TYPE}">{{planTracDetails[0]['accountTypeDesc']}}</span>
+                </div>
+
+                <div class="plantrac-detail-accordion mt-4">
+                    <p-accordion [multiple]="true">
+                        <!-- <p-accordionTab [translate]="'PLANTRAC.ACCORDION-HEADER-TEXT'" header="Savings and Withdrawal Analysis"> -->
+                        <p-accordionTab>
+                            <p-header>
+                                <h3 class="fs-16 fw-700 d-inline-block" [translate]="'PLANTRAC.SAVINGS_TRANSACTIONS'">
+                                </h3>
+                            </p-header>
+                            <table class="table plantac-analysis-tbl mb-4">
+                                <thead>
+                                    <tr>
+                                        <th width="55%" [translate]="'PLANTRAC.DATE'"></th>
+                                        <th width="15%" class="text-center" [translate]="'PLANTRAC.PLANNED_SAVINGS'">
+                                        </th>
+                                        <th width="15%" class="text-center" [translate]="'PLANTRAC.ACTUAL_SAVINGS'">
+                                        </th>
+                                        <th width="15%" class="text-center">{{'PLANTRAC.VARIANCE' | translate}}
+                                            {{currency}}
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <ng-container *ngFor="let item of planTracDetails; index as index">
+                                        <tr *ngIf="viewBy === plantracViewByOptions.TYPE" class="plantrac-heading-row">
+                                            <td width="60%" colspan="2">
+                                                <div class="d-inline d-inline-block"
+                                                    *ngIf="ownerList">
+                                                    <span class="d-flex client-avatars">
+                                                        <ng-container
+                                                            *ngFor="let owner of ownerList[item.accountId] | slice:0:1">
+                                                            <span class="initials d-inline-block"
+                                                                *ngIf="!owner['avatar']"
+                                                                [ngClass]="{'spouse': owner.relation == PERSON_RELATION.CLIENT2, 'childs': owner.relation == PERSON_RELATION.SON || owner.relation == PERSON_RELATION.DAUGHTER}">
+                                                                {{owner.firstName[0] + owner.lastName[0]}}</span>
+                                                            <img class="initials bg-transparent" height="50"
+                                                                *ngIf="owner['avatar']" [src]="owner['avatar']"
+                                                                (error)="owner['avatar']=null" />
+                                                        </ng-container>
+                                                    </span>
+                                                </div>
+                                                <span class="ml-2 d-inline-block fw-400">{{item['accountDesc']}}</span>
+                                            </td>
+                                            <td width="40%" colspan="2" class="text-right">
+                                                {{item['accountTypeDesc']}}</td>
+                                        </tr>
+                                        <ng-container
+                                            *ngIf="item['savingsWithdrawalsAnalysis'] && item['savingsWithdrawalsAnalysis']['savings'] && item['savingsWithdrawalsAnalysis']['savings']['planTracSavings'].length > 0">
+                                            <tr *ngFor="let saving of item['savingsWithdrawalsAnalysis']['savings']['planTracSavings']; index as i"
+                                                class="plantrac-detail-row">
+                                                <td width="55%">
+                                                    {{saving['transactionDate'] ? saving['transactionDate'] : 'N/A'}}
+                                                </td>
+                                                <td width="15%" class="text-center">
+                                                    {{saving['plannedAmount'] | currency:clientData['currencyCode'] : 'symbol-narrow':'1.0-0'}}
+                                                </td>
+                                                <td width="15%" class="text-center">
+                                                    {{saving['actualAmount'] | currency:clientData['currencyCode'] : 'symbol-narrow':'1.0-0'}}
+                                                </td>
+                                                <td width="15%" class="text-center"
+                                                    [ngClass]="{'text-red': saving['actualAmount'] < saving['plannedAmount']}">
+                                                    {{saving['varianceAmount'] | currency:clientData['currencyCode'] : 'symbol-narrow':'1.0-0'}}
+                                                </td>
+                                            </tr>
+                                        </ng-container>
+                                        <tr *ngIf="item['savingsWithdrawalsAnalysis']['savings']['totalSavings']">
+                                            <td width="55%">
+                                                {{item['savingsWithdrawalsAnalysis']['savings']['totalSavings']['description']}}
+                                            </td>
+                                            <td width="15%" class="text-center">
+                                                {{item['savingsWithdrawalsAnalysis']['savings']['totalSavings']['plannedAmount'] | currency:clientData['currencyCode'] : 'symbol-narrow':'1.0-0'}}
+                                            </td>
+                                            <td width="15%" class="text-center">
+                                                {{item['savingsWithdrawalsAnalysis']['savings']['totalSavings']['actualAmount'] | currency:clientData['currencyCode'] : 'symbol-narrow':'1.0-0'}}
+                                            </td>
+                                            <td width="15%" class="text-center"
+                                                [ngClass]="{'text-red': item['savingsWithdrawalsAnalysis']['savings']['totalSavings']['actualAmount'] < item['savingsWithdrawalsAnalysis']['savings']['totalSavings']['plannedAmount']}">
+                                                {{item['savingsWithdrawalsAnalysis']['savings']['totalSavings']['varianceAmount'] | currency:clientData['currencyCode'] : 'symbol-narrow':'1.0-0'}}
+                                            </td>
+                                        </tr>
+                                    </ng-container>
+                                </tbody>
+                            </table>
+                        </p-accordionTab>
+
+                        <!-- <p-accordionTab [translate]="'PLANTRAC.ACCORDION-HEADER-TEXT'" header="Savings and Withdrawal Analysis"> -->
+                        <p-accordionTab>
+                            <p-header>
+                                <h3 class="fs-16 fw-700 d-inline-block"
+                                    [translate]="'PLANTRAC.WITHDRAWAL_TRANSACTIONS'"></h3>
+                            </p-header>
+                            <table class="table plantac-analysis-tbl mb-4">
+                                <thead>
+                                    <tr>
+                                        <th width="55%" [translate]="'PLANTRAC.DATE'"></th>
+                                        <th width="15%" class="text-center"
+                                            [translate]="'PLANTRAC.PLANNED_WITHDRAWALS'"></th>
+                                        <th width="15%" class="text-center" [translate]="'PLANTRAC.ACTUAL_WITHDRAWALS'">
+                                        </th>
+                                        <th width="15%" class="text-center">{{'PLANTRAC.VARIANCE' | translate}}
+                                            {{currency}}
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <ng-container *ngFor="let item of planTracDetails; index as index">
+                                        <tr *ngIf="viewBy === plantracViewByOptions.TYPE" class="plantrac-heading-row">
+                                            <td width="60%" colspan="2">
+                                                <div class="d-inline d-inline-block"
+                                                    *ngIf="ownerList">
+                                                    <span class="d-flex client-avatars">
+                                                        <ng-container
+                                                            *ngFor="let owner of ownerList[item.accountId] | slice:0:1">
+                                                            <span class="initials d-inline-block"
+                                                                *ngIf="!owner['avatar']"
+                                                                [ngClass]="{'spouse': owner.relation == PERSON_RELATION.CLIENT2, 'childs': owner.relation == PERSON_RELATION.SON || owner.relation == PERSON_RELATION.DAUGHTER}">
+                                                                {{owner.firstName[0] + owner.lastName[0]}}</span>
+                                                            <img class="initials bg-transparent" height="50"
+                                                                *ngIf="owner['avatar']" [src]="owner['avatar']"
+                                                                (error)="owner['avatar']=null" />
+                                                        </ng-container>
+                                                    </span>
+                                                </div>
+                                                <span class="ml-2 d-inline-block fw-400">{{item['accountDesc']}}</span>
+                                            </td>
+                                            <td width="40%" colspan="2" class="text-right">
+                                                {{item['accountTypeDesc']}}</td>
+                                        </tr>
+                                        <ng-container
+                                            *ngIf="item['savingsWithdrawalsAnalysis'] && item['savingsWithdrawalsAnalysis']['withdrawals'] && item['savingsWithdrawalsAnalysis']['withdrawals']['planTracWithdrawals'].length > 0">
+                                            <tr *ngFor="let withdrawal of item['savingsWithdrawalsAnalysis']['withdrawals']['planTracWithdrawals']; index as i"
+                                                class="plantrac-detail-row">
+                                                <td width="55%">
+                                                    {{withdrawal['transactionDate'] ? withdrawal['transactionDate'] : 'N/A'}}
+                                                </td>
+                                                <td width="15%" class="text-center">
+                                                    {{withdrawal['plannedAmount'] | currency:clientData['currencyCode'] : 'symbol-narrow':'1.0-0'}}
+                                                </td>
+                                                <td width="15%" class="text-center">
+                                                    {{withdrawal['actualAmount'] | currency:clientData['currencyCode'] : 'symbol-narrow':'1.0-0'}}
+                                                </td>
+                                                <td width="15%" class="text-center"
+                                                    [ngClass]="{'text-red': withdrawal['actualAmount'] > withdrawal['plannedAmount']}">
+                                                    {{withdrawal['varianceAmount'] | currency:clientData['currencyCode'] : 'symbol-narrow':'1.0-0'}}
+                                                </td>
+                                            </tr>
+                                        </ng-container>
+                                        <tr
+                                            *ngIf="item['savingsWithdrawalsAnalysis']['withdrawals']['totalWithdrawals']">
+                                            <td width="55%">
+                                                {{item['savingsWithdrawalsAnalysis']['withdrawals']['totalWithdrawals']['description']}}
+                                            </td>
+                                            <td width="15%" class="text-center">
+                                                {{item['savingsWithdrawalsAnalysis']['withdrawals']['totalWithdrawals']['plannedAmount'] | currency:clientData['currencyCode'] : 'symbol-narrow':'1.0-0'}}
+                                            </td>
+                                            <td width="15%" class="text-center">
+                                                {{item['savingsWithdrawalsAnalysis']['withdrawals']['totalWithdrawals']['actualAmount'] | currency:clientData['currencyCode'] : 'symbol-narrow':'1.0-0'}}
+                                            </td>
+                                            <td width="15%" class="text-center"
+                                                [ngClass]="{'text-red': item['savingsWithdrawalsAnalysis']['withdrawals']['totalWithdrawals']['actualAmount'] > item['savingsWithdrawalsAnalysis']['withdrawals']['totalWithdrawals']['plannedAmount']}">
+                                                {{item['savingsWithdrawalsAnalysis']['withdrawals']['totalWithdrawals']['varianceAmount'] | currency:clientData['currencyCode'] : 'symbol-narrow':'1.0-0'}}
+                                            </td>
+                                        </tr>
+                                    </ng-container>
+                                </tbody>
+                            </table>
+                        </p-accordionTab>
+
+                        <!-- <p-accordionTab [translate]="'PLANTRAC.ACCORDION-HEADER-TEXT'" header="Savings and Withdrawal Analysis"> -->
+                        <p-accordionTab>
+                            <p-header>
+                                <h3 class="fs-16 fw-700 d-inline-block" [translate]="'PLANTRAC.NET_SAVINGS'"></h3>
+                            </p-header>
+                            <table class="table plantrac plantac-analysis-tbl mb-4">
+                                <thead>
+                                    <tr>
+                                        <th width="55%" [translate]="'PLANTRAC.DATE'"></th>
+                                        <th width="15%" class="text-center"
+                                            [translate]="'PLANTRAC.PLANNED_NET_SAVINGS'"></th>
+                                        <th width="15%" class="text-center" [translate]="'PLANTRAC.ACTUAL_NET_SAVINGS'">
+                                        </th>
+                                        <th width="15%" class="text-center">{{'PLANTRAC.VARIANCE' | translate}}
+                                            {{currency}}
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <ng-container *ngFor="let item of planTracDetails; index as index">
+                                        <tr *ngIf="viewBy === plantracViewByOptions.TYPE" class="plantrac-heading-row">
+                                            <td width="60%" colspan="2">
+                                                <div class="d-inline d-inline-block"
+                                                    *ngIf="ownerList">
+                                                    <span class="d-flex client-avatars">
+                                                        <ng-container
+                                                            *ngFor="let owner of ownerList[item.accountId] | slice:0:1">
+                                                            <span class="initials d-inline-block"
+                                                                *ngIf="!owner['avatar']"
+                                                                [ngClass]="{'spouse': owner.relation == PERSON_RELATION.CLIENT2, 'childs': owner.relation == PERSON_RELATION.SON || owner.relation == PERSON_RELATION.DAUGHTER}">
+                                                                {{owner.firstName[0] + owner.lastName[0]}}</span>
+                                                            <img class="initials bg-transparent" height="50"
+                                                                *ngIf="owner['avatar']" [src]="owner['avatar']"
+                                                                (error)="owner['avatar']=null" />
+                                                        </ng-container>
+                                                    </span>
+                                                </div>
+                                                <span class="ml-2 d-inline-block fw-400">{{item['accountDesc']}}</span>
+                                            </td>
+                                            <td width="40%" colspan="2" class="text-right">
+                                                {{item['accountTypeDesc']}}</td>
+                                        </tr>
+                                        <ng-container
+                                            *ngIf="item['savingsWithdrawalsAnalysis'] && item['savingsWithdrawalsAnalysis']['netSavings'] && item['savingsWithdrawalsAnalysis']['netSavings']['planTracNetSavings'].length > 0">
+                                            <tr *ngFor="let netSaving of item['savingsWithdrawalsAnalysis']['netSavings']['planTracNetSavings']; index as i"
+                                                class="plantrac-detail-row">
+                                                <td width="55%">
+                                                    {{netSaving['transactionDate'] ? netSaving['transactionDate'] : 'N/A'}}
+                                                </td>
+                                                <td width="15%" class="text-center">
+                                                    {{netSaving['plannedAmount'] | currency:clientData['currencyCode'] : 'symbol-narrow':'1.0-0'}}
+                                                </td>
+                                                <td width="15%" class="text-center">
+                                                    {{netSaving['actualAmount'] | currency:clientData['currencyCode'] : 'symbol-narrow':'1.0-0'}}
+                                                </td>
+                                                <td width="15%" class="text-center"
+                                                    [ngClass]="{'text-red': netSaving['actualAmount'] < netSaving['plannedAmount']}">
+                                                    {{netSaving['varianceAmount'] | currency:clientData['currencyCode'] : 'symbol-narrow':'1.0-0'}}
+                                                </td>
+                                            </tr>
+                                        </ng-container>
+                                        <tr *ngIf="item['savingsWithdrawalsAnalysis']['netSavings']['totalNetSavings']">
+                                            <td width="55%">
+                                                {{item['savingsWithdrawalsAnalysis']['netSavings']['totalNetSavings']['description']}}
+                                            </td>
+                                            <td width="15%" class="text-center">
+                                                {{item['savingsWithdrawalsAnalysis']['netSavings']['totalNetSavings']['plannedAmount'] | currency:clientData['currencyCode'] : 'symbol-narrow':'1.0-0'}}
+                                            </td>
+                                            <td width="15%" class="text-center">
+                                                {{item['savingsWithdrawalsAnalysis']['netSavings']['totalNetSavings']['actualAmount'] | currency:clientData['currencyCode'] : 'symbol-narrow':'1.0-0'}}
+                                            </td>
+                                            <td width="15%" class="text-center"
+                                                [ngClass]="{'text-red': item['savingsWithdrawalsAnalysis']['netSavings']['totalNetSavings']['actualAmount'] < item['savingsWithdrawalsAnalysis']['netSavings']['totalNetSavings']['plannedAmount']}">
+                                                {{item['savingsWithdrawalsAnalysis']['netSavings']['totalNetSavings']['varianceAmount'] | currency:clientData['currencyCode'] : 'symbol-narrow':'1.0-0'}}
+                                            </td>
+                                        </tr>
+                                    </ng-container>
+                                </tbody>
+                            </table>
+                        </p-accordionTab>
+                    </p-accordion>
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="box-footer">
+            <div class="form-group text-right">
+                <button (click)="closePanel()" type="button" class="btn btn-small btn-secondary btn-fixwidth mr-2"
+                    [translate]="'FORM.ACTION.CANCEL'"></button>
+            </div>
+        </div>
+    </div>
+</div>

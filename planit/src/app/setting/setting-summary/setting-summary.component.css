@@ -1,0 +1,11 @@
+.summary-main .profile_summary {
+    height: 100%;
+    background-color: #AABBCC;
+}
+
+.summary-main .profile_actions .profile_action .content p {
+    width: 100%;
+    max-width: 380px;
+}
+
+.summary-main .profile_summary .profile_title { color: black;}

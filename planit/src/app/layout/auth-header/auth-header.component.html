@@ -1,0 +1,31 @@
+<header class="navbar navbar-expand sticky-top bg-header" role="navigation">
+    <div class="main-container">
+        <div id="watermark">
+        <p *ngIf="isBeta">{{ 'HEADER.BETA' | translate }}</p>
+        </div>
+        <a class="navbar-brand d-flex align-items-center" [routerLink]="['/login']">
+            <img src="assets/images/logo/s_pro_trans.png" class="s_pro_trans">
+        </a>
+        <div class="navbar-collapse">
+            <ul class="navbar-nav right-navbar ml-auto">
+                <li class="nav-item user-menu">
+                    <div class="language custom-dropdown" ngbDropdown>
+                        <div class="language-text" ngbDropdownToggle id="langMenu">
+                            <a>{{translate.currentLang}}</a>
+                        </div>
+
+                        <div class="custom-dropdown-menu" ngbDropdownMenu aria-labelledby="langMenu">
+                            <ul>
+                                <li *ngFor="let lang of translate.getLangs()">
+                                    <a class="dropdown-item" [ngClass]="{'active': lang === translate.currentLang}" (click)="translate.use(lang)">
+                                        {{lang}}
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</header>

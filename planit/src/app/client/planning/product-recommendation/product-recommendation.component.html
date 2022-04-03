@@ -1,0 +1,38 @@
+<div class="bg-white pt-4 pb-4 assets-summary-bg">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-md-8 col-sm-12">
+                <h4 class="mb-1">
+                    <a [routerLink]="['/client', clientId, 'planning']" [translate]="'BREADCRUMB.PLANNING'"></a> /
+                </h4>
+                <h1 class="d-sm-inline-block d-block fw-500" [translate]="'PLANNING_SUMMARY.PRODUCT_RECOMM.TITLE'">
+                </h1>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-12 text-right">
+                <app-planning-module-drop-down class="dropdown-right" [clientId]="clientId"></app-planning-module-drop-down>
+            </div>
+            <div class="col-12">
+                <hr>
+            </div>
+            <div class="col-12">
+                <ul class="nav nav-tabs d-if" role="tablist">
+                    <li class="nav-item">
+                        <a [routerLink]="['investment-products']" class="nav-link p-lr-40" routerLinkActive="active" [translate]="'PRODUCT_RECOMM.TAB.INVESTMENT_PROD'"></a>
+                    </li>
+                    <li class="nav-item">
+                        <a [routerLink]="['rebalancing-summary']" class="nav-link p-lr-40" routerLinkActive="active" [translate]="'PRODUCT_RECOMM.TAB.REBALACING_SUMMARY'"></a>
+                    </li>
+                    <li class="nav-item">
+                        <a [routerLink]="['detailed-recommendation']" class="nav-link p-lr-40" routerLinkActive="active" [translate]="'PRODUCT_RECOMM.TAB.DETAILED_RECOMM'"></a>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-12">
+                <hr>
+            </div>
+            <div class="col-12">
+                <router-outlet></router-outlet>
+            </div>
+        </div>
+    </div>
+</div>

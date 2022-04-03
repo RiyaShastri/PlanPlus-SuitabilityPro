@@ -1,0 +1,208 @@
+<div class="bg-white pt-4 pb-4 assets-summary-bg">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <app-goal-details-header [clientId]="clientId" currentPage="plantrac" [plantracStatus]="plantractStatus"
+                    [refreshedOn]="refreshedOn" [goalId]="goalId" (switchGoal)="changeGoal($event)">
+                </app-goal-details-header>
+            </div>
+            <div class="col-12 mt-3" *ngIf="planTracDetails">
+                <div *ngIf="plantractStatus === 0" class="form-group text-right mb-0">
+                    <button type="button" class="btn btn-small btn-success" (click)="startPlanTrac();"
+                        [translate]="'PLANTRAC.START-BUTTON'"></button>
+                </div>
+                <app-certainty-outcome-tile *ngIf="plantractStatus > 0" [clientId]="clientId" [isPlanTrac]=true
+                    [planTracGraph]="planTracDetails['graphData']"></app-certainty-outcome-tile>
+                <div *ngIf="plantractStatus > 0" class="form-group text-right">
+                    <button type="button" class="btn btn-small btn-success" (click)="openModal(content)"
+                        [translate]="'PLANTRAC.REFRESH-BUTTON'"></button>
+                </div>
+            </div>
+
+            <div class="col-12 my-3" *ngIf="planTracDetails && timePeriodOptions.length > 0 && viewByOptions.length > 0">
+                <div class="accordion-wrapper plantrac-accordion">
+                    <p-accordion>
+                        <p-accordionTab>
+                            <p-header>
+                                <h3 class="fs-16 fw-700 d-inline-block"
+                                    [translate]="'PLANTRAC.SAVINGS_WITHDRAWAL_ANALYSIS'">
+                                </h3>
+                            </p-header>
+                            <div class="row">
+                                <div class="col-12 pb-3">
+                                    <div class="pt-2 float-left">
+                                        <app-common-drop-down [itemList]="viewByOptions" [defaultSelected]="selectedView"
+                                            dropDownLabel="View by" (OnSelect)="changeView($event)">
+                                        </app-common-drop-down>
+                                    </div>
+                                    <div class="pt-2 float-right">
+                                        <app-common-drop-down class="dropdown-right" [itemList]="timePeriodOptions"
+                                            [defaultSelected]="selectedTimePeriod" dropDownLabel="Time Period"
+                                            (OnSelect)="changeTimePeriod($event)"></app-common-drop-down>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row pt-2" *ngIf="plantractStatus > 0">
+                                <div class="col-12 col-md-8 offset-md-2 text-center">
+                                    <div *ngIf="!noData" id="analysisDiv"
+                                        style="height:400px; width:100%; display: inline-block;margin-left: 0px;margin-right: 0px;">
+                                    </div>
+                                    <div *ngIf="noData" class="no-record text-center position-relative"
+                                        style="height:50px; width:100%; display: inline-block;margin-left: 0px;margin-right: 0px;">
+                                        <p class="no_data_graph"><i
+                                                class="ion-ios-alert mr-2"></i>{{'NO_RESULTS' | translate}}
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- start your Table view here -->
+                            <div class="row" *ngIf="savingsWithdrawals && savingsWithdrawals.length > 0">
+                                <ng-container *ngFor="let planType of savingsWithdrawals; index as i">
+                                    <div class="col-12" [ngClass]="{'mt-4': i > 0}">
+                                        <span class="fs-14 fw-700">{{planType['accordHeader']}}</span>
+                                        <hr class="mt-0">
+                                        <table class="table plantac-analysis-tbl">
+                                            <thead>
+                                                <tr>
+                                                    <th width="(selectedView.value !== plantracViewByOptions.TOTALS) ? 30% : 40%"
+                                                        [translate]="'PLANTRAC.DESCRIPTION'"></th>
+                                                    <th *ngIf="selectedView.value !== plantracViewByOptions.TOTALS" width="10%"
+                                                        class="text-center" [translate]="'PLANTRAC.TYPE'"></th>
+                                                    <th width="15%" class="text-center">{{planType['plannedKey']}}</th>
+                                                    <th width="15%" class="text-center"> {{planType['actualKey']}}</th>
+                                                    <th width="15%" class="text-center hidden-sm-down">
+                                                        {{'PLANTRAC.VARIANCE' | translate}} {{currency}}</th>
+                                                    <th width="15%" class="text-center">
+                                                        {{ 'PLANTRAC.VARIANCE' | translate}}
+                                                        %
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <ng-container
+                                                    *ngIf="plantractStatus > 0 && planType['planTrac'] && selectedView.value !== plantracViewByOptions.TOTALS">
+                                                    <tr *ngFor="let item of planType['planTrac']"
+                                                        class="plantrac-detail-row">
+                                                        <td width="(selectedView.value !== plantracViewByOptions.TOTALS) ? 30% : 40%">
+                                                            <div class="d-inline d-inline-block"
+                                                                *ngIf="item['ownerDetails'] && item['ownerDetails'].length > 0">
+                                                                <span class="d-flex client-avatars">
+                                                                    <ng-container
+                                                                        *ngFor="let owner of item['ownerDetails'] | slice:0:1">
+                                                                        <span class="initials d-inline-block"
+                                                                            *ngIf="!owner['avatar']"
+                                                                            [ngClass]="{'spouse': owner.relation == PERSON_RELATION.CLIENT2, 'childs': owner.relation == PERSON_RELATION.SON || owner.relation == PERSON_RELATION.DAUGHTER}">
+                                                                            {{owner.firstName[0] + owner.lastName[0]}}</span>
+                                                                        <img class="initials bg-transparent" height="50"
+                                                                            *ngIf="owner['avatar']"
+                                                                            [src]="owner['avatar']"
+                                                                            (error)="owner['avatar']=null" />
+                                                                    </ng-container>
+                                                                </span>
+                                                            </div>
+                                                            <span
+                                                                class="ml-2 d-inline-block fw-400">{{item['description']}}</span>
+                                                        </td>
+                                                        <td *ngIf="selectedView.value !== plantracViewByOptions.TOTALS" width="10%"
+                                                            class="text-center">{{item['type']}}</td>
+                                                        <td width="15%" class="text-center">
+                                                            {{item['plannedAmount'] | currency:clientData['currencyCode'] : 'symbol-narrow':'1.0-0'}}
+                                                        </td>
+                                                        <td width="15%" class="text-center">
+                                                            {{item['actualAmount'] | currency:clientData['currencyCode'] : 'symbol-narrow':'1.0-0'}}
+                                                        </td>
+                                                        <td width="15%" class="text-center hidden-sm-down"
+                                                            [ngClass]="{'text-red': item['actualAmount'] < item['plannedAmount']}">
+                                                            <ng-container
+                                                                *ngIf="item['varianceAmount']; else notAvailable">
+                                                                {{item['varianceAmount'] | currency:clientData['currencyCode'] : 'symbol-narrow':'1.0-0'}}
+                                                            </ng-container>
+                                                        </td>
+                                                        <td width="15%" class="text-center"
+                                                            [ngClass]="{'text-red': item['actualAmount'] < item['plannedAmount']}">
+                                                            <ng-container
+                                                                *ngIf="item['variancePercent']; else notAvailable">
+                                                                {{item['variancePercent'] | number:'1.0-0'}}%
+                                                            </ng-container>
+                                                            <a
+                                                                (click)="openPanel(item['accountId'], item['accountTypeId'])">
+                                                                <i class="ion-ios-eye"></i>
+                                                            </a>
+                                                        </td>
+                                                    </tr>
+                                                </ng-container>
+                                                <tr *ngIf="planType['totalDetails']">
+                                                    <td width="(selectedView.value !== plantracViewByOptions.TOTALS) ? 30% : 40%">
+                                                        {{planType['totalDetails']['description']}}
+                                                    </td>
+                                                    <td *ngIf="selectedView.value !== plantracViewByOptions.TOTALS" width="10%"
+                                                        class="text-center"><span></span></td>
+                                                    <td width="15%" class="text-center">
+                                                        <ng-container
+                                                            *ngIf="planType['totalDetails']['plannedAmount']; else notAvailable">
+                                                            {{planType['totalDetails']['plannedAmount'] | currency:clientData['currencyCode'] : 'symbol-narrow':'1.0-0'}}
+                                                        </ng-container>
+                                                    </td>
+                                                    <td width="15%" class="text-center">
+                                                        <ng-container
+                                                            *ngIf="planType['totalDetails']['actualAmount']; else notAvailable">
+                                                            {{planType['totalDetails']['actualAmount'] | currency:clientData['currencyCode'] : 'symbol-narrow':'1.0-0'}}
+                                                        </ng-container>
+                                                    </td>
+                                                    <td width="15%" class="text-center hidden-sm-down"
+                                                        [ngClass]="{'text-red': planType['totalDetails']['actualAmount'] < planType['totalDetails']['plannedAmount']}">
+                                                        <ng-container
+                                                            *ngIf="planType['totalDetails']['varianceAmount']; else notAvailable">
+                                                            {{planType['totalDetails']['varianceAmount'] | currency:clientData['currencyCode'] : 'symbol-narrow':'1.0-0'}}
+                                                        </ng-container>
+                                                    </td>
+                                                    <td width="15%" class="text-center"
+                                                        [ngClass]="{'text-red': planType['totalDetails']['actualAmount'] < planType['totalDetails']['plannedAmount']}">
+                                                        <ng-container
+                                                            *ngIf="planType['totalDetails']['variancePercent']; else notAvailable">
+                                                            {{planType['totalDetails']['variancePercent'] | number:'1.0-0'}}%
+                                                        </ng-container>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </ng-container>
+                            </div>
+                        </p-accordionTab>
+                    </p-accordion>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<ng-container *ngIf="opened">
+    <app-plantrac-details-side-panel (closePanelEvent)="closePanel()" [viewBy]="selectedView.value" [goalId]="goalId"
+        [filter]="filter" [timePeriodOptions]="timePeriodOptions" [defaultTimePeriod]="defaultTimePeriod">
+    </app-plantrac-details-side-panel>
+</ng-container>
+
+<ng-template #notAvailable>N/A</ng-template>
+
+<ng-template #content let-c="close" let-d="dismiss">
+    <div class="modal-header pl-3">
+        <span class="modal-title" id="modal-basic-title" [translate]="'PLANTRAC.REFRESH_WARNING.TITLE'"></span>
+        <span (click)="d('Cross click')" class="sidebar_action_icon ion-md-close-circle">
+        </span>
+    </div>
+    <div class="modal-body">
+        <h4 class="text-uppercase mb-3 fw-600"> {{'PLANTRAC.REFRESH_WARNING.HEADING' | translate}}
+            <span class="pull-right ion-ios-alert fs-20"></span>
+        </h4>
+        <p [translate]="'PLANTRAC.REFRESH_WARNING.CONTENT'"></p>
+    </div>
+    <form name="form" #f="ngForm" novalidate>
+        <div class="form-group text-right mr-3">
+            <button class="btn btn-secondary btn-small mr-2" type="button" (click)="d('Cross click')"
+                [translate]="'FORM.ACTION.CANCEL'"></button>
+            <button type="submit" [disabled]="!f.form.valid" class="btn btn-success btn-small"
+                (click)="refreshPlanTrac(); c('Save click');" [translate]="'FORM.ACTION.PROCEED'"></button>
+        </div>
+    </form>
+</ng-template>

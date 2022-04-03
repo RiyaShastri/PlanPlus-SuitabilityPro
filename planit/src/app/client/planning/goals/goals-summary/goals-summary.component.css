@@ -1,0 +1,36 @@
+
+.sort-dropdown-w-ico {
+    display: inline-block;
+    position: relative;
+    padding-left: 20px;
+}
+
+.fixed-span {
+    display: inline-block;
+    width: 100px;
+    padding-bottom: 1px;
+}
+
+.sort-box .sort-dropdown-w-ico i.ion-md-funnel {
+    top: -10px;
+}
+
+.ellipsis-taskType {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    width: 65px !important;
+    display: inline-block;
+    margin-top: 5px;
+}
+
+@media(max-width: 340px){
+    .table td:last-child{    
+        width: auto;
+        padding-right: 0;
+    }
+    .table>thead>tr>th{
+        font-size: 12px;
+        padding-left: 1px;
+    }
+}

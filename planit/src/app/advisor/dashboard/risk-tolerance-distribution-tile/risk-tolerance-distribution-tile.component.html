@@ -1,0 +1,59 @@
+<div class="panel mt-lg-0">
+    <div class="d-flex flex-nowrap panel-header">
+      <h4 class="d-flex flex-wrap mt-xl-3">{{'ADVISOR.DASHBOARD.RISK_TOLERANCE_DISTRIBUTION_TILE.TITLE' | translate}}</h4>
+        <div class=" ml-auto d-flex  mt-xl-3   mt-0">
+            <img [src]="'assets/images/finaMetrica.png'" width='116' height="30" alt="FinaMetrica">
+        </div>
+    </div>
+    <app-common-drop-down class="mr-lg-5 mr-sm-3 mr-0" [itemList]="timePeriodList" [defaultSelected]="selectedtimePeriod"
+        dropDownLabel="Period" (OnSelect)="getFilterByTimePeriod($event)"></app-common-drop-down>
+    <app-common-drop-down [itemList]="riskGroups" [defaultSelected]="selectedRiskGroup" (OnSelect)="getFilterByRiskGroup($event)"></app-common-drop-down>
+    <div class="panel-body">
+        <div class="row" *ngIf="behaviouralRiskToleranceData">
+            <div class="col-12 mt-4 mb-3">
+            </div>
+            <div class="col-12" #widgetParentDiv>
+                <div id="chartdiv1" [style.width.%]="100" [style.height.px]="200"></div>
+            </div>
+
+            <div class="col-12 mt-3">
+                <div class="row">
+                    <div class="col-12 col-sm-4">
+                        <div class="behavioural-box">
+                            <h3 class="text-center"> {{totalSent}}</h3>
+                            <span [translate]="'ADVISOR.DASHBOARD.QUESTIONNAIRES_CREATED'"></span>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-4">
+                        <div class="behavioural-box">
+                            <h3 class="text-center">{{totalCompleted}}</h3>
+                            <span [translate]="'ADVISOR.DASHBOARD.QUESTIONNAIRES_COMPLETED'"></span>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-4">
+                        <div class="behavioural-box">
+                            <h3 class="text-center">{{totalAdjusted}}</h3>
+                            <span [translate]="'ADVISOR.DASHBOARD.QUESTIONNAIRES_ADJUSTED'"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <ng-container *ngIf="!behaviouralRiskToleranceData">
+            <div class="row">
+                <div class="col-12">
+                    <table class="table mt-4">
+                        <tr>
+                            <td colspan="5" class="no-record text-center">
+                                <i class="ion-ios-alert mr-2"></i>{{'NO_RESULTS' | translate}}
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </ng-container>
+    </div>
+
+</div>
+

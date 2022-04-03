@@ -1,0 +1,55 @@
+<div class="row">
+    <div class="col-md-8 col-12" *ngIf="currentPage === 'summary'">
+        <h4>
+            <a [routerLink]="['/client', clientId, 'planning']" [translate]="'BREADCRUMB.PLANNING'"></a> /
+        </h4>
+        <h1 class="d-inline-block fw-500" [translate]="'BREADCRUMB.GOALS'"></h1>
+    </div>
+    <div class="col-md-8 col-12" *ngIf="currentPage === 'savings'">
+        <h4>
+            <a [routerLink]="['/client', clientId, 'planning']" [translate]="'BREADCRUMB.PLANNING'"></a> /
+            <a [routerLink]="['/client', clientId, 'planning', 'goals']"  [translate]="'BREADCRUMB.GOALS'"></a> /
+        </h4>
+        <h1 class="d-inline-block fw-500" [translate]="'GOALS.SAVINGS.TITLE'"></h1>
+    </div>
+    <div class="col-md-8 col-12" *ngIf="currentPage === 'revenues'">
+        <h4>
+            <a [routerLink]="['/client', clientId, 'planning']" [translate]="'BREADCRUMB.PLANNING'"></a> /
+            <a [routerLink]="['/client', clientId, 'planning', 'goals']"  [translate]="'BREADCRUMB.GOALS'"></a> /
+        </h4>
+        <h1 class="d-inline-block fw-500" [translate]="'GOALS.REVENUES.TITLE'"></h1>
+    </div>
+    <div class="col-md-4 col-12 text-right dropdown-right">
+        <div class="d-inline-block nextprive-box mr-lg-5 mr-3">
+            <!-- <i class="ion-md-arrow-dropleft-circle mr-4"></i>
+            <i class="ion-md-arrow-dropright-circle"></i> -->
+        </div>
+        <app-planning-module-drop-down class="dropdown-right" [clientId]="clientId"></app-planning-module-drop-down>
+    </div>
+    <div class="col-12">
+        <hr>
+    </div>
+    <div class="col-8">
+        <ul class="nav nav-tabs d-if" role="tablist">
+            <li class="nav-item">
+                <a [routerLink]="['/client', clientId, 'planning','goals', 'summary']"   class="nav-link p-lr-40"
+                routerLinkActive="active" [translate]="'ASSETS.SUMMARY'"></a>
+            </li>
+            <li class="nav-item mb-0" *ngIf="accessRights['SAV01']['accessLevel'] > 0">
+                <a [routerLink]="['/client', clientId, 'planning','goals', 'savings']" class="nav-link p-lr-40"
+                routerLinkActive="active" [translate]="'ASSETS.SAVINGS'"></a>
+            </li>
+            <li class="nav-item mb-0">
+                <a [routerLink]="['/client', clientId, 'planning','goals', 'revenues']" class="nav-link p-lr-40"
+                routerLinkActive="active" [translate]="'GOALS.REVENUES.TITLE'"></a>
+            </li>
+        </ul>
+    </div>
+    <!-- <div *ngIf="currentPage === 'summary'" class="col-4 text-right">
+        <app-common-drop-down class="dropdown-right" [itemList]="scenario" [defaultSelected]="selectedScenario" dropDownLabel="SCENARIO"
+        (OnSelect)="sorting($event)"></app-common-drop-down>
+    </div> -->
+    <div class="col-12">
+        <hr>
+    </div>
+</div>

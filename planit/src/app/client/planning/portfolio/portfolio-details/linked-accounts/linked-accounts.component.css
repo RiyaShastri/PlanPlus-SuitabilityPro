@@ -1,0 +1,17 @@
+.client-avatars .client-icon+.client-icon {
+    margin-left: -7px;
+    z-index: 0;
+}
+.portfolio-detail-account-div {
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    padding-right: 15px;
+}
+.add-btn i {
+    background: none;
+    color: #88aa33;
+    font-size: 23px;
+}
+

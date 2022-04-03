@@ -1,0 +1,578 @@
+<div class="side-form side-form-large side-form-full-width">
+    <form name="form" #f="ngForm">
+        <div class="box">
+            <div class="box-header">
+                <span class="sidebar_title">{{ 'CALCULATOR.CALCULATORS_TITLE' | translate }}</span>
+                <span (click)="back()" class="sidebar_action_icon ion-md-close-circle float-right"></span>
+            </div>
+            <div class="box-body">
+                <div class="long-term-care-cal calculator-wrap calculator-row-alignment-wrapper">
+
+                    <div class="row">
+                        <div class="col-12">
+                            <app-calculator-header [clientId]="clientId" currentCalculator="financial-calculator">
+                            </app-calculator-header>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="form-group d-flex d-inline-block drop-down-wrap mb-3">
+                                <div class="mr-3 w-25 form-group mb-0"
+                                    [ngClass]="{'has-error': !scenario.valid && f.submitted}">
+                                    <p-dropdown [options]="planType" name="scenario" [(ngModel)]="selectedscenario"
+                                        #scenario="ngModel" optionLabel="value" (onChange)="changeScenario()"
+                                        placeholder="{{'CALCULATOR.PLACEHOLDER.SELECT_A_SCENARIO' | translate}}"
+                                        required></p-dropdown>
+                                </div>
+                                <button type="button" class="m-0 align-content-center btn btn-small btn-secondary mr-2"
+                                    [translate]="'CALCULATOR.LOAD'" (click)="refreshData()"></button>
+                                <span
+                                    class="pt-2 align-content-center ml-auto save-date-wrap">{{ 'CALCULATOR.DATE_SAVED' | translate }}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="calulater-inner-wrap mb-15">
+                                <h4 class="leverage-title fw-600"
+                                    [translate]="'CALCULATOR.RRIF_ILLUSTRATION.PLAN_DETAILS'"> </h4>
+                                <div class="row">
+                                    <div class="col-12 col-md-6 col-xl-6">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <div class="row align-items-center">
+                                                    <div class="col-6">
+                                                        <div class="form-group mb-0">
+                                                            <span class="align-content-center"
+                                                                [translate]="'FORM.DATE_OF_BIRTH'">
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <div class="form-group"
+                                                            [ngClass]="{ 'has-error': !dateOfBirth.valid && f.submitted}">
+                                                            <input type="text" name="dateOfBirth" #dateOfBirth="ngModel" [(ngModel)]="registeredData['birthdate']"
+                                                                class="form-control">
+                                                        </div>
+                                                        <!-- <p *ngIf="registeredData['errors'] && registeredData['errors']['dateOfBirth']"
+                                                                class="text-error mb-1"> -->
+                                                        <!-- {{('SSID_LABELS.LEVERAGE_CALC_ERRORS.' + registeredData['errors']['dateOfBirth']) | translate}}
+                                                            </p> -->
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-6 col-xl-6">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <div class="row align-items-center">
+                                                    <div class="col-6">
+                                                        <div class="form-group mb-0">
+                                                            <span class="align-content-center"
+                                                                [translate]="'CALCULATOR.RRIF_ILLUSTRATION.AGE_AS_OF_FIRST_JAN'"></span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <div class="form-group">
+                                                            58
+                                                        </div>
+                                                        <!-- <p *ngIf="registeredData['errors'] && registeredData['errors']['taxRate']"
+                                                            class="text-error mb-1"> -->
+                                                        <!-- {{('SSID_LABELS.LEVERAGE_CALC_ERRORS.' + registeredData['errors']['taxRate']) | translate}}
+                                                        </p> -->
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12 col-md-6 col-xl-6">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <div class="row align-items-center">
+                                                    <div class="col-6">
+                                                        <div class="form-group mb-0">
+                                                            <span class="align-content-center"
+                                                                [translate]="'CALCULATOR.RRIF_ILLUSTRATION.STARTING_CAPITAL'">
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <div class="form-group" 
+                                                            [ngClass]="{ 'has-error': !startingCapital.valid && f.submitted}">
+                                                            <input type="text" name="startingCapital" #startingCapital="ngModel" [(ngModel)]="registeredData['startcap']"
+                                                                [textMask]="{mask: currencyMask}" class="form-control">
+                                                        </div>
+                                                        <!-- <p *ngIf="registeredData['errors'] && registeredData['errors']['taxRate']"
+                                                                class="text-error mb-1"> -->
+                                                        <!-- {{('SSID_LABELS.LEVERAGE_CALC_ERRORS.' + registeredData['errors']['taxRate']) | translate}}
+                                                            </p> -->
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-6 col-xl-6">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <div class="row align-items-center">
+                                                    <div class="col-6">
+                                                        <div class="form-group mb-0">
+                                                            <span class="align-content-center"
+                                                                [translate]="'CALCULATOR.RRIF_ILLUSTRATION.RATE_OF_RETURN'"></span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <div class="form-group"
+                                                            [ngClass]="{ 'has-error': !rateOfReturn.valid && f.submitted}">
+                                                            <input type="text" name="rateOfReturn" #rateOfReturn="ngModel" [(ngModel)]="registeredData['ratereturn']"
+                                                                [textMask]="{mask: percentMask1}" class="form-control">
+                                                        </div>
+                                                        <!-- <p *ngIf="registeredData['errors'] && registeredData['errors']['taxRate']"
+                                                                class="text-error mb-1"> -->
+                                                        <!-- {{('SSID_LABELS.LEVERAGE_CALC_ERRORS.' + registeredData['errors']['taxRate']) | translate}}
+                                                            </p> -->
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12 col-md-6 col-xl-6">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <div class="row align-items-center">
+                                                    <div class="col-6">
+                                                        <div class="form-group mb-0">
+                                                            <span class="align-content-center"
+                                                                [translate]="'CALCULATOR.RRIF_ILLUSTRATION.PLAN_TYPE'">
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <div class="form-group"
+                                                            [ngClass]="{ 'has-error': !planType.valid && f.submitted}">
+                                                            <input type="text" name="planType" #planType
+                                                                class="form-control">
+                                                        </div>
+                                                        <!-- <p *ngIf="registeredData['errors'] && registeredData['errors']['taxRate']"
+                                                                    class="text-error mb-1"> -->
+                                                        <!-- {{('SSID_LABELS.LEVERAGE_CALC_ERRORS.' + registeredData['errors']['taxRate']) | translate}}
+                                                                </p> -->
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-6 col-xl-6">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <div class="row align-items-center">
+                                                    <div class="col-6">
+                                                        <div class="form-group mb-0">
+                                                            <span class="align-content-center"
+                                                                [translate]="'CALCULATOR.RRIF_ILLUSTRATION.NEW_FUNDS_AFTER_1992'"></span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <div class="form-group"
+                                                            [ngClass]="{ 'has-error': !newFunds.valid && f.submitted}">
+                                                            <input type="text" name="newFunds" #newFunds
+                                                                class="form-control">
+                                                        </div>
+                                                        <!-- <p *ngIf="registeredData['errors'] && registeredData['errors']['taxRate']"
+                                                                    class="text-error mb-1"> -->
+                                                        <!-- {{('SSID_LABELS.LEVERAGE_CALC_ERRORS.' + registeredData['errors']['taxRate']) | translate}}
+                                                                </p> -->
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12 col-md-6 col-xl-6">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <div class="row align-items-center">
+                                                    <div class="col-6">
+                                                        <div class="form-group mb-0">
+                                                            <span class="align-content-center"
+                                                                [translate]="'CALCULATOR.RRIF_ILLUSTRATION.START_MONTH'">
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <div class="form-group"
+                                                            [ngClass]="{ 'has-error': !startMonth.valid && f.submitted}">
+                                                            <input type="text" name="startMonth" #startMonth
+                                                                class="form-control">
+                                                        </div>
+                                                        <!-- <p *ngIf="registeredData['errors'] && registeredData['errors']['taxRate']"
+                                                                        class="text-error mb-1"> -->
+                                                        <!-- {{('SSID_LABELS.LEVERAGE_CALC_ERRORS.' + registeredData['errors']['taxRate']) | translate}}
+                                                                    </p> -->
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-12">
+                                                <div class="row align-items-center">
+                                                    <div class="col-9">
+                                                        <div class="form-group mb-0">
+                                                            <span class="align-content-center"
+                                                                [translate]="'CALCULATOR.RRIF_ILLUSTRATION.FULL_YEAR_ACCRUAL'">
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="calulater-inner-wrap mb-15">
+                                <h4 class="leverage-title fw-600" [translate]="'CALCULATOR.RRIF_ILLUSTRATION.SAVINGS'">
+                                </h4>
+
+                                <div class="row">
+                                    <div class="col-12 col-md-6 col-xl-6">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <div class="row align-items-center">
+                                                    <div class="col-6">
+                                                        <div class="form-group mb-0">
+                                                            <span class="align-content-center"
+                                                                [translate]="'CALCULATOR.RRIF_ILLUSTRATION.ANNUAL_SAVINGS'">
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <div class="form-group"
+                                                            [ngClass]="{ 'has-error': !annualSavings.valid && f.submitted}">
+                                                            <input type="text" name="annualSavings" #annualSavings
+                                                                [textMask]="{mask: currencyMask}" class="form-control">
+                                                        </div>
+                                                        <!-- <p *ngIf="registeredData['errors'] && registeredData['errors']['taxRate']"
+                                                                    class="text-error mb-1"> -->
+                                                        <!-- {{('SSID_LABELS.LEVERAGE_CALC_ERRORS.' + registeredData['errors']['taxRate']) | translate}}
+                                                                </p> -->
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-6 col-xl-6">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <div class="row align-items-center">
+                                                    <div class="col-6">
+                                                        <div class="form-group mb-0">
+                                                            <span class="align-content-center"
+                                                                [translate]="'CALCULATOR.RRIF_ILLUSTRATION.INDEX'"></span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <div class="form-group"
+                                                            [ngClass]="{ 'has-error': !savingIndex.valid && f.submitted}">
+                                                            <input type="text" name="savingIndex" #savingIndex="ngModel" [(ngModel)]="registeredData['index']"
+                                                                [textMask]="{mask: percentMask1}" class="form-control">
+                                                        </div>
+                                                        <!-- <p *ngIf="registeredData['errors'] && registeredData['errors']['taxRate']"
+                                                                class="text-error mb-1"> -->
+                                                        <!-- {{('SSID_LABELS.LEVERAGE_CALC_ERRORS.' + registeredData['errors']['taxRate']) | translate}}
+                                                            </p> -->
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-12 col-md-6 col-xl-6">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <div class="row align-items-center">
+                                                    <div class="col-6">
+                                                        <div class="form-group mb-0">
+                                                            <span class="align-content-center"
+                                                                [translate]="'CALCULATOR.RRIF_ILLUSTRATION.UNTIL_AGE'">
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <div class="form-group"
+                                                            [ngClass]="{ 'has-error': !untilAge.valid && f.submitted}">
+                                                            <input type="text" name="untilAge" #untilAge="ngModel" [(ngModel)]="registeredData['untilage']"
+                                                                class="form-control">
+                                                        </div>
+                                                        <!-- <p *ngIf="registeredData['errors'] && registeredData['errors']['taxRate']"
+                                                                        class="text-error mb-1"> -->
+                                                        <!-- {{('SSID_LABELS.LEVERAGE_CALC_ERRORS.' + registeredData['errors']['taxRate']) | translate}}
+                                                                    </p> -->
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-12 col-md-6 col-xl-6">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <div class="row align-items-center">
+                                                    <div class="col-6">
+                                                        <div class="form-group mb-0">
+                                                            <span class="align-content-center"
+                                                                [translate]="'CALCULATOR.RRIF_ILLUSTRATION.CONTRIBUTORY_PAYMENTS'">
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <div class="row align-items-center">
+                                                    <div class="col-6">
+                                                        <div class="form-group mb-0">
+                                                            <button type="button"
+                                                                class="m-0 align-content-center btn btn-small btn-secondary mr-2"
+                                                                [translate]="'CALCULATOR.RRIF_ILLUSTRATION.SET'"></button>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-2">
+                                                        <div class="form-group"
+                                                            [ngClass]="{ 'has-error': !setContributory.valid && f.submitted}">
+                                                            <input type="text" name="setContributory" #setContributory
+                                                                class="form-control">
+                                                        </div>
+                                                        <!-- <p *ngIf="registeredData['errors'] && registeredData['errors']['taxRate']"
+                                                                class="text-error mb-1"> -->
+                                                        <!-- {{('SSID_LABELS.LEVERAGE_CALC_ERRORS.' + registeredData['errors']['taxRate']) | translate}}
+                                                            </p> -->
+                                                    </div>
+                                                    <div class="col-4">
+                                                        <div class="form-group">
+                                                            {{'CALCULATOR.RRIF_ILLUSTRATION.CONTRIBUTORY_PAYMENTS' | translate}}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="calulater-inner-wrap mb-15">
+                                <h4 class="leverage-title fw-600" [translate]="'CALCULATOR.RRIF_ILLUSTRATION.PAYMENT'">
+                                </h4>
+                                <div class="row">
+                                    <div class="col-12 col-md-6 col-xl-6">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <div class="row align-items-center">
+                                                    <div class="col-6">
+                                                        <div class="form-group mb-0">
+                                                            <span class="align-content-center"
+                                                                [translate]="'CALCULATOR.RRIF_ILLUSTRATION.ACCUMULATED_FUNDS'">
+                                                            </span> $1010,00
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12 col-md-6 col-xl-6">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <div class="row align-items-center">
+                                                    <div class="col-6">
+                                                        <div class="form-group mb-0">
+                                                            <span class="align-content-center"
+                                                                [translate]="'CALCULATOR.RRIF_ILLUSTRATION.ANNUAL_INCOME'"></span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <div class="form-group"
+                                                            [ngClass]="{ 'has-error': !annualIncome.valid && f.submitted}">
+                                                            <input type="text" name="annualIncome" #annualIncome
+                                                                class="form-control">
+                                                        </div>
+                                                        <!-- <p *ngIf="registeredData['errors'] && registeredData['errors']['taxRate']"
+                                                                        class="text-error mb-1"> -->
+                                                        <!-- {{('SSID_LABELS.LEVERAGE_CALC_ERRORS.' + registeredData['errors']['taxRate']) | translate}}
+                                                                    </p> -->
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-6 col-xl-6">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <div class="row align-items-center">
+                                                    <div class="col-6">
+                                                        <div class="form-group mb-0">
+                                                            <span class="align-content-center"
+                                                                [translate]="'CALCULATOR.RRIF_ILLUSTRATION.INDEX'"></span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <div class="form-group"
+                                                            [ngClass]="{ 'has-error': !paymentIndex.valid && f.submitted}">
+                                                            <input type="text" name="paymentIndex" #paymentIndex="ngModel" [(ngModel)]="registeredData['index2']"
+                                                                [textMask]="{mask: percentMask1}" class="form-control">
+                                                        </div>
+                                                        <!-- <p *ngIf="registeredData['errors'] && registeredData['errors']['taxRate']"
+                                                                    class="text-error mb-1"> -->
+                                                        <!-- {{('SSID_LABELS.LEVERAGE_CALC_ERRORS.' + registeredData['errors']['taxRate']) | translate}}
+                                                                </p> -->
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12 col-md-6 col-xl-6">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <div class="row align-items-center">
+                                                    <div class="col-6">
+                                                        <div class="form-group mb-0">
+                                                            <span class="align-content-center"
+                                                                [translate]="'CALCULATOR.RRIF_ILLUSTRATION.FROM_AGE'">
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <div class="form-group"
+                                                            [ngClass]="{ 'has-error': !fromAge.valid && f.submitted}">
+                                                            <input type="text" name="fromAge" #fromAge="ngModel" [(ngModel)]="registeredData['fromage']"
+                                                                class="form-control">
+                                                        </div>
+                                                        <!-- <p *ngIf="registeredData['errors'] && registeredData['errors']['taxRate']"
+                                                                        class="text-error mb-1"> -->
+                                                        <!-- {{('SSID_LABELS.LEVERAGE_CALC_ERRORS.' + registeredData['errors']['taxRate']) | translate}}
+                                                                    </p> -->
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-6 col-xl-6">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <div class="row align-items-center">
+                                                    <div class="col-6">
+                                                        <div class="form-group mb-0">
+                                                            <span class="align-content-center"
+                                                                [translate]="'CALCULATOR.RRIF_ILLUSTRATION.AMOUNT'"></span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <div class="form-group">
+                                                            150000
+                                                        </div>
+                                                        <!-- <p *ngIf="registeredData['errors'] && registeredData['errors']['taxRate']"
+                                                                        class="text-error mb-1"> -->
+                                                        <!-- {{('SSID_LABELS.LEVERAGE_CALC_ERRORS.' + registeredData['errors']['taxRate']) | translate}}
+                                                                    </p> -->
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12 col-md-6 col-xl-6">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <div class="row align-items-center">
+                                                    <div class="col-6">
+                                                        <div class="form-group mb-0">
+                                                            <span class="align-content-center"
+                                                                [translate]="'CALCULATOR.RRIF_ILLUSTRATION.TO_AGE'">
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <div class="form-group"
+                                                            [ngClass]="{ 'has-error': !toAge.valid && f.submitted}">
+                                                            <input type="text" name="toAge" #toAge="ngModel" [(ngModel)]="registeredData['toage']" class="form-control">
+                                                        </div>
+                                                        <!-- <p *ngIf="registeredData['errors'] && registeredData['errors']['taxRate']"
+                                                                            class="text-error mb-1"> -->
+                                                        <!-- {{('SSID_LABELS.LEVERAGE_CALC_ERRORS.' + registeredData['errors']['taxRate']) | translate}}
+                                                                        </p> -->
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-6 col-xl-6">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <div class="row align-items-center">
+                                                    <div class="col-6">
+                                                        <div class="form-group mb-0">
+                                                            <span class="align-content-center"
+                                                                [translate]="'CALCULATOR.RRIF_ILLUSTRATION.AMOUNT'"></span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <div class="form-group">
+                                                            250000
+                                                        </div>
+                                                        <!-- <p *ngIf="registeredData['errors'] && registeredData['errors']['taxRate']"
+                                                                            class="text-error mb-1"> -->
+                                                        <!-- {{('SSID_LABELS.LEVERAGE_CALC_ERRORS.' + registeredData['errors']['taxRate']) | translate}}
+                                                                        </p> -->
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="box-footer button-responsive">
+                <div class="form-group text-right calculator-save-button-wrap">
+                    <button type="button" [disabled]="isError"
+                        class="btn btn-small btn-primary btn-fixwidth btn-report mr-2 btn-report"
+                        (click)="generateReport()">{{ 'CALCULATOR.REPORT' | translate }}</button>
+                    <button type="button" (click)="back()"
+                        class="btn btn-small btn-secondary btn-fixwidth mr-2">{{'FORM.ACTION.CANCEL' | translate }}</button>
+                    <button type="submit" (click)="saveData(f)" [disabled]="isError || f.form.invalid"
+                        class="btn btn-small btn-success pl-4 pr-4" [translate]="'FORM.ACTION.SAVE'"></button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<router-outlet></router-outlet>

@@ -1,0 +1,21 @@
+:host {
+    background: #fff;
+    position: fixed;
+    left: auto;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 30%;
+    min-width: 250px;
+    z-index: 9;
+}
+.side-form.client-search .box .box-footer{
+    position:relative;
+    z-index: 1;
+}
+.side-form.client-search .btn-add{
+    line-height: 50px
+}
+.side-form.client-search .btn-add *{
+    line-height: inherit;
+}

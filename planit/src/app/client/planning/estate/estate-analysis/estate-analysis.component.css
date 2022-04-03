@@ -1,0 +1,44 @@
+.table.estate-analysis>thead>tr:first-child>th {
+    border-top: 1px solid #dee2e6;
+}
+.table th {
+    padding-top: 16px;
+}
+.table.estate-analysis>tbody>tr>td.analysis-col-heading {
+    font-size: 14px;
+    color: #788588;
+    font-weight: bold;
+}
+.table.estate-analysis td {
+    border-top: none;
+    padding: 10px 0;
+}
+.table.estate-analysis>tbody>tr:last-child>td {
+    padding-bottom: 30px;
+}
+.form-group .form-control,
+.ui-inputtext {
+    border: 1px solid #ced4da;
+}
+
+@media(max-width: 575px) { 
+    .table.estate-analysis>tbody>tr>td.analysis-col-heading {
+        font-size: 12px;
+    }
+
+    .table.estate-analysis > thead > tr > th {
+        font-size: 12px;
+    }
+}
+
+@media(max-width: 475px) { 
+    .table.estate-analysis td .form-group .form-control {
+        font-size: 12px !important;
+    }
+
+    .table.estate-analysis > thead > tr > th {
+        max-width: 60px;
+        text-overflow: ellipsis;
+        overflow-x: hidden;
+    }
+}

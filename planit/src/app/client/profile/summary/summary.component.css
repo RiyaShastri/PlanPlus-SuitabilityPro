@@ -1,0 +1,60 @@
+.summary-main {display: block;}
+
+.summary-main .profile_summary {background-color: #CCDDAA; padding: 2rem; height: auto;}
+.summary-main .profile_title {color: #FFFFFF; font-family: 'Montserrat', sans-serif; font-size: 48px; font-weight: 400; letter-spacing: -2px; line-height: 48px; margin: 0; padding-bottom: 2rem;}
+.summary-main .profile_text {color: #333333; font-weight: 400; font-family: "Open Sans"; font-size: 16px; line-height: 24px; }
+.summary-main .profile_text + .profile_text {margin: 0;}
+
+.summary-main .profile_actions {padding: 2rem; background: #fff;}
+.summary-main .profile_actions .profile_action {padding: 15px 0; border-bottom: 1px solid #E2E7EC; position: relative;cursor: pointer;outline: none;}
+.summary-main .profile_actions .profile_action.disabled {cursor: default;}
+.summary-main .profile_actions .profile_action.disabled > *{opacity: 0.5;}
+.summary-main .profile_actions .profile_action:first-child {border-top: 1px solid #E2E7EC;}
+
+.summary-main .profile_actions .profile_action .profile_icon {height: 44px; width: 44px; border-radius: 50px; position: relative; display: block; margin-right: 30px; float: left;}
+.summary-main .profile_actions .profile_action .profile_icon.zero_profile {border: 3px solid #E2E7EC;}
+.summary-main .profile_actions .profile_action .profile_icon.inprogress_profile {border: 3px solid #65ACF9; border-bottom-color: #E2E7EC; border-right-color: #E2E7EC; transform: rotate(135deg);}
+.summary-main .profile_actions .profile_action .profile_icon.complete_profile {border: 3px solid #99BB44;}
+.summary-main .profile_actions .profile_action .profile_icon.complete_profile::before {font-size: 64px; position: absolute; left: 50%; top: 50%; transform: translateX(-32%) translateY(-58%); line-height: 44px; color: #99BB44; }
+
+
+.summary-main .profile_actions .profile_action .content {display: block; padding: 0 30px 0 0; overflow: hidden;}
+.summary-main .profile_actions .profile_action .content h5 {color: #112233; font-family: 'Montserrat', sans-serif; font-size: 18px; font-weight: bold; line-height: 24px;}
+.summary-main .profile_actions .profile_action .content p {margin: 0px; width: 330px; font-size: 14px; color: #333; line-height: 18px;}
+.summary-main .profile_actions .profile_action .content p i{font-size: 14px; color: #333; line-height: 18px;}
+
+
+.summary-main .profile_actions .profile_action .action_icon {background: #99BB44; height: 20px; width: 20px; font-size: 14px; color: #fff; border-radius: 50%; text-align: center; line-height: 20px; font-weight: bold; position: absolute; right: 10px; top: 20px;}
+
+
+/* responsive */
+
+@media (max-width: 1199px) {
+}
+
+@media (max-width: 992px) {
+  .summary-main {height: auto;}
+  .summary-main .profile_actions .profile_action .profile_icon {margin-right: 10px;}
+  .summary-main .profile_actions .profile_action .content {padding: 0 40px 0 0;}
+  .summary-main .profile_actions .profile_action .content p {padding: 0; width: auto;}
+}
+
+@media (max-width: 767px) {
+  .summary-main .profile_actions .profile_action .content p {width: 320px;}
+  .summary-main .profile_title {font-size: 38px; padding-bottom: 1rem;}
+  .summary-main .profile_actions .profile_action .content h5 {font-size: 16px;}
+
+}
+
+@media (max-width: 575px) {
+  .summary-main .profile_title {font-size: 34px; padding-bottom: 0.5rem;}
+  .summary-main .profile_actions .profile_action .profile_icon {width: 34px; height: 34px;}
+  .summary-main .profile_actions .profile_action .content h5 {font-size: 14px;}
+  .summary-main .profile_summary {padding: 1rem;}
+  .summary-main .profile_title {padding-top: 0rem;}
+  .summary-main .profile_actions {padding: 1rem;}
+  .summary-main .profile_actions .profile_action .content p {padding: 0; font-size: 12px; width: auto;}
+  .summary-main .profile_actions .profile_action .profile_icon.complete_profile::before {font-size: 50px; line-height: 34px;}
+  .summary-main .profile_actions .profile_action .action_icon {width: 15px; height: 15px; line-height: 15px; font-size: 8px; right: 5px;}
+  .summary-main .profile_text {font-size: 14px;}
+}

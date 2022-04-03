@@ -1,0 +1,51 @@
+<div class="graph-custom" *ngIf="this.solutionData.length>0">
+    <div class="graph-custom-body-middle-head">
+        <span class="fw-500">0</span>
+        <span class="fw-500">10</span>
+        <span class="fw-500">20</span>
+        <span class="fw-500">30</span>
+        <span class="fw-500">40</span>
+        <span class="fw-500">50</span>
+        <span class="fw-500">60</span>
+        <span class="fw-500">70</span>
+        <span class="fw-500">80</span>
+        <span class="fw-500">90</span>
+        <span class="fw-500">100</span>
+    </div>
+
+    <div class="graph-custom-body-middle-guide" [ngStyle]="{'left':(suitabilityScore*2)+'px' }">
+        <div class="graph-custom-body-middle-guide-inner">
+            <span class="graph-custom-body-middle-guide-handle">{{suitabilityScore}}</span>
+            <span class="graph-custom-body-middle-guide-handle-line"></span>
+        </div>
+    </div>
+    <ng-container *ngFor="let solution of solutionData">
+        <div class="graph-custom-body d-flex justify-content-between align-items-center">
+            <div class="graph-custom-body-left">
+                <i class="ion-record" *ngIf="implementedSolutionId === solution.solutionId"></i>
+                <i class="ion-ios-medical" *ngIf="solution.mappedSolution"></i>
+                <span class="text-left fs-12 fw-600 d-inline-block">
+                    {{solution.description}} <br>
+                    ({{solution.solutionFamilyName}})
+                </span>
+            </div>
+            <div class="graph-custom-body-middle">
+
+                <div class="graph-bend">
+
+                    <span *ngFor="let risk of solution['riskRange']; let i = index" class="float-left" [ngStyle]="{'width':((risk.high-(i>0 ? solution['riskRange'][i-1].high:0))*2)+'px' }"
+                        [ngClass]="risk.riskType"></span>
+                </div>
+            </div>
+            <div class="graph-custom-body-right">
+                <a class="btn-add" (click)="applySolution(solution.solutionId)">
+                    <i class="ion-md-add-circle"></i>
+                </a>
+            </div>
+        </div>
+    </ng-container>
+
+</div>
+<div class="no-record text-center" *ngIf="this.solutionData.length===0">
+    <i class="ion-ios-alert mr-2"></i>{{ 'APPLY_SOLUTION.NO_SOLUTIONS' | translate }}
+</div>

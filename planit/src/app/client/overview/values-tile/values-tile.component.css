@@ -1,0 +1,18 @@
+.client-icon {
+    width: 22px;
+    height: 22px;
+}
+.card-wrapper{
+    padding: 3px;
+}
+.card{
+    border-radius: 10px;
+}
+.card-body{
+    padding: 10px 5px;
+}
+.client-name-wrap {
+    width: 100%;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}

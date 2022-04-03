@@ -1,0 +1,22 @@
+.disable-link i,
+.disable-link span {
+    color: #ced8e2 !important;
+}
+
+.floating-dropdown li.disable-link,
+.floating-dropdown li.disable-link span,
+.floating-dropdown li.disable-link i {
+    cursor: not-allowed !important;
+}
+
+.dropdown-floating h6 {
+    line-height: 40px !important;
+    font-size: 11px !important;
+    color: #556677 !important;
+    font-weight: 700 !important;
+}
+
+.disabled-gray-out {
+    cursor: not-allowed;
+    opacity: 0.3;
+}

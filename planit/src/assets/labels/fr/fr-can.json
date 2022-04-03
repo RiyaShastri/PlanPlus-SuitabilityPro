@@ -1,0 +1,23 @@
+{
+    "SSID_LABELS": {
+        "A_ASSCAT042": "LiquiditÃ©s",
+        "A_ASSCAT051": "Immobilier",
+        "A_ASSCAT062": "Actions étrangères",
+        "A_ASSCAT043": "Revenu fixe court terme",
+        "A_ASSCAT044": "Revenu Fixe",
+        "A_ASSCAT045": "Actions Canadiennes",
+        "A_ASSCAT046": "Actions canadiennes petite capitalisation",
+        "A_ASSCAT047": "Actions amÃ©ricaines",
+        "A_ASSCAT048": "Actions amÃ©ricaines petite capitalisation",
+        "A_ASSCAT049": "Actions Internationales",
+        "A_ASSCAT050": "LiquiditÃ©s",
+        "OBJECTIV002": "Mode de vie à la retraite (après impôt)",
+        "ACCTYP_OTHER": "Autre",
+        "ACCTYP_SHELTERED": "TFSA",
+        "ACCTYP_DEFERRED": "Inscrit",
+        "ACCTYP_OPEN": "Ouvrir",
+        "ACCTYP_PERSONAL": "Usage personnel",
+        "ACCTYP_BUSINESS": "Affaires Autre",
+        "ACCTYP_CORPORATE": "D'entreprise"
+    }
+}

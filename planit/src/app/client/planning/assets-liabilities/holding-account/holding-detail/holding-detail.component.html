@@ -1,0 +1,598 @@
+<form name="form" (ngSubmit)="f.form.valid" #f="ngForm" novalidate>
+    <div class="row">
+        <div class="col-12 col-md-4">
+            <span class="fw-700 pb-3 d-block">{{'ASSET_LIABILITY.HOLDING_ACCOUNT.ASSET_INFORMATION' | translate}}
+            </span>
+            <div class="form-group" *ngIf="assetLiabilityDetail.productNumber !== null">
+                <label class="custom-form-label m-0">
+                    {{'ASSET_LIABILITY.HOLDING_ACCOUNT.ASSET_NAME' | translate}}</label>
+                <!-- <span>{{assetLiabilityDetail.liability.description}}</span> -->
+                <span>{{assetLiabilityDetail.subProductName}}</span>
+            </div>
+            <div class="form-group" *ngIf="assetLiabilityDetail.productNumber === null">
+                <label class="custom-form-label m-0">
+                    {{'ASSET_LIABILITY.HOLDING_ACCOUNT.ASSET_NAME' | translate}}</label>
+                <ng-container *ngIf="accountDetails['readOnly'] !== OTHER_OWNER.OTHER_OWNER_ACCOUNT; else readOnlyAssetName">
+                    <div [ngClass]="{ 'has-error': (description.dirty || description.touched || f.submitted) && !description.valid}">
+                        <input class="form-control" name="asst_description" [(ngModel)]="assetLiabilityDetail.description" #description="ngModel"
+                            required />
+                    </div>
+                </ng-container>
+                <ng-template #readOnlyAssetName>
+                    <span class="form-fixed-value">{{assetLiabilityDetail.description}}</span>
+                </ng-template>
+            </div>
+            <div class="form-group" *ngIf="assetLiabilityDetail.productNumber !== null">
+                <label class="custom-form-label m-0">{{'ASSET_LIABILITY.HOLDING_ACCOUNT.COMPANY' | translate}}</label>
+                <!-- <span> {{assetLiabilityDetail.companyNumber}}</span> -->
+                <span> {{assetLiabilityDetail.companyName}}</span>
+            </div>
+            <div class="form-group" *ngIf="assetLiabilityDetail.productNumber !== null">
+                <label class="custom-form-label m-0">
+                    {{'ASSET_LIABILITY.HOLDING_ACCOUNT.PRODUCT_CODE' | translate}}</label>
+                <span> {{assetLiabilityDetail.productCode}}</span>
+            </div>
+            <div class="form-group" *ngIf="assetLiabilityDetail.productNumber === null">
+                <label class="custom-form-label"> {{'ASSET_LIABILITY.HOLDING_ACCOUNT.PRODUCT_TYPE' | translate}}</label>
+                <ng-container *ngIf="accountDetails['readOnly'] !== OTHER_OWNER.OTHER_OWNER_ACCOUNT; else readOnlyProductCode">
+                    <div [ngClass]="{ 'has-error': (productCode.dirty || f.submitted) && !productCode.valid}">
+                        <p-dropdown [options]="productType" name="productCode" [(ngModel)]="assetLiabilityDetail.prod_type" required optionLabel="description"
+                            placeholder="{{'ASSET_LIABILITY.HOLDING_ACCOUNT.PLACEHOLDER_PRODUCT_TYPE' | translate}}" #productCode="ngModel"></p-dropdown>
+                    </div>
+                </ng-container>
+                <ng-template #readOnlyProductCode>
+                    <span class="form-fixed-value">{{(assetLiabilityDetail['prod_type'] && assetLiabilityDetail['prod_type']['description']) ? assetLiabilityDetail['prod_type']['description']
+                        : 'N/A'}}</span>
+                </ng-template>
+            </div>
+            <div class="form-group" *ngIf="fromPage == ''">
+                <label class="custom-form-label">{{'ASSET_LIABILITY.HOLDING_ACCOUNT.ACCOUNT_NUMBER' | translate}}
+                </label>
+                <ng-container *ngIf="accountDetails['readOnly'] !== OTHER_OWNER.OTHER_OWNER_ACCOUNT; else readOnlyAccountNum">
+                    <input class="form-control" name="accNumber" [(ngModel)]="assetLiabilityDetail.accontNumber" #accNumber="ngModel" placeholder="{{'ASSET_LIABILITY.HOLDING_ACCOUNT.PLACEHOLDER_ACCOUNT_NUMBER' | translate}}"
+                    />
+                </ng-container>
+                <ng-template #readOnlyAccountNum>
+                    <span class="form-fixed-value">{{(assetLiabilityDetail.accontNumber) ? assetLiabilityDetail.accontNumber: 'N/A'}}</span>
+                </ng-template>
+            </div>
+            <div class="form-group client-avatars" *ngIf="fromPage == ''">
+                <label class="custom-form-label">{{'ASSET_LIABILITY.HOLDING_ACCOUNT.LINKED_CLIENT_ACCOUNT' | translate}} </label>
+                <ng-container *ngFor="let owner of ownerList">
+                    <span *ngIf="!owner.avatar" class="initials client-icon {{owner.btnColor}}">{{owner.btnInitials}}</span>
+                    <img class="initials bg-transparent" height="50" *ngIf="owner.avatar" [src]="owner.avatar" (error)="owner.avatar = null"
+                    />
+                </ng-container>
+                {{assetLiabilityDetail.linkedAccountName}}
+            </div>
+        </div>
+
+        <div class="col-12 col-md-4">
+            <span class="fw-700 pb-2 d-block">{{'ASSET_LIABILITY.HOLDING_ACCOUNT.ASSET_VALUE' | translate}} </span>
+            <div class="form-group text-right amount_wrapper" *ngIf="fromPage == ''">
+                <label class="custom-form-label"> {{'ASSET_LIABILITY.HOLDING_ACCOUNT.MARKET_VALUE' | translate}}</label>
+                <ng-container *ngIf="accountDetails['readOnly'] !== OTHER_OWNER.OTHER_OWNER_ACCOUNT; else readOnlyAccountFmv">
+                    <div [ngClass]="{ 'has-error': (marketValue.dirty || marketValue.touched || f.submitted) && !marketValue.valid}">
+                        <input class="form-control text-right" name="marketValue" [(ngModel)]="assetLiabilityDetail.fmv" #marketValue="ngModel" (keyup)="checkPriceAndMarketValue($event, 'marketValue')"
+                            required [textMask]="{mask: currencyMask}" appNumeric />
+                    </div>
+                </ng-container>
+                <ng-template #readOnlyAccountFmv>
+                    <div class="h-40px">
+                        <span class="form-fixed-value readonly-assets">{{(assetLiabilityDetail.fmv ? assetLiabilityDetail.fmv: 0) | currency: assetLiabilityDetail.currencyCode:'symbol-narrow':'0.2-2'}}</span>
+                    </div>
+                </ng-template>
+                <span class="currency_code"> {{assetLiabilityDetail.currencyCode}} </span>
+            </div>
+
+            <div class="form-group text-right amount_wrapper" *ngIf="fromPage != ''">
+                <label class="custom-form-label"> {{'ASSET_LIABILITY.HOLDING_ACCOUNT.MARKET_VALUE' | translate}}</label>
+                <ng-container *ngIf="accountDetails['readOnly'] !== OTHER_OWNER.OTHER_OWNER_ACCOUNT; else readOnlyAccountPurchaseAmount">
+                    <div [ngClass]="{ 'has-error': (purchaseAmount.dirty || purchaseAmount.touched || f.submitted) && !purchaseAmount.valid}">
+                        <input class="form-control text-right" name="purchaseAmount" [(ngModel)]="assetLiabilityDetail.purchaseAmount" #purchaseAmount="ngModel"
+                            (keyup)="checkPriceAndMarketValue($event, 'purchaseAmount')" required [textMask]="{mask: currencyMask}"
+                            appNumeric />
+                    </div>
+                </ng-container>
+                <ng-template #readOnlyAccountPurchaseAmount>
+                    <span class="form-fixed-value readonly-assets">{{(assetLiabilityDetail.purchaseAmount ? assetLiabilityDetail.purchaseAmount: 0) | currency: assetLiabilityDetail.currencyCode:'symbol-narrow':'0.2-2'}}</span>
+                </ng-template>
+                <span class="currency_code"> {{assetLiabilityDetail.currencyCode}} </span>
+            </div>
+
+            <div class="form-group text-right amount_wrapper" *ngIf="assetLiabilityDetail.productNumber !== null && fromPage == ''">
+                <label class="custom-form-label">{{'ASSET_LIABILITY.HOLDING_ACCOUNT.TABLE_HEADING.UNITS' | translate}}
+                </label>
+                <ng-container *ngIf="accountDetails['readOnly'] !== OTHER_OWNER.OTHER_OWNER_ACCOUNT; else readOnlyAccountUnites">
+                    <div [ngClass]="{ 'has-error':  (unites.dirty || unites.touched || f.submitted) && !unites.valid}">
+                        <input class="form-control text-right" [(ngModel)]="assetLiabilityDetail.displayUnits" name="unites" #unites="ngModel" (keyup)="checkPriceAndMarketValue($event, 'unit')"
+                            required />
+                    </div>
+                    
+                </ng-container>
+                <ng-template #readOnlyAccountUnites>
+                    <span class="form-fixed-value">{{assetLiabilityDetail.units ? assetLiabilityDetail.units: 0}}</span>
+                </ng-template>
+                <span *ngIf="assetLiabilityDetail.productFmvDate">
+                    <!-- Price : {{assetLiabilityDetail.fmv | currency:currencyMask['prefix']:'symbol-narrow':'0.2-2' }}
+                    ({{assetLiabilityDetail.productFmvDate | date: assetLiabilityDetail.dateFormat}}) -->
+                    {{ 'ASSET_LIABILITY.HOLDING_ACCOUNT.PRICE' | translate}} : {{currencyMask['prefix']}}{{assetLiabilityDetail.productFmv}}{{assetLiabilityDetail.currencyCode}}
+                    ({{assetLiabilityDetail.productFmvDate | date: assetLiabilityDetail.dateFormat}})
+                </span>
+                <span *ngIf="!assetLiabilityDetail.productFmvDate">
+                    {{ 'ASSET_LIABILITY.HOLDING_ACCOUNT.PRICE' | translate}} : {{currencyMask['prefix']}} {{assetLiabilityDetail.productFmv }}{{assetLiabilityDetail.currencyCode}}
+                </span>
+            </div>
+            <div class="form-group text-right amount_wrapper" *ngIf="fromPage == ''">
+                <label class="custom-form-label">{{ 'ASSET_LIABILITY.HOLDING_ACCOUNT.ACB' | translate}}</label>
+                <ng-container *ngIf="accountDetails['readOnly'] !== OTHER_OWNER.OTHER_OWNER_ACCOUNT; else readOnlyACB">
+                    <div [ngClass]="{ 'has-error': f.submitted && !acb.valid}">
+                        <input class="form-control text-right" [textMask]="{mask: currencyMask}" appNumeric [(ngModel)]="assetLiabilityDetail.acb"
+                            name="acb" #acb="ngModel" />
+                    </div>
+                </ng-container>
+                <ng-template #readOnlyACB>
+                    <span class="form-fixed-value readonly-assets">{{(assetLiabilityDetail.acb ? assetLiabilityDetail.acb : 0) | currency: assetLiabilityDetail.currencyCode:'symbol-narrow':'0.2-2'}}</span>
+                </ng-template>
+                <span class="currency_code"> {{assetLiabilityDetail.currencyCode}} </span>
+            </div>
+            <div class="form-group lbl-right text-right amount_wrapper" *ngIf="assetLiabilityDetail.productNumber === null">
+                <label class="custom-form-label">{{'ASSET_LIABILITY.HOLDING_ACCOUNT.CURRENCY' | translate}} </label>
+                <ng-container *ngIf="accountDetails['readOnly'] !== OTHER_OWNER.OTHER_OWNER_ACCOUNT; else readOnlycurrencyCode">
+                    <div [ngClass]="{ 'has-error': (currencyCode.dirty || f.submitted) && !currencyCode.valid}">
+                        <p-dropdown [options]="currency" name="currencyCode" [(ngModel)]="assetLiabilityDetail.selectedCurrencyCode" required optionLabel="description"
+                            placeholder="{{'ASSET_LIABILITY.HOLDING_ACCOUNT.PLACEHOLDER_CURRENCY' | translate}}" #currencyCode="ngModel"
+                            (onChange)="changeCurrencyCode()"></p-dropdown>
+                    </div>
+                </ng-container>
+                <ng-template #readOnlycurrencyCode>
+                    <span class="form-fixed-value">{{(assetLiabilityDetail.selectedCurrencyCode) ? assetLiabilityDetail.selectedCurrencyCode.description:
+                        'N/A'}}
+                    </span>
+                </ng-template>
+            </div>
+            <div class="form-group" *ngIf="fromPage == ''">
+                <p-checkbox name="included" [(ngModel)]="assetLiabilityDetail.included" label="{{'ASSET_LIABILITY.HOLDING_ACCOUNT.INCLUDE_IN_PLANNING' | translate}}"
+                    binary="true" [disabled]="accountDetails['readOnly'] === OTHER_OWNER.OTHER_OWNER_ACCOUNT">
+                </p-checkbox>
+            </div>
+            <div class="form-group" *ngIf="fromPage == ''">
+                <p-checkbox name="liquid" [(ngModel)]="assetLiabilityDetail.liquid" label="{{'ASSET_LIABILITY.HOLDING_ACCOUNT.LIQUID' | translate}}"
+                    binary="true"></p-checkbox>
+            </div>
+        </div>
+
+        <div class="col-12 col-md-4" *ngIf="accountDetails.allocationFlag === ACCOUNT_FLAG.ON">
+            <span class="fw-700 pb-3 d-block">{{'ASSET_LIABILITY.HOLDING_ACCOUNT.ALLOCATION_BREAKDOWN' | translate}}
+            </span>
+            <table class="table bt-none">
+                <ng-container *ngFor="let item of assetLiabilityDetail.assetsBreakdown;">
+                    <tr>
+                        <td class="pt-2 pb-2">{{item.allocationBreakdown}}</td>
+                        <td class="text-right pt-2 pb-2 pr-0 fw-400" *ngIf="assetLiabilityDetail.productNumber !== null">
+                            {{item.allocationPercent | number : "1.2-2"}} %</td>
+                        <td class="pt-2 pb-2" *ngIf="assetLiabilityDetail.productNumber === null">
+                            <ng-container *ngIf="accountDetails['readOnly'] !== OTHER_OWNER.OTHER_OWNER_ACCOUNT; else readOnlyAssetsBreakdown">
+                                <div class="form-group  mb-0 text-right" [ngClass]="{ 'has-error':  !assetsBreakdown.valid || f.submitted }">
+                                    <input class="form-control d-inline-block  text-right h-25" min="0" max="100" (keyup)="totalAllocation()" #assetsBreakdown="ngModel"
+                                        [textMask]="{mask: percentMask1}" appNumeric style="width: 80px" [(ngModel)]="item.allocationPercent"
+                                        name="assetsBreakdown{{item.allocationBreakdownId}}" pattern="^100(\.0{0,2})? *%?$|^\d{1,2}(\.\d{1,2})? *%?$"
+                                        required />
+                                </div>
+                            </ng-container>
+                            <ng-template #readOnlyAssetsBreakdown>
+                                <span>{{item.allocationPercent ? item.allocationPercent : 0}}%</span>
+                            </ng-template>
+                        </td>
+                    </tr>
+                </ng-container>
+
+                <tr *ngIf="assetLiabilityDetail.productNumber === null">
+                    <td>
+                        <b> {{'ASSET_LIABILITY.HOLDING_ACCOUNT.TOTAL' | translate}} </b>
+                    </td>
+                    <td class="text-right fw-400">
+                        <div class="form-group" [ngClass]="{ 'has-error': f.submitted ||  totalBreakDown > 100  }">
+                            <label class="custom-form-label">
+                                <b>{{totalBreakDown | number : "1.2-2" }} </b>
+                            </label>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        
+        <div class="col-12 col-md-4" *ngIf="accountDetails.dispositionFlag === ACCOUNT_FLAG.ON && accessRights['DISPOSITION']['accessLevel'] > 0">
+            <span class="fw-700 pb-3 d-block">{{'ASSET_LIABILITY.HOLDING_ACCOUNT.DISPOSITION_STRATEGY' | translate}}
+            </span>
+            <span class="form-group d-block">
+                    <p-checkbox name="updteDisposition" [(ngModel)]="dispositionObject.update_disposition"
+                        label="{{'ASSET_LIABILITY.HOLDING_ACCOUNT.CREATE_UPDATE' | translate}}" [disabled]="disableUpdateDisposition" binary="true">
+                    </p-checkbox>
+            </span>
+            <table class="table bt-none" style="table-layout: fixed;">
+                <tr class="form-group" [ngClass]="{ 'has-error': !isCorrect}">
+                   <td class="pt-2 pb-2"><label class="custom-form-label m-0">
+                    {{'ASSET_LIABILITY.HOLDING_ACCOUNT.DISPOSITION_YEAR' | translate}}</label>
+                    </td>
+                   <td class="pt-2 pb-2 pr-0 fw-400 w-200">
+                       <div class="row form-group form-group-custom">
+                            <div class="d-inline-block pr-0 pl-0 col-lg-8">
+                                <p-dropdown [options]="startList"
+                                optionLabel="description" name="startDate" [(ngModel)]="selectedDateType"
+                                #startDate="ngModel" required (onChange)="checkValues()"></p-dropdown>
+                            </div>
+                            
+                            <div class="text-right pr-0 pl-0 fw-400 col-lg-4"><input [(ngModel)]="dispositionObject.disposition_year" class="form-control text-right"
+                                name="selectedYear" #year="ngModel" (change)="checkAge()" [disabled]="ageOptionDisable" [ngClass]="{'border-0' : ageOptionDisable}" required/>
+                            </div>
+                        </div>
+                   </td>
+                   
+                   
+               </tr>
+               
+               <tr class="form-group"  [ngClass]="{ 'has-error': (payout.dirty || payout.touched || f.submitted) && !payout.valid}">
+                   <td class="pt-2 pb-2"><label class="custom-form-label m-0">
+                    {{'ASSET_LIABILITY.HOLDING_ACCOUNT.PAYOUT_PERIOD' | translate}}</label>
+                    </td>
+                   <td class="text-right pt-2 pb-2 pr-0 fw-400">
+                       <input [(ngModel)]="dispositionObject.payout_period" class="form-control d-inline-block  text-right h-25"
+                        name="payout_period" #payout="ngModel" required/>
+                   </td>
+               </tr>
+               <tr class="form-group" [ngClass]="{ 'has-error': (growRateToDisp.dirty || growRateToDisp.touched || f.submitted) && !growRateToDisp.valid}">
+                   <td class="pt-2 pb-2"><label class="custom-form-label m-0">
+                    {{'ASSET_LIABILITY.HOLDING_ACCOUNT.GROWTH_RATE_TO_DISP_DATE' | translate}}</label>
+                    </td>
+                   <td class="text-right pt-2 pb-2 pr-0 fw-400">
+                       <input [(ngModel)]="dispositionObject.growrate_to_disp" class="form-control d-inline-block  text-right h-25"
+                        min="0" max="100" [textMask]="{mask: percentMask}"  pattern="^100(\.0{0,2})? *%?$|^\d{1,2}(\.\d{1,2})? *%?$" name="growrate_to_disp"
+                         #growRateToDisp="ngModel" required/>
+                   </td>
+               </tr>
+               <tr class="form-group" [ngClass]="{ 'has-error': (growRateDuringDisp.dirty || growRateDuringDisp.touched || f.submitted) && !growRateDuringDisp.valid}">
+                   <td class="pt-2 pb-2"><label class="custom-form-label m-0">
+                    {{'ASSET_LIABILITY.HOLDING_ACCOUNT.GROWTH_RATE_DURING_DISP' | translate}}</label>
+                    </td>
+                   <td class="text-right pt-2 pb-2 pr-0 fw-400">
+                       <input [(ngModel)]="dispositionObject.growrate_during_disp" class="form-control d-inline-block  text-right h-25"
+                        min="0" max="100"  pattern="^100(\.0{0,2})? *%?$|^\d{1,2}(\.\d{1,2})? *%?$" name="growrate_during_disp" [textMask]="{mask: percentMask}"
+                        [ngClass]="{ 'has-error': (growRateDuringDisp.dirty || growRateDuringDisp.touched || f.submitted) && !growRateDuringDisp.valid}"
+                        #growRateDuringDisp="ngModel" required/>
+                   </td>
+               </tr>
+               <tr class="form-group"  [ngClass]="{ 'has-error': (clientExemption.dirty || clientExemption.touched || f.submitted) && !clientExemption.valid}">
+                   <td class="pt-2 pb-2"><label class="custom-form-label m-0">
+                    {{'ASSET_LIABILITY.HOLDING_ACCOUNT.CAPITAL_GAINS_EXEMPTION' | translate}}</label>
+                    </td>
+                   <td class="text-right pt-2 pb-2 pr-0 fw-400">
+                       <input [(ngModel)]="dispositionObject.client_exemption"  class="form-control d-inline-block  text-right h-25"
+                       name="client_exemption" #clientExemption="ngModel" [textMask]="{mask: currencyMask}" appNumeric required/>
+                   </td>
+               </tr>
+               <tr class="form-group" [ngClass]="{ 'has-error': (inclusionRate.dirty || inclusionRate.touched || f.submitted) && !inclusionRate.valid}">
+                   <td class="pt-2 pb-2"><label class="custom-form-label m-0">
+                    {{'ASSET_LIABILITY.HOLDING_ACCOUNT.INCLUSION_RATE' | translate}}</label>
+                    </td>
+                   <td class="text-right pt-2 pb-2 pr-0 fw-400">
+                       <input [(ngModel)]="dispositionObject.inclusionRate" class="form-control d-inline-block  text-right h-25"
+                        min="0" max="100" [textMask]="{mask: percentMask}" name="inclusion_rate" 
+                        pattern="^100(\.0{0,2})? *%?$|^\d{1,2}(\.\d{1,2})? *%?$" #inclusionRate="ngModel" required/>
+                   </td>
+               </tr>
+               <tr class="form-group" [ngClass]="{ 'has-error': (incomeEst.dirty || incomeEst.touched || f.submitted) && !incomeEst.valid}">
+                   <td class="pt-2 pb-2"><label class="custom-form-label m-0">
+                    {{'ASSET_LIABILITY.HOLDING_ACCOUNT.MARGINAL_TAX_RATE' | translate}}</label>
+                    </td>
+                   <td class="text-right pt-2 pb-2 pr-0 fw-400">
+                       <input [(ngModel)]="dispositionObject.income_est" class="form-control d-inline-block  text-right h-25"
+                        min="0" max="100" name="income_est" [textMask]="{mask: percentMask}"
+                        pattern="^100(\.0{0,2})? *%?$|^\d{1,2}(\.\d{1,2})? *%?$" #incomeEst="ngModel" required/>
+                   </td>
+               </tr>
+               <tr class="form-group" [ngClass]="{ 'has-error': (onDeath.dirty || onDeath.touched || f.submitted) && !onDeath.valid}">
+                   <td class="fw-700 pb-3 d-block"><label class="custom-form-label m-0">
+                    {{'ASSET_LIABILITY.HOLDING_ACCOUNT.ON_DEATH' | translate}}</label>
+                    </td>
+                   <td>
+                   </td>
+               </tr>
+               <tr class="form-group">
+                   <td class="pt-2 pb-2">
+                        <span>
+                            <p-radioButton name="disp_ondeath" value="1"
+                                [(ngModel)]="dispositionObject.disp_ondeath"
+                                #onDeath="ngModel" required></p-radioButton>
+                            <span [translate]="'ASSET_LIABILITY.HOLDING_ACCOUNT.SELL'"></span>
+                        </span>
+                        <br>
+                        <span>
+                            <p-radioButton name="disp_ondeath" value="2"
+                                [(ngModel)]="dispositionObject.disp_ondeath"
+                                #onDeath="ngModel" required></p-radioButton>
+                            <span [translate]="'ASSET_LIABILITY.HOLDING_ACCOUNT.RETAIN'"></span>
+                        </span>
+                        <br>
+                        <span>
+                            <p-radioButton name="disp_ondeath" value="3"
+                                [(ngModel)]="dispositionObject.disp_ondeath"
+                                #onDeath="ngModel" required></p-radioButton>
+                            <span [translate]="'ASSET_LIABILITY.HOLDING_ACCOUNT.NO_DISP'"></span>
+                        </span>
+                    </td>
+                   
+               </tr>
+                <tr class="form-group" [ngClass]="{ 'has-error': (onDisability.dirty || onDisability.touched || f.submitted) && !onDisability.valid}">
+                   <td class="fw-700 pb-3 d-block"><label class="custom-form-label m-0">
+                    {{'ASSET_LIABILITY.HOLDING_ACCOUNT.ON_DISABILITY' | translate}}</label>
+                    </td>
+                   <td>
+                   </td>
+               </tr>
+               <tr class="form-group">
+                   <td class="pt-2 pb-2">
+                        <span>
+                            <p-radioButton name="disp_ondisability" value="1"
+                                [(ngModel)]="dispositionObject.disp_ondisability"
+                                #onDisability="ngModel" required></p-radioButton>
+                            <span [translate]="'ASSET_LIABILITY.HOLDING_ACCOUNT.SELL'"></span>
+                        </span>
+                        <br>
+                        <span>
+                            <p-radioButton name="disp_ondisability" value="2"
+                                [(ngModel)]="dispositionObject.disp_ondisability"
+                                #onDisability="ngModel" required></p-radioButton>
+                            <span [translate]="'ASSET_LIABILITY.HOLDING_ACCOUNT.RETAIN'"></span>
+                        </span>
+                        <br>
+                        <span>
+                            <p-radioButton name="disp_ondisability" value="3"
+                                [(ngModel)]="dispositionObject.disp_ondisability"
+                                #onDisability="ngModel" required></p-radioButton>
+                            <span [translate]="'ASSET_LIABILITY.HOLDING_ACCOUNT.NO_DISP'"></span>
+                        </span>
+                    </td>
+                   <td class="text-right pt-2 pb-2 pr-0 fw-400">
+                   </td>
+               </tr>
+            </table>
+            
+         </div>
+         <div *ngIf="accountDetails.recaptureFlag === ACCOUNT_FLAG.ON && accessRights['RECAP']['accessLevel'] > 0" class="col"></div>
+         <div class="col-12 col-md-4" *ngIf="accountDetails.recaptureFlag === ACCOUNT_FLAG.ON && accessRights['RECAP']['accessLevel'] > 0">
+            <hr/>
+            <span class="fw-700 pb-3 d-block">{{'ASSET_LIABILITY.HOLDING_ACCOUNT.RECAPTURE' | translate}}</span>
+            <table class="table bt-none" style="table-layout: fixed;">
+                <tr class="form-group" [ngClass]="{ 'has-error': (depreciable.dirty || depreciable.touched || f.submitted) && !depreciable.valid}">
+                    <td class="pt-2 pb-2"><label class="custom-form-label m-0">
+                    {{'ASSET_LIABILITY.HOLDING_ACCOUNT.DEPRECIABLE_VALUE' | translate}}</label>
+                    </td>
+                    <td class="text-right pt-2 pb-2 pr-0 fw-400">
+                        <input [(ngModel)]="dispositionObject.depreciable"  class="form-control d-inline-block  text-right h-25"
+                        name="depreciable_value" (input)="recaptureChange()" [textMask]="{mask: currencyMask}" appNumeric #depreciable="ngModel" required/>
+                    </td>
+                </tr>
+                <tr class="form-group" [ngClass]="{ 'has-error': (currentDepreciation.dirty || currentDepreciation.touched || f.submitted) && !currentDepreciation.valid}">
+                    <td class="pt-2 pb-2"><label class="custom-form-label m-0">
+                    {{'ASSET_LIABILITY.HOLDING_ACCOUNT.CURRENT_DEPRECIATION' | translate}}</label>
+                    </td>
+                    <td class="text-right pt-2 pb-2 pr-0 fw-400">
+                        <input [(ngModel)]="dispositionObject.cur_depreciation"  class="form-control d-inline-block  text-right h-25"
+                        [ngClass]="{ 'has-error': (currentDepreciation.dirty || currentDepreciation.touched || f.submitted) && !currentDepreciation.valid}"
+                        name="current_depreciation" (input)="recaptureChange()" #currentDepreciation="ngModel" [textMask]="{mask: currencyMask}" appNumeric required/>
+                    </td>
+                </tr>
+                <tr class="form-group">
+                    <td class="pt-2 pb-2"><label class="custom-form-label m-0">
+                    {{'ASSET_LIABILITY.HOLDING_ACCOUNT.UNDEPRECIATED_CAPITAL_COST' | translate}}</label>
+                    </td>
+                    <td class="text-right pt-2 pb-2 pr-0 fw-400">
+                        <input [(ngModel)]="undepreciatedCapitalCost"
+                            class="text-right border-0"
+                            name="unDepreciatedCapitalCost" #unDepreciatedCapital="ngModel" [textMask]="{mask: currencyMask}" required disabled/>
+                    </td>
+                </tr>
+                <tr class="form-group" [ngClass]="{ 'has-error': (depreciationRate.dirty || depreciationRate.touched || f.submitted) && !depreciationRate.valid}">
+                    <td class="pt-2 pb-2"><label class="custom-form-label m-0">
+                    {{'ASSET_LIABILITY.HOLDING_ACCOUNT.DEPRECIATION_RATE' | translate}}</label>
+                    </td>
+                    <td>
+                        <div class="row form-group">
+                            <div class="col-lg-4 pr-0 pl-0">
+                                <input [(ngModel)]="dispositionObject.depreciation_rate" class="form-control d-inline-block  text-right"
+                                name="depreciation_rate" #depreciationRate="ngModel" (input)="recaptureChange()" min="0" max="100" [textMask]="{mask: percentMask}" 
+                                pattern="^100(\.0{0,2})? *%?$|^\d{1,2}(\.\d{1,2})? *%?$" required/>
+                            </div>
+                            <div class="col-lg-8 pr-0 pl-0">
+                                <p-dropdown [options]="depreciationType" [(ngModel)]="selectedDepreciationType"
+                                    optionLabel="description" name="depreciationType" #recaptureDepreciationType="ngModel" (onChange)="checkDepreciationType()"
+                                    placeholder="{{ 'ASSET_LIABILITY.HOLDING_ACCOUNT.DEPRECIATION_TYPE' | translate }}">
+                                </p-dropdown>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr class="form-group">
+                    <td class="pt-2 pb-2"><label class="custom-form-label m-0">
+                    {{'ASSET_LIABILITY.HOLDING_ACCOUNT.DEPRECIATION_CURRENT_YEAR' | translate}}</label>
+                    </td>
+                    <td class="text-right pt-2 pb-2 pr-0 fw-400">
+                            <input [(ngModel)]="currentYearDepreciation"
+                            class="text-right border-0"
+                            name="currentYearDep" #currentYearD="ngModel" [textMask]="{mask: currencyMask}" required disabled/>
+                       
+                    </td>
+                </tr>
+            </table>
+        </div>
+        
+        
+        <ng-container *ngIf="accountDetails.loanFlag === 1 && accessRights['AL_LIABILITY']['accessLevel'] > 1 && fromPage == ''">
+            <div class="col-12">
+                <hr>
+            </div>
+            <div class="col-12 pb-3">
+                <span class="fw-700">{{'ASSET_LIABILITY.HOLDING_ACCOUNT.LIABILITY_INFORMATION' | translate}} </span>
+            </div>
+            <div class="col-12 col-md-4">
+                <div class="form-group">
+                    <label class="custom-form-label">{{'ASSET_LIABILITY.HOLDING_ACCOUNT.DESCRIPTION' | translate}}</label>
+                    <input [(ngModel)]="assetLiabilityDetail.liability.description" class="form-control" name="description" #description="ngModel"
+                    />
+                </div>
+            </div>
+            <div class="col-12 col-md-4">
+                <div class="form-group amount_wrapper text-right">
+                    <label class="custom-form-label"> {{'ASSET_LIABILITY.HOLDING_ACCOUNT.CURRENT_LOAN_BALANCE' | translate}} </label>
+                    <input class="form-control text-right" [(ngModel)]="assetLiabilityDetail.liability.currentBalance" name="currentBalance"
+                        #currentBalance="ngModel" [textMask]="{mask: currencyMask}" appNumeric />
+                    <span class="currency_code"> {{assetLiabilityDetail.currencyCode}} </span>
+                </div>
+            </div>
+            <div class="col-12 col-md-4">
+                <div class="form-group" [ngClass]="{ 'has-error': (asOfDate.dirty || asOfDate.touched || f.submitted) && !asOfDate.valid}">
+                    <label class="custom-form-label">
+                        {{'ASSET_LIABILITY.HOLDING_ACCOUNT.AS_OF_DATE' | translate}}</label>
+                    <p-calendar [showIcon]="true" yearRange="1900:2020" [(ngModel)]="assetLiabilityDetail.asOfDate" [monthNavigator]="true" [yearNavigator]="true"
+                        readonlyInput="true" dateFormat="yy-mm-dd" name="asOfDate" #asOfDate="ngModel" required></p-calendar>
+                </div>
+            </div>
+        </ng-container>
+    </div>
+
+    <div [id]="'liability_'+assetLiabilityDetail.assetKey" *ngIf="accountDetails.loanFlag === 1  && accessRights['AL_LIABILITY']['accessLevel'] > 1"
+        class="hide-ele">
+        <div class="row">
+            <div class="col-12 col-md-4">
+                <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !liabilityLoanNumber.valid}">
+                    <label class="custom-form-label">{{'ASSET_LIABILITY.HOLDING_ACCOUNT.LOAN_NUMBER' | translate}}
+                    </label>
+                    <input [(ngModel)]="assetLiabilityDetail.liability.loanAccount" class="form-control" name="liabilityLoanNumber" #liabilityLoanNumber="ngModel"
+                    />
+                </div>
+            </div>
+            <div class="col-12 col-md-4">
+                <div class="form-group amount_wrapper text-right">
+                    <label class="custom-form-label">{{'ASSET_LIABILITY.HOLDING_ACCOUNT.INITIAL_LOAN_AMOUNT' | translate}} </label>
+                    <input class="form-control text-right" [(ngModel)]="assetLiabilityDetail.liability.amountBorrowed" name="initialLoanAmount"
+                        #initialLoanAmount="ngModel" [textMask]="{mask: currencyMask}" appNumeric />
+                    <span class="currency_code"> {{assetLiabilityDetail.currencyCode}} </span>
+                </div>
+            </div>
+            <div class="col-12 col-md-4">
+                <div class="form-group">
+                    <label class="custom-form-label">{{'ASSET_LIABILITY.HOLDING_ACCOUNT.INCEPTION_DATE' | translate}}
+                    </label>
+                    <p-calendar [showIcon]="true" yearRange="1900:2020" [(ngModel)]="assetLiabilityDetail.liability.inceptionDate" [monthNavigator]="true"
+                        [yearNavigator]="true" readonlyInput="true" dateFormat="yy-mm-dd" name="inceptionDate" #inceptionDate="ngModel"></p-calendar>
+                </div>
+            </div>
+            <div class="col-12 col-md-4">
+                <div class="row">
+                    <div class="col-12 col-lg-6">
+                        <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !loanType.valid}">
+                            <label class="custom-form-label">{{'ASSET_LIABILITY.HOLDING_ACCOUNT.LOAN_TYPE' | translate}}
+                            </label>
+                            <p-dropdown [options]="loantype" [(ngModel)]="assetLiabilityDetail.liability.loanType" optionLabel="type" name="loanType"
+                                #loanType="ngModel" placeholder="{{ 'ASSET_LIABILITY.HOLDING_ACCOUNT.SELECT_LOAN_TYPE' | translate }}">
+                            </p-dropdown>
+                        </div>
+                    </div>
+                    <div class="col-12 col-lg-6">
+                        <div class="form-group" [ngClass]="{ 'has-error':  (compoundFrequency.dirty || f.submitted) && !compoundFrequency.valid}">
+                            <label class="custom-form-label">{{'ASSET_LIABILITY.HOLDING_ACCOUNT.COMPOUNDING' | translate}}
+                            </label>
+                            <p-dropdown [options]="compounding" name="compoundFrequency" #compoundFrequency="ngModel" [(ngModel)]="assetLiabilityDetail.liability.compoundFrequency"
+                                optionLabel="frequency" placeholder="{{ 'ASSET_LIABILITY.HOLDING_ACCOUNT.SELECT_COMPOUNDING' | translate }}">
+                            </p-dropdown>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-4">
+                <div class="form-group amount_wrapper text-right" [ngClass]="{ 'has-error': (interestRate.dirty || interestRate.touched || f.submitted) && !interestRate.valid}">
+                    <label class="custom-form-label">{{'ASSET_LIABILITY.HOLDING_ACCOUNT.CURRENT_INTEREST_RATE' | translate}} </label>
+                    <input class="form-control text-right" [(ngModel)]="assetLiabilityDetail.liability.interestRate" name="interestRate" min="0"
+                        max="100" #interestRate="ngModel" [textMask]="{mask: percentMask}" appNumeric />
+                </div>
+            </div>
+            <div class="col-12 col-md-4">
+                <div class="form-group">
+                    <label class="custom-form-label">{{'ASSET_LIABILITY.HOLDING_ACCOUNT.RENEWAL_DATE' | translate}}
+                    </label>
+                    <p-calendar [showIcon]="true" yearRange="1900:2020" [(ngModel)]="assetLiabilityDetail.liability.renewalDate" [monthNavigator]="true"
+                        [yearNavigator]="true" readonlyInput="true" dateFormat="yy-mm-dd" name="renewalDate" #renewalDate="ngModel"></p-calendar>
+                </div>
+            </div>
+            <div class="col-12 col-md-4">
+                <div *ngIf="!assetLiabilityDetail.liability.currentBalance" class="form-group">
+                    <label class="custom-form-label">{{'ASSET_LIABILITY.HOLDING_ACCOUNT.PAYMENT_TYPE' | translate}}</label>
+                    <p-dropdown [options]="paymenttype" name="paymentType" [(ngModel)]="assetLiabilityDetail.liability.paymentType" #paymentType="ngModel"
+                        optionLabel="paymentType" placeholder="{{'ASSET_LIABILITY.HOLDING_ACCOUNT.PLACEHOLDER_PAYMENT_TYPE' | translate}}">
+                    </p-dropdown>
+                </div>
+
+                <div *ngIf="assetLiabilityDetail.liability.currentBalance" class="form-group" [ngClass]="{ 'has-error': (paymentType.dirty || f.submitted) && !paymentType.valid}">
+                    <label class="custom-form-label">{{'ASSET_LIABILITY.HOLDING_ACCOUNT.PAYMENT_TYPE' | translate}}</label>
+                    <p-dropdown [options]="paymenttype" name="paymentType" [(ngModel)]="assetLiabilityDetail.liability.paymentType" #paymentType="ngModel"
+                        optionLabel="paymentType" placeholder="{{'ASSET_LIABILITY.HOLDING_ACCOUNT.PLACEHOLDER_PAYMENT_TYPE' | translate}}"></p-dropdown>
+                </div>
+            </div>
+            <div class="col-12 col-md-4">
+                <div class="form-group amount_wrapper text-right">
+                    <label class="custom-form-label">{{'ASSET_LIABILITY.HOLDING_ACCOUNT.PAYMENT_AMOUNT' | translate}}
+                    </label>
+                    <input class="form-control text-right" [(ngModel)]="assetLiabilityDetail.liability.paymentAmount" name="paymentAmount" #paymentAmount="ngModel"
+                        [textMask]="{mask: currencyMask}" appNumeric />
+                    <span class="currency_code"> {{assetLiabilityDetail.currencyCode}} </span>
+                </div>
+            </div>
+            <div class="col-12 col-md-4">
+                <div class="form-group" [ngClass]="{ 'has-error':  (paymentFrequency.dirty || f.submitted) && !paymentFrequency.valid}">
+                    <label class="custom-form-label">{{'ASSET_LIABILITY.HOLDING_ACCOUNT.FREQUENCY' | translate}}
+                    </label>
+                    <p-dropdown [options]="frequency" name="paymentFrequency" name="paymentFrequency" [(ngModel)]="assetLiabilityDetail.liability.paymentFrequency"
+                        #paymentFrequency="ngModel" optionLabel="frequency" placeholder="{{'ASSET_LIABILITY.HOLDING_ACCOUNT.PLACEHOLDER_FREQUENCY' | translate}}">
+                    </p-dropdown>
+                </div>
+            </div>
+             <div class="col-12 col-md-4">
+                <div *ngIf="!assetLiabilityDetail.liability.currentBalance" class="form-group">
+                    <label class="custom-form-label">{{'ASSET_LIABILITY.HOLDING_ACCOUNT.TREATMENT_ON_DEATH_TYPE' | translate}}</label>
+                    <p-dropdown [options]="treatmentondeathtype" name="treatmentOnDeath" [(ngModel)]="assetLiabilityDetail.liability.treatmentOnDeath" #treatmentOnDeath="ngModel"
+                        optionLabel="treatmentOnDeathType" placeholder="{{'ASSET_LIABILITY.HOLDING_ACCOUNT.PLACEHOLDER_TREATMENT_ON_DEATH_TYPE' | translate}}">
+                    </p-dropdown>
+                </div>
+                <div *ngIf="assetLiabilityDetail.liability.currentBalance " class="form-group" [ngClass]="{ 'has-error': (treatmentOnDeath.dirty || f.submitted) && !treatmentOnDeath.valid}">
+                   <label class="custom-form-label">{{'ASSET_LIABILITY.HOLDING_ACCOUNT.TREATMENT_ON_DEATH_TYPE' | translate}}</label>
+                   <p-dropdown [options]="treatmentondeathtype" name="treatmentOnDeath" [(ngModel)]="assetLiabilityDetail.liability.treatmentOnDeath" #treatmentOnDeath="ngModel"
+                       optionLabel="treatmentOnDeathType" placeholder="{{'ASSET_LIABILITY.HOLDING_ACCOUNT.PLACEHOLDER_TREATMENT_ON_DEATH_TYPE' | translate}}"></p-dropdown>
+               </div>
+            </div>
+       </div>
+       <div class="row">
+            <div class="col-12 col-md-4">
+                <div class="form-group">
+                    <p-checkbox name="insured" [(ngModel)]="assetLiabilityDetail.liability.loanInsured" label="Insured" binary="true">
+                    </p-checkbox>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 col-md-4">
+            <a *ngIf="accountDetails.loanFlag === 1 && accessRights['AL_LIABILITY']['accessLevel'] > 1" class="moredetail-button cursor-p"
+                (click)="collapseLiability(assetLiabilityDetail.isDetailExpand ,assetLiabilityDetail.assetKey)">
+                <span *ngIf="assetLiabilityDetail.isDetailExpand">{{'PLANNING.LESS_DETAIL' | translate}} </span>
+                <span *ngIf="!assetLiabilityDetail.isDetailExpand"> {{'PLANNING.MORE_DETAIL' | translate}} </span>
+            </a>
+        </div>
+        <div class="col-12 col-md-8 text-right">
+            <button type="button" class="btn btn-small btn-secondary mr-2" (click)="clearData()">{{ 'FORM.ACTION.CANCEL' | translate }}</button>
+            <button [disabled]="!f.form.valid || totalBreakDown>100 || saveDisable || !isCorrect" class="btn btn-small btn-success" (click)="saveAssetAndLiabilityDetail();saveDisable = true;">{{ 'FORM.ACTION.SAVE_CHANGES' | translate }}</button>
+            <img *ngIf="loading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="
+            />
+        </div>
+    </div>
+</form>

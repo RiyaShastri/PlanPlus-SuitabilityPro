@@ -1,0 +1,288 @@
+<div class="side-form">
+    <form name="form" (ngSubmit)="!saveDisable && f.form.valid" #f="ngForm" novalidate>
+        <div class="box">
+            <div class="box-header">
+                <span class="sidebar_title" [translate]="'GOALS.SUMMARY.ADD_GOALS'"></span>
+                <span (click)="back()" class="sidebar_action_icon ion-md-close-circle float-right"></span>
+            </div>
+            <div class="box-body">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !goalType.valid }">
+                            <label class=custom-form-label [translate]="'GOALS.LABEL.GOAL_TYPE'"></label>
+                            <table class="table">
+                                <tbody>
+                                    <tr>
+                                        <td class="">
+                                            <div class="form-check d-flex add-goal-form-check"
+                                                *ngIf="!retirementGoalExist">
+                                                <p-radioButton name="goalType" value="{{GOAL_TYPE.RETIREMENT}}" label=""
+                                                    (ngModelChange)="getFamilyMembers(GOAL_TYPE.RETIREMENT)"
+                                                    [(ngModel)]="model.goalType" required #goalType="ngModel">
+                                                </p-radioButton>
+                                                <label class="mb-0" [translate]="'ADD_GOALS.RETIREMENT'"></label>
+                                            </div>
+                                            <div class="form-check d-flex add-goal-form-check"
+                                                *ngIf="retirementGoalExist">
+                                                <p-radioButton name="goalType_disabled" value="{{GOAL_TYPE.RETIREMENT}}"
+                                                    label="" (ngModelChange)="getFamilyMembers(GOAL_TYPE.RETIREMENT)"
+                                                    [(ngModel)]="model.goalType" disabled require #goalType="ngModel">
+                                                </p-radioButton>
+                                                <label class="mb-0" [translate]="'ADD_GOALS.RETIREMENT'"></label>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="">
+                                            <div class="form-check d-flex add-goal-form-check">
+                                                <p-radioButton name="goalType" value="{{GOAL_TYPE.EDUCATION}}" label=""
+                                                    (ngModelChange)="getFamilyMembers(GOAL_TYPE.EDUCATION)"
+                                                    [(ngModel)]="model.goalType" require #goalType="ngModel">
+                                                </p-radioButton>
+                                                <label class="mb-0" [translate]="'ADD_GOALS.EDUCATION'"></label>
+
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="">
+                                            <div class="form-check d-flex add-goal-form-check">
+                                                <p-radioButton name="goalType" value="{{GOAL_TYPE.OTHER}}" label=""
+                                                    (ngModelChange)="getFamilyMembers(GOAL_TYPE.OTHER)"
+                                                    [(ngModel)]="model.goalType" require #goalType="ngModel">
+                                                </p-radioButton>
+                                                <label class="mb-0" [translate]="'ADD_GOALS.OTHER'"></label>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="form-group" *ngIf="model.goalType == GOAL_TYPE.RETIREMENT">
+                            <table class="table" *ngIf="client1">
+                                <thead>
+                                    <tr>
+                                        <th class="border-0 align-top" colspan="3">
+                                            <div class="d-flex align-items-center justify-content-between">
+                                                <div class="d-flex align-items-start">
+                                                    <span *ngIf="!client1.avatar"
+                                                        class="initials client mr-2">{{ client1['btnInitials']}}</span>
+                                                    <img class="initials bg-transparent mr-2" height="50"
+                                                        *ngIf="client1.avatar" [src]="client1.avatar"
+                                                        (error)="client1.avatar = null" />
+                                                    {{client1.firstName}} {{client1.lastName}}
+                                                </div>
+                                                <div class="d-flex align-items-start" *ngIf="client2">
+                                                    <span class="initials spouse mr-2"
+                                                        *ngIf="!client2.avatar">{{ client2['btnInitials']}}</span>
+                                                    <img class="initials bg-transparent mr-2" height="50"
+                                                        *ngIf="client2.avatar" [src]="client2.avatar"
+                                                        (error)="client2.avatar = null" />
+                                                    {{client2.firstName}} {{client2.lastName}}
+                                                </div>
+                                            </div>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="border-0" [translate]="'ADD_GOALS.WILL_RETIRE_AT_AGE'"></td>
+                                        <td class="border-0">
+                                            <div class="form-group text-right"
+                                                [ngClass]="{ 'has-error': !client1RetiredAge.valid }"
+                                                *ngIf="!client1.retired">
+                                                <input
+                                                    class="form-control d-inline-block  text-right h-25 client1RetiredAge-form-control"
+                                                    (blur)="calculateStartEnd();setDataProvider(model.client1RetiredAge,model.client1HorizonAge, client1, true)"
+                                                    [(ngModel)]="model.client1RetiredAge" #client1RetiredAge="ngModel"
+                                                    name="client1RetiredAge" required />
+                                            </div>
+                                            <span *ngIf="client1.retired" [translate]="'ADD_GOALS.RETIRED'"></span>
+                                        </td>
+                                        <td class="border-0" *ngIf="client2">
+                                            <div class="form-group text-right"
+                                                [ngClass]="{ 'has-error': !client2RetiredAge.valid }"
+                                                *ngIf="!client2.retired">
+                                                <input
+                                                    class="form-control d-inline-block  text-right h-25 client1RetiredAge-form-control"
+                                                    (blur)="calculateStartEnd(); setDataProvider(model.client2RetiredAge,model.client2HorizonAge, client2, false)"
+                                                    #client2RetiredAge="ngModel" [(ngModel)]="model.client2RetiredAge"
+                                                    name="client2RetiredAge" required />
+                                            </div>
+                                            <span *ngIf="client2.retired" [translate]="'ADD_GOALS.RETIRED'"></span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="border-0" [translate]="'ADD_GOALS.PLANNING_HORIZONE'"></td>
+                                        <td class="border-0 text-right">
+                                            <input
+                                                class="form-control d-inline-block  text-right h-25 client1HorizonAge-form-control"
+                                                (blur)="calculateStartEnd();setDataProvider(model.client1RetiredAge,model.client1HorizonAge, client1, true)"
+                                                #client1HorizonAge="ngModel" [(ngModel)]="model.client1HorizonAge"
+                                                name="client1HorizonAge" required />
+                                            <i class="cursor-p ion-ios-arrow-down"
+                                                [ngClass]="isClien1HorizonExpand?'ion-ios-arrow-up':'ion-ios-arrow-down'"
+                                                (click)="isClien1HorizonExpand=!isClien1HorizonExpand;isClien2HorizonExpand=false;setDataProvider(model.client1RetiredAge,model.client1HorizonAge, client1, true)"></i>
+                                        </td>
+                                        <td class="border-0 text-right" *ngIf="client2">
+                                            <input
+                                                class="form-control d-inline-block  text-right h-25 client1HorizonAge-form-control"
+                                                (blur)="calculateStartEnd(); setDataProvider(model.client2RetiredAge,model.client2HorizonAge, client2, false)"
+                                                #client2HorizonAge="ngModel" [(ngModel)]="model.client2HorizonAge"
+                                                name="client2HorizonAge" required />
+                                            <i class="cursor-p ion-ios-arrow-down"
+                                                [ngClass]="isClien2HorizonExpand?'ion-ios-arrow-up':'ion-ios-arrow-down'"
+                                                (click)="isClien2HorizonExpand=!isClien2HorizonExpand;isClien1HorizonExpand=false;setDataProvider(model.client2RetiredAge,model.client2HorizonAge, client2, false)"></i>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <ng-template [ngIf]="(isClien1HorizonExpand || isClien2HorizonExpand) && mortalityChartData">
+                            <div class="form-group">
+                                <app-mortality-graph [chartData]="mortalityChartData" [selectedClient]="selectedClient"
+                                    [country]="selectedCountry"></app-mortality-graph>
+                            </div>
+                        </ng-template>
+                        <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !educationFunding.valid }"
+                            *ngIf="model.goalType == GOAL_TYPE.EDUCATION">
+                            <label class=custom-form-label [translate]="'ADD_GOALS.EDUCATION_FUNDING_FOR'"></label>
+                            <div class="w-75">
+                                <p-dropdown [options]="educationPersonList" [(ngModel)]="model.person"
+                                    placeholder="Choose person who the goal is for" (onChange)="addDescription()"
+                                    optionLabel="firstName" name="educationFunding" #educationFunding="ngModel"
+                                    required></p-dropdown>
+                            </div>
+                        </div>
+                        <div class="form-group" *ngIf="model.goalType != GOAL_TYPE.RETIREMENT"
+                            [ngClass]="{ 'has-error':  f.submitted && !goalDescription.valid }">
+                            <label class=custom-form-label [translate]="'ADD_GOALS.GOAL_DESCRIPTION'"></label>
+                            <input class="form-control d-inline-block w-75" #goalDescription="ngModel"
+                                [(ngModel)]="model.goalDescription" name="goalDescription" required />
+                        </div>
+                        <div class="form-group"
+                            *ngIf="model.goalType == GOAL_TYPE.OTHER && model['currency']">
+                            <label class=custom-form-label [translate]="'ADD_GOALS.CURRENCY'"></label>
+                            <span>{{model['currency']['description']}}</span>
+                            <!-- <div class="w-75">
+                                <p-dropdown *ngIf="currenciesList" [options]="currenciesList"
+                                    [(ngModel)]="model.currency" placeholder="Choose currency" optionLabel="isoCode"
+                                    name="currency" #currency="ngModel" required></p-dropdown>
+                            </div> -->
+                        </div>
+                        <div class="form-group">
+                            <table class="table goal-table">
+                                <thead>
+                                    <tr>
+                                        <th class="border-0 pb-0 pr-0" [translate]="'ADD_GOALS.AMOUNT'"></th>
+                                        <!-- <th class="border-0 pb-0" width="5%"></th> -->
+                                        <th class="border-0 pb-0 pr-2 pl-2" [translate]="'ADD_GOALS.START'"></th>
+                                        <!-- <th class="border-0 pb-0" width="5%"></th> -->
+                                        <th class="border-0 pb-0" [translate]="'ADD_GOALS.END'"></th>
+                                        <!-- <th class="border-0 pb-0" width="5%"></th> -->
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class=" border-0 mr-0 pt-0 va-middle pr-0 pb-1">
+                                            <div class="d-flex align-items-center">
+                                                <div class="form-group mb-0"
+                                                    [ngClass]="{ 'has-error': f.submitted && !amount.valid }">
+                                                    <input class="form-control text-right" #amount="ngModel"
+                                                        [(ngModel)]="model.amountPerYear" name="amount" [textMask]="{mask: currencyMask}" appNumeric 
+                                                        required style="width:100px;" />
+                                                </div>
+                                                <span class="ml-1">
+                                                    <a (click)="redirectToEducationRetirement()"
+                                                        class="text-icon-wrapper va-middle"
+                                                        *ngIf="model.goalType == GOAL_TYPE.EDUCATION">
+                                                        <i class="ion-ios-search"></i>
+                                                    </a>
+                                                </span>
+                                            </div>
+                                        </td>
+                                        <!-- <td class=" border-0 mt-0 pt-0 pl-1 va-middle">
+                                            <span *ngIf="model.goalType != 3">&nbsp;</span>
+                                            <a (click)="redirectToEducationRetirement()" class="text-icon-wrapper va-middle" *ngIf="model.goalType == 3">
+                                                <i class="ion-ios-search"></i>
+                                            </a>
+                                        </td> -->
+                                        <td class=" border-0 pt-0 va-middle pb-1 pr-2 pl-2">
+                                            <div class="d-flex align-items-center"
+                                                [ngClass]="{'justify-content-between': model.goalType != GOAL_TYPE.RETIREMENT}">
+                                                <span *ngIf="model.goalType == GOAL_TYPE.RETIREMENT" class="mr-1">
+                                                    {{model.startYear}}</span>
+                                                <div *ngIf="model.goalType != GOAL_TYPE.RETIREMENT"
+                                                    class="form-group mb-0 w-100 pr-1"
+                                                    [ngClass]="{ 'has-error': !selectedstartYear.valid && f.submitted}">
+                                                    <p-dropdown [options]="yearsList"
+                                                        [(ngModel)]="model.selectedstartYear" placeholder="Choose"
+                                                        (onChange)="calculateStartAge()" optionLabel="value"
+                                                        name="selectedstartYear" #selectedstartYear="ngModel" required>
+                                                    </p-dropdown>
+                                                </div>
+                                                <span class="text-center pl-3"
+                                                    *ngIf="!model.person || model.person.id !== 0">
+                                                    {{model.startAge}}</span>
+                                            </div>
+                                        </td>
+                                        <!-- <td class="border-0 pt-0 va-middle ">
+
+                                            <span *ngIf="!model.person || model.person.id !== 0"> {{model.startAge}}</span>
+
+                                        </td> -->
+                                        <td class="border-0 pt-0 va-middle pr-0 pb-1">
+                                            <div class="d-flex align-items-center"
+                                                [ngClass]="{'justify-content-between': model.goalType != GOAL_TYPE.RETIREMENT}">
+                                                <span class="mr-1" *ngIf="model.goalType == GOAL_TYPE.RETIREMENT">
+                                                    {{model.endYear}}</span>
+                                                <div *ngIf="model.goalType != GOAL_TYPE.RETIREMENT"
+                                                    class="form-group mb-0 va-middle w-100 pr-1"
+                                                    [ngClass]="{ 'has-error': !selectedendYear.valid && f.submitted}">
+                                                    <p-dropdown [options]="yearsList"
+                                                        [(ngModel)]="model.selectedendYear"
+                                                        (onChange)="calculateEndAge()" placeholder="Choose"
+                                                        optionLabel="value" name="selectedendYear"
+                                                        #selectedendYear="ngModel" required></p-dropdown>
+                                                </div>
+                                                <span class="text-center pl-3"
+                                                    *ngIf="!model.person || model.person.id !== 0">
+                                                    {{model.endAge}}</span>
+                                            </div>
+                                        </td>
+                                        <!-- <td class="border-0 pt-0 va-middle">
+                                            <span *ngIf="!model.person || model.person.id !== 0"> {{model.endAge}}</span>
+                                        </td> -->
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="box-footer">
+                <div class="form-group mt-5 text-right">
+                    <button (click)="back()" type="button" class="btn btn-secondary btn-small mr-2"
+                        [translate]="'FORM.ACTION.CANCEL'"></button>
+                    <button name="save" type="button"
+                        [disabled]="!f.form.valid || (model.selectedstartYear && model.selectedendYear && model.selectedstartYear.value > model.selectedendYear.value) || saveDisable"
+                        class="btn btn-small btn-success pl-4 pr-4" [translate]="'FORM.ACTION.SAVE'"
+                        (click)="saveGoal(1);saveDisable = true"></button>
+                    <div class="btn-group btn-save btn-custom-split" ngbDropdown role="group" placement="top-right"
+                        aria-label="Button group with nested dropdown">
+                        <button
+                            [disabled]="!f.form.valid || (model.selectedstartYear && model.selectedendYear && model.selectedstartYear.value > model.selectedendYear.value) || saveDisable "
+                            class="btn btn-small btn-success dropdown-toggle-split" ngbDropdownToggle></button>
+                        <div class="dropdown-menu btn-dropDown-top" ngbDropdownMenu>
+                            <button class="dropdown-item" [translate]="'FORM.ACTION.SAVE'"
+                                (click)="saveGoal(1); saveDisable = true"></button>
+                            <button class="dropdown-item" [translate]="'FORM.ACTION.SAVE/EDIT'"
+                                (click)="saveGoal(2); saveDisable = true"></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

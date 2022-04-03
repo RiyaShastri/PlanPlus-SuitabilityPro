@@ -1,0 +1,246 @@
+<div class="bg-white pt-4 pb-4">
+    <div class="container">
+        <form name="form" #f="ngForm">
+            <app-entities-header [clientId]="clientId" currentPage="longTerm" [entityId]="entityId"
+                (switchEntity)="changeEntity($event)" (switchScenario)="changeScenario($event)"></app-entities-header>
+            <div class="row">
+                <div class="col-12">
+                    <app-entities-table [clientId]="clientId" [entitiesList]="entitiesList" [isAllEntities]='false'>
+                    </app-entities-table>
+                </div>
+            </div>
+            <div class="row mt-5">
+                <div class="col-12">
+                  <div class="row">
+                  <div class="col-12 col-md-9">
+                    <h4 class="fw-700" [translate]="'ENTITY.LONG_TERM_INCOME'"></h4>
+                  </div>
+                      <div class="col-12 col-md-3">
+                        <div class="form-group mt-2 mt-md-0 text-md-right mb-0">
+                          <a (click)="openEditIncomeSidePanel(null)" class="btn-add">
+                            <i class="ion-md-add-circle"></i>
+                            <span [translate]="'ENTITY.ADD_INCOME'"></span>
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                    <hr>
+                    <table class="table long-term-income-table entity_table">
+                        <thead>
+                            <tr>
+                                <th width="30%" [translate]="'ENTITY.DESCRIPTION'"></th>
+                                <th width="20%" [translate]="'ENTITY.AMOUNT'" class="text-right"></th>
+                                <th width="10%" [translate]="'ENTITY.START'" class="hidden-xs-down text-right"></th>
+                                <th width="10%" [translate]="'ENTITY.END'" class="hidden-xs-down text-right"></th>
+                                <th width="10%" class="text-right">
+                                    <p class="index-rate-header float-right"
+                                        [appNoOverflowTooltip]="'ENTITY.INDEX_RATE_PRIOR_TO_START' | translate"
+                                        triggers="manual" placement="bottom">
+                                        {{ 'ENTITY.INDEX_RATE_PRIOR_TO_START' | translate }}</p>
+                                </th>
+                                <th width="10%" class="text-right">
+                                    <p class="index-rate-header float-right"
+                                        [appNoOverflowTooltip]="'ENTITY.INDEX_RATE_FROM_START' | translate"
+                                        triggers="manual" placement="bottom">
+                                        {{'ENTITY.INDEX_RATE_FROM_START' | translate}}</p>
+                                </th>
+                                <th width="10%">&nbsp;</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <ng-container *ngIf="longTermIncome && longTermIncome.length > 0;">
+                                <tr *ngFor="let income of longTermIncome;let i = index; let last = last">
+                                    <td width="30%">
+                                        <span [appNoOverflowTooltip]="(income.ssid) ? ('ENTITY.REVENUE_TYPE.' + income.ssid | translate) : income.description"
+                                            class="text-truncate long-term-income-tooltip entity-text-truncate" triggers="manual"
+                                            placement="bottom">{{ (income.ssid) ? ('ENTITY.REVENUE_TYPE.' + income.ssid | translate) : income.description }}</span>
+                                    </td>
+                                    <td width="20%" class="text-right">
+                                        {{income.amount | currency:clientData['currencyCode'] : 'symbol-narrow':'1.0-0' }}
+                                    </td>
+                                    <td width="10%" class="hidden-xs-down text-right">{{income.startyear}}</td>
+                                    <td width="10%" class="hidden-xs-down text-right">{{income.endyear}}</td>
+                                    <td width="10%" class="text-right">{{income.indexToStart | number : '1.1-2'}}%</td>
+                                    <td width="10%" class="text-right">{{income.indexFromStart | number : '1.1-2'}}%</td>
+                                    <td width="10%" class="text-center">
+                                        <a (click)="openEditIncomeSidePanel(income.id)" *ngIf="income.defaultRecord" class="ion-icon cursor-p va-middle d-inline-block">
+                                            <i class="ion-md-create m-0"></i>
+                                        </a>
+                                      <div class="dropdown-relative text-center m-0 income-ellipse" [ngClass]="{'dropdown-up': last}" *ngIf="!income.defaultRecord">
+                                        <button type="button" class="btn-floating" (click)="changeIncomeAction('dropdownIncomeAction', i)">
+                                          <span class="ion-md-more"></span>
+                                        </button>
+                                        <div [id]="'dropdownIncomeAction_'+i"
+                                             class="dropdown-distribution-action dropdown-floating hide-ele">
+                                          <ul class="floating-dropdown">
+                                            <li>
+                                              <a
+                                                 class="action-list cursor-p"
+                                                 (click)="changeIncomeAction('dropdownIncomeAction', i);openEditIncomeSidePanel(income.id)">
+                                                <i class="ion-md-create action-list"></i>
+                                                <span class="action-list"
+                                                      [translate]="'ENTITY.EDIT_LONG_TERM_INCOME'"></span>
+                                              </a>
+                                            </li>
+                                            <li (click)="deleteDistribution(income.id, income.description);changeIncomeAction('dropdownIncomeAction', i)"
+                                                class="delete-btn">
+                                              <a class="action-list cursor-p">
+                                                <i class="ion-md-close-circle action-list"></i>
+                                                <span class="action-list"
+                                                      [translate]="'ENTITY.DELETE_INCOME'"></span>
+                                              </a>
+                                            </li>
+                                          </ul>
+                                        </div>
+                                      </div>
+                                    </td>
+                                </tr>
+                            </ng-container>
+                            <ng-container *ngIf="!longTermIncome || (longTermIncome && longTermIncome.length == 0)">
+                                <tr>
+                                    <td colspan="7" class="no-record text-center">
+                                        <i class="ion-ios-alert mr-2"></i>{{'NO_RESULTS' | translate}}
+                                    </td>
+                                </tr>
+                            </ng-container>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="row mt-5">
+                <div class="col-12">
+                    <div class="row">
+                        <div class="col-12 col-md-9">
+                            <h4 class="fw-700" [translate]="'ENTITY.LONG_TERM_DISTRIBUTIONS'"></h4>
+                        </div>
+                        <div class="col-12 col-md-3">
+                            <div class="form-group mt-2 mt-md-0 text-md-right mb-0">
+                                <a [routerLink]="['add-distribution']" class="btn-add">
+                                    <i class="ion-md-add-circle"></i>
+                                    <span [translate]="'ENTITY.ADD_A_DISTRIBUTION'"></span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                </div>
+                <div class="col-12">
+                    <table class="table long-term-income-table entity_table">
+                        <thead>
+                            <tr>
+                                <th width="20%" class="pr-2" [translate]="'ENTITY.DESCRIPTION'"></th>
+                                <th width="15%" [translate]="'ENTITY.GOAL'" class="hidden-xs-down pr-2"></th>
+                                <th width="14" [translate]="'ENTITY.SOURCE'" class="hidden-md-down pr-2"></th>
+                                <th width="10%" class="pr-2 text-right" [translate]="'ENTITY.AMOUNT'"></th>
+                                <th width="8%" [translate]="'ENTITY.START'" class="hidden-xs-down pr-2 text-right"></th>
+                                <th width="8%" [translate]="'ENTITY.END'" class="hidden-xs-down pr-2 text-right"></th>
+                                <th width="10%" class="pr-2 text-right">
+                                    <p class="index-rate-header float-right"
+                                        [appNoOverflowTooltip]="'ENTITY.INDEX_RATE_PRIOR_TO_START' | translate"
+                                        triggers="manual" placement="bottom">
+                                        {{'ENTITY.INDEX_RATE_PRIOR_TO_START' | translate}}</p>
+                                </th>
+                                <th width="10%" class="pr-2 text-right">
+                                    <p class="index-rate-header float-right"
+                                        [appNoOverflowTooltip]="'ENTITY.INDEX_RATE_FROM_START' | translate"
+                                        triggers="manual" placement="bottom">
+                                        {{'ENTITY.INDEX_RATE_FROM_START' | translate }}</p>
+                                </th>
+                                <th width="5%">&nbsp;</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <ng-container *ngIf="longTermWithdrawals && longTermWithdrawals.length > 0">
+                                <ng-container *ngFor="let distribution of longTermWithdrawals;let i = index; let last = last">
+                                    <ng-container *ngFor="let shareOwner of distribution['shareOwnerGoaltoFundList'];let ownerIndex = index">
+                                        <ng-container *ngIf="(distribution['source']['id'] === 3 && distribution['defaultRecord'] && ownerIndex === 0) || (distribution['source']['id'] !== 3)">
+                                            <tr>
+                                                <td width="20%" class="pr-2">
+                                                    <span [appNoOverflowTooltip]="(distribution['source']['id'] === 3 && distribution['defaultRecord']) ? ('ENTITY.SSID.' + distribution.ssid | translate) : distribution.description"
+                                                        class="text-truncate long-term-income-tooltip entity-text-truncate" triggers="manual"
+                                                        placement="bottom">
+                                                        {{ (distribution['source']['id'] === 3 && distribution['defaultRecord']) ? ('ENTITY.SSID.' + distribution.ssid | translate) : distribution.description }}
+                                                    </span>
+                                                </td>
+                                                <td width="15%" class="hidden-xs-down pr-2">
+                                                    <span [appNoOverflowTooltip]="shareOwner['fundedGoalDescription'] || 'N/A'"
+                                                        class="text-truncate long-term-income-tooltip entity-text-truncate" triggers="manual"
+                                                        placement="bottom">
+                                                        {{shareOwner['fundedGoalDescription'] || 'N/A'}}
+                                                    </span>
+
+                                                </td>
+                                                <td width="14%" class="hidden-md-down pr-2">
+                                                    <span [appNoOverflowTooltip]="distribution.source && distribution.source['description'] ? distribution.source['description'] : 'N/A'"
+                                                        class="text-truncate long-term-income-tooltip entity-text-truncate" triggers="manual"
+                                                        placement="bottom">
+                                                        {{distribution.source && distribution.source['description'] ? distribution.source['description'] : 'N/A'}}
+                                                    </span>
+                                                </td>
+                                                <td width="10%" class="pr-2 text-right">
+                                                    {{ ((distribution['source']['id'] === 3  && distribution['defaultRecord']) ? distribution.amount : ((distribution.amount * shareOwner.percentage)/100)) | currency:clientData['currencyCode'] : 'symbol-narrow':'1.0-0' }}
+                                                </td>
+                                                <td width="8%" class="hidden-xs-down pr-2 text-right">{{distribution.startyear}}</td>
+                                                <td width="8%" class="hidden-xs-down pr-2 text-right">{{distribution.endyear}}</td>
+                                                <td width="10%" class="pr-2 text-right">{{distribution.indexToStart | number : '1.1-2'}}%</td>
+                                                <td width="10%" class="pr-2 text-right">{{distribution.indexFromStart | number : '1.1-2'}}%</td>
+                                                <td width="5%">
+                                                    <a [routerLink]="[distribution.id, 'edit-distribution']" class="ion-icon cursor-p" *ngIf="distribution.defaultRecord">
+                                                        <i class="ion-md-create m-0"></i>
+                                                    </a>
+                                                    <div class="dropdown-relative text-center m-0" [ngClass]="{'dropdown-up': last}" *ngIf="!distribution.defaultRecord">
+                                                        <button type="button" class="btn-floating"
+                                                            (click)="changeDistributionAction('dropdownDistributionAction', i, ownerIndex)">
+                                                            <span class="ion-md-more"></span>
+                                                        </button>
+                                                        <div [id]="'dropdownDistributionAction_'+i + ownerIndex"
+                                                            class="dropdown-distribution-action dropdown-floating hide-ele">
+                                                            <ul class="floating-dropdown">
+                                                                <li>
+                                                                    <a [routerLink]="[distribution.id, 'edit-distribution']"
+                                                                        class="action-list cursor-p"
+                                                                        (click)="changeDistributionAction('dropdownDistributionAction', i, ownerIndex)">
+                                                                        <i class="ion-md-create action-list"></i>
+                                                                        <span class="action-list"
+                                                                            [translate]="'ENTITY.EDIT_LONG_TERM_DISTRIBUTION'"></span>
+                                                                    </a>
+                                                                </li>
+                                                                <li (click)="deleteDistribution(distribution.id, distribution.description);changeDistributionAction('dropdownDistributionAction', i, ownerIndex)"
+                                                                    class="delete-btn">
+                                                                    <a class="action-list cursor-p">
+                                                                        <i class="ion-md-close-circle action-list"></i>
+                                                                        <span class="action-list"
+                                                                            [translate]="'ENTITY.DELETE_DISTRIBUTION'"></span>
+                                                                    </a>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </ng-container>
+                                    </ng-container>
+                                </ng-container>
+                            </ng-container>
+                            <ng-container
+                                *ngIf="!longTermWithdrawals || (longTermWithdrawals && longTermWithdrawals.length == 0)">
+                                <tr>
+                                    <td colspan="9" class="no-record text-center">
+                                        <i class="ion-ios-alert mr-2"></i>{{'NO_RESULTS' | translate}}
+                                    </td>
+                                </tr>
+                            </ng-container>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<ng-container *ngIf="goToEditIncome">
+    <app-edit-long-term-income (closePanelEvent)="closeEditIncomeSidePanel()" [allIncomeData]="longTermIncomeCopy"
+        [incomeId]="incomeId" [entityType]="entitiesList[0]['entityType']"></app-edit-long-term-income>
+</ng-container>
+<div class="view-side-form">
+    <router-outlet></router-outlet>
+</div>

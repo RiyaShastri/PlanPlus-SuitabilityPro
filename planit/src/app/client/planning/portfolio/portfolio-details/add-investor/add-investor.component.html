@@ -1,0 +1,61 @@
+<div class="side-form">
+    <div class="box">
+        <div class="box-header">
+            <span class="sidebar_title">{{ 'PORTFOLIO.ADD_INVESTOR.TITLE' | translate }} </span>
+            <span (click)="back(); closeButtonDisable = true" class="sidebar_action_icon ion-md-close-circle float-right"></span>
+        </div>
+        <div class="box-body">
+            <form name="form" (ngSubmit)="f.form.valid && addInvestor()" #f="ngForm" novalidate>
+                <ng-container *ngIf="portfolio['description'] !== ''">
+                    <div class="form-group" *ngIf="portfolio">
+                        <label class="custom-form-label">{{ 'PORTFOLIO.ADD_INVESTOR.LABEL.PORTFOLIO_NAME' | translate }}</label>
+                        <p class="pl-3">{{ portfolio['description'] }}</p>
+                    </div>
+                </ng-container>
+
+                <div class="form-group" *ngIf="familyMembersRisk">
+                    <label class="custom-form-label">{{ 'PORTFOLIO.ADD_INVESTOR.LABEL.INVESTOR' | translate }}</label>
+                    <table class="table">
+                        <tbody>
+                            <tr *ngFor="let member of investors; let i = index">
+                                <td>
+                                    <p-checkbox name="investor{{member.personalDetails.id}}" value="{{member.personalDetails.id}}" [(ngModel)]="selectedInvestors"></p-checkbox>
+                                </td>
+                                <td>
+                                    <span *ngIf="!member.personalDetails.avatar" class="initials mr-2" [ngClass]="member.personalDetails.btnColor">
+                                            {{member.personalDetails.btnInitials}}</span>
+                                    <img class="initials bg-transparent" height="50" *ngIf="member.personalDetails.avatar" [src]="member.personalDetails.avatar"
+                                        (error)="investor.personalDetails.avatar = null" />
+                                    <span>{{ member.personalDetails.firstName }}</span>
+                                </td>
+                                <td>
+                                    <div *ngIf="member.agreedScore; else tbdRiskTolerance">
+                                        <span class="pl-4">
+											{{ member.agreedScore }}
+										</span>
+                                        <!-- <span class="badge-text">{{ riskScoreBadge(member.agreedScore).label }}</span> -->
+                                    </div>
+                                    <ng-template #tbdRiskTolerance>
+                                        <span class="tbd-lbl">TBD</span>
+                                    </ng-template>
+                                </td>
+                            </tr>
+                            <ng-container *ngIf="!investors.length">
+                                <tr>
+                                    <td colspan="3" class="no-record text-center">
+                                        <i class="ion-ios-alert mr-2"></i>{{ 'PORTFOLIO.ADD_INVESTOR.NO_INVESTORS' | translate }}
+                                    </td>
+                                </tr>
+                            </ng-container>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="form-group text-right">
+                    <button (click)="back(); closeButtonDisable = true" type="button" class="btn btn-small btn-secondary mr-2" [disabled]="closeButtonDisable">{{ 'FORM.ACTION.CANCEL' |
+						translate }}</button>
+                    <button value="submit" class="btn btn-success btn-small mr-3" [translate]="'FORM.ACTION.SAVE'"></button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,367 @@
+<div class="side-form side-form-large side-form-full-width">
+    <form name="form" #f="ngForm">
+        <div class="box">
+            <div class="box-header">
+                <span class="sidebar_title">{{ 'CALCULATOR.CALCULATORS_TITLE' | translate }}</span>
+                <span (click)="back()" class="sidebar_action_icon ion-md-close-circle float-right"></span>
+            </div>
+            <div class="box-body">
+                <div class="row">
+                    <div class="col-12">
+                        <app-calculator-header [clientId]="clientId" currentCalculator="insurance-calculator">
+                        </app-calculator-header>
+                    </div>
+                </div>
+                <div class="long-term-care-cal calculator-wrap calculator-row-alignment-wrapper">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="form-group d-flex d-inline-block drop-down-wrap mb-3">
+                                <div class="mr-3 w-25 form-group mb-0"
+                                    [ngClass]="{'has-error': f.submitted && !scenarioList.valid}">
+                                    <p-dropdown [options]="scenarioLists" name="scenarioList"
+                                        [(ngModel)]="selectedScenario" #scenarioList="ngModel" optionLabel="value"
+                                        placeholder="{{'CALCULATOR.PLACEHOLDER.SELECT_A_SCENARIO' | translate}}"
+                                        (onChange)="changeScenario()" required></p-dropdown>
+                                </div>
+                                <button type="button" (click)="setData()"
+                                    class="m-0 align-content-center btn btn-small btn-secondary mr-2"
+                                    [translate]="'CALCULATOR.LOAD'"></button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" *ngIf="lifeInsuranceData && lifeInsuranceData['insuranceCurrentBenefitsResponse']">
+                        <div class="col-12 col-lg-5">
+                            <h4 class="cal-title fw-700 fs-14">
+                                {{ 'CALCULATOR.LIFE_INSURANCE.LIFE_INSURANCE_CALCULATOR' | translate }}</h4>
+                            <div class="row">
+                                <div class="col-6 col-sm-4 col-md-4 col-lg-6">
+                                    <div class="form-group mb-0">
+                                        <span
+                                            class="align-content-center">{{ 'CALCULATOR.LONG_TERM.CURRENT_AGE' | translate }}</span>
+                                    </div>
+                                </div>
+                                <div class="col-6 col-sm-5 col-md-4 col-lg-6">
+                                    <div class="form-group">
+                                        <input type="text" class="w-75 form-control text-center" name="currentAge"
+                                            [(ngModel)]="lifeInsuranceData['insuranceCurrentBenefitsResponse']['currentAge']"
+                                            #currentAge="ngModel" min="0" max="100" (input)="calculateData()" appNumeric
+                                            [textMask]="{mask: numberMask}" required />
+                                    </div>
+                                    <p *ngIf="lifeInsuranceData['errors'] && lifeInsuranceData['errors']['currentAge']"
+                                        class="text-error mb-1"> {{lifeInsuranceData['errors']['currentAge']}} </p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6 col-sm-4 col-md-4 col-lg-6">
+                                    <div class="form-group mb-0">
+                                        <span
+                                            class="align-content-center">{{ 'CALCULATOR.LIFE_INSURANCE.CURRENT_EARNED_INCOME' | translate }}</span>
+                                    </div>
+                                </div>
+                                <div class="col-6 col-sm-5 col-md-4 col-lg-6">
+                                    <div class="form-group">
+                                        <input type="text" class="w-75 form-control text-center"
+                                            [(ngModel)]="lifeInsuranceData['insuranceCurrentBenefitsResponse']['currentEarnedIncome']"
+                                            name="currentEarnedIncome" #currentEarnedIncome="ngModel" appNumeric
+                                            [textMask]="{mask: currencyMask}" (input)="calculateData()" required />
+                                    </div>
+                                    <p *ngIf="lifeInsuranceData['errors'] && lifeInsuranceData['errors']['currentEarnedIncome']"
+                                        class="text-error mb-1">
+                                        {{lifeInsuranceData['errors']['currentEarnedIncome']}} </p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6 col-sm-4 col-md-4 col-lg-6">
+                                    <div class="form-group mb-0">
+                                        <span
+                                            class="align-content-center">{{ 'CALCULATOR.LIFE_INSURANCE.PERCENTAGE_SALARY_TO_REPLACE' | translate }}</span>
+                                    </div>
+                                </div>
+                                <div class="col-6 col-sm-5 col-md-4 col-lg-6">
+                                    <div class="form-group">
+                                        <input type="text" class="w-75 form-control text-center"
+                                            [(ngModel)]="lifeInsuranceData['insuranceCurrentBenefitsResponse']['percenatgeSalaryToReplace']"
+                                            name="percentageSalaryToReplace" #percentageSalaryToReplace="ngModel"
+                                            appNumeric min="0" max="100" [textMask]="{mask: percentMask}"
+                                            (input)="calculateData()" required />
+                                    </div>
+                                    <p *ngIf="lifeInsuranceData['errors'] && lifeInsuranceData['errors']['percentageSalaryToReplace']"
+                                        class="text-error mb-1">
+                                        {{lifeInsuranceData['errors']['percentageSalaryToReplace']}} </p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6 col-sm-4 col-md-4 col-lg-6">
+                                    <div class="form-group mb-0">
+                                        <span
+                                            class="align-content-center">{{ 'CALCULATOR.LIFE_INSURANCE.REPLACE_INCOME_TO_AGE' | translate }}</span>
+                                    </div>
+                                </div>
+                                <div class="col-6 col-sm-5 col-md-4 col-lg-6">
+                                    <div class="form-group">
+                                        <input type="text" class="w-75 form-control text-center"
+                                            [(ngModel)]="lifeInsuranceData['insuranceCurrentBenefitsResponse']['replaceIncomeToAge']"
+                                            name="replaceIncomeToAge" #replaceIncomeToAge="ngModel" min="0" max="100"
+                                            required (input)="calculateData()" />
+                                    </div>
+                                    <p *ngIf="lifeInsuranceData['errors'] && lifeInsuranceData['errors']['replaceIncomeToAge']"
+                                        class="text-error mb-1">
+                                        {{lifeInsuranceData['errors']['replaceIncomeToAge']}} </p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6 col-sm-4 col-md-4 col-lg-6">
+                                    <div class="form-group mb-0">
+                                        <span
+                                            class="align-content-center">{{ 'CALCULATOR.LIFE_INSURANCE.INFLATION' | translate }}</span>
+                                    </div>
+                                </div>
+                                <div class="col-6 col-sm-5 col-md-4 col-lg-6">
+                                    <div class="form-group">
+                                        <input type="text" class="w-75 form-control text-center" name="Inflation"
+                                            required
+                                            [(ngModel)]="lifeInsuranceData['insuranceCurrentBenefitsResponse']['inflation']"
+                                            #Inflation="ngModel" min="0" max="100" appNumeric
+                                            [textMask]="{mask: percentMask}" (input)="calculateData()" />
+                                    </div>
+                                    <p *ngIf="lifeInsuranceData['errors'] && lifeInsuranceData['errors']['Inflation']"
+                                        class="text-error mb-1"> {{lifeInsuranceData['errors']['Inflation']}} </p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6 col-sm-4 col-md-4 col-lg-6">
+                                    <div class="form-group mb-0">
+                                        <span
+                                            class="align-content-center">{{ 'CALCULATOR.LONG_TERM.AFTER_TAX_RATE_OF_RETURN' | translate }}</span>
+                                    </div>
+                                </div>
+                                <div class="col-6 col-sm-5 col-md-4 col-lg-6">
+                                    <div class="form-group"
+                                        [ngClass]="{ 'has-error': !afterTexRateOfReturn.valid && f.submitted }">
+                                        <input type="text" class="w-75 form-control text-center"
+                                            [(ngModel)]="lifeInsuranceData['insuranceCurrentBenefitsResponse']['afterTaxRateOfReturn']"
+                                            name="afterTexRateOfReturn" #afterTexRateOfReturn="ngModel" min="0"
+                                            max="100" required appNumeric [textMask]="{mask: percentMask}"
+                                            (input)="calculateData()" />
+                                    </div>
+                                    <p *ngIf="lifeInsuranceData['errors'] && lifeInsuranceData['errors']['afterTexRateOfReturn']"
+                                        class="text-error mb-1">
+                                        {{lifeInsuranceData['errors']['afterTexRateOfReturn']}} </p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6 col-sm-4 col-md-4 col-lg-6">
+                                    <div class="form-group mb-0">
+                                        <span
+                                            class="align-content-center">{{ 'CALCULATOR.LIFE_INSURANCE.CURRENT_INSURANCE_COVERAGE' | translate }}</span>
+                                    </div>
+                                </div>
+                                <div class="col-6 col-sm-5 col-md-4 col-lg-6">
+                                    <div class="form-group">
+                                        <input type="text" class="w-75 form-control text-center"
+                                            [(ngModel)]="lifeInsuranceData['insuranceCurrentBenefitsResponse']['currentInsuranceCoverage']"
+                                            name="currentInsuranceCoverage" #currentInsuranceCoverage="ngModel"
+                                            appNumeric [textMask]="{mask: currencyMask}" (input)="calculateData()"
+                                            required />
+                                    </div>
+                                    <p *ngIf="lifeInsuranceData['errors'] && lifeInsuranceData['errors']['currentInsuranceCoverage']"
+                                        class="text-error mb-1">
+                                        {{lifeInsuranceData['errors']['currentInsuranceCoverage']}} </p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6 col-sm-4 col-md-4 col-lg-6">
+                                    <div class="form-group mb-0">
+                                        <span
+                                            class="align-content-center">{{ 'CALCULATOR.LIFE_INSURANCE.LUMP_SUM_COSTS' | translate }}</span>
+                                    </div>
+                                </div>
+                                <div class="col-6 col-sm-5 col-md-4 col-lg-6">
+                                    <div class="form-group">
+                                        <input type="text" class="w-75 form-control text-center" name="lumpSumCosts"
+                                            [(ngModel)]="lifeInsuranceData['insuranceCurrentBenefitsResponse']['lumpSumCosts']"
+                                            #lumpSumCosts="ngModel" appNumeric [textMask]="{mask: currencyMask}"
+                                            (input)="calculateData()" required />
+                                    </div>
+                                    <p *ngIf="lifeInsuranceData['errors'] && lifeInsuranceData['errors']['lumpSumCosts']"
+                                        class="text-error mb-1"> {{lifeInsuranceData['errors']['lumpSumCosts']}}
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6 col-sm-4 col-md-4 col-lg-6">
+                                    <div class="form-group mb-0">
+                                        <span
+                                            class="align-content-center">{{ 'CALCULATOR.LIFE_INSURANCE.LUMP_SUM_BENEFITS' | translate }}</span>
+                                    </div>
+                                </div>
+                                <div class="col-6 col-sm-5 col-md-4 col-lg-6">
+                                    <div class="form-group">
+                                        <input type="text" class="w-75 form-control text-center"
+                                            [(ngModel)]="lifeInsuranceData['insuranceCurrentBenefitsResponse']['lumpSumBenefits']"
+                                            name="lumpSumBenefits" #lumpSumBenefits="ngModel" appNumeric
+                                            [textMask]="{mask: currencyMask}" (input)="calculateData()" required />
+                                    </div>
+                                    <p *ngIf="lifeInsuranceData['errors'] && lifeInsuranceData['errors']['lumpSumBenefits']"
+                                        class="text-error mb-1"> {{lifeInsuranceData['errors']['lumpSumBenefits']}}
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="row" *ngIf="isDisabilityInsurance">
+                                <div class="col-6 col-sm-4 col-md-4 col-lg-6">
+                                    <div class="form-group mb-0">
+                                        <span
+                                            class="align-content-center">{{ 'CALCULATOR.LIFE_INSURANCE.INDEX_RATE_ON_BENEFITS' | translate }}</span>
+                                    </div>
+                                </div>
+                                <div class="col-6 col-sm-5 col-md-4 col-lg-6">
+                                    <div class="form-group">
+                                        <input type="text" class="w-75 form-control text-center"
+                                            [(ngModel)]="lifeInsuranceData['insuranceCurrentBenefitsResponse']['indexRateOnBenefits']"
+                                            name="indexRateOnBenefits" #indexRateOnBenefits="ngModel" appNumeric
+                                            [textMask]="{mask: percentMask}" (input)="calculateData()" required />
+                                    </div>
+                                    <p *ngIf="lifeInsuranceData['errors'] && lifeInsuranceData['errors']['indexRateOnBenefits']"
+                                        class="text-error mb-1"> {{lifeInsuranceData['errors']['indexRateOnBenefits']}}
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6 col-sm-4 col-md-4 col-lg-6">
+                                    <div class="form-group mb-0">
+                                        <span
+                                            class="align-content-center">{{ 'CALCULATOR.LIFE_INSURANCE.OTHER_REVENUES_PER_YEAR' | translate }}</span>
+                                    </div>
+                                </div>
+                                <div class="col-6 col-sm-5 col-md-4 col-lg-6">
+                                    <div class="form-group">
+                                        <input type="text" class="w-75 form-control text-center"
+                                            [(ngModel)]="lifeInsuranceData['insuranceCurrentBenefitsResponse']['otherRevenuesPerYear']"
+                                            name="otherRevenuesPerYear" #otherRevenuesPerYear="ngModel" appNumeric
+                                            [textMask]="{mask: currencyMask}" (input)="calculateData()" required />
+                                    </div>
+                                    <p *ngIf="lifeInsuranceData['errors'] && lifeInsuranceData['errors']['otherRevenuesPerYear']"
+                                        class="text-error mb-1">
+                                        {{lifeInsuranceData['errors']['otherRevenuesPerYear']}} </p>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="col-12 col-lg-7">
+                            <div class="analysis-wrap">
+                                <div class="table-responsive">
+                                    <table class="table table-borderless">
+                                        <tbody>
+                                            <tr class="text-right">
+                                                <td class="text-left">
+                                                    {{'CALCULATOR.LIFE_INSURANCE.FUNDS_TO_REPLACE_INCOME' | translate}}
+                                                </td>
+                                                <td class="text-center">
+                                                    {{lifeInsuranceData['insuranceAnalysisResponse']['fundsToReplaceIncome'] | currency:clientData['currencyCode']:'symbol-narrow':'1.0-0'}}
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-left">
+                                                    {{'CALCULATOR.LIFE_INSURANCE.FUNDS_FROM_REVENUES' | translate}}
+                                                </td>
+                                                <td class="text-center">
+                                                    {{lifeInsuranceData['insuranceAnalysisResponse']['fundsFromRevenues'] | currency:clientData['currencyCode']:'symbol-narrow':'1.0-0'}}
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-left">
+                                                    {{'CALCULATOR.LIFE_INSURANCE.LUMP_SUM_COSTS' | translate}}
+                                                </td>
+                                                <td class="text-center">
+                                                    {{lifeInsuranceData['insuranceCurrentBenefitsResponse']['lumpSumCosts'] | currency:clientData['currencyCode']:'symbol-narrow':'1.0-0'}}
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-left">
+                                                    {{'CALCULATOR.LIFE_INSURANCE.CASH_FROM_BENEFITS' | translate}}
+                                                </td>
+                                                <td class="text-center">
+                                                    {{lifeInsuranceData['insuranceAnalysisResponse']['cashFromBenefits'] | currency:clientData['currencyCode']:'symbol-narrow':'1.0-0'}}
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-left">
+                                                    {{'CALCULATOR.LIFE_INSURANCE.TOTAL_CAPITAL_REQUIRED' | translate}}
+                                                </td>
+                                                <td class="text-center">
+                                                    {{lifeInsuranceData['insuranceAnalysisResponse']['totalCapitalRequired'] | currency:clientData['currencyCode']:'symbol-narrow':'1.0-0'}}
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-left">
+                                                    {{'CALCULATOR.LIFE_INSURANCE.TOTAL_CAPITAL_AVAILABLE' | translate}}
+                                                </td>
+                                                <td class="text-center">
+                                                    {{lifeInsuranceData['insuranceAnalysisResponse']['totalCapitalAvailable'] | currency:clientData['currencyCode']:'symbol-narrow':'1.0-0'}}
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-left">
+                                                    <b>
+                                                        {{'CALCULATOR.LIFE_INSURANCE.SHORTAGE' | translate }}
+                                                        {{ lifeInsuranceData['insuranceCurrentBenefitsResponse']['afterTaxRateOfReturn'] ? (lifeInsuranceData['insuranceCurrentBenefitsResponse']['afterTaxRateOfReturn'])-1 + '%' : '0%'}}
+                                                    </b>
+                                                </td>
+                                                <td class="text-center">
+                                                    <b>
+                                                        {{ (isDisabilityInsurance ? lifeInsuranceData['insuranceAnalysisResponse']['minusOneAfterTaxRateOfReturnSurplus2'] : lifeInsuranceData['insuranceAnalysisResponse']['minusOneAfterTaxRateOfReturnSurplus']) | currency:clientData['currencyCode']:'symbol-narrow':'1.0-0'}}
+                                                    </b>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-left">
+                                                    <b>
+                                                        {{'CALCULATOR.LIFE_INSURANCE.SHORTAGE'  | translate }}
+                                                        {{lifeInsuranceData['insuranceCurrentBenefitsResponse']['afterTaxRateOfReturn'] ? lifeInsuranceData['insuranceCurrentBenefitsResponse']['afterTaxRateOfReturn'] + '%' : '0%'}}
+                                                    </b>
+                                                </td>
+                                                <td class="text-center">
+                                                    <b>
+                                                        {{ ( isDisabilityInsurance ? lifeInsuranceData['insuranceAnalysisResponse']['surplus2'] : lifeInsuranceData['insuranceAnalysisResponse']['surplus'] ) | currency:clientData['currencyCode']:'symbol-narrow':'1.0-0'}}
+                                                    </b>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-left">
+                                                    <b>
+                                                        {{'CALCULATOR.LIFE_INSURANCE.SHORTAGE'  | translate }}
+                                                        {{lifeInsuranceData['insuranceCurrentBenefitsResponse']['afterTaxRateOfReturn'] ? (lifeInsuranceData['insuranceCurrentBenefitsResponse']['afterTaxRateOfReturn'])+1 + '%' : '0%'}}
+                                                    </b>
+                                                </td>
+                                                <td class="text-center">
+                                                    <b>
+                                                        {{ ( isDisabilityInsurance ? lifeInsuranceData['insuranceAnalysisResponse']['plusOneAfterTaxRateOfReturnSurplus2'] : lifeInsuranceData['insuranceAnalysisResponse']['plusOneAfterTaxRateOfReturnSurplus']) | currency:clientData['currencyCode']:'symbol-narrow':'1.0-0'}}
+                                                    </b>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="graph-wrap">
+                                <div id="graphDiv" style="height: 400px;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="box-footer button-responsive">
+                <div class="form-group text-right calculator-save-button-wrap">
+                    <button type="button" [disabled]="isError" class="btn btn-small btn-primary btn-fixwidth btn-report"
+                        (click)="generateReport()">{{ 'CALCULATOR.REPORT' | translate }}</button>
+                    <button type="button" (click)="back()"
+                        class="btn btn-small btn-secondary btn-fixwidth mr-2">{{'FORM.ACTION.CANCEL' | translate }}</button>
+                    <button type="submit" [disabled]="isError || f.form.invalid"
+                        class="btn btn-small btn-success pl-4 pr-4" (click)="saveCalculatorData(f)"
+                        [translate]="'FORM.ACTION.SAVE'"></button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<router-outlet></router-outlet>

@@ -1,0 +1,22 @@
+<div class="bg-white pt-4 pb-4">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-7">
+                <h4 class="mb-1">
+                    <a [routerLink]="['/client',clientId,'profile']" [translate]="'BREADCRUMB.CLIENT_PROFILE'"></a> /
+                </h4>
+                <h1 [translate]="'RISK_TOLERANCE_PAGE.TITLE'"></h1>
+            </div>
+            <div class="col-sm-5 d-flex flex-wrap justify-content-end dropdown-right">
+                <div class="mt-auto">
+                    <app-profile-module-drop-down [clientId]="clientId"></app-profile-module-drop-down>
+                </div>
+            </div>
+        </div>
+       <app-risk-tolerance-listing [isTile]='false' [clientId]="clientId"></app-risk-tolerance-listing>
+    </div>
+</div>
+
+<div class="view-side-form">
+    <router-outlet></router-outlet>
+</div>

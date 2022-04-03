@@ -1,0 +1,204 @@
+/* ------------------------------- Top Header ------------------------------- */
+body{overflow-x: hidden;}
+.dropdown-menu-right.sm{right: -1rem !important;}
+.navbar,.left-edge-logo{padding:0 !important;}
+.main-header{padding: 0 40px; position: relative;}
+.main-header .navbar {
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	-ms-flex-pack: center !important;
+	justify-content: center !important;	
+}
+.left-edge-logo{
+	flex:0 0 15%;
+	max-width: 15%;
+	align-self: center;
+	align-items: center;
+}
+.left-edge-menu{
+	flex:0 0 25%;
+	max-width: 25%;
+	align-self: center;
+	align-items: center;
+}
+.right-menu {
+	flex:0 0 60%;
+	max-width: 60%;
+	-ms-flex-pack: flex-end !important;
+	justify-content: flex-end !important;
+	align-self: center;
+	align-items: center;	
+}
+.fit-right-edge{padding-right: .5rem !important;}
+.light-menu{width:auto;}
+.advisor-menu{padding:0 !important;}
+.main-header::after {
+    content: "";
+    display: block;
+    background: #556677;
+    z-index: 999;
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 40px;
+    height: 60px;
+}
+.headerMenu {
+    padding-top: 0;
+    padding-bottom: 0;
+    height: 60px;
+    line-height: 60px;
+}
+/* ------------------------------- Top Header ------------------------------- */
+
+/* ------------------------------- Client menu ------------------------------- */
+.home-container{padding: 0 40px;}
+.right-edge-menu,.second-level-menu .left-edge-client-img,.client-img{padding: 0 !important;}
+.second-level-menu{padding: 0 40px;}
+.second-level-menu .row-menu{
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	-ms-flex-pack: center !important;
+	justify-content: center !important;	
+}
+.left-edge-client-img{
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	flex: 0 0 40%;
+	max-width: 40%;
+	align-items: center;
+	align-self: center;
+}
+.right-edge-menu{
+	flex: 0 0 60%;
+	max-width: 60%;
+	-ms-flex-pack: flex-end !important;
+	justify-content: flex-end !important;
+	align-items: center;
+	align-self: center;
+}
+
+.right-edge-menu a:nth-child(5){padding-right: 0 !important;}
+.client-name{left:0;}
+/* ------------------------------- Client menu ------------------------------- */
+
+@media (max-width:991px){
+	/* ------------------------------- Top Header ------------------------------- */
+	.main-header{padding:0 20px;}
+	.home-container{padding: 0 20px;}
+	.left-edge-logo{
+		flex: 0 0 20%;
+		max-width: 20%;
+	}
+	.left-edge-menu{
+		flex: 0 0 30%;
+		max-width: 30%;
+	}
+	.right-menu{
+		flex: 0 0 50%;
+		max-width: 50%;
+	}
+	/* ------------------------------- Top Header ------------------------------- */
+
+	/* ------------------------------- Client menu ------------------------------- */
+	.second-level-menu{padding: 0 20px;}
+	/* ------------------------------- Client menu ------------------------------- */
+}
+@media (max-width:768px){
+	/* ------------------------------- Top Header ------------------------------- */
+	.left-edge-logo{
+		flex: 0 0 30%;
+		max-width: 30%;
+	}
+	.left-edge-menu{
+		flex: 0 0 30%;
+		max-width: 30%;
+	}
+	.right-menu{
+		flex: 0 0 45%;
+		max-width: 45%;
+	}
+	.navbar-nav > .user-menu .user-image{width: 30px; height: 30px;}
+	.light-menu{
+		margin-left: 5px !important;
+		padding-right: 0px !important;
+	}
+	.navbar-small-device {
+		padding-right: 10px !important;
+		padding-left: 10px !important;
+	}
+	.navbar-expand .navbar-nav .nav-link {
+		padding-right: .3rem;
+		padding-left: .3rem;
+	}
+	.headerMenu{margin-left: 0 !important;}
+	.navbar-brand{font-size: 16px !important;}
+	.headerMenu  a{font-size: 13px !important;}
+	/* ------------------------------- Top Header ------------------------------- */
+}
+@media (max-width:767px){
+	/* ------------------------------- Top Header ------------------------------- */
+	.right-edge-menu{
+		flex: 0 0 63%;
+		max-width: 63%;
+		width: 63%;
+		-ms-flex-pack: flex-end !important; 
+		justify-content: flex-end !important;
+		align-items: center;
+		align-self: center;
+		padding: 0 !important;
+	}
+	/* ------------------------------- Top Header ------------------------------- */
+
+	/* ------------------------------- Client menu ------------------------------- */
+	.overlap-profile-pic2{left: -10px;}
+	.image--cover{margin: 20px 0 !important;}
+	.row-menu{flex-wrap: wrap;}
+	.left-edge-client-img,.right-edge-menu{flex: 0 0 100%; max-width: 100%;}
+	.right-edge-menu{-ms-flex-pack: flex-start !important; justify-content: flex-start !important;}
+	.right-edge-menu a:nth-child(1){padding-left: 0 !important;}
+	/* ------------------------------- Client menu ------------------------------- */
+}
+@media (max-width:576px){
+	/* ------------------------------- Client menu ------------------------------- */
+	.document-text{display:none !important;}
+	/* ------------------------------- Client menu ------------------------------- */
+	
+}
+@media (max-width:575px){
+	/* ------------------------------- Top Header ------------------------------- */
+	.main-header::after{display:none;}
+	.main-header{padding: 0 10px;}
+	.home-container{padding: 0 10px;}
+	.no-gutter-mobile{margin:0 -10px;}
+	.navbar-expand .navbar-nav .nav-link{padding-right: 1rem !important; padding-left: 1rem !important;}
+	.nav-client-menu {padding: 5px !important; font-size: 14px !important;}
+	#superSmallMenu .dropdown-item{line-height: 36px;}
+	.lang-height {line-height: 30px !important;}
+	/* ------------------------------- Top Header ------------------------------- */
+
+	/* ------------------------------- Client menu ------------------------------- */
+	.second-level-menu{padding: 0 10px;}
+	/* ------------------------------- Client menu ------------------------------- */	
+}
+@media (max-width:480px){
+	/* ------------------------------- Top Header ------------------------------- */
+	.right-menu{
+		flex: 0 0 70%;
+		max-width: 70%;
+	}
+	.left-edge-menu{display: none;}
+	.main-header .logo{padding-left: 10px !important;}
+	.navbar-expand .navbar-nav .nav-link {padding-right: .8rem !important; padding-left: .8rem !important;}
+	/* ------------------------------- Top Header ------------------------------- */
+	
+	/* ------------------------------- Client menu ------------------------------- */
+	.nav-client-menu {
+		padding: 3px !important;
+		font-size: 13px !important;
+	}
+	/* ------------------------------- Client menu ------------------------------- */
+}

@@ -1,0 +1,39 @@
+<div class="side-form">
+    <div class="box no-footer">
+        <div class="box-header">
+            <span class="sidebar_title">{{'DOCUMENT.DOCUMENT_UPLOAD.TITLE' | translate}} </span>
+            <span (click)="back(); closeButtonDisable = true"
+                class="sidebar_action_icon ion-md-close-circle float-right"></span>
+        </div>
+
+        <div class="box-body">
+            <div class="form-group text-center">
+                <app-file-upload dropHereLabel="{{ 'FILEUPLOAD.DROP_FILE_HERE' | translate }}"
+                    fileExt="doc,docx,xls,xlsx,pdf" maxFiles="12" [isBase64]="false" maxSize="10"
+                    isFileNamePreview="true" iconClass="ion-md-cloud-upload">
+                </app-file-upload>
+            </div>
+            <div class="form-group text-center">
+                <button (click)="back(); closeButtonDisable = true" type="button"
+                    class="btn btn-small btn-secondary mr-2" [disabled]="closeButtonDisable">{{ 'FORM.ACTION.CANCEL'
+                        | translate }}</button>
+                <button [disabled]="true" class="btn btn-small btn-success">{{
+                        'FORM.ACTION.UPLOAD' | translate }}</button>
+
+            </div>
+            <ng-container *ngIf="false">
+                <div class="form-group text-center">
+                    <i aria-hidden="true" class="fa fa-spinner fa-pulse loader-icon"></i>
+                    <!-- <img class="load" [src]="imageUrl" /> -->
+                </div>
+                <div class="form-group text-center">
+                    <span> {{ 'FORM.PROCESS.UPLOADING' | translate }}</span>
+                </div>
+                <div class="form-group text-center">
+                    <button (click)="cancel()" type="button" class="btn btn-small btn-secondary mr-2">{{ 'FORM.ACTION.CANCEL'
+                        | translate }}</button>
+                </div>
+            </ng-container>
+        </div>
+    </div>
+</div>

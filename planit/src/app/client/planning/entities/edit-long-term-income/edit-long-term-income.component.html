@@ -1,0 +1,136 @@
+<div class="side-form">
+    <form name="form" (ngSubmit)="f.form.valid && updateIncome();" #f="ngForm" novalidate>
+        <div class="box">
+            <div class="box-header">
+              <span *ngIf="inserting" class="sidebar_title" [translate]="'ENTITY.ADD_INCOME'"></span>
+              <span *ngIf="!inserting"  class="sidebar_title" [translate]="'ENTITY.EDIT_LONG_TERM_INCOME'"></span>
+                <span (click)="back(); closeButtonDisable = true"
+                    class="sidebar_action_icon ion-md-close-circle float-right"></span>
+            </div>
+
+            <div class="box-body">
+                <div class="form-group">
+                    <label class="custom-form-label" [translate]="'ENTITY.DESCRIPTION'"></label>
+                    <p-dropdown placeholder="{{'ENTITY.SELECT_INCOME_PLACEHOLDER' | translate}}"
+                        [options]="revenueTypes" name="selectedIncome"
+                        [(ngModel)]="selectedIncomeId" #selectedIncome="ngModel" required
+                                [disabled]="incomeData['defaultRecord']"
+                        >
+                        <ng-template let-selectedIncome pTemplate="selectedItem">
+                            <span>{{'ENTITY.REVENUE_TYPE.' + selectedIncome.ssid | translate}}</span>
+                        </ng-template>
+                        <ng-template let-income pTemplate="item">
+                            <div class="ui-helper-clearfix">
+                                <span>{{ 'ENTITY.REVENUE_TYPE.' + income.ssid | translate}}</span>
+                            </div>
+                        </ng-template>
+                    </p-dropdown>
+                </div>
+                <div class="row">
+                    <div class="col-4">
+                        <div class="form-group">
+                            <label class="custom-form-label" [translate]="'ENTITY.AMOUNT'"></label>
+                        </div>
+                    </div>
+                    <div class="col-8 text-right" *ngIf="incomeData['defaultRecord']">
+                        <p>{{incomeData['amount'] | currency:clientData['currencyCode'] : 'symbol-narrow':'1.0-0'}}</p>
+                    </div>
+                  <div class="col-8 text-right" *ngIf="!incomeData['defaultRecord']" [ngClass]="{'has-error': !amount.valid && (amount.dirty || f.submitted) }">
+                      <input type="text" class="form-control text-right" name="amount"
+                             [(ngModel)]="incomeData['amount']" [textMask]="{mask: currencyMask}" appNumeric
+                             #amount="ngModel" placeholder="{{currencyPrefix}}0" required />
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="col-8">
+                        <div class="form-group">
+                            <label class="custom-form-label" [translate]="'ENTITY.START'"></label>
+                        </div>
+                    </div>
+                    <div class="col-4 text-right"  *ngIf="incomeData['defaultRecord']">
+                        <p class="ff-OpenSans">{{incomeData['startyear']}}</p>
+                    </div>
+                  <div class="form-group mb-0 col-4 text-right" *ngIf="!incomeData['defaultRecord']"
+                       [ngClass]="{'has-error': !startyear.valid && (startyear.dirty || f.submitted) }">
+                    <input type="text" class="form-control text-right" name="startyear"
+                           [(ngModel)]="incomeData['startyear']" pattern="([1-9][0-9]{3})" #startyear="ngModel"
+                           required />
+                  </div>
+                </div>
+                <div class="row">
+                    <div class="col-8">
+                        <div class="form-group">
+                            <label class="custom-form-label" [translate]="'ENTITY.END'"></label>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="form-group text-right" [ngClass]="{'has-error': endyear.errors && f.submitted}">
+                            <input type="text" class="form-control text-right" name="endyear"
+                                [(ngModel)]="incomeData['endyear']" #endyear="ngModel" pattern="^\d{4}$" required />
+                        </div>
+                    </div>
+                </div>
+                <div class="row d-flex align-items-center">
+                    <div class="col-6">
+                        <div class="form-group">
+                            <label class="custom-form-label mb-0"
+                                [translate]="'ENTITY.INDEX_RATE_PRIOR_TO_START'"></label>
+                        </div>
+                    </div>
+                    <div class="col-2">
+                        <div class="form-group">
+                            <p-checkbox name="indexPriorToStart" [(ngModel)]="incomeData['defaultToStart']"
+                                binary="true" #indexPriorToStart="ngModel" (ngModelChange)="onToggleCheckbox(0)">
+                            </p-checkbox>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <p *ngIf="incomeData && !incomeData['defaultToStart']" class="text-right">
+                            {{incomeData['indexToStart'] | number : '1.2-2'}}%</p>
+                        <div *ngIf="incomeData && incomeData['defaultToStart']" class="form-group text-right"
+                            [ngClass]="{'has-error': indexToStart.errors && f.submitted}">
+                            <input type="text" class="form-control text-right" name="indexToStart"
+                                [(ngModel)]="incomeData['indexToStart']" #indexToStart="ngModel"
+                                pattern="^[0-9]*(.[0-9]{0,2})?$" [textMask]="{mask: percentMask}" appNumeric required />
+                        </div>
+                    </div>
+                </div>
+                <div class="row d-flex align-items-center">
+                    <div class="col-6">
+                        <div class="form-group">
+                            <label class="custom-form-label mb-0" [translate]="'ENTITY.INDEX_RATE_FROM_START'"></label>
+                        </div>
+                    </div>
+                    <div class="col-2">
+                        <div class="form-group">
+                            <p-checkbox name="indexFromStartCheck" [(ngModel)]="incomeData['defaultFromStart']" binary="true"
+                                #indexFromStartCheck="ngModel" (ngModelChange)="onToggleCheckbox(1)">
+                            </p-checkbox>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <p *ngIf="incomeData && !incomeData['defaultFromStart']" class="text-right">
+                            {{incomeData['indexFromStart'] | number : '1.2-2'}}%</p>
+                        <div *ngIf="incomeData && incomeData['defaultFromStart']" class="form-group text-right"
+                            [ngClass]="{'has-error': indexFromStart.errors && f.submitted}">
+                            <input type="text" class="form-control text-right" name="indexFromStart"
+                                [(ngModel)]="incomeData['indexFromStart']" #indexFromStart="ngModel"
+                                pattern="^[0-9]*(.[0-9]{0,2})?$" [textMask]="{mask: percentMask}" appNumeric required />
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="box-footer">
+                <div class="form-group text-right">
+                    <button (click)="back(); closeButtonDisable = true" type="button"
+                        class="btn btn-small btn-secondary btn-fixwidth mr-2"
+                        [disabled]="closeButtonDisable">{{ 'FORM.ACTION.CANCEL' | translate }}</button>
+                    <button [disabled]="!f.form.valid || saveDisable || incomeData['endyear'] < incomeData['startyear']"
+                        class="btn btn-success btn-small mr-3" [translate]="'FORM.ACTION.SAVE'"></button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

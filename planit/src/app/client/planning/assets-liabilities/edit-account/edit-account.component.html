@@ -1,0 +1,338 @@
+<div class="bg-white pt-4 pb-4 assets-summary-bg">
+    <div class="container" *ngIf="currentAccount">
+        <app-assets-header [clientId]="clientId" currentPage="details" [accountId]="accountId" (switchAccount)="changeAccount($event)"></app-assets-header>
+        <form name="form" (ngSubmit)="updateAccount() && f.form.valid" #f="ngForm" novalidate>
+            <div class="row">
+                <div class="col-lg-4 col-12">
+                    <div class="form-group">
+                        <label class=custom-form-label [translate]="'FORM.ACCOUNT_NAME'"></label>
+                        <ng-container *ngIf="account['readOnly'] !== OTHER_OWNER.OTHER_OWNER_ACCOUNT; else readOnlyAccountDescription">
+                            <div [ngClass]="{'has-error': !description.valid && (description.dirty || description.touched || f.submitted)}">
+                                <input type="text" class="form-control" name="description" [(ngModel)]="account.description" #description="ngModel" required
+                                />
+                            </div>
+                        </ng-container>
+                        <ng-template #readOnlyAccountDescription>
+                            <span class="form-fixed-value">{{account['regulatoryType']['description']}}</span>
+                        </ng-template>
+                    </div>
+                    <div class="form-group" *ngIf="allAccountType">
+                        <label class=custom-form-label [translate]="'FORM.ACCOUNT_TYPE'"></label>
+                        <ng-container *ngIf="account['readOnly'] !== OTHER_OWNER.OTHER_OWNER_ACCOUNT; else readOnlyAccountType">
+                            <div [ngClass]="{'has-error': !accountType.valid && (accountType.dirty || accountType.touched || f.submitted)}">
+                                <p-dropdown placeholder="{{ 'FORM.ACCOUNT_TYPE_PLACEHOLDER' | translate }}" [options]="allAccountType" optionLabel="description"
+                                    name="accountType" [(ngModel)]="selectedAccountType" #accountType="ngModel" required (onChange)="accountChange(selectedAccountType['id'])"></p-dropdown>
+                            </div>
+                        </ng-container>
+                        <ng-template #readOnlyAccountType>
+                            <span class="form-fixed-value">{{account['regulatoryType']['description']}}</span>
+                        </ng-template>
+                    </div>
+                    <div class="form-group" *ngIf="regularityTypes">
+                        <label class=custom-form-label [translate]="'FORM.REGULATORY_TYPE'"></label>
+                        <ng-container *ngIf="account['readOnly'] !== OTHER_OWNER.OTHER_OWNER_ACCOUNT; else readOnlyRegulatoryType">
+                            <div [ngClass]="{'has-error': !regulatoryType.valid && (regulatoryType.dirty || regulatoryType.touched || f.submitted)}">
+                                <p-dropdown placeholder="{{ 'FORM.REGULATORY_TYPE_PLACEHOLDER' | translate }}" [options]="regularityTypes" optionLabel="description"
+                                    name="regulatoryType" [(ngModel)]="account.regulatoryType" #regulatoryType="ngModel" required
+                                    (onChange)="allowMultipleOwner(account.regulatoryType, true)"></p-dropdown>
+                            </div>
+                        </ng-container>
+                        <ng-template #readOnlyRegulatoryType>
+                            <span class="form-fixed-value">{{account['regulatoryType']['description']}}</span>
+                        </ng-template>
+                    </div>
+                    <div class="form-group">
+                        <label class="custom-form-label" [translate]="'FORM.OWNERSHIP'"></label>
+                        <label class="custom-error" *ngIf="ownerShipTotal !== 100 && isOwnerShipMultiple" [translate]="'ADD_ACCOUNT.OWNERSHIP_DESCRIPTION'"></label>
+                        <table class="table ownership-table">
+                            <tbody *ngIf="familyMembers && account.ownerList">
+                                <tr *ngFor="let member of familyMembers; let i = index;">
+                                  <ng-container *ngIf="account.regulatoryType && ((account.regulatoryType.holdco == 0 && member.role != 5) || account.regulatoryType.holdco == 1 && member.role == 5)">
+
+                                  <td [style.width.px]="30" *ngIf="isOwnerShipMultiple">
+                                        <p-checkbox name="member_chk_{{i}}" [(ngModel)]="account.ownerList[i].isOwned" binary="true" (onChange)="checkOwnership(i)"
+                                            [disabled]="account['readOnly'] === OTHER_OWNER.OTHER_OWNER_ACCOUNT"></p-checkbox>
+                                    </td>
+                                    <td class="form-group mb-0" [style.width.px]="30" *ngIf="!isOwnerShipMultiple">
+                                        <div class="ownerList-radio">
+                                            <p-radioButton name="member_rdb" [value]="account.ownerList[i]['externalKey']" label="" [(ngModel)]="selectedOwnerShip['externalKey']"
+                                                (onClick)="updateSelctedOwner(account.ownerList[i]['externalKey'])" [disabled]="account['readOnly'] === OTHER_OWNER.OTHER_OWNER_ACCOUNT"></p-radioButton>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <app-member-avatar [initials]="member.btnInitials" [relationClass]="member.btnColor" avatarClass="initials" [avatarUrl]="member.avatarUrl">
+                                        </app-member-avatar>
+                                        <span class="fw-400">{{member.firstName}} {{member.lastName}}</span>
+                                    </td>
+                                    <ng-container *ngIf="isOwnerShipMultiple">
+                                        <td class="pt-2 pb-2" *ngIf="account.ownerList[i].isOwned">
+                                            <ng-container *ngIf="account['readOnly'] !== OTHER_OWNER.OTHER_OWNER_ACCOUNT; else readOnlyOwned">
+                                                <div class="form-group mb-0" [ngClass]="{'has-error': ((!ownership.valid && f.submitted) || (account.ownerList[i].isOwned && ownerShipTotal !== 100))}">
+                                                    <input type="text" class="form-control mb-0 h-25 text-right" name="member_{{i}}" [(ngModel)]="account.ownerList[i].owned"
+                                                        #ownership="ngModel" pattern="^[1-9][0-9]?$|^100$" (keyup)="changeOwnerShip($event, i)">
+                                                </div>
+                                            </ng-container>
+                                            <ng-template #readOnlyOwned>
+                                                <span>{{account.ownerList[i].owned}}%</span>
+                                            </ng-template>
+                                        </td>
+                                        <td class="pt-2 pb-2 text-center" *ngIf="!account.ownerList[i].isOwned">
+                                            <span>0%</span>
+                                        </td>
+                                    </ng-container>
+                                    <ng-container *ngIf="!isOwnerShipMultiple">
+                                        <td width="60" class="text-right" *ngIf="account.ownerList[i]['externalKey'] === selectedOwnerShip['externalKey']">
+                                            <span>100%</span>
+                                        </td>
+                                        <td width="60" class="text-right" *ngIf="account.ownerList[i]['externalKey'] !== selectedOwnerShip['externalKey']">
+                                            <span>0%</span>
+                                        </td>
+                                    </ng-container>
+                                  </ng-container>
+                                </tr>
+                                <tr *ngIf="isOwnerShipMultiple">
+                                    <td colspan="2" [translate]="'ADD_ACCOUNT.OWNERSHIP_TOTAL'"></td>
+                                    <td width="60">
+                                        <span>{{ownerShipTotal}}%</span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-12">
+                    <div class="form-group">
+                        <label class=custom-form-label [translate]="'FORM.ACCOUNT_NUMBER'"></label>
+                        <ng-container *ngIf="account['readOnly'] !== OTHER_OWNER.OTHER_OWNER_ACCOUNT; else readOnlyAccNumber">
+                            <input type="text" class="form-control" name="accountNumber" [(ngModel)]="account.accountNumber" #accountNumber="ngModel"
+                            />
+                        </ng-container>
+                        <ng-template #readOnlyAccNumber>
+                            <span class="form-fixed-value">{{account.accountNumber ? account.accountNumber : 'N/A' }}</span>
+                        </ng-template>
+                    </div>
+                    <div class="form-group ui-fluid">
+                        <label class=custom-form-label [translate]="'FORM.DATE_OF_CREATION'"></label>
+                        <ng-container *ngIf="account['readOnly'] !== OTHER_OWNER.OTHER_OWNER_ACCOUNT; else readOnlyCreationDate">
+                            <div [ngClass]="{'has-error': !created.valid && (created.dirty || created.touched || f.submitted)}">
+                                <p-calendar [monthNavigator]="true" required='true' [yearNavigator]="true" yearRange="1900:2020" name="created" [(ngModel)]="account.created"
+                                    #created="ngModel" dateFormat="yy-mm-dd" (onSelect)="ChangeDateFormate(account.created)" required></p-calendar>
+                            </div>
+                        </ng-container>
+                        <ng-template #readOnlyCreationDate>
+                            <span class="form-fixed-value">{{account.created ? account.created : 'N/A' }}</span>
+                        </ng-template>
+                    </div>
+                    <div class="form-group text-lg-right price-box mb-4">
+                        <label class=custom-form-label [translate]="'FORM.TOTAL_HOLDING_VALUE'"></label>
+                        <h3>{{totalHoldings | currency:clientData['currencyCode']:'symbol-narrow':'1.0-0'}}</h3>
+                    </div>
+                    <div class="form-group text-lg-right price-box mb-4" *ngIf="accessRights['AL_LIABILITY']['accessLevel'] > 1 && account.regulatoryType && account.regulatoryType['loanFlag'] === 1">
+                        <label class=custom-form-label [translate]="'FORM.TOTAL_LIABILITY'"></label>
+                        <h3>{{totalLiability | currency:clientData['currencyCode']:'symbol-narrow':'1.0-0'}}</h3>
+                    </div>
+                    <div class="form-group content-box" *ngIf="accessRights['AL_LIABILITY']['accessLevel'] > 1">
+                        <p class="content-small" [translate]="'CONTENT.TOTAL_LIABILITY_DETAIL'"></p>
+                    </div>
+                </div>
+
+				<div class="col-lg-4 col-12">
+					<div class="form-group">
+						<label class=custom-form-label
+							[translate]="'FORM.ASSOCIATED_PORTFOLIO'"></label>
+						<ng-container
+							*ngIf="account['readOnly'] !== OTHER_OWNER.OTHER_OWNER_ACCOUNT; else readOnlyPortfolio">
+						<div
+							[ngClass]="{'has-error': (!portfolio_id.valid && (portfolio_id.dirty || portfolio_id.touched || f.submitted)) || (selectionRequiredError)}">
+							<p-dropdown
+								placeholder="{{ 'FORM.PLACEHOLDER.SELECT_PORTFOLIO' | translate }}"
+								[options]="filteredPortfolioType" optionLabel="description"
+								name="portfolio_id" [(ngModel)]="account.portfolio_id"
+								#portfolio_id="ngModel"
+								[class.disabled]="isInvestment === false"
+								(onChange)="portfolioChange()"></p-dropdown>
+						</div>
+						</ng-container>
+						<ng-template #readOnlyPortfolio> <span
+							class="form-fixed-value">{{(account['portfolio_id'] &&
+							account['portfolio_id']['description']) ?
+							account.portfolio_id['description'] : ''}}</span> </ng-template>
+					</div>
+					<div class="form-group">
+						<p class="content-small"
+							[translate]="'CONTENT.FAMILY_PORTFOLIO_DETAIL'"></p>
+					</div>
+					<div class="form-group">
+						<a routerLink="add-portfolio" class="btn-add"
+							[class.disabled]="isInvestment === false"> <i
+							class="ion-md-add-circle"></i> <span
+							[translate]="'PORTFOLIOS.ACTIONS.ADD_PORTFOLIO'"></span>
+						</a>
+					</div>
+					<div class="form-group">
+						<p-checkbox name="managed" [(ngModel)]="account.managed"
+							binary="true" label="{{'FORM.MANAGED' | translate}}"
+							[disabled]="account['readOnly'] === OTHER_OWNER.OTHER_OWNER_ACCOUNT"></p-checkbox>
+					</div>
+					<div class="form-group">
+						<p-checkbox name="included" [(ngModel)]="account.included"
+							binary="true" label="{{'FORM.INCLUDE_IN_PLANNING' | translate}}"
+							[disabled]="account['readOnly'] === OTHER_OWNER.OTHER_OWNER_ACCOUNT"></p-checkbox>
+					</div>
+					<div class="form-group"
+						*ngIf="account['readOnly'] === OTHER_OWNER.OTHER_OWNER_ACCOUNT && account['accountType'] === OTHER_OWNER.OWNER_ACCOUNT_TYPE">
+						<p-checkbox name="deemedDD" [(ngModel)]="deemedDividend"
+							binary="true"
+							label="{{ 'FORM.DEEMED_DIVIDEND_ON_DISPOSITION' | translate}}"
+							disabled="true"></p-checkbox>
+					</div>
+					<div *ngIf="accessRights['AL_BENEF']['accessLevel'] > 1">
+						<div class="form-group pull-right"
+							*ngIf="beneficiariesData && beneficiariesData.length > 0 && selectedOwnerType !== ENTITY_OWNER_TYPE.OWNER_TYPE_ENTITY">
+							<a routerLink="add-named-beneficiary"
+								[queryParams]="{page: 'edit-account', selectedOwnerShipId: selectedOwnerShipId, selectedOwnerType: selectedOwnerType}"
+								class="btn-add"> <i class="ion-md-add-circle"></i> <span
+								[translate]="'ESTATE_PLANING.ADD_BENEFICIARY'"></span>
+							</a>
+						</div>
+						<table class="table beneficiary-table"
+							*ngIf="primaryBeneficiary.length > 0 && selectedOwnerType !== ENTITY_OWNER_TYPE.OWNER_TYPE_ENTITY">
+							<thead>
+								<tr>
+									<th width="40%" [translate]="'ESTATE_PLANING.BENEFICIARY'"></th>
+									<th width="20%" [translate]="'ESTATE_PLANING.RELATIONSHIP'"></th>
+									<th width="20%">&nbsp;</th>
+									<th width="5%">&nbsp;</th>
+									<th width="5%">&nbsp;</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr *ngFor="let primaryData of primaryBeneficiary; index as i">
+									<td width="40%"><span class="initials mr-2"
+										[ngClass]="{ 'btn-square-green' : !primaryData.canDelete && primaryData['otherBeneficiary']['relation'] !== BENEFICIARY_RELATION.RELATION_SPOUSE }">{{primaryData['initials']}}</span>
+										<span class="fw-400 collab-text-truncate"
+										[appNoOverflowTooltip]="(primaryData['defaultNamedBeneficiaryDescription']) ?
+                                    (primaryData['defaultNamedBeneficiaryDescription']) :
+                                    (primaryData['otherBeneficiary']['firstName'] + ' ' + primaryData['otherBeneficiary']['lastName'])"
+										triggers="manual" placement="bottom">
+											{{(primaryData['defaultNamedBeneficiaryDescription']) ?
+											(primaryData['defaultNamedBeneficiaryDescription']) :
+											(primaryData['otherBeneficiary']['firstName'] + ' ' +
+											primaryData['otherBeneficiary']['lastName'])}} </span></td>
+									<td width="20%"><span class="collab-text-truncate"
+										[appNoOverflowTooltip]="(primaryData['otherBeneficiary'] && primaryData['otherBeneficiary']['relation']) ?
+                                        primaryData['otherBeneficiary']['relation'] : '' "
+										triggers="manual" placement="bottom"> {{
+											(primaryData['otherBeneficiary'] &&
+											primaryData['otherBeneficiary']['relation']) ?
+											primaryData['otherBeneficiary']['relation'] : ''}}</span></td>
+									<td width="20%">
+										<div class="form-group mb-0" *ngIf="primaryData.canDelete"
+											[ngClass]="{'has-error': ((!primary.valid && f.submitted) || primaryTotal !== 100)}">
+											<input type="text" class="form-control mb-0 h-25 text-right"
+												name="primary{{i}}" [(ngModel)]="primaryData['owned']"
+												#primary="ngModel"
+												(keyup)="totalBeneficiary($event, i, primaryData['primaryBeneficiary'])"
+												pattern="^[0-9][0-9]?$|^100$" required>
+										</div>
+										<div class="form-group mb-0 text-right"
+											*ngIf="!primaryData.canDelete">
+											<span>{{primaryData['owned']}}</span>
+										</div>
+									</td>
+									<td width="5%"><span class="align-content-center ml-1">%</span>
+									</td>
+									<td width="5%">
+										<div class="form-group mb-0 text-right align-content-between">
+											<a
+												*ngIf="primaryData.canDelete && (primaryData['otherBeneficiary'] && primaryData['otherBeneficiary']['relation'] !== BENEFICIARY_RELATION.SURVIVING_SPOUSE)"
+												class="delete-btn"
+												(click)="deleteBeneficiary(primaryData, primaryData['primaryBeneficiary'])">
+												<i class="ion-md-close-circle"></i>
+											</a> <span *ngIf="!primaryData.canDelete">&nbsp;</span>
+										</div>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+						<table class="table mt-2 beneficiary-table"
+							*ngIf="contingentBeneficiary.length > 0 && selectedOwnerType !== ENTITY_OWNER_TYPE.OWNER_TYPE_ENTITY">
+							<thead>
+								<tr>
+									<th width="40%"
+										[translate]="'ESTATE_PLANING.CONTINGENT_BENEFICIARY'"></th>
+									<th width="20%" [translate]="'ESTATE_PLANING.RELATIONSHIP'"></th>
+									<th width="20%">&nbsp;</th>
+									<th width="5%">&nbsp;</th>
+									<th width="5%">&nbsp;</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr *ngFor="let data of contingentBeneficiary; index as j">
+									<td width="40%"><span class="initials mr-2"
+										[ngClass]="{ 'btn-square-green' : !data.canDelete && data['otherBeneficiary']['relation'] !== BENEFICIARY_RELATION.RELATION_SPOUSE }">{{data['initials']}}</span>
+										<span class="fw-400 collab-text-truncate"
+										[appNoOverflowTooltip]="(data['defaultNamedBeneficiaryDescription']) ?
+                                    (data['defaultNamedBeneficiaryDescription']) :
+                                    (data['otherBeneficiary']['firstName'] + ' ' + data['otherBeneficiary']['lastName'])"
+										triggers="manual" placement="bottom">
+											{{(data['defaultNamedBeneficiaryDescription']) ?
+											(data['defaultNamedBeneficiaryDescription']) :
+											(data['otherBeneficiary']['firstName'] + ' ' +
+											data['otherBeneficiary']['lastName'])}} </span></td>
+									<td width="20%"><span class="collab-text-truncate"
+										[appNoOverflowTooltip]="(data['otherBeneficiary'] && data['otherBeneficiary']['relation']) ?
+                                    data['otherBeneficiary']['relation'] : '' "
+										triggers="manual" placement="bottom"> {{
+											(data['otherBeneficiary'] &&
+											data['otherBeneficiary']['relation']) ?
+											data['otherBeneficiary']['relation'] : ''}}</span></td>
+									<td width="20%">
+										<div class="form-group mb-0" *ngIf="data.canDelete"
+											[ngClass]="{'has-error': ((!contingent.valid && f.submitted) || contingentTotal !== 100)}">
+											<input type="text" class="form-control mb-0 h-25 text-right"
+												name="contingent{{j}}" [(ngModel)]="data['owned']"
+												#contingent="ngModel"
+												(keyup)="totalBeneficiary($event, j, data['primaryBeneficiary'])"
+												pattern="^[0-9][0-9]?$|^100$" required>
+										</div>
+										<div class="form-group mb-0 text-right"
+											*ngIf="!data.canDelete">
+											<span>{{data['owned']}}</span>
+										</div>
+									</td>
+									<td width="5%"><span class="align-content-center ml-1">%</span>
+									</td>
+									<td width="5%">
+										<div class="form-group mb-0 text-right align-content-between">
+											<a *ngIf="data.canDelete" class="delete-btn"
+												(click)="deleteBeneficiary(data, data['primaryBeneficiary'])">
+												<i class="ion-md-close-circle"></i>
+											</a> <span *ngIf="!data.canDelete">&nbsp;</span>
+										</div>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+				<div class="col-12">
+                    <hr>
+                </div>
+
+                <div class="col-md-12 col-12">
+                    <div class="form-group text-right">
+                        <button (click)="back()" type="button" class="btn btn-secondary btn-small" [translate]="'FORM.ACTION.BACK_TO_ASSETS'"></button>
+                        <button type="submit" [disabled]="f.form.invalid || ownerShipTotal !== 100 || primaryTotal !== 100 || contingentTotal !== 100 || selectionRequiredError"
+                            class="btn btn-success btn-small" [translate]="'FORM.ACTION.SAVE_CHANGES'"></button>
+                    </div>
+                </div>
+
+            </div>
+        </form>
+    </div>
+</div>
+<div class="view-side-form">
+    <router-outlet></router-outlet>
+</div>

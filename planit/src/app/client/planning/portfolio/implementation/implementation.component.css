@@ -1,0 +1,9 @@
+.txt-implementation {
+    height: 150px;
+    resize: none;
+}
+
+.impl-table td,
+.impl-table th {
+    border: none;
+}

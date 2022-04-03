@@ -1,0 +1,13 @@
+version: 0.0
+os: linux
+files:
+  - source: planit/dist/
+    destination: /home/ec2-user/SuitabilityPro-GUI/app/
+    
+hooks:
+  BeforeInstall:
+    - location: cleanup.sh
+      timeout: 180
+  ApplicationStart:
+    - location: restart-pp-stage.sh
+      timeout: 180

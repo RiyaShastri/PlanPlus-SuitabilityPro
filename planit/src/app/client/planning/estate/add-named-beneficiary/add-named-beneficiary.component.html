@@ -1,0 +1,55 @@
+<div class="side-form">
+    <form name="form" #f="ngForm" novalidate>
+        <div class="box">
+            <div class="box-header">
+                <span class="sidebar_title" [translate]="'ESTATE_PLANING.ADD_BENEFICIARY'"></span>
+                <span (click)="back()" class="sidebar_action_icon ion-md-close-circle float-right"></span>
+            </div>
+            <div class="box-body">
+                <div class="form-group text-right">
+                    <a href="javascript:void(0);" (click)="addNewBeneficiary()" class="btn-add">
+                        <i class="ion-md-add-circle"></i>
+                        <span [translate]="'ESTATE_PLANING.NEW_BENEFICIARY'"></span>
+                    </a>
+                </div>
+                <div class="form-group" *ngIf="beneficiaryList.length > 0" 
+                    [ngClass]="{'has-error': beneficiary.errors && (beneficiary.dirty || beneficiary.touched || f.submitted)}">
+                    <label class="custom-form-label" [translate]="'ESTATE_PLANING.BENEFICIARY'"></label>
+                    <p-dropdown [options]="beneficiaryList" name="beneficiary" [(ngModel)]="beneficiaryData['selectedBeneficiary']" 
+                    #beneficiary="ngModel" placeholder="{{'ESTATE_PLANING.ADD_NAMED_BENEFICIARY.PLACE_HOLDER' | translate }}"
+                    optionLabel="nameDescription" required></p-dropdown>
+                </div>
+                <div class="form-group">
+                    <div class="form-check d-inline-block beneficiary-label-form-check mr-2">
+                        <p-radioButton name="benificiaryType" value="{{BENEFICIARY_TYPE.PRIMARY}}"
+                        [(ngModel)]="beneficiaryData['type']" required #benificiaryType="ngModel">
+                        </p-radioButton>
+                        <label class="mb-0" [translate]="'ESTATE_PLANING.ADD_NAMED_BENEFICIARY.PRIMARY_BENEFICIARY'"></label>
+                    </div>
+                    <div class="form-check d-inline-block beneficiary-label-form-check">
+                        <p-radioButton name="benificiaryType" value="{{BENEFICIARY_TYPE.CONTINGENT}}" label="" 
+                        [(ngModel)]="beneficiaryData['type']" required #benificiaryType="ngModel">
+                        </p-radioButton>
+                        <label class="mb-0" [translate]="'ESTATE_PLANING.CONTINGENT_BENEFICIARY'"></label>
+                    </div>
+                </div>
+                <div class="form-group" *ngIf="isSpousalRollover && beneficiaryData['selectedBeneficiary'] 
+                    && beneficiaryData['selectedBeneficiary']['id'] !== spousData['key'] &&
+                    (beneficiaryData['selectedBeneficiary']['relation'] === RELATION.CLIENT ||
+                    beneficiaryData['selectedBeneficiary']['relation'] === RELATION.SPOUSE  )" >
+                    <div class="form-check d-inline-block beneficiary-label-form-check mt-3">
+                        <p-checkbox name="spousalRollover" label="" [(ngModel)]="beneficiaryData['isSpousal']" 
+                        binary="true" #spousalRollover="ngModel"></p-checkbox>
+                        <label class="mb-0" [translate]="'ESTATE_PLANING.ADD_NAMED_BENEFICIARY.NO_SPOUSAL_ROLLOVER'"></label>
+                    </div>
+                </div>
+            </div>
+            <div class="box-footer">
+                <div class="form-group text-right">
+                    <button type="button" (click)="back()" value="cancel" class="btn btn-secondary btn-small" [translate]="'FORM.ACTION.CANCEL'"></button>
+                    <button type="submit" value="submit" class="btn btn-success btn-small mr-3" [disabled]="!f.valid" [translate]="'FORM.ACTION.SAVE'" (click)="saveData(f)"></button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

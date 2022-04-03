@@ -1,0 +1,344 @@
+<div class="container" *ngIf="investmentData">
+        <div class="d-flex align-items-center">
+            <form name="form" #f="ngForm" novalidate>
+                <div class="row">
+                    <div class="col-12">
+                        <app-settings-header currentPage="investor" [lastUpdatedDate]="lastReviewDate"></app-settings-header>
+                    </div>
+                    <div class="col-12">
+                        <div class="row mt-2 mb-1">
+                            <div class="col-10">
+                                <h5 class="fs-14 fw-400 text-secondary d-inline-block" [translate]="'SETTINGS.INVESTMENT_POLICIES.TITLE'"></h5>
+                                <div class="form-group form-check d-inline-block pl-2">
+                                    <span class="d-inline-block">
+                                        <p-radioButton name="groupname" value="0" #groupname="ngModel" [(ngModel)]="investmentData.investmentType" [disabled]="!isEditable"
+                                        (ngModelChange)="selectInvestmentPolicy($event)"></p-radioButton>
+                                        <span [translate]="'SETTINGS.PREFERRED_SOLUTION.DETAILS.DEFAULT'"></span>
+                                    </span>
+                                    <span class="d-inline-block pl-2">
+                                        <p-radioButton name="groupname" value="1" #groupname="ngModel" [(ngModel)]="investmentData.investmentType" [disabled]="!isEditable"
+                                        (ngModelChange)="selectInvestmentPolicy($event)"></p-radioButton>
+                                        <span [translate]="'SETTINGS.PREFERRED_SOLUTION.DETAILS.CUSTOM'"></span>
+                                    </span>
+                                    <span *ngIf="investmentData.investmentTargetPolicyDTO.length < 4">
+                                        <i class="ion-ios-alert fs-16" [ngbTooltip]="alertMessage" placement="bottom" triggers="manual"
+                                            #alert="ngbTooltip" (click)="alert.open()"></i>
+                                        <ng-template #alertMessage>
+                                            <p class="font">{{ 'SETTINGS.INVESTMENT_POLICIES.ALERT_TOOLTIP_MESSAGE_1' | translate }} {{investmentData.investmentTargetPolicyDTO.length}}
+                                                {{ 'SETTINGS.INVESTMENT_POLICIES.ALERT_TOOLTIP_MESSAGE_2' | translate }} {{4 - investmentData.investmentTargetPolicyDTO.length}}
+                                                {{ 'SETTINGS.INVESTMENT_POLICIES.ALERT_TOOLTIP_MESSAGE_3' | translate }}</p>
+                                            <p class="text-right m-0 p-0">
+                                                <button class="btn btn-secondary btn-small m-0" (click)="alert.close()" [translate]="'FORM.ACTION.CLOSE'"></button>
+                                            </p>
+                                        </ng-template>
+                                    </span>
+                                </div>
+                              
+                            </div>
+
+                            <div class="col-2 text-right">
+                                <button *ngIf="!isEditable && accessRights['DFTINVPOLEDIT']['accessLevel'] > 0" class="btn btn-small btn-success align-content-center" type="button" (click)="changeEdit()" [translate]="'PORTFOLIO.ACTION.EDIT'"></button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-12">
+                        <div class="form-group mb-0" >
+                            <a href="javascript:void(0);" (click)="addPolicy()" class="btn-add" *ngIf="investmentData.investmentType !== 0" [ngClass]="{ 'disble-dropdown' : !isEditable ||
+                            investmentData['investmentTargetPolicyDTO'].length === 12 }">
+                                <i class="ion-md-add-circle"></i>
+                                <span [translate]="'SETTINGS.INVESTMENT_POLICIES.ADD_POLICY'"></span>
+                            </a>
+                        </div>
+                        <div class="row">
+	                            <table class="table">
+	                                <thead>
+	                                    <tr>
+	                                        <th class="w-40 border-bottom-0 col-fixed pl-3 pb-0">
+				                                <div class="ml-0 pt-2">
+				                                    <app-common-drop-down [itemList]="viewBy" [defaultSelected]="selectedViewBy" dropDownLabel="{{'PORTFOLIOS.VIEW_DROPDOWN' | translate}}"
+                                                        (OnSelect)="changeView($event)"></app-common-drop-down>
+                                                    &nbsp;
+                                                    <app-common-drop-down [itemList]="minMaxPolicy" [defaultSelected]="selectedPolicy" dropDownLabel="Min / Max Policy" (OnSelect)="changePolicy($event)"
+                                                        [ngClass]="{ 'disable-dropdown' : !isEditable }"></app-common-drop-down>    
+                                                </div>
+					                        </th>
+					                        <th class="px-3 border-bottom-0 pb-0">
+					                            <div class="text-right">
+					                                <div class="ml-0 pt-2" *ngIf="assetsClassDropDown.length > 0">
+					                                    <app-common-drop-down class="dropdown-right" [itemList]="assetsClassDropDown" [defaultSelected]="defaultAssetClass" dropDownLabel="Asset classes"
+					                                        (OnSelect)="changeAssetsClass($event)" [ngClass]="{ 'disable-dropdown' : isEditable }"></app-common-drop-down>
+					                                </div>
+					                            </div>
+					                        </th>
+					                    </tr>
+					                </thead>
+					            </table>
+                        </div>
+                    </div>
+                    <div class="col-12 mt-3" *ngIf="investmentData['investmentTargetPolicyDTO'].length > 0">
+                        <div class="table-responsive" *ngIf="investmentData && allIncomeDistributionData && allAssetsClassData && investmentData['investmentTargetPolicyDTO']">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th colspan="3" class="w-20 border-bottom-0 col-fixed">&nbsp;</th>
+                                        <ng-container *ngFor="let data of investmentData['investmentTargetPolicyDTO']; index as i">
+                                            <th class="pl-2 border-bottom-0" [style.width.%]="investmentData['investmentTargetPolicyDTO'].length === 0 ? 80 : (80/investmentData['investmentTargetPolicyDTO'].length)" [colSpan]="selectedViewBy.id === INVESTMENT_POLICY_VIEW.TARGET_POLICY_RANGE ? 3 : '' ">
+                                                <div [style.background]="chartColour[i]" class="d-flex allocation-box pl-2 mb-0" [style.height.px]="75">
+                                                    <span class="color-black align-bottom d-inline-block allocation-box-lable">{{data.description}}</span>
+                                                    <!-- <a *ngIf="investmentData.investmentType === 0" class="ml-auto">
+                                                        <span class="ml-auto">
+                                                            <i class="ion-ios-pulse"></i>
+                                                        </span>
+                                                    </a> -->
+                                                    <div class="dropdown-relative d-inline-block text-right mr-0"
+                                                        *ngIf="investmentData.investmentType !== 0">
+                                                        <button type="button" class="btn-floating" (click)="toggleActionMenu('dropdownAssetsAction', data.investmentPolicyId)">
+                                                            <span class="ion-md-more"></span>
+                                                        </button>
+                                                        <div [id]="'dropdownAssetsAction_'+data.investmentPolicyId" class="dropdown-portfolio-action dropdown-floating hide-ele">
+                                                            <ul class="floating-dropdown">
+                                                                <!-- <li (click)="toggleActionMenu('dropdownAssetsAction', data.investmentPolicyId)">
+                                                                    <a>
+                                                                        <i class="ion-ios-pulse"></i>
+                                                                        <span [translate]="'PORTFOLIO.ACTION.ANALYTICS'"></span>
+                                                                    </a>
+                                                                </li> -->
+                                                                <li (click)="toggleActionMenu('dropdownAssetsAction', data.investmentPolicyId)"
+                                                                 [ngClass]="{ 'disble-dropdown': investmentData.investmentType === 1 && !isEditable }">
+                                                                    <a class="action-list" (click)="editIndividualPolicy(data.investmentPolicyId)">
+                                                                        <i class="ion-md-create action-list"></i>
+                                                                        <span class="action-list" [translate]="'PORTFOLIO.ACTION.EDIT_POLICY'"></span>
+                                                                    </a>
+                                                                </li>
+                                                                <li (click)="toggleActionMenu('dropdownAssetsAction', data.investmentPolicyId)" class="delete-btn"
+                                                                [ngClass]="{ 'disble-dropdown': investmentData.investmentType === 1 && !isEditable }">
+                                                                    <a class="action-list" (click)="deleteInvestmentPolicy(data.investmentPolicyId)">
+                                                                        <i class="ion-md-close-circle action-list"></i>
+                                                                        <span class="action-list" [translate]="'SETTINGS.INVESTMENT_POLICIES.DELETE_POLICY'"></span>
+                                                                    </a>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </th>
+                                        </ng-container>
+                                    </tr>
+                                    <tr>
+                                        <th class="border-top-0 col-fixed" [translate]="'SETTINGS.INVESTMENT_POLICIES.ASSETS_CLASS'"></th>
+                                        <th class="border-top-0 col-fixed text-center" [translate]="'SETTINGS.INVESTMENT_POLICIES.RETURN'"></th>
+                                        <th class="border-top-0 col-fixed text-center" [translate]="'SETTINGS.INVESTMENT_POLICIES.STDEV'"></th>
+                                        <ng-container *ngFor="let data of investmentData['investmentTargetPolicyDTO'];index as i">
+                                            <th class="border-top-0 text-center pl-2 border-bottom-0" [style.width.%]="investmentData['investmentTargetPolicyDTO'].length === 0 ? 23.3 : ((80/investmentData['investmentTargetPolicyDTO'].length)/3)" *ngIf="selectedViewBy.id === INVESTMENT_POLICY_VIEW.TARGET_POLICY_RANGE" [translate]="'PORTFOLIO.EDIT_POLICY.TABLE.MIN'"></th>
+                                            <th class="border-top-0 text-center pl-2 border-bottom-0" [style.width.%]="investmentData['investmentTargetPolicyDTO'].length === 0 ? 23.3 : ((80/investmentData['investmentTargetPolicyDTO'].length)/3)" *ngIf="selectedViewBy.id === INVESTMENT_POLICY_VIEW.TARGET_POLICY_RANGE" [translate]="'SETTINGS.INVESTMENT_POLICIES.TARGET'"></th>
+                                            <th class="border-top-0 text-center pl-2 border-bottom-0" *ngIf="selectedViewBy.id !== INVESTMENT_POLICY_VIEW.TARGET_POLICY_RANGE" [translate]="'SETTINGS.INVESTMENT_POLICIES.TARGET'"></th>
+                                            <th class="border-top-0 text-center pl-2 border-bottom-0" [style.width.%]="investmentData['investmentTargetPolicyDTO'].length === 0 ? 23.3 : ((80/investmentData['investmentTargetPolicyDTO'].length)/3)" *ngIf="selectedViewBy.id === INVESTMENT_POLICY_VIEW.TARGET_POLICY_RANGE" [translate]="'PORTFOLIO.EDIT_POLICY.TABLE.MAX'"></th>
+                                        </ng-container>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <ng-container *ngFor="let data of investmentData['investmentTargetPolicyDTO'][0]['defaultInvestmentPayloads'];index as i">
+                                        <tr class="text-center">
+                                            <td class="text-left col-fixed">{{ 'SSID_LABELS.' + data.ssid | translate }}</td>
+                                            <td class="text-left col-fixed" class="text-center">{{data.riskReturn}}%</td>
+                                            <td class="text-left col-fixed" class="text-center">{{data.sDeviation}}%</td>
+                                            <ng-container *ngFor="let item of investmentData['investmentTargetPolicyDTO'];index as j">
+                                                    <td *ngIf="selectedViewBy.id === INVESTMENT_POLICY_VIEW.TARGET_POLICY_RANGE" class="blue-bg" [ngClass]="{ 'bg-after' : j !== 0 }">
+                                                        <span *ngIf="(investmentData.investmentType === 0) || (investmentData.investmentType === 1 && !isEditable)">{{allAssetsClassData[item.investmentPolicyId][i].targetMin}}%</span>
+                                                        <div class="form-group" *ngIf="isEditable && investmentData.investmentType !== 0"
+                                                            [ngClass]="{'has-error': (allAssetsClassData[item.investmentPolicyId][i].targetMin > allAssetsClassData[item.investmentPolicyId][i].targetMax) && !minPolicy.valid }">
+                                                            <input min="0" max="100" pattern="^[0-9][0-9]*(.[0-9]{0,1})?$|^100$" class="form-control text-center w-75 p-0 d-inline-block va-middle" type="text" name="minPolicy{{i}}{{j}}" [(ngModel)]="allAssetsClassData[item.investmentPolicyId][i].targetMin"
+                                                            #minPolicy="ngModel" [textMask]="{mask: percentDecimalMask}" appNumeric required />
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <span *ngIf="(investmentData.investmentType === 0) || (investmentData.investmentType === 1 && !isEditable)">{{allAssetsClassData[item.investmentPolicyId][i].targetPercent}}%</span>
+                                                        <div class="form-group"  *ngIf="isEditable && investmentData.investmentType !== 0"
+                                                             [ngClass]="{ 'has-error': (selectedViewBy.id === INVESTMENT_POLICY_VIEW.TARGET_POLICY_RANGE && ((allAssetsClassData[item.investmentPolicyId][i].targetPercent < allAssetsClassData[item.investmentPolicyId][i].targetMin) ||
+                                                             (allAssetsClassData[item.investmentPolicyId][i].targetPercent > allAssetsClassData[item.investmentPolicyId][i].targetMax)) ) || !targetPercent.valid }">
+                                                            <input min="0" max="100" pattern="^[0-9][0-9]*(.[0-9]{0,1})?$|^100$" class="form-control text-center w-75 p-0 d-inline-block va-middle" type="text" name="targetPercent{{i}}{{j}}" 
+                                                            [(ngModel)]="allAssetsClassData[item.investmentPolicyId][i].targetPercent" (ngModelChange)="checkPolicyTotal(item.investmentPolicyId)" #targetPercent="ngModel"
+                                                            [textMask]="{mask: percentDecimalMask}" appNumeric required />
+                                                        </div>
+                                                    </td>
+                                                    <td *ngIf="selectedViewBy.id === INVESTMENT_POLICY_VIEW.TARGET_POLICY_RANGE" class="blue-bg">
+                                                        <span *ngIf="(investmentData.investmentType === 0) || (investmentData.investmentType === 1 && !isEditable)">{{allAssetsClassData[item.investmentPolicyId][i].targetMax}}%</span>
+                                                        <div class="form-group" *ngIf="isEditable && investmentData.investmentType !== 0"
+                                                            [ngClass]="{'has-error': (allAssetsClassData[item.investmentPolicyId][i].targetMin > allAssetsClassData[item.investmentPolicyId][i].targetMax) && !maxPolicy.valid }">
+                                                            <input min="0" max="100" pattern="^[0-9][0-9]*(.[0-9]{0,1})?$|^100$" class="form-control text-center w-75 p-0 d-inline-block va-middle" name="maxPolicy{{i}}{{j}}" [(ngModel)]="allAssetsClassData[item.investmentPolicyId][i].targetMax"
+                                                             #maxPolicy="ngModel" [textMask]="{mask: percentDecimalMask}" appNumeric required />
+                                                        </div>
+                                                    </td>
+                                            </ng-container>
+                                        </tr>
+                                    </ng-container>
+                                    <tr class="fw-700 text-center">
+                                        <td colspan="3" class="col-fixed"><b>{{ 'PORTFOLIOS.TOTAL' | translate}}<br/>
+                                            <span *ngIf="isHundredPercent" class="text-danger">Total must be equal to 100</span> </b></td>
+                                        <ng-container *ngFor="let item of investmentData['investmentTargetPolicyDTO'];index as j">
+                                            <td *ngIf="selectedViewBy.id === INVESTMENT_POLICY_VIEW.TARGET_POLICY_RANGE">&nbsp;</td>
+                                            <td>
+                                                <span [ngClass]="{ 'text-danger font-weight-bold': policyData['total'][item.investmentPolicyId] > 100 || policyData['total'][item.investmentPolicyId] < 100 }">
+                                                    {{policyData['total'][item.investmentPolicyId]}}</span>
+                                            </td>
+                                            <td *ngIf="selectedViewBy.id === INVESTMENT_POLICY_VIEW.TARGET_POLICY_RANGE">&nbsp;</td>
+                                        </ng-container>
+                                    </tr>
+                                    <tr>&nbsp;</tr>
+                                    <tr>
+                                        <td colspan="3" class="col-fixed" [translate]="'SETTINGS.INVESTMENT_POLICIES.RETURN'"></td>
+                                        <ng-container *ngFor="let item of investmentData['investmentTargetPolicyDTO']">
+                                            <td *ngIf="selectedViewBy.id === INVESTMENT_POLICY_VIEW.TARGET_POLICY_RANGE">&nbsp;</td>
+                                            <td class="text-center">{{item.riskReturn}}%</td>
+                                            <td *ngIf="selectedViewBy.id === INVESTMENT_POLICY_VIEW.TARGET_POLICY_RANGE">&nbsp;</td>
+                                        </ng-container>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="3" class="col-fixed" [translate]="'SETTINGS.INVESTMENT_POLICIES.RISK'"></td>
+                                        <ng-container *ngFor="let item of investmentData['investmentTargetPolicyDTO']">
+                                            <td *ngIf="selectedViewBy.id === INVESTMENT_POLICY_VIEW.TARGET_POLICY_RANGE">&nbsp;</td>
+                                            <td class="text-center">{{item.risk}}%</td>
+                                            <td *ngIf="selectedViewBy.id === INVESTMENT_POLICY_VIEW.TARGET_POLICY_RANGE">&nbsp;</td>
+                                        </ng-container>
+                                    </tr>
+                                    <tr *ngIf="isDefaultRange">
+                                        <td colspan="3" class="col-fixed" [translate]="'SETTINGS.INVESTMENT_POLICIES.DEFAULT_SCORE_RANGE'"></td>
+                                        <ng-container *ngFor="let item of investmentData['investmentTargetPolicyDTO']">
+                                            <td *ngIf="selectedViewBy.id === INVESTMENT_POLICY_VIEW.TARGET_POLICY_RANGE">&nbsp;</td>
+                                            <td class="text-center">{{item.lowRange}} - {{item.highRange}}</td>
+                                            <td *ngIf="selectedViewBy.id === INVESTMENT_POLICY_VIEW.TARGET_POLICY_RANGE">&nbsp;</td>
+                                        </ng-container>
+                                    </tr>
+                                    <tr *ngIf="investmentData.investmentType === 1">
+                                        <td colspan="3" class="col-fixed text font-weight-bold" [translate]="'SETTINGS.INVESTMENT_POLICIES.YOUR_RANGE'"></td>
+                                        <ng-container *ngFor="let item of investmentData['investmentTargetPolicyDTO'];index as i; last as last">
+                                            <td *ngIf="selectedViewBy.id === INVESTMENT_POLICY_VIEW.TARGET_POLICY_RANGE">&nbsp;</td>
+                                            <td class="text-center">
+                                                <div class="d-flex d-inline-flex align-items-center">
+                                                    <span class="pr-2 align-middle"  *ngIf="(investmentData.investmentType === 1)">
+                                                        {{item['yourLowRange']}} 
+                                                    </span>
+                                                    <span class="align-middle">-</span>
+                                                    <span class="align-middle pl-2" *ngIf="(investmentData.investmentType === 1 && !isEditable) || (investmentData.investmentType === 1 && isEditable && last)">
+                                                        {{item['yourHighRange']}}
+                                                    </span>
+                                                    <div class="form-group mb-0" *ngIf="(investmentData.investmentType === 1 && isEditable && !last)"
+                                                        [ngClass]="{ 'has-error': !yourHighRange.valid ||  item['yourHighRange'] < item['yourLowRange']}">
+                                                        <input min="0" max="100" pattern="^[0-9][0-9]$" class="form-control text-center w-75 p-0 d-inline-block va-middle" name="yourHighRange{{i}}"
+                                                        [(ngModel)]="item['yourHighRange']" (ngModelChange)="setYourRange($event, i)" #yourHighRange="ngModel" required/>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td *ngIf="selectedViewBy.id === INVESTMENT_POLICY_VIEW.TARGET_POLICY_RANGE">&nbsp;</td>
+                                        </ng-container>
+                                    </tr>
+                                </tbody>
+                            </table>
+    
+                            <div class="form-group" *ngIf="investmentData['investmentTargetPolicyDTO'].length > 0">
+                                <div id="expandDetails" class="hide-ele">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <table class="table more-detail-table">
+                                                <thead class="inner-allocation-table-hide">
+                                                    <tr>
+                                                        <th colspan="3" class="w-20 border-bottom-0 col-fixed">&nbsp;</th>
+                                                        <th *ngFor="let data of investmentData['investmentTargetPolicyDTO']" [style.width.%]="investmentData['investmentTargetPolicyDTO'].length === 0 ? 80 : (80/investmentData['investmentTargetPolicyDTO'].length)"  class="pl-2 border-bottom-0 w-auto" [colSpan]="selectedViewBy.id === INVESTMENT_POLICY_VIEW.TARGET_POLICY_RANGE ? 3 : ''">
+                                                            <div [style.background]="chartColour[i]" class="d-flex allocation-box pl-2 mb-0" [style.height.px]="75">
+                                                                <span class="color-black align-bottom d-inline-block">{{data.lable}}</span>
+                                                                <a *ngIf="investmentData.investmentType === 0">
+                                                                    <i class="ion-ios-pulse"></i>
+                                                                </a>
+                                                            </div>
+                                                        </th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody> 
+                                                    <tr>
+                                                        <td colspan="3" class="col-fixed" [translate]="'SETTINGS.INVESTMENT_POLICIES.DOWNSIDE_VOLATILITY'"></td>
+                                                        <ng-container *ngFor="let data of investmentData['investmentTargetPolicyDTO']">
+                                                            <td *ngIf="selectedViewBy.id === INVESTMENT_POLICY_VIEW.TARGET_POLICY_RANGE">&nbsp;</td>
+                                                            <td> {{policyData['downsideVolatility'][data.investmentPolicyId]}}</td>
+                                                            <td *ngIf="selectedViewBy.id === INVESTMENT_POLICY_VIEW.TARGET_POLICY_RANGE">&nbsp;</td>
+                                                        </ng-container>
+                                                    </tr>
+                                                    <tr>
+                                                        <td colspan="3" class="col-fixed" [translate]="'SETTINGS.INVESTMENT_POLICIES.GROWTH_ASSETS'"></td>
+                                                        <ng-container *ngFor="let data of investmentData['investmentTargetPolicyDTO']">
+                                                            <td *ngIf="selectedViewBy.id === INVESTMENT_POLICY_VIEW.TARGET_POLICY_RANGE">&nbsp;</td>
+                                                            <td>{{data.growth}}</td>
+                                                            <td *ngIf="selectedViewBy.id === INVESTMENT_POLICY_VIEW.TARGET_POLICY_RANGE">&nbsp;</td>
+                                                        </ng-container>
+                                                    </tr>
+                                                    <tr>
+                                                        <td colspan="3" class="col-fixed" [translate]="'SETTINGS.INVESTMENT_POLICIES.SHARPE_RATIO'"></td>
+                                                        <ng-container *ngFor="let data of investmentData['investmentTargetPolicyDTO']">
+                                                            <td *ngIf="selectedViewBy.id === INVESTMENT_POLICY_VIEW.TARGET_POLICY_RANGE">&nbsp;</td>
+                                                            <td>{{data.sharpe}}</td>
+                                                            <td *ngIf="selectedViewBy.id === INVESTMENT_POLICY_VIEW.TARGET_POLICY_RANGE">&nbsp;</td>
+                                                        </ng-container>
+                                                    </tr>
+                                                    <ng-container *ngIf="accessRights['CMAINCDIST']['accessLevel'] > 0">
+                                                        <tr>
+	                                                        <th class="income-distribution-header" colSpan="{{(selectedViewBy.id === INVESTMENT_POLICY_VIEW.TARGET_POLICY_RANGE) ? (investmentData['investmentTargetPolicyDTO'].length * 3) + 3 : investmentData['investmentTargetPolicyDTO'].length + 3 }}" 
+                                                            [translate]="'SETTINGS.INVESTMENT_POLICIES.INCOME_DISTRIBUTION'"></th>
+                                                        </tr>
+                                                        <ng-container *ngFor="let data of investmentData['investmentTargetPolicyDTO'][0]['incomeDistributions'];index as i;">
+                                                            <tr>
+                                                                <td colspan="3" class="w-20 text-left col-fixed">{{data.id}}</td>
+                                                                <ng-container *ngFor="let income of investmentData['investmentTargetPolicyDTO']">
+                                                                    <td *ngIf="selectedViewBy.id === INVESTMENT_POLICY_VIEW.TARGET_POLICY_RANGE">&nbsp;</td>
+                                                                    <td class="text-center">{{allIncomeDistributionData[income.investmentPolicyId][i].percent}}%</td>
+                                                                    <td *ngIf="selectedViewBy.id === INVESTMENT_POLICY_VIEW.TARGET_POLICY_RANGE">&nbsp;</td>
+                                                                </ng-container>
+                                                            </tr>
+                                                        </ng-container>
+                                                    </ng-container>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12">
+    
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 col-md-4">
+                                <a class="moredetail-button cursor-p" (click)="toggle();isDetailExpand = !isDetailExpand ">
+                                    <span *ngIf="isDetailExpand" [translate]="'PLANNING.LESS_DETAIL'"> </span>
+                                    <span *ngIf="!isDetailExpand" [translate]="'PLANNING.MORE_DETAIL'"> </span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <ng-container *ngIf="investmentData && investmentData.investmentTargetPolicyDTO && investmentData.investmentTargetPolicyDTO.length === 0">
+                    <div class="col-12 mt-3" [style.marginBottom.px]="300">
+                            <table class="table">
+                                <tbody>
+                                    <tr>
+                                        <td colspan="3" class="no-record text-center">
+                                            <i class="ion-ios-alert mr-2"></i>{{'NO_RESULTS' | translate}}
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </ng-container>
+                    <div class="col-12 form-group text-right mb-3">
+                        <label>{{ 'SETTINGS.INVESTMENT_POLICIES.LICENCE_ACCEPT_DESCRIPTION' | translate }}</label>
+                        <p-checkbox class="d-inline-block mt--10px mr-4" [(ngModel)]="policyAcceptance" binary="true" name="policyacceptance" #policyacceptance="ngModel" styleClass="va-top"></p-checkbox>
+                        <button type="button" (click)="clearAllData(); saveButtonDisable = false" class="btn btn-secondary mr-2 mb-0" [translate]="'FORM.ACTION.CANCEL'"></button>
+                        <button class="btn btn-success mb-0" (click)="saveButtonDisable = true; saveInvestmentPolicy()"  [disabled]="!f.form.valid || isHundredPercent || investmentData['investmentTargetPolicyDTO'].length !< 4 || !policyAcceptance || saveButtonDisable"  [translate]="'FORM.ACTION.SAVE_CHANGES'"></button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="view-side-form">
+        <router-outlet></router-outlet>
+    </div>

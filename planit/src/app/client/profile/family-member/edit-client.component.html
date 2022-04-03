@@ -1,0 +1,405 @@
+<div class="bg-white pt-4 pb-4">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-7">
+                <h4 class="mb-1">
+                    <a [routerLink]="['/client',clientId,'profile']">{{'BREADCRUMB.CLIENT_PROFILE' | translate}}</a> /
+                    <a [routerLink]="['/client',clientId,'profile','personal-info']">{{'BREADCRUMB.PERSONAL_INFO' |
+                        translate}}</a>
+                    /
+                </h4>
+                <h1 class="fw-500">
+                    <app-family-member-dropdown [clientId]="clientId" [personalId]="personalId" typeId="family"
+                        (memberSwitch)="memberSwitch($event)"></app-family-member-dropdown>
+                </h1>
+            </div>
+            <div class="col-sm-5 d-flex flex-wrap justify-content-end">
+                <div class="mt-auto">
+                    <app-profile-module-drop-down class="dropdown-right" [clientId]="clientId">
+                    </app-profile-module-drop-down>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <hr>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <ul class="nav nav-tabs" role="tablist">
+                    <li class="nav-item">
+                        <a *ngIf="relationId === PERSON_RELATION.CLIENT1" class="nav-link active" data-toggle="tab">{{
+                            'FAMILY_MEMBER_EDIT.CLIENT'
+                            | translate }}</a>
+                        <a *ngIf="relationId != PERSON_RELATION.CLIENT1" class="nav-link active" data-toggle="tab">{{
+                            'FAMILY_MEMBER_EDIT.FAMILY_MEMBER_DETAILS'
+                            | translate }}</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-md-6 mt-3 mt-md-0 text-right" *ngIf="relationId != PERSON_RELATION.CLIENT1">
+                <a (click)="deleteFamilyMember()" class="delete-link text-uppercase d-flex" [style.width.%]="100">
+                    <i class="ion-md-close-circle delete-portfolio ml-auto"></i>
+                    <span class="d-flex align-items-center"
+                        [translate]="'FAMILY_MEMBER_EDIT.DELETE_FAMILY_MEMBER'"></span>
+                </a>
+            </div>
+            <div class="col-12">
+                <hr>
+            </div>
+        </div>
+
+        <div class="tab-content">
+            <div id="home" class="tab-pane active">
+                <form name="editClientForm" (ngSubmit)="f.form.valid && editClient(f)" #f="ngForm" novalidate>
+                    <div class="row">
+                        <div class="col-12 col-lg-4 col-md-6 order-1 order-lg-0">
+                            <div class="row">
+                                <div class="col-5" [ngClass]="{'col-12': relationId != PERSON_RELATION.CLIENT1 && relationId != PERSON_RELATION.CLIENT2 }">
+                                    <div class="form-group">
+                                        <label class="custom-form-label" for="relationValue">{{ 'FORM.CLIENT_STATUS'
+                                            | translate }}</label>
+                                        <p class="client_relation_lbl fw-400"
+                                            *ngIf="relationId === PERSON_RELATION.CLIENT1 || relationId === PERSON_RELATION.CLIENT2">{{model.relation.name}}</p>
+                                        <p-dropdown *ngIf="relationId != PERSON_RELATION.CLIENT1 && relationId != PERSON_RELATION.CLIENT2" [options]="relationArr" name="relationValue"
+                                            (onChange)="clientChange($event)" [(ngModel)]="model.relation"
+                                            #relationValue="ngModel" optionLabel="name" required
+                                            placeholder="{{ 'FORM.PLACEHOLDER.SELECT_A_STATUS' | translate }}">
+                                        </p-dropdown>
+                                    </div>
+                                </div>
+
+                                <div class="col-7 pl-0" *ngIf="relationId === PERSON_RELATION.CLIENT1">
+                                    <div class="form-group"
+                                        [ngClass]="{ 'has-error': !maritalStatus.valid && (maritalStatus.dirty || maritalStatus.touched || f.submitted)}">
+                                        <label class="custom-form-label" for="maritalStatus">{{ 'FORM.MARITAL_STATUS' |
+                                            translate}}</label>
+                                        <p-dropdown [options]="maritalArr" name="maritalStatus"
+                                            [(ngModel)]="model.maritalStatus" #maritalStatus="ngModel"
+                                            (onChange)="changeMaritalStatus($event)" optionLabel="name" required
+                                            placeholder="{{ 'FORM.PLACEHOLDER.SELECT_A_MARITAL_STATUS' | translate }}">
+                                        </p-dropdown>
+                                        <!--<div *ngIf="f.submitted && !marital.valid" class="help-block">Marital is required</div> -->
+                                    </div>
+                                </div>
+
+                                <div [ngClass]="{'col-12': relationId != PERSON_RELATION.CLIENT1 && relationId != PERSON_RELATION.CLIENT2, 'col-9 col-md-10' : relationId === PERSON_RELATION.CLIENT1 || relationId === PERSON_RELATION.CLIENT2 }">
+                                    <div class="form-group"
+                                        [ngClass]="{ 'has-error': !firstName.valid && (firstName.dirty || firstName.touched || f.submitted) }">
+                                        <label class="custom-form-label" for="firstName">{{ 'FORM.FIRST_NAME' |
+                                            translate}}</label>
+                                        <input type="text" class="form-control" name="firstName"
+                                            [(ngModel)]="model.firstName" #firstName="ngModel"
+                                            pattern="^[a-zA-Z][\w\d\s\-]*" required>
+                                    </div>
+                                </div>
+
+                                <div class="col-3 col-md-2 pl-0" *ngIf="relationId === PERSON_RELATION.CLIENT1 || relationId === PERSON_RELATION.CLIENT2 ">
+                                    <div class="form-group">
+                                        <label class="custom-form-label" for="initials">{{ 'FORM.INITIALS' | translate
+                                            }}</label>
+                                        <input type="text" class="form-control" name="initials"
+                                            [(ngModel)]="model.initials" #initials="ngModel">
+                                    </div>
+                                </div>
+
+                                <div [ngClass]="{'col-12': relationId != PERSON_RELATION.CLIENT1 && relationId != PERSON_RELATION.CLIENT2, 'col-9 col-md-10' : relationId === PERSON_RELATION.CLIENT1 || relationId === PERSON_RELATION.CLIENT2 }">
+                                    <div class="form-group"
+                                        [ngClass]="{ 'has-error': !lastName.valid && (lastName.dirty || lastName.touched || f.submitted) }">
+                                        <label class="custom-form-label" for="lastname">{{ 'FORM.LAST_NAME' | translate
+                                            }}</label>
+                                        <input type="text" class="form-control" name="lastName"
+                                            [(ngModel)]="model.lastName" pattern="^[a-zA-Z][\w\d\s\-]*"
+                                            #lastName="ngModel" required>
+                                    </div>
+                                </div>
+
+                                <div class="col-3 col-md-2 pl-0" *ngIf="relationId === PERSON_RELATION.CLIENT1 || relationId === PERSON_RELATION.CLIENT2">
+                                    <div class="form-group text-center"
+                                        [ngClass]="{ 'has-error': f.submitted && !retired.valid }">
+                                        <label class="custom-form-label"
+                                            for="retired">{{ 'FORM.RETIRED' | translate }}</label>
+                                        <p-checkbox name="retired" [(ngModel)]="model.retired" #retired="ngModel"
+                                            binary="true"></p-checkbox>
+                                    </div>
+                                </div>
+
+                                <div class="col-12">
+                                    <fieldset class="form-group">
+                                        <legend>{{ 'FORM.GENDER' | translate }}</legend>
+                                        <div class="form-check d-flex"
+                                            [ngClass]="{ 'has-error': f.submitted && !gender.valid }">
+                                            <span>
+                                                <p-radioButton name="gender" value="M" [disabled]="isGenderDisable"
+                                                    [(ngModel)]="model.gender" #gender="ngModel"></p-radioButton>
+                                                M
+                                            </span>
+                                            <span>
+                                                <p-radioButton name="gender" [disabled]="isGenderDisable" value="F"
+                                                    [(ngModel)]="model.gender" #gender="ngModel"></p-radioButton>
+                                                F
+                                            </span>
+                                        </div>
+                                    </fieldset>
+                                </div>
+                                <div class="col-9 col-md-10 ui-fluid">
+                                    <div class="form-group" *ngIf="dateFormat"
+                                        [ngClass]="{ 'has-error': (!birthDate.valid || invalidBirthdate || invalidYear) && (birthDate.dirty || birthDate.touched || f.submitted) }">
+                                        <label class="custom-form-label" for="birthDate">{{ 'FORM.DATE_OF_BIRTH' |
+                                            translate}}</label>
+                                        <p-calendar (onSelect)="calculateAge(model.birthDate)"
+                                            (onInput)="calculateAge(model.birthDate)" [showIcon]="true"
+                                            [monthNavigator]="true" [yearNavigator]="true" [yearRange]="yearRange"
+                                            name="birthDate" [(ngModel)]="model.birthDate" [maxDate]="maxDateValue"
+                                            #birthDate="ngModel" [dateFormat]="dateFormat" required></p-calendar>
+                                        <p class="text-error" *ngIf="invalidBirthdate == true"
+                                            [translate]="'FORM.INVALID_DATE'">
+                                        </p>
+                                        <p class="text-error" *ngIf="invalidYear == true"
+                                            [translate]="'FORM.INVALID_BIRTHYEAR'"
+                                            [translateParams]="{'minYear': minYear}">
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <div class="col-3 col-md-2 pl-0">
+                                    <div class="form-group">
+                                        <label class="custom-form-label disabled" for="age">{{ 'FORM.AGE' | translate
+                                            }}</label>
+                                        <label type="text"
+                                            class="form-control custom-form-control disabled">{{familyMemberAge}}</label>
+                                    </div>
+                                </div>
+
+                                <div class="col-12" *ngIf="relationId === PERSON_RELATION.CLIENT1 || relationId === PERSON_RELATION.CLIENT2">
+                                    <div class="form-group"
+                                        [ngClass]="{ 'has-error': !email.valid && (email.dirty || email.touched || f.submitted)}">
+                                        <label class="custom-form-label"
+                                            for="email">{{ 'FORM.EMAIL' | translate }}</label>
+                                        <input type="email" class="form-control" name="email" [(ngModel)]="model.email"
+                                            #email="ngModel"
+                                            pattern="^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$">
+                                    </div>
+                                </div>
+                                <div class="col-12" *ngIf="relationId === PERSON_RELATION.CLIENT1">
+                                    <div class="form-group"
+                                        [ngClass]="{ 'has-error': !language.valid && (language.dirty || language.touched || f.submitted) }">
+                                        <label class="custom-form-label" for="language">{{ 'FORM.LANGUAGE' | translate
+                                            }}</label>
+                                        <p-dropdown [options]="languages" name="language" [(ngModel)]="model.language"
+                                            #language="ngModel" optionLabel="lang" required
+                                            placeholder="{{ 'FORM.PLACEHOLDER.SELECT_A_LANGUAGE' | translate }}">
+                                        </p-dropdown>
+                                    </div>
+                                </div>
+
+                                <div class="col-12" *ngIf="PERSON_RELATION.CLIENT1">
+                                    <div class="form-group" *ngIf="relationId === PERSON_RELATION.CLIENT1 ">
+                                        <label
+                                            class="custom-form-label title">{{ 'FORM.PLAN_ASSUMPTION' | translate }}</label>
+                                    </div>
+                                </div>
+
+                                <div class="col-3 col-md-2 pr-0" *ngIf="relationId === PERSON_RELATION.CLIENT1 ">
+                                    <div class="form-group"
+                                        [ngClass]="{ 'has-error': !inflation.valid && (inflation.dirty || inflation.touched || f.submitted) }">
+                                        <label class="custom-form-label" for="inflation">{{ 'FORM.INFLATION' |
+                                            translate}}</label>
+                                        <input type="text" class="form-control text-left" [readonly]="!isCustInflation"
+                                            [ngStyle]="{ border : isCustInflation ? '' : '0px'}" name="inflation"
+                                            min="0" max="100" [textMask]="{mask: percentMask}" appNumeric
+                                            [(ngModel)]="model.inflation" #inflation="ngModel"
+                                            pattern="^100(\.0{0,2})? *%?$|^\d{1,2}(\.\d{1,2})?" required>
+                                    </div>
+                                </div>
+                                <div class="col-3 col-md-2 pl-0" *ngIf="relationId === PERSON_RELATION.CLIENT1">
+                                    <label class="custom-form-label" for="retired"> </label>
+                                    <div class="form-group text-center pr-5 pt-2">
+                                        <p-checkbox name="customInflation" [(ngModel)]="isCustInflation"
+                                            #isCustomInflation="ngModel" (ngModelChange)="checkboxOnChange()"
+                                            binary="true"></p-checkbox>
+                                    </div>
+                                </div>
+                                <div class="col-3 col-md-2 pr-0" *ngIf="relationId === PERSON_RELATION.CLIENT1 && accessRights['ROIAD']['accessLevel'] > 0">
+                                    <div class="form-group"
+                                        [ngClass]="{ 'has-error': !fees_cost.valid && (fees_cost.dirty || fees_cost.touched || f.submitted) }">
+                                        <label class="custom-form-label" for="fees_cost">{{ 'PORTFOLIO_ALLOCATION.TABLE.FEES_COSTS' |
+                                            translate}}</label>
+                                        <input type="text" class="form-control text-left" 
+                                            name="fees_cost"
+                                            min="0" max="100" [textMask]="{mask: percentMask}" appNumeric
+                                            [(ngModel)]="model.fees_cost" #fees_cost="ngModel"
+                                            pattern="^100(\.0{0,2})? *%?$|^\d{1,2}(\.\d{1,2})?" required>
+                                    </div>
+                                </div>
+                                <div class="col-12"
+                                    *ngIf="model.maritalStatus && model['maritalStatus']['id'] === MARITAL_STATUS.MARRIED &&
+                                modelAddress.province && modelAddress.province['provinceId'] === PROVINCE_CONSTANT.QUEBEC ">
+                                    <div class="form-group"
+                                        [ngClass]="{ 'has-error': !matrimonialRegime.valid && (matrimonialRegime.dirty || matrimonialRegime.touched || f.submitted) }">
+                                        <label class="custom-form-label" for="matrimonialRegime">{{ 'FORM.MATRIMONIAL_REGIME' | translate
+                                            }}</label>
+                                        <p-dropdown [options]="matrimonialRegimes" name="matrimonialRegime"
+                                            [(ngModel)]="model.selectedMatrimonialRegime" #matrimonialRegime="ngModel"
+                                            optionLabel="displayName" required
+                                            placeholder="{{ 'FORM.PLACEHOLDER.SELECT_MATRIMONIAL_REGIME' | translate }}">
+                                        </p-dropdown>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-lg-4 col-md-6 order-2 order-lg-1">
+                            <div class="row">
+                                <div class="col-12" *ngIf="relationId === PERSON_RELATION.CLIENT1 ">
+                                    <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !address.valid }">
+                                        <label class="custom-form-label"
+                                            for="address">{{ 'FORM.ADDRESS' | translate }}</label>
+                                        <input type="text" class="form-control" name="address"
+                                            [(ngModel)]="modelAddress.line1" #address="ngModel">
+                                    </div>
+                                </div>
+
+                                <div class="col-12" *ngIf="relationId === PERSON_RELATION.CLIENT1 ">
+                                    <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !city.valid }">
+                                        <label class="custom-form-label"
+                                            for="city">{{ 'FORM.CITY' | translate }}</label>
+                                        <input type="text" class="form-control" name="city"
+                                            [(ngModel)]="modelAddress.city" #city="ngModel">
+                                    </div>
+                                </div>
+
+                                <div class="col-12" *ngIf="relationId === PERSON_RELATION.CLIENT1 ">
+                                    <div class="form-group"
+                                        [ngClass]="{ 'has-error': !country.valid && (country.dirty || country.touched || f.submitted) }">
+                                        <label class="custom-form-label"
+                                            for="country">{{ 'FORM.COUNTRY' | translate }}</label>
+                                        <p-dropdown [disabled]="modelAddress.isLocked" (onChange)="selectProvince(modelAddress.country)"
+                                            [options]="countries" name="country" [(ngModel)]="modelAddress.country"
+                                            #country="ngModel" optionLabel="country" required
+                                            placeholder="{{ 'FORM.PLACEHOLDER.SELECT_A_COUNTRY' | translate }}">
+                                        </p-dropdown>
+                                    </div>
+                                </div>
+
+                                <div class="col-9" *ngIf="relationId === PERSON_RELATION.CLIENT1 && provinces && provinces.length > 0">
+                                    <div class="form-group"
+                                        [ngClass]="{ 'has-error': !province.valid && (province.dirty || province.touched || f.submitted) }">
+                                        <label class="custom-form-label" for="province">{{'FORM.PROVINCE' | translate }}</label>
+                                        <p-dropdown [options]="provinces" [disabled]="modelAddress.isLocked" name="province"
+                                            [(ngModel)]="modelAddress.province" #province="ngModel"
+                                            optionLabel="provinceState" required placeholder="{{'FORM.PLACEHOLDER.SELECT_A_PROVINCE'  | translate }}"></p-dropdown>
+                                    </div>
+                                </div>
+
+                                <div class="col-3" *ngIf="relationId === PERSON_RELATION.CLIENT1 && selectedPostalCode === '' ">
+                                    <div class="form-group"
+                                        [ngClass]="{ 'has-error': (postalCode.dirty || postalCode.touched || f.submitted) && !postalCode.valid }">
+                                        <label *ngIf="selectedCountry === 'USA'" class="custom-form-label"
+                                            for="postalCode">{{'FORM.ZIP_CODE' | translate }}</label>
+                                        <label *ngIf=" selectedCountry !== 'USA'" class="custom-form-label"
+                                            for="postalCode">{{'FORM.POSTAL_CODE'
+                                            | translate }}</label>
+                                        <input type="text" class="form-control" name="postalCode"
+                                            [(ngModel)]="modelAddress.postalCode" #postalCode="ngModel"
+                                            pattern="{{defaultPostalCode }}">
+                                    </div>
+                                </div>
+                                <div class="col-3" *ngIf="relationId === PERSON_RELATION.CLIENT1 && selectedPostalCode !== '' ">
+                                    <div class="form-group"
+                                        [ngClass]="{ 'has-error': (postalCode.dirty || postalCode.touched || f.submitted) && !postalCode.valid }">
+                                        <label *ngIf="selectedCountry === 'USA'" class="custom-form-label"
+                                            for="postalCode">{{ 'FORM.ZIP_CODE' | translate }}</label>
+                                        <label *ngIf=" selectedCountry !== 'USA'" class="custom-form-label"
+                                            for="postalCode">{{'FORM.POSTAL_CODE'
+                                            | translate }}</label>
+                                        <p-inputMask [style]="{'width': '100%'}" mask="{{selectedPostalCode}}"
+                                            name="postalCode" [(ngModel)]="modelAddress.postalCode"
+                                            #postalCode="ngModel"></p-inputMask>
+                                    </div>
+                                </div>
+
+                                <div class="col-12" *ngIf="relationId === PERSON_RELATION.CLIENT1 ">
+                                    <div class="form-group ui-fluid">
+                                        <label class="custom-form-label" for="homePhone">{{ 'FORM.HOME_PHONE' |
+                                            translate }}</label>
+                                        <ng-container *ngIf="!phoneFormate">
+                                            <input name="homePhone" type="tel" pattern="^[\d+ -]+$" class="form-control"
+                                                [(ngModel)]="model.homePhone" #homePhone="ngModel">
+                                        </ng-container>
+                                        <ng-container *ngIf="phoneFormate">
+                                            <p-inputMask [style]="{'width': '100%'}" mask="{{phoneFormate}}"
+                                                name="homePhone" [(ngModel)]="model.homePhone" #homePhone="ngModel">
+                                            </p-inputMask>
+                                        </ng-container>
+                                    </div>
+                                </div>
+
+                                <div class="col-12" *ngIf="relationId === PERSON_RELATION.CLIENT1 || relationId === PERSON_RELATION.CLIENT2">
+                                    <div class="form-group ui-fluid">
+                                        <label class="custom-form-label" for="officePhone">{{ 'FORM.OFFICE_PHONE' |
+                                            translate }} </label>
+                                        <ng-container *ngIf="!phoneFormate">
+                                            <input type="tel" pattern="^[\d+ -]+$" class="form-control"
+                                                name="officePhone" [(ngModel)]="model.officePhone"
+                                                #officePhone="ngModel">
+                                        </ng-container>
+                                        <ng-container *ngIf="phoneFormate">
+                                            <p-inputMask [style]="{'width': '100%'}" mask="{{phoneFormate}}"
+                                                name="officePhone" [(ngModel)]="model.officePhone"
+                                                #officePhone="ngModel"></p-inputMask>
+                                        </ng-container>
+                                    </div>
+                                </div>
+
+                                <div class="col-12" *ngIf="relationId === PERSON_RELATION.CLIENT1 || relationId === PERSON_RELATION.CLIENT2 ">
+                                    <div class="form-group ui-fluid">
+                                        <label class="custom-form-label" for="mobilePhone">{{ 'FORM.CELL_PHONE' |
+                                            translate }}
+                                        </label>
+                                        <ng-container *ngIf="phoneFormate">
+                                            <p-inputMask [style]="{'width': '100%'}" mask="{{phoneFormate}}"
+                                                name="mobilePhone" [(ngModel)]="model.mobilePhone"
+                                                #mobilePhone="ngModel"></p-inputMask>
+                                        </ng-container>
+
+                                        <ng-container *ngIf="!phoneFormate">
+                                            <input type="tel" pattern="^[\d+ -]+$" class="form-control"
+                                                name="mobilePhone" [(ngModel)]="model.mobilePhone"
+                                                #mobilePhone="ngModel">
+                                        </ng-container>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-lg-4 order-0 order-lg-2">
+                            <div class="form-group text-center">
+                                <app-image-upload maxFiles="1" maxSize="2" *ngIf="(model | json) !== '{}'"
+                                    iconClass="ion-ios-person" (fileSelected)="uploadImage($event)"
+                                    [existingFile]="model['avatar']" [isFileselected]="isFileUploded">
+                                </app-image-upload>
+                            </div>
+                        </div>
+
+
+                        <div class="col-12 order-3">
+                            <div class="form-group text-right">
+                                <hr>
+                                <button (click)="back()" type="button" class="btn btn-secondary btn-fixwidth mr-2">{{
+                                    'FORM.ACTION.CANCEL'
+                                    | translate }}</button>
+                                <button class="btn btn-success"
+                                    [disabled]="saveDisabled">{{ 'FORM.ACTION.SAVE_CHANGES' | translate }}</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+<router-outlet></router-outlet>

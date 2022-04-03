@@ -1,0 +1,20 @@
+.amount_wrapper{position: relative; padding-right: 50px; }
+.amount_wrapper span.currency_code{line-height: 40px; position: absolute; top: 23px; right: 0; color: #333333; }
+
+.client-avatars .client-icon + .client-icon{
+    margin-left: -5px;
+    z-index: 0;
+}
+.table.bt-none > tbody > tr:last-child > td{
+    border-bottom : none;
+    padding-bottom: 0px !important;
+}
+
+.readonly-assets {
+    line-height: 40px;
+}
+
+@media (max-width: 767px) {
+  .amount_wrapper {padding-right: 30px;}
+}
+

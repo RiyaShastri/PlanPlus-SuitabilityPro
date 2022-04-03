@@ -1,0 +1,226 @@
+<div class="bg-white pt-4 pb-4">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-7 col-6">
+                <h4 class="mb-1">
+                    <a [routerLink]="['/client',clientId,'profile']" [translate]="'BREADCRUMB.CLIENT_PROFILE'"></a> /
+                </h4>
+                <h1 class="personal-info-wrap" [translate]="'PERSONAL_INFO.TITLE'"></h1>
+            </div>
+            <div class="col-sm-5 col-6 d-flex flex-wrap justify-content-end">
+                <div class="mt-auto">
+                    <app-profile-module-drop-down class="dropdown-right" [clientId]="clientId">
+                    </app-profile-module-drop-down>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+
+            <div class="col-12">
+                <hr>
+            </div>
+
+            <div class="col-6" *ngIf="accessRights['CLI18']['accessLevel'] === 3">
+                <a routerLink="add" class="btn-add">
+                    <i class="ion-md-add-circle"></i>
+                    <span [translate]="'BREADCRUMB.ADD_FAMILY_MEMBER'"></span>
+                </a>
+            </div>
+            <div class="col-12">
+                <hr>
+            </div>
+
+            <div class="col-12">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th width="5%">&nbsp;</th>
+                            <th class="pr-2" width="30%" [translate]="'FORM.NAME'"></th>
+                            <th width="30%" [translate]="'FORM.STATUS'"></th>
+                            <th width="15%" class="hidden-xs-down text-center" [translate]="'FORM.GENDER'"></th>
+                            <th width="15%" class="text-center" [translate]="'FORM.AGE'"></th>
+                            <th width="5%" class="w-40px">&nbsp;</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td colspan="6">
+                                <h3 class="bold">
+                                    {{ 'PERSONAL_INFO.FAMILY_MEMBER' | translate }}
+                                    <span *ngIf="displayWarning" class="pl-2">
+                                        <i class="ion-ios-alert fs-16" [ngbTooltip]="alertMessage" placement="bottom" triggers="manual" #alert="ngbTooltip" (click)="alert.open()"></i>
+                                        <ng-template #alertMessage>
+                                            <p class="font" [translate]="'CLIENT.ALERT'"></p>
+                                            <p class="text-right m-0 p-0">
+                                                <button class="btn btn-secondary btn-small m-0" (click)="alert.close()" [translate]="'FORM.ACTION.CLOSE'"></button>
+                                            </p>
+                                        </ng-template>
+                                    </span>
+                                </h3>
+                            </td>
+                        </tr>
+                        <tr *ngFor="let person of familyMembers;">
+                            <td class="pr-2" width="5%">
+                                <span *ngIf="!person.avatar" class="initials" [ngClass]="person.btnColor">{{ person.firstName[0] + (person.lastName ? person.lastName[0]:'')}}</span>
+                                <img class="client-icon" height="50" *ngIf="person.avatar" [src]="person.avatar" (error)="person.avatar = null" />
+                            </td>
+                            <td class="pr-2" width="30%">
+                                <span class="fw-700">{{person.firstName}} {{person.lastName}}</span>
+                            </td>
+                            <td width="30%">{{person.relation_staus}}</td>
+                            <td width="15%" class="hidden-xs-down text-center">{{person.gender}}</td>
+                            <td width="15%" class="text-center">{{person.age}}</td>
+                            <td width="5%" class="text-right" *ngIf="accessRights['CLI01']['accessLevel'] === 3">
+                                <a [routerLink]="['/client',clientId,'profile','personal-info',person.id,'edit']">
+                                    <i class="right-arrow ion-ios-arrow-forward"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-12" *ngIf="accessRights['ENTITY']['accessLevel'] > 0">
+                <table class="table entity_table">
+                    <tbody>
+                        <tr> 
+                            <td colspan="6" class="pt-5 pb-1 border-top-0">
+                                <h3 class="bold mb-3" [translate]="'ENTITY.ENTITIES'"></h3>
+                                <div class="">
+                                    <a [routerLink]="['add-entity']" class="btn-add">
+                                        <i class="ion-md-add-circle"></i>
+                                        <span [translate]="'ENTITY.TITLE'"></span>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td width="5%">&nbsp;</td>
+                            <td width="30%" class="pr-2 fw-700 fs-14 entity-header" [translate]="'ENTITY.DESCRIPTION'"></td>
+                            <td width="30%" class="fw-700 fs-14 entity-header" [translate]="'ENTITY.TYPE'"></td>
+                            <td width="15%" class="hidden-xs-down">&nbsp;</td>
+                            <td width="15%">&nbsp;</td>
+                            <td width="5%">&nbsp;</td>
+                        </tr>
+                        <ng-container *ngIf="entitiesList.length > 0">
+                            <tr *ngFor="let entity of entitiesList;let i = index; let last = last">
+                                <td width="5%" class="pr-2">
+                                    <img class="client-icon" [ngClass]="{ 'border-radius-0' : (entity && !entity['imageUrl']) }" height="50" src="{{ (entity && entity['imageUrl']) ? entity['imageUrl'] : 'assets/images/building.png'}}"
+                                    />
+                                </td>
+                                <td width="30%" class="pr-1 entity-tooltip-wrap">
+                                    <span class="entity-text-truncate" triggers="manual" placement="bottom" [appNoOverflowTooltip]="entity['description']">{{entity['description']}}</span>
+                                </td>
+                                <td width="30%">
+                                    <span>{{entity['entityTypeDescription']}}</span>
+                                </td>
+                                <td width="15%" class="hidden-xs-down">&nbsp;</td>
+                                <td width="15%">&nbsp;</td>
+                                <td width="5%" class="text-right">
+                                    <div class="dropdown-relative" [ngClass]="{'dropdown-up' : last || (entitiesList.length - 2 < i+1 )}">
+                                        <button type="button" class="btn-floating" (click)="changePersonalInfoAction(i)">
+                                            <span class="ion-md-more"></span>
+                                        </button>
+                                        <div [id]="'dropdownPersonalInfoAction'+i" class="dropdown-personal-info-action dropdown-floating hide-ele">
+                                            <ul class="floating-dropdown">
+                                                <li>
+                                                    <a [routerLink]="[entity['entityId'], 'entity-details']" class="action-list">
+                                                        <i class="ion-md-create action-list"></i>
+                                                        <span class="action-list" [translate]="'ENTITY.ACTIONS.EDIT_ENTITY_DETAILS'"></span>
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a [routerLink]="[entity['entityId'], 'entity-ownership']" class="action-list">
+                                                        <i class="ion-md-create action-list"></i>
+                                                        <span class="action-list" [translate]="'ENTITY.ACTIONS.EDIT_ENTITY_OWNERSHIP'"></span>
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                        <a class="action-list" [routerLink]="['/client', clientId, 'planning', 'entities', entity.entityId, 'view-analysis']">
+                                                        <i class="ion-ios-eye action-list"></i>
+                                                        <span class="action-list" [translate]="'ENTITY.ACTIONS.VIEW_ANALYSIS'"></span>
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a class="action-list delete-btn" (click)="deleteEntity(entity['entityId'], entity['description'])">
+                                                        <i class="ion-md-close-circle action-list"></i>
+                                                        <span class="action-list" [translate]="'ENTITY.ACTIONS.DELETE_ENTITY'"></span>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </ng-container>
+                        <ng-container *ngIf="entitiesList.length === 0">
+                            <tr>
+                                <td colspan="6" class="no-record text-center">
+                                    <i class="ion-ios-alert mr-2"></i>{{'NO_RESULTS' | translate}}
+                                </td>
+                            </tr>
+                        </ng-container>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-12" *ngIf="accessRights['AL_BENEF']['accessLevel'] > 0">
+                <table class="table">
+                    <tbody>
+                        <tr>
+                            <td colspan="6" class="pt-5 pb-1 border-top-0">
+                                <div class="d-flex">
+                                    <h3 class="bold mr-auto mb-3">
+                                        {{'ESTATE_PLANING.OTHER_BENEFICIARIES' | translate}}
+                                    </h3>
+                                    <span (click)="beneficiaryExpanded = !beneficiaryExpanded">
+                                        <i [ngClass]="{'ion-ios-arrow-down' : !beneficiaryExpanded, 'ion-ios-arrow-up': beneficiaryExpanded}" class="cursor-p"></i>
+                                    </span>
+                                </div>
+                                <div>
+                                    <a routerLink="add-beneficiary" class="btn-add">
+                                        <i class="ion-md-add-circle"></i>
+                                        <span [translate]="'ESTATE_PLANING.NEW_BENEFICIARY'"></span>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                        <ng-container *ngIf="beneficiaryExpanded && otherBeneficiaries.length > 0">
+                            <tr *ngFor="let beneficiary of otherBeneficiaries;">
+                                <td class="pr-2" width="5%">
+                                    <span *ngIf="!beneficiary.beneficiaryAvatar" class="initials" [ngClass]="beneficiary.btnColor">{{ beneficiary.firstName[0] + (beneficiary.lastName ? beneficiary.lastName[0]:'')}}</span>
+                                    <img class="client-icon" height="50" *ngIf="beneficiary.beneficiaryAvatar" [src]="beneficiary.beneficiaryAvatar" (error)="beneficiary.beneficiaryAvatar = null"
+                                    />
+                                </td>
+                                <td class="pr-2" width="30%">
+                                    <span class="fw-700">{{beneficiary.firstName}} {{beneficiary.lastName ? beneficiary.lastName : ''}}</span>
+                                </td>
+                                <td width="30%">
+                                    {{('SSID_LABELS.BENEFICIARY_RELATIONS.' + beneficiaryRelations[beneficiary.relationCode]) | translate}}
+                                </td>
+                                <td class="hidden-xs-down text-center" width="15%">
+                                    {{beneficiary.relationCode !== 7 && beneficiary.gender ? beneficiary.gender : 'N/A'}}</td>
+                                <td class="text-center" width="15%">{{beneficiary.relationCode !== 7 && beneficiary.age ? beneficiary.age : 'N/A'}}</td>
+                                <td class="w-40px text-right" width="5%">
+                                    <a [routerLink]="['edit-beneficiary', beneficiary.benificaryId]">
+                                        <i class="right-arrow ion-md-create"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        </ng-container>
+                        <ng-container *ngIf="beneficiaryExpanded && otherBeneficiaries.length == 0">
+                            <tr>
+                                <td colspan="6" class="no-record text-center">
+                                    <i class="ion-ios-alert mr-2"></i>{{'NO_RESULTS' | translate}}
+                                </td>
+                            </tr>
+                        </ng-container>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="view-side-form">
+    <router-outlet></router-outlet>
+</div>

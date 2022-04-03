@@ -1,0 +1,139 @@
+<div class="bg-white pt-4 pb-4">
+    <div class="container">
+        <app-estate-header [clientId]="clientId" currentPage="analysis"></app-estate-header>
+        <div class="row">
+            <div class="col-12">
+                <form name="form" (ngSubmit)="f.form.valid && saveChanges()" #f="ngForm" novalidate>
+                    <table class="table estate-analysis mt-5" *ngIf="familyMembers && client1">
+                        <thead>
+                            <tr>
+                                <th width="20%" class="first-col" [translate]="'ESTATE_PLANING.ANALYSIS.INCOME_TAXES'">
+                                </th>
+                                <th width="20%" class="text-right pr-1">{{client1['firstName']}}
+                                    {{'ESTATE_PLANING.ANALYSIS.FIRST_DEATH' | translate}}</th>
+                                <th width="20%" *ngIf="client2" class="text-right pr-1">{{client2['firstName']}}
+                                    {{'ESTATE_PLANING.ANALYSIS.SECOND_DEATH' | translate}}</th>
+                                <th width="20%" *ngIf="client2" class="text-right pr-1">{{client2['firstName']}}
+                                    {{'ESTATE_PLANING.ANALYSIS.FIRST_DEATH' | translate}}</th>
+                                <th width="20%" *ngIf="client2" class="text-right pr-1">{{client1['firstName']}}
+                                    {{'ESTATE_PLANING.ANALYSIS.SECOND_DEATH' | translate}}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <ng-container *ngIf="analysisData; else noData">
+                                <tr>
+                                    <td width="20%" class="analysis-col-heading first-col pr-1"
+                                        [translate]="'ESTATE_PLANING.ANALYSIS.ADJUST_TAXABLE_INCOME'"></td>
+                                    <td width="20%" class="text-right pr-1">
+                                        <div class="form-group d-inline-block mb-0"
+                                            [ngClass]="{'has-error': !adjustTaxableIncomeC1.valid && (adjustTaxableIncomeC1.dirty || f.submitted) }">
+                                            <input class="form-control text-right" type="text"
+                                                name="adjustTaxableIncomeC1"
+                                                [(ngModel)]="analysisData['adjustTaxableIncomeC1']"
+                                                #adjustTaxableIncomeC1="ngModel" [textMask]="{mask: currencyMask}"
+                                                appNumeric />
+                                        </div>
+                                    </td>
+                                    <td width="20%" *ngIf="client2" class="text-right pr-1">
+                                        <div class="form-group d-inline-block mb-0"
+                                            [ngClass]="{'has-error': !adjustTaxableIncomeS2.valid && (adjustTaxableIncomeS2.dirty || f.submitted) }">
+                                            <input class="form-control text-right" type="text"
+                                                name="adjustTaxableIncomeS2"
+                                                [(ngModel)]="analysisData['adjustTaxableIncomeS2']"
+                                                #adjustTaxableIncomeS2="ngModel" [textMask]="{mask: currencyMask}"
+                                                appNumeric />
+                                        </div>
+                                    </td>
+                                    <td width="20%" *ngIf="client2" class="text-right pr-1">
+                                        <div class="form-group d-inline-block mb-0"
+                                            [ngClass]="{'has-error': !adjustTaxableIncomeS1.valid && (adjustTaxableIncomeS1.dirty || f.submitted) }">
+                                            <input class="form-control text-right" type="text"
+                                                name="adjustTaxableIncomeS1"
+                                                [(ngModel)]="analysisData['adjustTaxableIncomeS1']"
+                                                #adjustTaxableIncomeS1="ngModel" [textMask]="{mask: currencyMask}"
+                                                appNumeric />
+                                        </div>
+                                    </td>
+                                    <td width="20%" *ngIf="client2" class="text-right">
+                                        <div class="form-group d-inline-block mb-0"
+                                            [ngClass]="{'has-error': !adjustTaxableIncomeC2.valid && (adjustTaxableIncomeC2.dirty || f.submitted) }">
+                                            <input class="form-control text-right" type="text"
+                                                name="adjustTaxableIncomeC2"
+                                                [(ngModel)]="analysisData['adjustTaxableIncomeC2']"
+                                                #adjustTaxableIncomeC2="ngModel" [textMask]="{mask: currencyMask}"
+                                                appNumeric />
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="20%" class="analysis-col-heading first-col"
+                                        [translate]="'ESTATE_PLANING.ANALYSIS.ADJUST_TAX_CREDITS'"></td>
+                                    <td width="20%" class="text-right pr-1">
+                                        <div class="form-group d-inline-block mb-0"
+                                            [ngClass]="{'has-error': !taxCreditsC1.valid && (taxCreditsC1.dirty || f.submitted) }">
+                                            <input class="form-control text-right" type="text" name="taxCreditsC1"
+                                                [(ngModel)]="analysisData['taxCreditsC1']" #taxCreditsC1="ngModel"
+                                                [textMask]="{mask: currencyMask}" appNumeric />
+                                        </div>
+                                    </td>
+                                    <td width="20%" *ngIf="client2" class="text-right pr-1">
+                                        <div class="form-group d-inline-block mb-0"
+                                            [ngClass]="{'has-error': !taxCreditsS2.valid && (taxCreditsS2.dirty || f.submitted) }">
+                                            <input class="form-control text-right" type="text" name="taxCreditsS2"
+                                                [(ngModel)]="analysisData['taxCreditsS2']" #taxCreditsS2="ngModel"
+                                                [textMask]="{mask: currencyMask}" appNumeric />
+                                        </div>
+                                    </td>
+                                    <td width="20%" *ngIf="client2" class="text-right pr-1">
+                                        <div class="form-group d-inline-block mb-0"
+                                            [ngClass]="{'has-error': !taxCreditsS1.valid && (taxCreditsS1.dirty || f.submitted) }">
+                                            <input class="form-control text-right" type="text" name="taxCreditsS1"
+                                                [(ngModel)]="analysisData['taxCreditsS1']" #taxCreditsS1="ngModel"
+                                                [textMask]="{mask: currencyMask}" appNumeric />
+                                        </div>
+                                    </td>
+                                    <td *ngIf="client2" class="text-right">
+                                        <div class="form-group d-inline-block mb-0"
+                                            [ngClass]="{'has-error': !taxCreditsC2.valid && (taxCreditsC2.dirty || f.submitted) }">
+                                            <input class="form-control text-right" type="text" name="taxCreditsC2"
+                                                [(ngModel)]="analysisData['taxCreditsC2']" #taxCreditsC2="ngModel"
+                                                [textMask]="{mask: currencyMask}" appNumeric />
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="20%" class="analysis-col-heading first-col"
+                                        [translate]="'ESTATE_PLANING.ANALYSIS.ESTIMATED_INCOME_TAX'"></td>
+                                    <td width="20%" class="text-right pr-1">
+                                        {{analysisData['estimatedIncomeTaxC1'] | currency:clientData['currencyCode'] : 'symbol-narrow':'1.0-0'}}
+                                    </td>
+                                    <td width="20%" *ngIf="client2" class="text-right pr-1">
+                                        {{analysisData['estimatedIncomeTaxS2'] | currency:clientData['currencyCode'] : 'symbol-narrow':'1.0-0'}}
+                                    </td>
+                                    <td width="20%" *ngIf="client2" class="text-right pr-1">
+                                        {{analysisData['estimatedIncomeTaxS1'] | currency:clientData['currencyCode'] : 'symbol-narrow':'1.0-0'}}
+                                    </td>
+                                    <td width="20%" *ngIf="client2" class="text-right">
+                                        {{analysisData['estimatedIncomeTaxC2'] | currency:clientData['currencyCode'] : 'symbol-narrow':'1.0-0'}}
+                                    </td>
+                                </tr>
+                            </ng-container>
+                        </tbody>
+                        <ng-template #noData>
+                            <tr>
+                                <td [colSpan]="client2 ? 5 : 2" class="no-record text-center">
+                                    <i class="ion-alert mr-2"></i>{{'NO_RESULTS' | translate}}
+                                </td>
+                            </tr>
+                        </ng-template>
+                    </table>
+                    <div class="form-group mt-4 text-right">
+                        <button type="submit" class="btn btn-small btn-success mr-2"
+                            [translate]="'FORM.ACTION.SAVE_CHANGES'"
+                            [disabled]="f.form.invalid || saveButtonDisabled"></button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

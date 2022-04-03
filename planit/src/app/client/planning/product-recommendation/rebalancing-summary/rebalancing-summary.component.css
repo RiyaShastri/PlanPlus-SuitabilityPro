@@ -1,0 +1,76 @@
+.dropdown {
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.dropdown-common .dropdown-menu {
+    height: 250px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+.green-color {
+    color: #9b4 !important;
+}
+
+.red-color {
+    color: #f64 !important;
+}
+
+.table.retirement-table {
+    border-collapse: inherit;
+    border-spacing: 15px 0;
+}
+
+.table>thead>tr>th {
+    padding: 16px 0;
+    border-bottom: 1px solid #dee2e6;
+    border-top: 0px;
+    font-size: 13px;
+}
+
+.table>thead>tr:first-child>th {
+    font-size: 13px;
+    font-weight: 700;
+    padding-top: 0px;
+    font-size: 16px;
+    color: #123;
+}
+
+.table>thead>tr:last-child>th {
+    border-bottom: 0px;
+}
+
+.table>thead>tr>th>.table>thead>tr>th {
+    padding: 0;
+    border: 0px;
+    font-size: 13px;
+    color: #788588;
+}
+
+.table>tbody>tr>td>.table>tbody>tr>td {
+    padding: 0;
+    border: 0px;
+    font-size: 13px;
+    color: #788588;
+}
+
+.table>tfoot>tr>td {
+    border-top: 0px;
+}
+
+.table>tfoot>tr>td>.table>tfoot>tr>td {
+    padding: 0;
+    border: 0px;
+    font-size: 13px;
+    color: #788588;
+}
+
+.table>tbody>tr>td.fontsize-lg {
+    font-size: 16px;
+    color: #123;
+}
+
+.table>tbody>tr:last-child>td, .bottom-line {
+    border: none !important;
+}

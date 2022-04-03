@@ -1,0 +1,57 @@
+<div class="side-form">
+    <div class="box">
+        <form name="form" (ngSubmit)="f.form.valid && submitForm()" #f="ngForm" novalidate>
+            <div class="box-header">
+                <span class="sidebar_title" [translate]="'ENTITY.ADD_OWNER'"></span>
+                <span (click)="closePanel()" class="sidebar_action_icon ion-md-close-circle float-right"></span>
+            </div>
+
+            <div class="box-body">
+                <div class="row">
+                    <div class="col-12">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th [translate]="'ENTITY.OWNERS'"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let data of allOwners;let i = index">
+                                    <td>
+                                        <div class="form-group mb-0">
+                                            <p-checkbox name="owner{{i}}" [label]="data['firstName'] + ' ' + data['lastName']" [(ngModel)]="owners" value="{{data['id']}}" #owner="ngModel" (onChange)="checkOther()"
+                                                [disabled]="data['disabled']">
+                                            </p-checkbox>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <form name="addOwnerForm" (ngSubmit)="addOwnerForm.form.valid" #addOwnerForm="ngForm" novalidate>
+                                            <div class="form-group d-flex justify-content-end mb-0" [ngClass]="{ 'has-error': !ownerDescription.valid && addOwnerForm.submitted }">
+                                                <input type="text" class="form-control d-inline-block w-50 h-25 mr-1" name="ownerDescription" [(ngModel)]="otherOwner" #ownerDescription="ngModel"
+                                                    [disabled]="!isOtherChecked" pattern="^[a-zA-Z][\w\d\s\-]*" required>
+                                                <div class="d-flex align-items-center">
+                                                    <button (click)="addOther(otherOwner)" class="btn-add bg-white btn p-0 m-0" [disabled]="addOwnerForm.invalid || !isOtherChecked">
+                                                        <i class="ion-md-add-circle"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="box-footer">
+                <div class="form-group text-right">
+                    <button type="button" (click)="closePanel()" value="cancel" class="btn btn-secondary btn-small" [translate]="'FORM.ACTION.CANCEL'"></button>
+                    <button type="submit" value="submit" [disabled]="f.form.invalid || saveButtonDisabled" class="btn btn-success btn-small mr-3"
+                        [translate]="'FORM.ACTION.SAVE'"></button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

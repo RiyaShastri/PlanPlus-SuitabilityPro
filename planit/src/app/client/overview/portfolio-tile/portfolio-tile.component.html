@@ -1,0 +1,14 @@
+<div class="panel pb-0 pt-2">
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-12">
+                <app-portfolio-list-html limit='3' [isTile]='true' [clientId]="clientId"></app-portfolio-list-html>
+            </div>
+        </div>
+    </div>
+
+    <div class="panel-footer">
+        <a [routerLink]="['/client',clientId,'planning', 'portfolios']" class="btn btn-link ion-md-arrow-dropright" [translate]="'CUSTOM.VIEW_MORE'"></a>
+    </div>
+
+</div>

@@ -1,0 +1,143 @@
+<div class="side-form">
+    <form name="form" (ngSubmit)="updateBeneficiaries() && f.form.valid" #f="ngForm" novalidate>
+        <div class="box">
+            <div class="box-header">
+                <span class="sidebar_title" [translate]="'ESTATE_PLANING.EDIT_NAMED_BENEFICIARY'"></span>
+                <span (click)="back()" class="sidebar_action_icon ion-md-close-circle float-right"></span>
+            </div>
+            <div class="box-body">
+                <div class="form-group pull-right" *ngIf="beneficiariesData && beneficiariesData.length > 0">
+                    <a [routerLink]="['/client', clientId, 'planning', 'estate', 'named-beneficiary', accountId, 'add-named-beneficiary']" class="btn-add">
+                        <i class="ion-md-add-circle"></i>
+                        <span [translate]="'ESTATE_PLANING.ADD_BENEFICIARY'"></span>
+                    </a>
+                </div>
+                <table class="table table-responsive beneficiary-table mt-0" *ngIf="primaryBeneficiary.length > 0">
+                    <thead>
+                        <tr>
+                            <th width="35%" [translate]="'ESTATE_PLANING.BENEFICIARY'"></th>
+                            <th width="15%" class="hidden-xs-down" [translate]="'ESTATE_PLANING.RELATIONSHIP'"></th>
+                            <th width="15%" class="pl-1" [translate]="'ESTATE_PLANING.ADD_NAMED_BENEFICIARY.NO_SPOUSAL_ROLLOVER'"></th>
+                            <th width="15%%">&nbsp;</th>
+                            <th width="5%">&nbsp;</th>
+                            <th width="5%">&nbsp;</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let primaryData of primaryBeneficiary; index as i" class="edit-beneficiary-tooltip">
+                            <td width="35%">
+                                <span class="initials mr-2" [ngClass]="{ 'btn-square-green' : !primaryData.canDelete && primaryData['otherBeneficiary']['relation'] !== BENEFICIARY_RELATION.RELATION_SPOUSE }">{{primaryData['initials']}}</span>
+                                <span class="fw-400 collab-text-truncate" [appNoOverflowTooltip]="(primaryData['defaultNamedBeneficiaryDescription']) ? 
+                                        (primaryData['defaultNamedBeneficiaryDescription']) : 
+                                        (primaryData['otherBeneficiary']['firstName'] + ' ' + primaryData['otherBeneficiary']['lastName'])"
+                                    triggers="manual" placement="bottom">
+                                    {{(primaryData['defaultNamedBeneficiaryDescription']) ? (primaryData['defaultNamedBeneficiaryDescription']) : (primaryData['otherBeneficiary']['firstName']
+                                    + ' ' + primaryData['otherBeneficiary']['lastName'])}}
+                                </span>
+                            </td>
+                            <td width="15%" class="hidden-xs-down">
+                                <span class="collab-text-truncate" [appNoOverflowTooltip]="(primaryData['otherBeneficiary'] && primaryData['otherBeneficiary']['relation']) ?
+                                            primaryData['otherBeneficiary']['relation'] : '' " triggers="click" placement="bottom">
+                                    {{ (primaryData['otherBeneficiary'] && primaryData['otherBeneficiary']['relation']) ? primaryData['otherBeneficiary']['relation']
+                                    : ''}}</span>
+                            </td>
+                            <td width="15%">
+                                <div class="form-group mb-0 text-center" *ngIf="primaryData['otherBeneficiary'] && primaryData['otherBeneficiary']['relation'] === BENEFICIARY_RELATION.RELATION_SPOUSE">
+                                    <p-checkbox name="noSpousalRollover" [(ngModel)]="primaryData['rollover']" binary="true"></p-checkbox>
+                                </div>
+                                <span *ngIf="primaryData['otherBeneficiary'] && primaryData['otherBeneficiary']['relation'] !== BENEFICIARY_RELATION.RELATION_SPOUSE">&nbsp;</span>
+                            </td>
+                            <td width="15%">
+                                <div class="form-group mb-0" *ngIf="primaryData.canDelete" [ngClass]="{'has-error': ((!primary.valid && f.submitted) || primaryTotal !== 100)}">
+                                    <input type="text" class="form-control mb-0 h-25 text-right" name="primary{{i}}" [(ngModel)]="primaryData['owned']" #primary="ngModel"
+                                        (keyup)="totalBeneficiary($event, i, primaryData['primaryBeneficiary'])" pattern="^[0-9][0-9]?$|^100$"
+                                        required>
+                                </div>
+                                <div class="form-group mb-0 text-right" *ngIf="!primaryData.canDelete">
+                                    <span>{{primaryData['owned']}}</span>
+                                </div>
+                            </td>
+                            <td width="5%">
+                                <span class="align-content-center ml-1">%</span>
+                            </td>
+                            <td width="5%">
+                                <div class="form-group mb-0 text-right align-content-between">
+                                    <a *ngIf="primaryData.canDelete && (primaryData['otherBeneficiary'] && primaryData['otherBeneficiary']['relation'] !== BENEFICIARY_RELATION.SURVIVING_SPOUSE)"
+                                        class="delete-btn" (click)="deleteBeneficiary(primaryData, primaryData['primaryBeneficiary'])">
+                                        <i class="ion-md-close-circle"></i>
+                                    </a>
+                                    <span *ngIf="!primaryData.canDelete">&nbsp;</span>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table class="table mt-2 beneficiary-table" *ngIf="contingentBeneficiary.length > 0">
+                    <thead>
+                        <tr>
+                            <th width="35%" [translate]="'ESTATE_PLANING.CONTINGENT_BENEFICIARY'"></th>
+                            <th width="15%" class="hidden-xs-down" [translate]="'ESTATE_PLANING.RELATIONSHIP'"></th>
+                            <th width="15%" class="pl-1" [translate]="'ESTATE_PLANING.ADD_NAMED_BENEFICIARY.NO_SPOUSAL_ROLLOVER'"></th>
+                            <th width="15%">&nbsp;</th>
+                            <th width="5%">&nbsp;</th>
+                            <th width="5%">&nbsp;</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let data of contingentBeneficiary; index as j" class="edit-beneficiary-tooltip">
+                            <td width="35%">
+                                <span class="initials mr-2" [ngClass]="{ 'btn-square-green' : !data.canDelete && data['otherBeneficiary']['relation'] !== BENEFICIARY_RELATION.RELATION_SPOUSE }">{{data['initials']}}</span>
+                                <span class="fw-400 collab-text-truncate" [appNoOverflowTooltip]="(data['defaultNamedBeneficiaryDescription']) ? 
+                                        (data['defaultNamedBeneficiaryDescription']) : 
+                                        (data['otherBeneficiary']['firstName'] + ' ' + data['otherBeneficiary']['lastName'])"
+                                    triggers="manual" placement="bottom">
+                                    {{(data['defaultNamedBeneficiaryDescription']) ? (data['defaultNamedBeneficiaryDescription']) : (data['otherBeneficiary']['firstName']
+                                    + ' ' + data['otherBeneficiary']['lastName'])}}
+                                </span>
+                            </td>
+                            <td width="15%" class="hidden-xs-down">
+                                <span class="collab-text-truncate" [appNoOverflowTooltip]="(data['otherBeneficiary'] && data['otherBeneficiary']['relation']) ?
+                                        data['otherBeneficiary']['relation'] : '' " triggers="manual" placement="bottom">
+                                    {{ (data['otherBeneficiary'] && data['otherBeneficiary']['relation']) ? data['otherBeneficiary']['relation'] : ''}}</span>
+                            </td>
+                            <td width="15%">
+                                <div class="form-group mb-0 text-center" *ngIf="data['otherBeneficiary'] && data['otherBeneficiary']['relation'] === BENEFICIARY_RELATION.RELATION_SPOUSE">
+                                    <p-checkbox name="noSpousalRollover" [(ngModel)]="data['rollover']" binary="true"></p-checkbox>
+                                </div>
+                                <span *ngIf="data['otherBeneficiary'] && data['otherBeneficiary']['relation'] !== BENEFICIARY_RELATION.RELATION_SPOUSE">&nbsp;</span>
+                            </td>
+                            <td width="15%">
+                                <div class="form-group mb-0" *ngIf="data.canDelete" [ngClass]="{'has-error': ((!contingent.valid && f.submitted) || contingentTotal !== 100)}">
+                                    <input type="text" class="form-control mb-0 h-25 text-right" name="contingent{{j}}" [(ngModel)]="data['owned']" #contingent="ngModel"
+                                        (keyup)="totalBeneficiary($event, j, data['primaryBeneficiary'])" pattern="^[0-9][0-9]?$|^100$"
+                                        required>
+                                </div>
+                                <div class="form-group mb-0 text-right" *ngIf="!data.canDelete">
+                                    <span>{{data['owned']}}</span>
+                                </div>
+                            </td>
+                            <td width="5%">
+                                <span class="align-content-center ml-1">%</span>
+                            </td>
+                            <td width="5%">
+                                <div class="form-group mb-0 text-right align-content-between">
+                                    <a *ngIf="data.canDelete" class="delete-btn" (click)="deleteBeneficiary(data, data['primaryBeneficiary'])">
+                                        <i class="ion-md-close-circle"></i>
+                                    </a>
+                                    <span *ngIf="!data.canDelete">&nbsp;</span>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="box-footer">
+                <div class="form-group text-right">
+                    <button type="button" (click)="back()" class="btn btn-secondary btn-small" [translate]="'FORM.ACTION.CANCEL'"></button>
+                    <button type="submit" value="submit" class="btn btn-success btn-small mr-3" [disabled]="f.form.invalid || primaryTotal !== 100 || contingentTotal !== 100"
+                        [translate]="'FORM.ACTION.SAVE'"></button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

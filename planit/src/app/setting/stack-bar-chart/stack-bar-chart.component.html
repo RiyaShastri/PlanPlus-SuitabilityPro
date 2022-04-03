@@ -1,0 +1,6 @@
+<div class="investment-policies-graph">
+  <div class="slider-contain hidden-xs-down">
+    <div *ngFor="let sliderVal of sliderValue" class="break-word" [style.width.%]="sliderVal.percent">{{sliderVal.name}}</div>
+  </div>
+  <div id="chartdiv"></div>
+</div>

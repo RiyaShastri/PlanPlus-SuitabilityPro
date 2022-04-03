@@ -1,0 +1,73 @@
+<div class="panel pb-0">
+    <div class="d-flex flex-wrap panel-header">
+        <h4 [translate]="'ADVISOR.DASHBOARD.DOCUMENT_CENTER_TILE.TITLE'"></h4>
+        <i *ngIf="!documentLoaded" aria-hidden="true" class="fa fa-spinner fa-pulse loader-icon"></i>
+        <div class="d-flex ml-auto">
+            <div class="d-flex ml-auto" *ngIf="documentList && documentList['badges']">
+              <ng-template #inProgressContent >{{ 'ADVISOR.DASHBOARD.DOCUMENT_CENTER_TILE.CALL_OUT_FORMAT' | translate : {numDoc:documentList['badges']['IN_PROGRESS'], status: 'ADVISOR.DASHBOARD.WORKFLOW_TILE.IN_PROGRESS' | translate} }}</ng-template>
+              <span class="initials bg-mauve ml-2 cursor-p" [ngbTooltip]="inProgressContent" placement="bottom" triggers="click"
+                    #inprogress="ngbTooltip" (click)="review.close();">
+                    {{documentList['badges']['IN_PROGRESS']}}
+                </span>
+              <ng-template #inReviewContent >{{ 'ADVISOR.DASHBOARD.DOCUMENT_CENTER_TILE.CALL_OUT_FORMAT' | translate : {numDoc:documentList['badges']['REVIEW'], status: 'ADVISOR.DASHBOARD.WORKFLOW_TILE.UNDER_REVIEW' | translate} }}</ng-template>
+                <span class="initials bg-violet ml-2 cursor-p" [ngbTooltip]="inReviewContent" placement="bottom" triggers="click"
+                    #review="ngbTooltip" (click)="inprogress.close();">
+                    {{documentList['badges']['REVIEW']}}
+                </span>
+
+            </div>
+        </div>
+    </div>
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-12">
+                <table class="document-list-table table table-ellipsis">
+                    <thead>
+                        <tr>
+                            <th colspan="2" class="">
+                                <app-common-drop-down [itemList]="itemList" [defaultSelected]="defaultSelected"
+                                    dropDownLabel="{{ 'PORTFOLIOS.VIEW_DROPDOWN' | translate }}" (OnSelect)="getFilterDocument($event)"></app-common-drop-down>
+                            </th>
+                            <th class="text-right pr-3" [translate]="'CUSTOM.STATUS'"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <ng-container *ngIf="documentList['documents'] && documentList['documents'].length > 0">
+                            <tr *ngFor="let item of documentList['documents'];">
+                                <td class="fw-600 pr-3 document-tooltip" width = "30%" >
+                                    <div class="col-12 text-truncate" triggers="manual" placement="bottom"
+                                        [appNoOverflowTooltip]="item.clientLastname + ((item.clientLastname !== item.spouseLastname && item.spouseLastname) ? ' / ' +  item.spouseLastname : '')">
+                                        {{item.clientLastname }}
+                                        {{ (item.clientLastname !== item.spouseLastname && item.spouseLastname) ? ' / '
+                                        +
+                                        item.spouseLastname : '' }}
+                                    </div>
+                                </td>
+                                <td class="fw-400" width = "40%">
+                                    <div class="col-12 text-truncate" [appNoOverflowTooltip]="item.documentName" triggers="manual"
+                                        placement="bottom">{{item.documentName}}</div>
+                                </td>
+                                <td class="text-right pr-3" width = "20%">
+                                    <div class="circle " [ngClass]="item.status == 'IN_PROGRESS' ? 'bg-mauve' : item.status == 'REVIEW' ?
+                                    'bg-violet':item.status == 'COMPLETE' ? 'bg-blue' :item.status == 'PENDING' ? 'bg-orange' :item.status == 'VIEWED' ? 'bg-green' :item.status == 'MOSTRECENT' ? 'bg-red' :'' "></div>
+                                </td>
+                            </tr>
+                        </ng-container>
+                        <ng-container *ngIf="documentLoaded && documentList['documents'] && documentList['documents'].length === 0">
+                            <tr>
+                                <td colspan="3" class="no-record text-center">
+                                    <i class="ion-ios-alert mr-2"></i>{{'NO_RESULTS' | translate}}
+                                </td>
+                            </tr>
+                        </ng-container>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="panel-footer" *ngIf="TotalClients && documentList">
+        <app-pagination [PageSize]='5' [TotalItem]="TotalClients" (OnPageChange)="getPageFilterClient($event)"></app-pagination>
+    </div>
+
+</div>
